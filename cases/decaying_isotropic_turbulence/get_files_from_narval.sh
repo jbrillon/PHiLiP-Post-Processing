@@ -1,0 +1,1 @@
+../../src/tools/get_files.sh "scratch/2023_AIAA/2022-11-11_DHIT_test_128dofs" "/Users/Julien/PHiLiP-Post-Processing/cases/decaying_isotropic_turbulence/data/";
