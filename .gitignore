@@ -1,0 +1,10 @@
+# Compiled source #
+###################
+__pycache__/
+*.py[cod]
+
+# I/O files #
+###################
+*.txt
+*.dat
+*.pdf
