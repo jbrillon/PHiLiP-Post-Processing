@@ -1,4 +1,5 @@
 import numpy as np
+import sys; sys.path.append("/Users/Julien/PHiLiP-Post-Processing/src/tools");
 from get_DOF_vars import get_DOF_vars
 from assemble_mpi_files import assemble_mpi_files
 
