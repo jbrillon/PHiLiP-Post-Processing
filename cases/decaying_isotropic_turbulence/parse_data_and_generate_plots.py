@@ -66,19 +66,36 @@ x=[];y=[];labels=[];
 spectra = np.loadtxt("/Users/Julien/DHIT-Flow-Setup/energy.prf",skiprows=1,dtype=np.float64)
 append_to_plot(spectra[:,0],spectra[:,1],"Input to box.for")
 
-# (2) CBC Experiment data
-spectra = np.loadtxt("/Users/Julien/DHIT-Flow-Setup/cbc_experiment_table3.txt",skiprows=3,usecols=(0,1),dtype=np.float64)
 # - Misra and Lund non-dimensionalization:
 M = 5.08 # [cm] (mesh size from experiment)
 u_rms = 22.2 # [cm/s] (rms velocity from experiment)
 L_ref = 11.0*M/(2.0*np.pi) # cm
 U_ref = np.sqrt(3.0/2.0)*u_rms # cm/s
 energy_ref = U_ref*U_ref*L_ref # cm3/s2
+
+# (2) CBC Experiment data; t=0
+spectra = np.loadtxt("/Users/Julien/DHIT-Flow-Setup/cbc_experiment_table3.txt",skiprows=3,usecols=(0,1),dtype=np.float64)
 # -- nondimensionalize experiment values
 spectra[:,0] *= L_ref # non-dimensionalize wavenumber
 spectra[:,1] /= energy_ref # non-dimensionalize energy
 # add to plot
-append_to_plot(spectra[:,0],spectra[:,1],"CBC Experiment (scaled)")
+append_to_plot(spectra[:,0],spectra[:,1],"CBC t=0")
+
+# (2) CBC Experiment data; t=1
+spectra = np.loadtxt("/Users/Julien/DHIT-Flow-Setup/cbc_experiment_table3.txt",skiprows=3,usecols=(0,2),dtype=np.float64)
+# -- nondimensionalize experiment values
+spectra[:,0] *= L_ref # non-dimensionalize wavenumber
+spectra[:,1] /= energy_ref # non-dimensionalize energy
+# add to plot
+append_to_plot(spectra[:,0],spectra[:,1],"CBC t=1")
+
+# (2) CBC Experiment data; t=1
+spectra = np.loadtxt("/Users/Julien/DHIT-Flow-Setup/cbc_experiment_table3.txt",skiprows=2,max_rows=17,usecols=(0,3),dtype=np.float64)
+# -- nondimensionalize experiment values
+spectra[:,0] *= L_ref # non-dimensionalize wavenumber
+spectra[:,1] /= energy_ref # non-dimensionalize energy
+# add to plot
+append_to_plot(spectra[:,0],spectra[:,1],"CBC t=2")
 
 # =====================================================
 # 24 DOF check
@@ -86,15 +103,25 @@ append_to_plot(spectra[:,0],spectra[:,1],"CBC Experiment (scaled)")
 title_label = "DHIT Initialization Check\n P5, $N_{el}=4^{3}$ ($24^{3}$ DOF)"
 figure_filename = "spectra_24dof-new"
 # load files
+
 # generate_spectra_file_from_flow_field_file("/Users/Julien/DHIT-Flow-Setup/dofs024_p5_velocity/velocity_equidistant_nodes","fld",n_skiprows=0,use_TurboGenPy=True)
 spectra = np.loadtxt("/Users/Julien/DHIT-Flow-Setup/dofs024_p5_velocity/velocity_equidistant_nodes_spectra.fld")
 append_to_plot(spectra[:,0],spectra[:,1],"PHiLiP input")
 
-spectra = np.loadtxt("/Users/Julien/DHIT-Flow-Setup/dofs024_p5_velocity/flow_field_files/velocity_vorticity-0_reordered_spectra.dat",skiprows=0,dtype=np.float64)
-append_to_plot(spectra[:,0],spectra[:,1],"PHiLiP t=0")
+# spectra = np.loadtxt("/Users/Julien/DHIT-Flow-Setup/dofs024_p5_velocity/flow_field_files/velocity_vorticity-0_reordered_spectra.dat",skiprows=0,dtype=np.float64)
+# append_to_plot(spectra[:,0],spectra[:,1],"PHiLiP t=0")
 
-spectra = np.loadtxt("/Users/Julien/DHIT-Flow-Setup/dofs024_p5_velocity/flow_field_files/velocity_vorticity-1_reordered_spectra.dat",skiprows=0,dtype=np.float64)
-append_to_plot(spectra[:,0],spectra[:,1],"PHiLiP t=1")
+# spectra = np.loadtxt("/Users/Julien/DHIT-Flow-Setup/dofs024_p5_velocity/flow_field_files/velocity_vorticity-1_reordered_spectra.dat",skiprows=0,dtype=np.float64)
+# append_to_plot(spectra[:,0],spectra[:,1],"PHiLiP t=1")
+
+# generate_spectra_file_from_flow_field_file("/Users/Julien/DHIT-Flow-Setup/dofs048_p5_velocity/velocity_equidistant_nodes","fld",n_skiprows=0,use_TurboGenPy=True)
+spectra = np.loadtxt("/Users/Julien/DHIT-Flow-Setup/dofs048_p5_velocity/velocity_equidistant_nodes_spectra.fld")
+append_to_plot(spectra[:,0],spectra[:,1],"$48^3$ DOF")
+
+# generate_spectra_file_from_flow_field_file("/Users/Julien/DHIT-Flow-Setup/dofs128_p3_velocity/velocity_equidistant_nodes","fld",n_skiprows=0,use_TurboGenPy=True)
+spectra = np.loadtxt("/Users/Julien/DHIT-Flow-Setup/dofs128_p3_velocity/velocity_equidistant_nodes_spectra.fld")
+append_to_plot(spectra[:,0],spectra[:,1],"$128^3$ DOF")
+
 #=====================================================
 # Plotting function -- Spectra
 #=====================================================
@@ -102,7 +129,8 @@ qp.plotfxn(xdata=x,ydata=y,xlabel="$k$",ylabel="$E(k)$",
     title_label=title_label,
     fig_directory="figures",figure_filename=figure_filename,log_axes="both",figure_filetype="pdf",
     xlimits=[8e-1,3e2],ylimits=[1e-6,5e-1],
-    markers=True,legend_on=True,legend_labels_tex=labels)
+    markers=True,legend_on=True,legend_labels_tex=labels,
+    which_lines_only_markers=[1,2,3])
 
 
 #=====================================================
