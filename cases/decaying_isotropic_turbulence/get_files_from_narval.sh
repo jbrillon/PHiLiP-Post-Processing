@@ -1,1 +1,4 @@
-../../src/tools/get_files.sh "scratch/2023_AIAA/2022-11-11_DHIT_test_128dofs" "/Users/Julien/PHiLiP-Post-Processing/cases/decaying_isotropic_turbulence/data/";
+../../src/tools/get_files.sh "scratch/2023_AIAA/2022-11-24_DHIT_048dofs/viscous_DHIT_ILES_cDG_IR_two_point_flux_dofs048_p5_procs64/flow_field_files" "/Users/Julien/DHIT-Flow-Setup/dofs048_p5_velocity/";
+../../src/tools/get_files.sh "scratch/2023_AIAA/2022-11-24_DHIT_048dofs/viscous_DHIT_ILES_cDG_IR_two_point_flux_dofs048_p5_procs64/*.txt" "/Users/Julien/DHIT-Flow-Setup/dofs048_p5_velocity/";
+../../src/tools/get_files.sh "scratch/2023_AIAA/2022-11-24_DHIT_048dofs/viscous_DHIT_ILES_cDG_IR_two_point_flux_dofs128_p3_procs512/flow_field_files" "/Users/Julien/DHIT-Flow-Setup/dofs128_p3_velocity/";
+../../src/tools/get_files.sh "scratch/2023_AIAA/2022-11-24_DHIT_048dofs/viscous_DHIT_ILES_cDG_IR_two_point_flux_dofS128_p3_procs512/*.txt" "/Users/Julien/DHIT-Flow-Setup/dofs128_p3_velocity/";

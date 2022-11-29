@@ -64,7 +64,7 @@ x=[];y=[];labels=[];
 #=====================================================
 # (1) Original spectra file
 spectra = np.loadtxt("/Users/Julien/DHIT-Flow-Setup/energy.prf",skiprows=1,dtype=np.float64)
-append_to_plot(spectra[:,0],spectra[:,1],"Input to box.for")
+append_to_plot(spectra[:,0],spectra[:,1],"Input to f77 code")
 
 # - Misra and Lund non-dimensionalization:
 M = 5.08 # [cm] (mesh size from experiment)
@@ -100,27 +100,42 @@ append_to_plot(spectra[:,0],spectra[:,1],"CBC t=2")
 # =====================================================
 # 24 DOF check
 # =====================================================
-title_label = "DHIT Initialization Check\n P5, $N_{el}=4^{3}$ ($24^{3}$ DOF)"
-figure_filename = "spectra_24dof-new"
+title_label = "DHIT, $24^{3}$ DOF, (P5, $N_{el}=4^{3}$)"
+figure_filename = "spectra_024dof_after_bug_fix"
 # load files
 
-# generate_spectra_file_from_flow_field_file("/Users/Julien/DHIT-Flow-Setup/dofs024_p5_velocity/velocity_equidistant_nodes","fld",n_skiprows=0,use_TurboGenPy=True)
-spectra = np.loadtxt("/Users/Julien/DHIT-Flow-Setup/dofs024_p5_velocity/velocity_equidistant_nodes_spectra.fld")
-append_to_plot(spectra[:,0],spectra[:,1],"PHiLiP input")
+# generate_spectra_file_from_flow_field_file("/Users/Julien/DHIT-Flow-Setup/dofs048_p5_velocity/velocity_equidistant_nodes","fld",n_skiprows=0,use_TurboGenPy=True)
+# spectra = np.loadtxt("/Users/Julien/DHIT-Flow-Setup/dofs048_p5_velocity/velocity_equidistant_nodes_spectra.fld")
+# append_to_plot(spectra[:,0],spectra[:,1],"PHiLiP input")
 
-# spectra = np.loadtxt("/Users/Julien/DHIT-Flow-Setup/dofs024_p5_velocity/flow_field_files/velocity_vorticity-0_reordered_spectra.dat",skiprows=0,dtype=np.float64)
-# append_to_plot(spectra[:,0],spectra[:,1],"PHiLiP t=0")
+generate_spectra_file_from_flow_field_file("/Users/Julien/DHIT-Flow-Setup/dofs024_p5_velocity/flow_field_files/velocity_vorticity-0_reordered_equidistant","dat",n_skiprows=0,use_TurboGenPy=True)
+spectra = np.loadtxt("/Users/Julien/DHIT-Flow-Setup/dofs024_p5_velocity/flow_field_files/velocity_vorticity-0_reordered_equidistant_spectra.dat")
+append_to_plot(spectra[:,0],spectra[:,1],"PHiLiP t=0.0")
 
-# spectra = np.loadtxt("/Users/Julien/DHIT-Flow-Setup/dofs024_p5_velocity/flow_field_files/velocity_vorticity-1_reordered_spectra.dat",skiprows=0,dtype=np.float64)
-# append_to_plot(spectra[:,0],spectra[:,1],"PHiLiP t=1")
+generate_spectra_file_from_flow_field_file("/Users/Julien/DHIT-Flow-Setup/dofs024_p5_velocity/flow_field_files/velocity_vorticity-1_reordered_equidistant","dat",n_skiprows=0,use_TurboGenPy=True)
+spectra = np.loadtxt("/Users/Julien/DHIT-Flow-Setup/dofs024_p5_velocity/flow_field_files/velocity_vorticity-1_reordered_equidistant_spectra.dat")
+append_to_plot(spectra[:,0],spectra[:,1],"PHiLiP t=1.0")
+
+generate_spectra_file_from_flow_field_file("/Users/Julien/DHIT-Flow-Setup/dofs024_p5_velocity/flow_field_files/velocity_vorticity-2_reordered_equidistant","dat",n_skiprows=0,use_TurboGenPy=True)
+spectra = np.loadtxt("/Users/Julien/DHIT-Flow-Setup/dofs024_p5_velocity/flow_field_files/velocity_vorticity-2_reordered_equidistant_spectra.dat")
+append_to_plot(spectra[:,0],spectra[:,1],"PHiLiP t=2.0")
+
+# spectra = np.loadtxt("/Users/Julien/DHIT-Flow-Setup/dofs048_p5_velocity/flow_field_files/velocity_vorticity-0_reordered_spectra.dat",skiprows=0,dtype=np.float64)
+# append_to_plot(spectra[:,0],spectra[:,1],"PHiLiP t=0.00")
+
+# spectra = np.loadtxt("/Users/Julien/DHIT-Flow-Setup/dofs048_p5_velocity/flow_field_files/velocity_vorticity-1_reordered_spectra.dat",skiprows=0,dtype=np.float64)
+# append_to_plot(spectra[:,0],spectra[:,1],"PHiLiP t=0.50")
+
+# spectra = np.loadtxt("/Users/Julien/DHIT-Flow-Setup/dofs048_p5_velocity/flow_field_files/velocity_vorticity-2_reordered_spectra.dat",skiprows=0,dtype=np.float64)
+# append_to_plot(spectra[:,0],spectra[:,1],"PHiLiP t=0.75")
 
 # generate_spectra_file_from_flow_field_file("/Users/Julien/DHIT-Flow-Setup/dofs048_p5_velocity/velocity_equidistant_nodes","fld",n_skiprows=0,use_TurboGenPy=True)
-spectra = np.loadtxt("/Users/Julien/DHIT-Flow-Setup/dofs048_p5_velocity/velocity_equidistant_nodes_spectra.fld")
-append_to_plot(spectra[:,0],spectra[:,1],"$48^3$ DOF")
+# spectra = np.loadtxt("/Users/Julien/DHIT-Flow-Setup/dofs048_p5_velocity/velocity_equidistant_nodes_spectra.fld")
+# append_to_plot(spectra[:,0],spectra[:,1],"$48^3$ DOF")
 
 # generate_spectra_file_from_flow_field_file("/Users/Julien/DHIT-Flow-Setup/dofs128_p3_velocity/velocity_equidistant_nodes","fld",n_skiprows=0,use_TurboGenPy=True)
-spectra = np.loadtxt("/Users/Julien/DHIT-Flow-Setup/dofs128_p3_velocity/velocity_equidistant_nodes_spectra.fld")
-append_to_plot(spectra[:,0],spectra[:,1],"$128^3$ DOF")
+# spectra = np.loadtxt("/Users/Julien/DHIT-Flow-Setup/dofs128_p3_velocity/velocity_equidistant_nodes_spectra.fld")
+# append_to_plot(spectra[:,0],spectra[:,1],"$128^3$ DOF")
 
 #=====================================================
 # Plotting function -- Spectra
@@ -128,9 +143,10 @@ append_to_plot(spectra[:,0],spectra[:,1],"$128^3$ DOF")
 qp.plotfxn(xdata=x,ydata=y,xlabel="$k$",ylabel="$E(k)$",
     title_label=title_label,
     fig_directory="figures",figure_filename=figure_filename,log_axes="both",figure_filetype="pdf",
-    xlimits=[8e-1,3e2],ylimits=[1e-6,5e-1],
-    markers=True,legend_on=True,legend_labels_tex=labels,
-    which_lines_only_markers=[1,2,3])
+    xlimits=[8e-1,3e2],ylimits=[1e-6,6e-1],
+    markers=False,legend_on=True,legend_labels_tex=labels,
+    which_lines_only_markers=[1,2,3],
+    which_lines_dashed=[0])
 
 
 #=====================================================
@@ -139,15 +155,14 @@ qp.plotfxn(xdata=x,ydata=y,xlabel="$k$",ylabel="$E(k)$",
 sys.path.append("/Users/Julien/PHiLiP-Post-Processing/src");
 from plot_unsteady_integrated_turbulent_flow_quantities import get_dissipation_discrete
 
-unsteady_data = np.loadtxt("/Users/Julien/DHIT-Flow-Setup/dofs024_p5_velocity/turbulent_quantities.txt",skiprows=1)
-print(unsteady_data[3,0])
+unsteady_data = np.loadtxt("/Users/Julien/DHIT-Flow-Setup/dofs048_p5_velocity/turbulent_quantities.txt",skiprows=1)
 qp.plotfxn(xdata=unsteady_data[:,0],ydata=unsteady_data[:,1],xlabel="Time",ylabel="Integrated KE",
-    title_label="DHIT $24^{3}$DOFs, $p5$, cDG Ismail-Roe",
+    title_label="DHIT $48^{3}$DOFs, $p5$, cDG Ismail-Roe",
     fig_directory="figures",figure_filename="kinetic_energy_vs_time",log_axes=None,figure_filetype="pdf",
     # xlimits=[8e-1,3e2],ylimits=[1e-6,5e-1],
     markers=False,legend_on=False)
 qp.plotfxn(xdata=unsteady_data[:,0],ydata=get_dissipation_discrete(unsteady_data[:,0],unsteady_data[:,1]),xlabel="Time",ylabel="Dissipation Rate",
-    title_label="DHIT $24^{3}$DOFs, $p5$, cDG Ismail-Roe",
+    title_label="DHIT $48^{3}$DOFs, $p5$, cDG Ismail-Roe",
     fig_directory="figures",figure_filename="dissipation_rate_vs_time",log_axes=None,figure_filetype="pdf",
     # xlimits=[8e-1,3e2],
     ylimits=[-100,100],

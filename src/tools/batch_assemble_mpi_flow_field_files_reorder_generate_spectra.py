@@ -33,14 +33,13 @@ def add_to_batch(
     nElements_per_direction=int(file1.readline().rstrip('\n'))
     num_procs=int(file1.readline().rstrip('\n'))
     file1.close()
-    print(flow_case)
     # number of different files in path based on the flow case
     if(flow_case=="DHIT"):
-        # n_files_per_dir = 3
-        n_files_per_dir = 2 # TESTING
+        n_files_per_dir = 3
+        # n_files_per_dir = 2 # TESTING
         print("n_files_per_dir = %i" % n_files_per_dir)
     elif(flow_case=="TGV"):
-        n_files_per_dir = 2
+        n_files_per_dir = 1
 
     # generate the standard prefix files
     prefix_base = "velocity_vorticity-"
@@ -68,7 +67,7 @@ def batch_assemble_mpi_flow_field_files_reorder_generate_spectra_from_txt(input_
     file1 = open(input_file, 'r')
     paths = file1.readlines()
     for path in paths:
-        add_to_batch(file_path=path)
+        add_to_batch(file_path=path.rstrip('\n'))
     file1.close()
     # =========================================================
     # CALL THE BATCH FUNCTION
