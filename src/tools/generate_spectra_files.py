@@ -130,10 +130,7 @@ def batch_assemble_mpi_flow_field_files_reorder_generate_spectra(
         n_prefixes = n_different_files_in_path[i]
         for j in range(0,n_prefixes):
             # get prefix
-            if (n_prefixes>1):
-                prefix = file_prefix[i][j]
-            else:
-                prefix = file_prefix[i]
+            prefix = file_prefix[i][j]
             
             # get file path and prefix
             file_path_and_prefix = file_path[i] + prefix
