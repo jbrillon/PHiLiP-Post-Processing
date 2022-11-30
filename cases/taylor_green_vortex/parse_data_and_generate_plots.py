@@ -445,13 +445,6 @@ figure_filename_postfix = "dofs096_tgv"
 legend_inside_input=True
 #-----------------------------------------------------
 date_for_runs="2022-11-09_96dofs"
-subdirectories.append(date_for_runs+"/"+"viscous_TGV_ILES_cPlus_IR_two_point_flux_dofs096_p5_procs512")
-filenames.append("turbulent_quantities.txt")
-labels.append("$c_{+}$ NSFR (IR)")
-black_line_flag.append(False)
-dashed_line_flag.append(False)
-#-----------------------------------------------------
-date_for_runs="2022-11-09_96dofs"
 subdirectories.append(date_for_runs+"/"+"viscous_TGV_ILES_std_strong_DG_lax_friedrichs_dofs096_p5_procs512")
 filenames.append("turbulent_quantities.txt")
 labels.append("Strong DG")
@@ -461,7 +454,14 @@ dashed_line_flag.append(False)
 date_for_runs="2022-11-09_96dofs"
 subdirectories.append(date_for_runs+"/"+"viscous_TGV_ILES_cDG_IR_two_point_flux_dofs096_p5_procs512")
 filenames.append("turbulent_quantities.txt")
-labels.append("$c_{DG}$ NSFR (IR)")
+labels.append("$c_{DG}$ NSFR")
+black_line_flag.append(False)
+dashed_line_flag.append(False)
+#-----------------------------------------------------
+date_for_runs="2022-11-09_96dofs"
+subdirectories.append(date_for_runs+"/"+"viscous_TGV_ILES_cPlus_IR_two_point_flux_dofs096_p5_procs512")
+filenames.append("turbulent_quantities.txt")
+labels.append("$c_{+}$ NSFR")
 black_line_flag.append(False)
 dashed_line_flag.append(False)
 #-----------------------------------------------------
@@ -497,13 +497,6 @@ figure_filename_postfix = "dofs048_tgv"
 legend_inside_input=True
 #-----------------------------------------------------
 date_for_runs="2022-11-09_48dofs"
-subdirectories.append(date_for_runs+"/"+"viscous_TGV_ILES_cPlus_IR_two_point_flux_dofs048_p5_procs64")
-filenames.append("turbulent_quantities.txt")
-labels.append("$c_{+}$ NSFR (IR)")
-black_line_flag.append(False)
-dashed_line_flag.append(False)
-#-----------------------------------------------------
-date_for_runs="2022-11-09_48dofs"
 subdirectories.append(date_for_runs+"/"+"viscous_TGV_ILES_std_strong_DG_lax_friedrichs_dofs048_p5_procs64")
 filenames.append("turbulent_quantities.txt")
 labels.append("Strong DG")
@@ -513,7 +506,14 @@ dashed_line_flag.append(False)
 date_for_runs="2022-11-09_48dofs"
 subdirectories.append(date_for_runs+"/"+"viscous_TGV_ILES_cDG_IR_two_point_flux_dofs048_p5_procs64")
 filenames.append("turbulent_quantities.txt")
-labels.append("$c_{DG}$ NSFR (IR)")
+labels.append("$c_{DG}$ NSFR")
+black_line_flag.append(False)
+dashed_line_flag.append(False)
+#-----------------------------------------------------
+date_for_runs="2022-11-09_48dofs"
+subdirectories.append(date_for_runs+"/"+"viscous_TGV_ILES_cPlus_IR_two_point_flux_dofs048_p5_procs64")
+filenames.append("turbulent_quantities.txt")
+labels.append("$c_{+}$ NSFR")
 black_line_flag.append(False)
 dashed_line_flag.append(False)
 #-----------------------------------------------------
@@ -549,13 +549,6 @@ figure_filename_postfix = "dofs024_tgv"
 legend_inside_input=True
 #-----------------------------------------------------
 date_for_runs="2022-11-09_24dofs"
-subdirectories.append(date_for_runs+"/"+"viscous_TGV_ILES_cPlus_IR_two_point_flux_dofs024_p5_procs16")
-filenames.append("turbulent_quantities.txt")
-labels.append("$c_{+}$ NSFR (IR)")
-black_line_flag.append(False)
-dashed_line_flag.append(False)
-#-----------------------------------------------------
-date_for_runs="2022-11-09_24dofs"
 subdirectories.append(date_for_runs+"/"+"viscous_TGV_ILES_std_strong_DG_lax_friedrichs_dofs024_p5_procs16")
 filenames.append("turbulent_quantities.txt")
 labels.append("Strong DG")
@@ -566,6 +559,13 @@ date_for_runs="2022-11-09_24dofs"
 subdirectories.append(date_for_runs+"/"+"viscous_TGV_ILES_cDG_IR_two_point_flux_dofs024_p5_procs16")
 filenames.append("turbulent_quantities.txt")
 labels.append("$c_{DG}$ NSFR (IR)")
+black_line_flag.append(False)
+dashed_line_flag.append(False)
+#-----------------------------------------------------
+date_for_runs="2022-11-09_24dofs"
+subdirectories.append(date_for_runs+"/"+"viscous_TGV_ILES_cPlus_IR_two_point_flux_dofs024_p5_procs16")
+filenames.append("turbulent_quantities.txt")
+labels.append("$c_{+}$ NSFR")
 black_line_flag.append(False)
 dashed_line_flag.append(False)
 #-----------------------------------------------------

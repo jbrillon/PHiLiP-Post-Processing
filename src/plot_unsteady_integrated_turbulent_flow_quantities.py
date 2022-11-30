@@ -39,7 +39,7 @@ def plot_periodic_turbulence(
     transparent_legend_input=True,
     plot_kinetic_energy=True,
     plot_dissipation_rate=True,
-    plot_enstrophy=False,
+    plot_enstrophy=True,
     plot_dissipation_components=False):
     # plotting parameters store
     labels_store = []
@@ -76,6 +76,10 @@ def plot_periodic_turbulence(
         filename=data_directory_base+"/"+"dns"+"/"+"dissipation"+".txt"
         time, dissipation = np.loadtxt(filename,skiprows=0,dtype=np.float64,unpack=True)
         dissipation_store.append(dissipation)
+        # DNS - enstrophy
+        filename=path_to_reference_result+"/"+"enstrophy"+".txt"
+        time, enstrophy = np.loadtxt(filename,skiprows=1,delimiter=",",dtype=np.float64,unpack=True)
+        enstrophy_store.append(enstrophy)
         # black_line_flag.append(True) # inputs
         # dashed_line_flag.append(True) # inputs
         # if(black_line_flag[i_curve]):
@@ -129,7 +133,7 @@ def plot_periodic_turbulence(
                 legend_labels_tex=labels_store,
                 black_lines=False,
                 xlimits=[0,20.0],
-                ylimits=[0.01,0.14],
+                ylimits=[0.0,0.14],
                 log_axes=log_axes_input,
                 which_lines_black=which_lines_black_input,
                 which_lines_dashed=which_lines_dashed_input,
@@ -149,7 +153,6 @@ def plot_periodic_turbulence(
         filename=path_to_reference_result+"/"+"dissipation"+".txt"
         time, dissipation = np.loadtxt(filename,skiprows=0,dtype=np.float64,unpack=True)
         time_store[0] = time # replace it -- this is a hack
-        # dissipation_store.append(dissipation)
 
     if(plot_dissipation_rate):
         qp.plotfxn(xdata=time_store,
@@ -163,7 +166,38 @@ def plot_periodic_turbulence(
                 legend_labels_tex=labels_store,
                 black_lines=False,
                 xlimits=[0,20.0],
-                ylimits=[0.0,0.016],
+                ylimits=[0.0,0.014],
+                log_axes=log_axes_input,
+                which_lines_black=which_lines_black_input,
+                which_lines_dashed=which_lines_dashed_input,
+                legend_on=legend_on_input,
+                legend_inside=legend_inside_input,
+                nlegendcols=nlegendcols_input,
+                figure_size=(8,6),
+                transparent_legend=transparent_legend_input,
+                legend_border_on=False,
+                grid_lines_on=False,
+                fig_directory=figure_directory_base)
+
+    if(plot_reference_result):
+        # DNS - enstrophy
+        filename=path_to_reference_result+"/"+"enstrophy"+".txt"
+        time, enstrophy = np.loadtxt(filename,skiprows=1,delimiter=",",dtype=np.float64,unpack=True)
+        time_store[0] = time # replace it -- this is a hack
+
+    if(plot_enstrophy):
+        # entrophy
+        qp.plotfxn(xdata=time_store,
+                ydata=enstrophy_store,
+                ylabel='$\\zeta^{*}$',
+                xlabel='$t^{*}$',
+                figure_filename=figure_subdirectory+'enstrophy_vs_time'+figure_filename_postfix,
+                title_label=figure_title,
+                markers=False,
+                legend_labels_tex=labels_store,
+                black_lines=False,
+                ylimits=[0,11],
+                xlimits=[0,20],
                 log_axes=log_axes_input,
                 which_lines_black=which_lines_black_input,
                 which_lines_dashed=which_lines_dashed_input,
@@ -194,31 +228,6 @@ def plot_periodic_turbulence(
                 which_lines_dashed_input.append(i_curve)
             i_curve += 1
 
-    if(plot_enstrophy):
-        # entrophy
-        qp.plotfxn(xdata=time_store,
-                ydata=enstrophy_store,
-                ylabel='Nondimensional Enstrophy, $\\zeta^{*}$',
-                xlabel='Nondimensional Time, $t^{*}$',
-                figure_filename=figure_subdirectory+'enstrophy_vs_time'+figure_filename_postfix,
-                title_label=figure_title,
-                markers=False,
-                legend_labels_tex=labels_store,
-                black_lines=False,
-                ylimits=[0,11],
-                xlimits=[0,20],
-                log_axes=log_axes_input,
-                which_lines_black=which_lines_black_input,
-                which_lines_dashed=which_lines_dashed_input,
-                legend_on=legend_on_input,
-                legend_inside=legend_inside_input,
-                nlegendcols=nlegendcols_input,
-                figure_size=(8,6),
-                transparent_legend=transparent_legend_input,
-                legend_border_on=False,
-                grid_lines_on=False,
-                fig_directory=figure_directory_base)
-
     if(plot_dissipation_components):
         # vorticity component
         qp.plotfxn(xdata=time_store,
@@ -248,7 +257,7 @@ def plot_periodic_turbulence(
         qp.plotfxn(xdata=time_store,
                 ydata=eps_S_plus_eps_p_store,
                 ylabel='$\\varepsilon\\left(\\mathbf{S}^{d}\\right)$ + $\\epsilon\\left(p\\right)$',
-                xlabel='Nondimensional Time, $t^{*}=\\frac{tV_{\\infty}}{L}$',
+                xlabel='$t^{*}=\\frac{tV_{\\infty}}{L}$',
                 figure_filename=figure_subdirectory+'theoretical_dissipation_vs_time'+figure_filename_postfix,
                 title_label=figure_title,
                 markers=False,
@@ -272,7 +281,7 @@ def plot_periodic_turbulence(
         qp.plotfxn(xdata=time_store,
                 ydata=eps_S_store,
                 ylabel='$\\varepsilon\\left(\\mathbf{S}^{d}\\right)$',
-                xlabel='Nondimensional Time, $t^{*}$',
+                xlabel='$t^{*}$',
                 figure_filename=figure_subdirectory+'strain_rate_dissipation_vs_time'+figure_filename_postfix,
                 title_label=figure_title,
                 markers=False,
@@ -296,7 +305,7 @@ def plot_periodic_turbulence(
         qp.plotfxn(xdata=time_store,
                 ydata=eps_p_store,
                 ylabel='$\\varepsilon\\left(p\\right)$',
-                xlabel='Nondimensional Time, $t^{*}$',
+                xlabel='$t^{*}$',
                 figure_filename=figure_subdirectory+'pressure_dilatation_dissipation_vs_time'+figure_filename_postfix,
                 title_label=figure_title,
                 markers=False,
