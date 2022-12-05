@@ -38,11 +38,127 @@ def reinit_inputs():
     nlegendcols_input=1
     figure_subdirectory=""
     data_directory_base = "/Users/Julien/julien_phd/post_processing/data/taylor_green_vortex"
-    path_to_reference_result = data_directory_base+"/dns"
+    path_to_reference_result = "/Users/Julien/julien_phd/post_processing/data/taylor_green_vortex/dns"
     # figure_directory_base = "/Users/Julien/julien_phd/post_processing/figures/taylor_green_vortex"
     figure_directory_base = "figures"
 #=====================================================
 #-----------------------------------------------------
+
+#=====================================================
+# DOFs: 24^3, 48^3, 96^3 | c: cPlus
+#-----------------------------------------------------
+reinit_inputs()
+data_directory_base="/Users/Julien/NarvalFiles/2023_AIAA/2022-11-29_TGV_SPECTRA_48dofs/"
+date_for_runs="2022-12-05"
+figure_subdirectory=date_for_runs
+figure_title = "TGV at $Re_{\\infty}=1600$, $P5$, CFL $=0.1$, $c_{+}$ NSFR (IR)"
+figure_title = " "
+figure_filename_postfix = "48_cPlus_l2r_sgs_tgv"
+legend_inside_input=True
+#-----------------------------------------------------
+subdirectories.append("viscous_TGV_ILES_cPlus_IR_two_point_flux_dofs048_p5_procs64")
+filenames.append("turbulent_quantities.txt")
+labels.append("$c_{+}$ NSFR")
+black_line_flag.append(False)
+dashed_line_flag.append(False)
+#-----------------------------------------------------
+subdirectories.append("viscous_TGV_ILES_cPlus_IR_two_point_flux_with_l2roe_dissipation_dofs048_p5_procs64")
+filenames.append("turbulent_quantities.txt")
+labels.append("$c_{+}$ NSFR-L2R")
+black_line_flag.append(False)
+dashed_line_flag.append(False)
+#-----------------------------------------------------
+subdirectories.append("viscous_TGV_LES_smagorinsky_cPlus_IR_two_point_flux_dofs048_p5_procs64_filter36timeslarger")
+filenames.append("turbulent_quantities.txt")
+labels.append("$c_{+}$ NSFR-SGS")
+black_line_flag.append(False)
+dashed_line_flag.append(False)
+#-----------------------------------------------------
+subdirectories.append("viscous_TGV_LES_smagorinsky_cPlus_IR_two_point_flux_with_l2roe_dissipation_dofs048_p5_procs64_filter36timeslarger")
+filenames.append("turbulent_quantities.txt")
+labels.append("$c_{+}$ NSFR-L2R-SGS")
+black_line_flag.append(False)
+dashed_line_flag.append(False)
+#-----------------------------------------------------
+plot_periodic_turbulence(
+    figure_subdirectory,
+    subdirectories,
+    filenames,
+    labels,
+    black_line_flag,
+    dashed_line_flag,
+    figure_directory_base,
+    data_directory_base,
+    plot_reference_result,
+    path_to_reference_result,
+    figure_filename_postfix,
+    figure_title,
+    log_axes_input,
+    legend_on_input,
+    legend_inside_input,
+    nlegendcols_input,
+    transparent_legend_input=True,
+    tmax=10.0,
+    legend_fontSize_input=14)
+#-----------------------------------------------------
+#=====================================================
+# DOFs: 24^3, 48^3, 96^3 | c: cPlus
+#-----------------------------------------------------
+reinit_inputs()
+data_directory_base="/Users/Julien/NarvalFiles/2023_AIAA/2022-11-29_TGV_SPECTRA_48dofs/"
+date_for_runs="2022-12-05"
+figure_subdirectory=date_for_runs
+figure_title = "TGV at $Re_{\\infty}=1600$, $P5$, CFL $=0.1$, $c_{+}$ NSFR (IR)"
+figure_title = " "
+figure_filename_postfix = "48_cDG_l2r_sgs_tgv"
+legend_inside_input=True
+#-----------------------------------------------------
+subdirectories.append("viscous_TGV_ILES_cDG_IR_two_point_flux_dofs048_p5_procs64")
+filenames.append("turbulent_quantities.txt")
+labels.append("$c_{DG}$ NSFR")
+black_line_flag.append(False)
+dashed_line_flag.append(False)
+#-----------------------------------------------------
+subdirectories.append("viscous_TGV_ILES_cDG_IR_two_point_flux_with_l2roe_dissipation_dofs048_p5_procs64")
+filenames.append("turbulent_quantities.txt")
+labels.append("$c_{DG}$ NSFR-L2R")
+black_line_flag.append(False)
+dashed_line_flag.append(False)
+#-----------------------------------------------------
+subdirectories.append("viscous_TGV_LES_smagorinsky_cDG_IR_two_point_flux_dofs048_p5_procs64_filter36timeslarger")
+filenames.append("turbulent_quantities.txt")
+labels.append("$c_{DG}$ NSFR-SGS")
+black_line_flag.append(False)
+dashed_line_flag.append(False)
+#-----------------------------------------------------
+subdirectories.append("viscous_TGV_LES_smagorinsky_cDG_IR_two_point_flux_with_l2roe_dissipation_dofs048_p5_procs64_filter36timeslarger")
+filenames.append("turbulent_quantities.txt")
+labels.append("$c_{DG}$ NSFR-L2R-SGS")
+black_line_flag.append(False)
+dashed_line_flag.append(False)
+#-----------------------------------------------------
+plot_periodic_turbulence(
+    figure_subdirectory,
+    subdirectories,
+    filenames,
+    labels,
+    black_line_flag,
+    dashed_line_flag,
+    figure_directory_base,
+    data_directory_base,
+    plot_reference_result,
+    path_to_reference_result,
+    figure_filename_postfix,
+    figure_title,
+    log_axes_input,
+    legend_on_input,
+    legend_inside_input,
+    nlegendcols_input,
+    transparent_legend_input=True,
+    tmax=10.0,
+    legend_fontSize_input=14)
+#-----------------------------------------------------
+exit()
 
 # #=====================================================
 # # TP-Flux: KG | SGS: None | c: All | Riemann: none
@@ -441,6 +557,7 @@ reinit_inputs()
 date_for_runs="2022-11-11"
 figure_subdirectory=date_for_runs
 figure_title = "TGV at $Re_{\\infty}=1600$, $96^{3}$ DOFs ($P5$, $n_{el}=16^{3}$), CFL $=0.1$"
+figure_title = " "
 figure_filename_postfix = "dofs096_tgv"
 legend_inside_input=True
 #-----------------------------------------------------
@@ -482,7 +599,8 @@ plot_periodic_turbulence(
     legend_on_input,
     legend_inside_input,
     nlegendcols_input,
-    transparent_legend_input=True)
+    transparent_legend_input=True,
+    legend_fontSize_input=14)
 #-----------------------------------------------------
 #=====================================================
 
@@ -493,6 +611,7 @@ reinit_inputs()
 date_for_runs="2022-11-11"
 figure_subdirectory=date_for_runs
 figure_title = "TGV at $Re_{\\infty}=1600$, $48^{3}$ DOFs ($P5$, $n_{el}=8^{3}$), CFL $=0.1$"
+figure_title = " "
 figure_filename_postfix = "dofs048_tgv"
 legend_inside_input=True
 #-----------------------------------------------------
@@ -534,7 +653,8 @@ plot_periodic_turbulence(
     legend_on_input,
     legend_inside_input,
     nlegendcols_input,
-    transparent_legend_input=True)
+    transparent_legend_input=True,
+    legend_fontSize_input=14)
 #-----------------------------------------------------
 #=====================================================
 
@@ -545,6 +665,7 @@ reinit_inputs()
 date_for_runs="2022-11-11"
 figure_subdirectory=date_for_runs
 figure_title = "TGV at $Re_{\\infty}=1600$, $24^{3}$ DOFs ($P5$, $n_{el}=4^{3}$), CFL $=0.1$"
+figure_title = " "
 figure_filename_postfix = "dofs024_tgv"
 legend_inside_input=True
 #-----------------------------------------------------
@@ -558,7 +679,7 @@ dashed_line_flag.append(False)
 date_for_runs="2022-11-09_24dofs"
 subdirectories.append(date_for_runs+"/"+"viscous_TGV_ILES_cDG_IR_two_point_flux_dofs024_p5_procs16")
 filenames.append("turbulent_quantities.txt")
-labels.append("$c_{DG}$ NSFR (IR)")
+labels.append("$c_{DG}$ NSFR")
 black_line_flag.append(False)
 dashed_line_flag.append(False)
 #-----------------------------------------------------
@@ -586,7 +707,8 @@ plot_periodic_turbulence(
     legend_on_input,
     legend_inside_input,
     nlegendcols_input,
-    transparent_legend_input=True)
+    transparent_legend_input=True,
+    legend_fontSize_input=14)
 #-----------------------------------------------------
 #=====================================================
 
@@ -597,6 +719,7 @@ reinit_inputs()
 date_for_runs="2022-11-11"
 figure_subdirectory=date_for_runs
 figure_title = "TGV at $Re_{\\infty}=1600$, $P5$, CFL $=0.1$, $c_{DG}$ NSFR (IR)"
+figure_title = " "
 figure_filename_postfix = "all_dofs_cDG_tgv"
 legend_inside_input=True
 #-----------------------------------------------------
@@ -638,7 +761,8 @@ plot_periodic_turbulence(
     legend_on_input,
     legend_inside_input,
     nlegendcols_input,
-    transparent_legend_input=True)
+    transparent_legend_input=True,
+    legend_fontSize_input=14)
 #-----------------------------------------------------
 #=====================================================
 
@@ -649,6 +773,7 @@ reinit_inputs()
 date_for_runs="2022-11-11"
 figure_subdirectory=date_for_runs
 figure_title = "TGV at $Re_{\\infty}=1600$, $P5$, CFL $=0.1$, $c_{+}$ NSFR (IR)"
+figure_title = " "
 figure_filename_postfix = "all_dofs_cPlus_tgv"
 legend_inside_input=True
 #-----------------------------------------------------
@@ -690,6 +815,85 @@ plot_periodic_turbulence(
     legend_on_input,
     legend_inside_input,
     nlegendcols_input,
-    transparent_legend_input=True)
+    transparent_legend_input=True,
+    legend_fontSize_input=14)
+#-----------------------------------------------------
+#=====================================================
+# DOFs: 24^3, 48^3, 96^3 | c: cPlus
+#-----------------------------------------------------
+reinit_inputs()
+date_for_runs="2022-11-11"
+figure_subdirectory=date_for_runs
+figure_title = "TGV at $Re_{\\infty}=1600$, $P5$, CFL $=0.1$, $c_{+}$ NSFR (IR)"
+figure_title = " "
+figure_filename_postfix = "all_dofs_cDG_and_cPlus_tgv"
+legend_inside_input=True
+#-----------------------------------------------------
+date_for_runs="2022-11-09_24dofs"
+subdirectories.append(date_for_runs+"/"+"viscous_TGV_ILES_cDG_IR_two_point_flux_dofs024_p5_procs16")
+filenames.append("turbulent_quantities.txt")
+labels.append("$24^{3}$, $c_{DG}$ NSFR")
+black_line_flag.append(False)
+dashed_line_flag.append(False)
+#-----------------------------------------------------
+date_for_runs="2022-11-09_24dofs"
+subdirectories.append(date_for_runs+"/"+"viscous_TGV_ILES_cPlus_IR_two_point_flux_dofs024_p5_procs16")
+filenames.append("turbulent_quantities.txt")
+labels.append("$24^{3}$, $c_{+}$ NSFR")
+black_line_flag.append(False)
+dashed_line_flag.append(False)
+#-----------------------------------------------------
+date_for_runs="2022-11-09_48dofs"
+subdirectories.append(date_for_runs+"/"+"viscous_TGV_ILES_cDG_IR_two_point_flux_dofs048_p5_procs64")
+filenames.append("turbulent_quantities.txt")
+labels.append("$48^{3}$, $c_{DG}$ NSFR")
+black_line_flag.append(False)
+dashed_line_flag.append(False)
+#-----------------------------------------------------
+date_for_runs="2022-11-09_48dofs"
+subdirectories.append(date_for_runs+"/"+"viscous_TGV_ILES_cPlus_IR_two_point_flux_dofs048_p5_procs64")
+filenames.append("turbulent_quantities.txt")
+labels.append("$48^{3}$, $c_{+}$ NSFR")
+black_line_flag.append(False)
+dashed_line_flag.append(False)
+#-----------------------------------------------------
+date_for_runs="2022-11-09_96dofs"
+subdirectories.append(date_for_runs+"/"+"viscous_TGV_ILES_cDG_IR_two_point_flux_dofs096_p5_procs512")
+filenames.append("turbulent_quantities.txt")
+labels.append("$96^{3}$, $c_{DG}$ NSFR")
+black_line_flag.append(False)
+dashed_line_flag.append(False)
+#-----------------------------------------------------
+date_for_runs="2022-11-09_96dofs"
+subdirectories.append(date_for_runs+"/"+"viscous_TGV_ILES_cPlus_IR_two_point_flux_dofs096_p5_procs512")
+filenames.append("turbulent_quantities.txt")
+labels.append("$96^{3}$, $c_{+}$ NSFR")
+black_line_flag.append(False)
+dashed_line_flag.append(False)
+
+clr_input_store = ['tab:blue','tab:blue','tab:red','tab:red','tab:green','tab:green']#,'tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+mrkr_input_store = []
+lnstl_input_store = ['solid','dashed','solid','dashed','solid','dashed']
+#-----------------------------------------------------
+plot_periodic_turbulence(
+    figure_subdirectory,
+    subdirectories,
+    filenames,
+    labels,
+    black_line_flag,
+    dashed_line_flag,
+    figure_directory_base,
+    data_directory_base,
+    plot_reference_result,
+    path_to_reference_result,
+    figure_filename_postfix,
+    figure_title,
+    log_axes_input,
+    legend_on_input,
+    legend_inside_input,
+    nlegendcols_input,
+    transparent_legend_input=True,
+    clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
+    legend_fontSize_input=14)
 #-----------------------------------------------------
 #=====================================================
