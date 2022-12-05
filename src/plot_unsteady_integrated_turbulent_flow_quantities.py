@@ -40,7 +40,11 @@ def plot_periodic_turbulence(
     plot_kinetic_energy=True,
     plot_dissipation_rate=True,
     plot_enstrophy=True,
-    plot_dissipation_components=False):
+    plot_dissipation_components=False,
+    clr_input=[],mrkr_input=[],lnstl_input=[],
+    legend_fontSize_input=16,
+    tmax=20.0,
+    ):
     # plotting parameters store
     labels_store = []
     which_lines_black_input=[]
@@ -58,6 +62,9 @@ def plot_periodic_turbulence(
     eps_S_plus_eps_p_store = []
     eps_p_store = []
     eps_S_store = []
+    clr_input_store=[]
+    mrkr_input_store=[]
+    lnstl_input_store=[]
     i_curve = 0
     figure_subdirectory = figure_subdirectory+"/"
     # post-fix
@@ -71,9 +78,10 @@ def plot_periodic_turbulence(
         time_store.append(time)
         kinetic_energy_store.append(kinetic_energy)
         # labels_store.append("Spectral DNS (P4, $260^{3}$ DOFs)")
-        labels_store.append("DNS ($260^{3}$ DOFs)\n [Vermeire, 2014]")
+        # labels_store.append("DNS ($260^{3}$ DOFs)\n [Vermeire, 2014]")
+        labels_store.append("DNS [Vermeire]")
         # DNS - dissipation
-        filename=data_directory_base+"/"+"dns"+"/"+"dissipation"+".txt"
+        filename=path_to_reference_result+"/"+"dissipation"+".txt"
         time, dissipation = np.loadtxt(filename,skiprows=0,dtype=np.float64,unpack=True)
         dissipation_store.append(dissipation)
         # DNS - enstrophy
@@ -87,8 +95,14 @@ def plot_periodic_turbulence(
         # if(dashed_line_flag[i_curve]):
         #   which_lines_dashed_input.append(i_curve)
         which_lines_black_input.append(i_curve)
-        which_lines_dashed_input.append(i_curve)
+        # which_lines_dashed_input.append(i_curve) # uncomment for dashed DNS result
         i_curve += 1
+        if(clr_input!=[]):
+            clr_input_store.append('k')
+        if(mrkr_input!=[]):
+            mrkr_input_store.append('None')
+        if(lnstl_input!=[]):
+            lnstl_input_store.append('solid') # supported values are '-', '--', '-.', ':', 'None', ' ', '', 'solid', 'dashed', 'dashdot', 'dotted'
     # PHiLiP Results
     number_of_result_curves = len(filenames)
     for i in range(0,number_of_result_curves):
@@ -117,7 +131,13 @@ def plot_periodic_turbulence(
         eps_S_plus_eps_p_store.append(strain_rate_based_dissipation + pressure_dilatation_based_dissipation)
         eps_p_store.append(pressure_dilatation_based_dissipation)
         eps_S_store.append(strain_rate_based_dissipation)
-    
+        # store inputted line color, markers, and linestyles
+        if(clr_input!=[]):
+            clr_input_store.append(clr_input[i])
+        if(mrkr_input!=[]):
+            mrkr_input_store.append(mrkr_input[i])
+        if(lnstl_input!=[]):
+            lnstl_input_store.append(lnstl_input[i])
     #-----------------------------------------------------
     # evolution of kinetic energy:
     #-----------------------------------------------------
@@ -125,14 +145,14 @@ def plot_periodic_turbulence(
         # kolmogorov_slope = (-5.0/3.0)*time/10000.0+kinetic_energy[0]
         qp.plotfxn(xdata=time_store,#[time,time],
                 ydata=kinetic_energy_store,#[kinetic_energy,kolmogorov_slope],
-                ylabel='$K^{*}$',#=\\frac{1}{\\rho_{\\infty}V_{\\infty}^{2}|\\Omega|}\\int_{\\Omega}\\rho(u\\cdot\\u)d\\Omega$',
-                xlabel='$t^{*}$',
+                ylabel='Nondimensional Kinetic Energy, $K^{*}$',#=\\frac{1}{\\rho_{\\infty}V_{\\infty}^{2}|\\Omega|}\\int_{\\Omega}\\rho(u\\cdot\\u)d\\Omega$',
+                xlabel='Nondimensional Time, $t^{*}$',
                 figure_filename=figure_subdirectory+'kinetic_energy_vs_time'+figure_filename_postfix,
                 title_label=figure_title,
                 markers=False,
                 legend_labels_tex=labels_store,
                 black_lines=False,
-                xlimits=[0,20.0],
+                xlimits=[0,tmax],
                 ylimits=[0.0,0.14],
                 log_axes=log_axes_input,
                 which_lines_black=which_lines_black_input,
@@ -140,10 +160,12 @@ def plot_periodic_turbulence(
                 legend_on=legend_on_input,
                 legend_inside=legend_inside_input,
                 nlegendcols=nlegendcols_input,
-                figure_size=(8,6),
+                figure_size=(6,6),
                 transparent_legend=transparent_legend_input,
                 legend_border_on=False,
-                grid_lines_on=False)
+                grid_lines_on=False,
+                clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
+                legend_fontSize=legend_fontSize_input)
     
     #-----------------------------------------------------
     # evolution of kinetic energy dissipation rate:
@@ -158,26 +180,28 @@ def plot_periodic_turbulence(
         qp.plotfxn(xdata=time_store,
                 ydata=dissipation_store,
                 # ylabel='$\\varepsilon=-\\frac{\\mathrm{d} K^{*}}{\\mathrm{d}t^{*}}$',
-                ylabel='$\\varepsilon=-\\mathrm{d} K^{*}/\\mathrm{d}t^{*}$',
-                xlabel='$t^{*}$',
+                ylabel='Nondimensional Dissipation Rate, $\\varepsilon^{*}$',
+                xlabel='Nondimensional Time, $t^{*}$',
                 figure_filename=figure_subdirectory+'dissipation_vs_time'+figure_filename_postfix,
                 title_label=figure_title,
                 markers=False,
                 legend_labels_tex=labels_store,
                 black_lines=False,
-                xlimits=[0,20.0],
-                ylimits=[0.0,0.014],
+                xlimits=[0,tmax],
+                ylimits=[0.0,0.016],
                 log_axes=log_axes_input,
                 which_lines_black=which_lines_black_input,
                 which_lines_dashed=which_lines_dashed_input,
                 legend_on=legend_on_input,
                 legend_inside=legend_inside_input,
                 nlegendcols=nlegendcols_input,
-                figure_size=(8,6),
+                figure_size=(6,6),
                 transparent_legend=transparent_legend_input,
                 legend_border_on=False,
                 grid_lines_on=False,
-                fig_directory=figure_directory_base)
+                fig_directory=figure_directory_base,
+                clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
+                legend_fontSize=legend_fontSize_input)
 
     if(plot_reference_result):
         # DNS - enstrophy
@@ -189,26 +213,28 @@ def plot_periodic_turbulence(
         # entrophy
         qp.plotfxn(xdata=time_store,
                 ydata=enstrophy_store,
-                ylabel='$\\zeta^{*}$',
-                xlabel='$t^{*}$',
+                ylabel='Nondimensional Enstrophy, $\\zeta^{*}$',
+                xlabel='Nondimensional Time, $t^{*}$',
                 figure_filename=figure_subdirectory+'enstrophy_vs_time'+figure_filename_postfix,
                 title_label=figure_title,
                 markers=False,
                 legend_labels_tex=labels_store,
                 black_lines=False,
-                ylimits=[0,11],
-                xlimits=[0,20],
+                ylimits=[0,12],
+                xlimits=[0,tmax],
                 log_axes=log_axes_input,
                 which_lines_black=which_lines_black_input,
                 which_lines_dashed=which_lines_dashed_input,
                 legend_on=legend_on_input,
                 legend_inside=legend_inside_input,
                 nlegendcols=nlegendcols_input,
-                figure_size=(8,6),
+                figure_size=(6,6),
                 transparent_legend=transparent_legend_input,
                 legend_border_on=False,
                 grid_lines_on=False,
-                fig_directory=figure_directory_base)
+                fig_directory=figure_directory_base,
+                clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
+                legend_fontSize=legend_fontSize_input)
 
     # Remove the reference result for the lists
     if(plot_reference_result):
@@ -227,6 +253,12 @@ def plot_periodic_turbulence(
             if(dashed_line_flag[i]):
                 which_lines_dashed_input.append(i_curve)
             i_curve += 1
+        if(clr_input!=[]):
+            clr_input_store.pop(0)
+        if(mrkr_input!=[]):
+            mrkr_input_store.pop(0)
+        if(lnstl_input!=[]):
+            lnstl_input_store.pop(0)
 
     if(plot_dissipation_components):
         # vorticity component
@@ -239,7 +271,7 @@ def plot_periodic_turbulence(
                 markers=False,
                 legend_labels_tex=labels_store,
                 black_lines=False,
-                xlimits=[0,20.0],
+                xlimits=[0,tmax],
                 # ylimits=[0,0.008],
                 log_axes=log_axes_input,
                 which_lines_black=which_lines_black_input,
@@ -251,7 +283,9 @@ def plot_periodic_turbulence(
                 transparent_legend=transparent_legend_input,
                 legend_border_on=False,
                 grid_lines_on=False,
-                fig_directory=figure_directory_base)
+                fig_directory=figure_directory_base,
+                clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
+                legend_fontSize=legend_fontSize_input)
 
         # strain rate and pressure dilatation components
         qp.plotfxn(xdata=time_store,
@@ -263,7 +297,7 @@ def plot_periodic_turbulence(
                 markers=False,
                 legend_labels_tex=labels_store,
                 black_lines=False,
-                xlimits=[0,20.0],
+                xlimits=[0,tmax],
                 ylimits=[0,0.014],
                 log_axes=log_axes_input,
                 which_lines_black=which_lines_black_input,
@@ -275,8 +309,9 @@ def plot_periodic_turbulence(
                 transparent_legend=transparent_legend_input,
                 legend_border_on=False,
                 grid_lines_on=False,
-                fig_directory=figure_directory_base)
-
+                fig_directory=figure_directory_base,
+                clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
+                legend_fontSize=legend_fontSize_input)
         # strain rate component
         qp.plotfxn(xdata=time_store,
                 ydata=eps_S_store,
@@ -287,7 +322,7 @@ def plot_periodic_turbulence(
                 markers=False,
                 legend_labels_tex=labels_store,
                 black_lines=False,
-                xlimits=[0,20.0],
+                xlimits=[0,tmax],
                 ylimits=[0,0.014],
                 log_axes=log_axes_input,
                 which_lines_black=which_lines_black_input,
@@ -299,7 +334,9 @@ def plot_periodic_turbulence(
                 transparent_legend=transparent_legend_input,
                 legend_border_on=False,
                 grid_lines_on=False,
-                fig_directory=figure_directory_base)
+                fig_directory=figure_directory_base,
+                clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
+                legend_fontSize=legend_fontSize_input)
 
         # pressure dilatation component
         qp.plotfxn(xdata=time_store,
@@ -311,7 +348,7 @@ def plot_periodic_turbulence(
                 markers=False,
                 legend_labels_tex=labels_store,
                 black_lines=False,
-                xlimits=[0,20.0],
+                xlimits=[0,tmax],
                 ylimits=[-1e-1,1e-1],
                 log_axes=log_axes_input,
                 which_lines_black=which_lines_black_input,
@@ -323,4 +360,6 @@ def plot_periodic_turbulence(
                 transparent_legend=transparent_legend_input,
                 legend_border_on=False,
                 grid_lines_on=False,
-                fig_directory=figure_directory_base)
+                fig_directory=figure_directory_base,
+                clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
+                legend_fontSize=legend_fontSize_input)

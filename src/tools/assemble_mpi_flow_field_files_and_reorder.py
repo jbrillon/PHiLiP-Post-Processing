@@ -141,13 +141,12 @@ def assemble_mpi_flow_field_files_and_reorder(
                 for qy in range(0,nQuadPoints_per_element):
                     for ex in range(0,nElements_per_direction):
                         for qx in range(0,nQuadPoints_per_element):
-                            wstr = "%18.16e %18.16e %18.16e %18.16e %18.16e %18.16e\n" % \
-                                    (stored_data[ez,ey,ex,qz,qy,qx,0,0],stored_data[ez,ey,ex,qz,qy,qx,0,1],\
-                                        stored_data[ez,ey,ex,qz,qy,qx,0,2],stored_data[ez,ey,ex,qz,qy,qx,0,3],\
-                                        stored_data[ez,ey,ex,qz,qy,qx,0,4],stored_data[ez,ey,ex,qz,qy,qx,0,5])
-                            # wstr = "%18.16e %18.16e %18.16e \n" % \
-                            #         (stored_data[ez,ey,ex,qz,qy,qx,0,0],stored_data[ez,ey,ex,qz,qy,qx,0,1],\
-                            #             stored_data[ez,ey,ex,qz,qy,qx,0,2]) # coords only
+                            wstr = "%18.16e" % stored_data[ez,ey,ex,qz,qy,qx,0,0]
+                            file.write(wstr)
+                            for iValue in range(1,nValues_per_row):
+                                wstr = " %18.16e" % stored_data[ez,ey,ex,qz,qy,qx,0,iValue]
+                                file.write(wstr)
+                            wstr = "\n"
                             file.write(wstr)
     file.close()
     return

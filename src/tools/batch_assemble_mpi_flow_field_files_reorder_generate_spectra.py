@@ -35,11 +35,11 @@ def add_to_batch(
     file1.close()
     # number of different files in path based on the flow case
     if(flow_case=="DHIT"):
-        n_files_per_dir = 3
+        n_files_per_dir = 2
         # n_files_per_dir = 2 # TESTING
         print("n_files_per_dir = %i" % n_files_per_dir)
     elif(flow_case=="TGV"):
-        n_files_per_dir = 1
+        n_files_per_dir = 2
 
     # generate the standard prefix files
     prefix_base = "velocity_vorticity-"
