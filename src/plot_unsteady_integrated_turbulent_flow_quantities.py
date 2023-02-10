@@ -44,6 +44,7 @@ def plot_periodic_turbulence(
     clr_input=[],mrkr_input=[],lnstl_input=[],
     legend_fontSize_input=16,
     tmax=20.0,
+    solid_and_dashed_lines=False,
     ):
     # plotting parameters store
     labels_store = []
@@ -138,6 +139,12 @@ def plot_periodic_turbulence(
             mrkr_input_store.append(mrkr_input[i])
         if(lnstl_input!=[]):
             lnstl_input_store.append(lnstl_input[i])
+
+    # line parameters if doing solid and dashed lines
+    if(solid_and_dashed_lines):
+        clr_input_store = ['k','tab:blue','tab:blue','tab:red','tab:red','tab:green','tab:green']#,'tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+        mrkr_input_store = ['None','None','None','None','None','None','None']
+        lnstl_input_store = ['solid','dashed','solid','dashed','solid','dashed','solid']
     #-----------------------------------------------------
     # evolution of kinetic energy:
     #-----------------------------------------------------

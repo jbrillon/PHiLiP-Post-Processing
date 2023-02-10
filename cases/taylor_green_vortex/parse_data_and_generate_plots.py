@@ -45,6 +45,120 @@ def reinit_inputs():
 #-----------------------------------------------------
 
 #=====================================================
+# DOFs: 48^3 | NSFR-Roe-Smag.010
+#-----------------------------------------------------
+reinit_inputs()
+data_directory_base="/Users/Julien/NarvalFiles/2023_AIAA/"
+date_for_runs="."
+figure_subdirectory=date_for_runs
+figure_title = "TGV at $Re_{\\infty}=1600$, $P5$, CFL $=0.1$"
+figure_title = " "
+figure_filename_postfix = "96_cDG_vs_cPlus_vs_standard_DG"
+legend_inside_input=True
+#-----------------------------------------------------
+subdirectories.append("2022-11-29_TGV_SPECTRA_96dofs/viscous_TGV_ILES_std_strong_DG_lax_friedrichs_dofs096_p5_procs512_timed")
+filenames.append("turbulent_quantities.txt")
+labels.append("Strong DG with $n_{quad}=2(P+1)$")
+black_line_flag.append(False)
+dashed_line_flag.append(False)
+#-----------------------------------------------------
+subdirectories.append("2022-11-29_TGV_SPECTRA_96dofs/viscous_TGV_ILES_cDG_IR_two_point_flux_dofs096_p5_procs512_timed")
+filenames.append("turbulent_quantities.txt")
+labels.append("$c_{DG}$ NSFR")
+black_line_flag.append(False)
+dashed_line_flag.append(False)
+#-----------------------------------------------------
+subdirectories.append("2022-11-29_TGV_SPECTRA_96dofs/viscous_TGV_ILES_cPlus_IR_two_point_flux_dofs096_p5_procs512_timed")
+filenames.append("turbulent_quantities.txt")
+labels.append("$c_{+}$ NSFR")
+black_line_flag.append(False)
+dashed_line_flag.append(False)
+#-----------------------------------------------------
+plot_periodic_turbulence(
+    figure_subdirectory,
+    subdirectories,
+    filenames,
+    labels,
+    black_line_flag,
+    dashed_line_flag,
+    figure_directory_base,
+    data_directory_base,
+    plot_reference_result,
+    path_to_reference_result,
+    figure_filename_postfix,
+    figure_title,
+    log_axes_input,
+    legend_on_input,
+    legend_inside_input,
+    nlegendcols_input,
+    transparent_legend_input=True,
+    tmax=20.0,
+    legend_fontSize_input=14,
+    solid_and_dashed_lines=False)
+#-----------------------------------------------------
+exit()
+
+#=====================================================
+# DOFs: 48^3 | NSFR-Roe-Smag.010
+#-----------------------------------------------------
+reinit_inputs()
+data_directory_base="/Users/Julien/NarvalFiles/2023_AIAA/2022-11-29_TGV_SPECTRA_48dofs/"
+date_for_runs="."
+figure_subdirectory=date_for_runs
+figure_title = "TGV at $Re_{\\infty}=1600$, $P5$, CFL $=0.1$, $c_{+}$ NSFR (IR)"
+figure_title = " "
+figure_filename_postfix = "48_cPlus_vs_cDG_SGS_models_with_roe"
+legend_inside_input=True
+#-----------------------------------------------------
+subdirectories.append("viscous_TGV_ILES_cDG_IR_two_point_flux_dofs048_p5_procs64")
+filenames.append("turbulent_quantities.txt")
+labels.append("$c_{DG}$ NSFR")
+black_line_flag.append(False)
+dashed_line_flag.append(False)
+#-----------------------------------------------------
+subdirectories.append("viscous_TGV_LES_smagorinsky_cDG_IR_two_point_flux_with_roe_dissipation_dofs048_p5_procs64_filter36timeslarger")
+filenames.append("turbulent_quantities.txt")
+labels.append("$c_{DG}$ NSFR-Roe-Smag.010")
+black_line_flag.append(False)
+dashed_line_flag.append(False)
+#-----------------------------------------------------
+subdirectories.append("viscous_TGV_ILES_cPlus_IR_two_point_flux_dofs048_p5_procs64")
+filenames.append("turbulent_quantities.txt")
+labels.append("$c_{+}$ NSFR")
+black_line_flag.append(False)
+dashed_line_flag.append(False)
+#-----------------------------------------------------
+subdirectories.append("viscous_TGV_LES_smagorinsky_cPlus_IR_two_point_flux_with_roe_dissipation_dofs048_p5_procs64_filter36timeslarger")
+filenames.append("turbulent_quantities.txt")
+labels.append("$c_{+}$ NSFR-Roe-Smag.010")
+black_line_flag.append(False)
+dashed_line_flag.append(False)
+#-----------------------------------------------------
+plot_periodic_turbulence(
+    figure_subdirectory,
+    subdirectories,
+    filenames,
+    labels,
+    black_line_flag,
+    dashed_line_flag,
+    figure_directory_base,
+    data_directory_base,
+    plot_reference_result,
+    path_to_reference_result,
+    figure_filename_postfix,
+    figure_title,
+    log_axes_input,
+    legend_on_input,
+    legend_inside_input,
+    nlegendcols_input,
+    transparent_legend_input=True,
+    tmax=10.0,
+    legend_fontSize_input=14,
+    solid_and_dashed_lines=True)
+#-----------------------------------------------------
+exit()
+
+#=====================================================
 # DOFs: 24^3, 48^3, 96^3 | c: cPlus
 #-----------------------------------------------------
 reinit_inputs()
@@ -119,15 +233,15 @@ labels.append("$c_{DG}$ NSFR")
 black_line_flag.append(False)
 dashed_line_flag.append(False)
 #-----------------------------------------------------
-subdirectories.append("viscous_TGV_ILES_cDG_IR_two_point_flux_with_l2roe_dissipation_dofs048_p5_procs64")
-filenames.append("turbulent_quantities.txt")
-labels.append("$c_{DG}$ NSFR-L2R")
-black_line_flag.append(False)
-dashed_line_flag.append(False)
-#-----------------------------------------------------
 subdirectories.append("viscous_TGV_LES_smagorinsky_cDG_IR_two_point_flux_dofs048_p5_procs64_filter36timeslarger")
 filenames.append("turbulent_quantities.txt")
 labels.append("$c_{DG}$ NSFR-SGS")
+black_line_flag.append(False)
+dashed_line_flag.append(False)
+#-----------------------------------------------------
+subdirectories.append("viscous_TGV_ILES_cDG_IR_two_point_flux_with_l2roe_dissipation_dofs048_p5_procs64")
+filenames.append("turbulent_quantities.txt")
+labels.append("$c_{DG}$ NSFR-L2R")
 black_line_flag.append(False)
 dashed_line_flag.append(False)
 #-----------------------------------------------------
@@ -156,7 +270,8 @@ plot_periodic_turbulence(
     nlegendcols_input,
     transparent_legend_input=True,
     tmax=10.0,
-    legend_fontSize_input=14)
+    legend_fontSize_input=14,
+    solid_and_dashed_lines=False)
 #-----------------------------------------------------
 exit()
 
