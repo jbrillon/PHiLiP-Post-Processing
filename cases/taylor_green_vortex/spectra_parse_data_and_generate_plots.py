@@ -149,6 +149,17 @@ fig_dir_input="/Users/Julien/julien_phd/presentations/slides/wip_paper/20221205-
 
 # =====================================================
 batch_paths = [ \
+"/Users/Julien/NarvalFiles/2023_AIAA/2022-11-29_TGV_SPECTRA_96dofs_cDG_cPlus/viscous_TGV_LES_smagorinsky_cPlus_IR_two_point_flux_dofs096_p5_procs512/", \
+"/Users/Julien/NarvalFiles/2023_AIAA/2022-11-29_TGV_SPECTRA_96dofs/viscous_TGV_ILES_cPlus_IR_two_point_flux_dofs096_p5_procs512_uncollocated/", \
+]
+batch_labels = [ \
+"$c_{+}$ NSFR coll.", \
+"$c_{+}$ NSFR uncoll.", \
+]
+batch_plot_spectra(96,"cPlus_uncollocated",batch_paths,batch_labels,title_off=title_off_input,figure_directory=fig_dir_input)
+
+# =====================================================
+batch_paths = [ \
 "/Users/Julien/NarvalFiles/2023_AIAA/2022-11-29_TGV_SPECTRA_96dofs_cDG_cPlus/viscous_TGV_ILES_cDG_IR_two_point_flux_dofs096_p5_procs512/", \
 "/Users/Julien/NarvalFiles/2023_AIAA/2022-11-29_TGV_SPECTRA_96dofs/viscous_TGV_LES_smagorinsky_cDG_IR_two_point_flux_dofs096_p5_procs512/", \
 "/Users/Julien/NarvalFiles/2023_AIAA/2022-11-29_TGV_SPECTRA_96dofs/viscous_TGV_LES_smagorinsky_cDG_IR_two_point_flux_dofs096_p5_procs512_018MC/", \
