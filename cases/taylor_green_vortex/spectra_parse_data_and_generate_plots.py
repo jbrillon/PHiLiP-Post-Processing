@@ -168,8 +168,8 @@ batch_paths = [ \
 ]
 batch_labels = [ \
 "$c_{DG}$ NSFR", \
-"$c_{DG}$ NSFR-Smag.010", \
-"$c_{DG}$ NSFR-Smag.018", \
+"$c_{DG}$ NSFR-Smag. $C_{S}=0.10$", \
+"$c_{DG}$ NSFR-Smag. $C_{S}=0.18$", \
 "$c_{DG}$ NSFR-WALE", \
 "$c_{DG}$ NSFR-Vreman", \
 ]

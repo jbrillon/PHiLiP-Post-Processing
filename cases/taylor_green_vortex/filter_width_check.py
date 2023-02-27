@@ -20,7 +20,7 @@ min_spacing_between_nodes = spacing_between_nodes[0] # first two points are alwa
 jacobian_mapping_function = 0.5*cell_length
 filter_width_based_on_smallest_spacing = min_spacing_between_nodes*jacobian_mapping_function
 
-old_filter_width = cell_volume/(nquad*nquad*nquad)
+old_filter_width = cell_volume/(nquad) # used in AIAA 48^3 DOFs
 print("Old filter width: %1.6e" % old_filter_width)
 
 new_filter_width = cell_length/nquad
