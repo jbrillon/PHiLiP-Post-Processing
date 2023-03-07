@@ -9,3 +9,4 @@
 [submodule "submodules/TurboGenPY"]
 	path = submodules/TurboGenPY
 	url = https://github.com/jbrillon/TurboGenPY.git
+	branch = development
