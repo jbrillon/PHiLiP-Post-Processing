@@ -11,8 +11,9 @@ import scipy # SciPy: contains additional numerical routines to numpy
 #-----------------------------------------------------
 # Import personal libraries
 # from finite_difference_library import first_derivative, fd_non_uniform_grid
+import os;CURRENT_PATH = os.path.split(os.path.realpath(__file__))[0]+"/";
 import sys
-sys.path.append("../submodules/quickplotlib/lib"); import quickplotlib as qp
+sys.path.append(CURRENT_PATH+"../submodules/quickplotlib/lib"); import quickplotlib as qp
 #-----------------------------------------------------
 # define functions
 #-----------------------------------------------------

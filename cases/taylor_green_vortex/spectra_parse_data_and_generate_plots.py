@@ -2,13 +2,14 @@
 # Import public libraries
 import numpy as np # NumPy: contains basic numerical routines
 #-----------------------------------------------------
+import os;CURRENT_PATH = os.path.split(os.path.realpath(__file__))[0]+"/";
 import sys
 # load tools
-sys.path.append("../../src/tools");
+sys.path.append(CURRENT_PATH+"../../src/tools");
 from assemble_mpi_flow_field_files_and_reorder import assemble_mpi_flow_field_files_and_reorder
 from generate_spectra_files import generate_spectra_file_from_flow_field_file
 # load submodules
-sys.path.append("../../submodules/quickplotlib/lib"); import quickplotlib as qp
+sys.path.append(CURRENT_PATH+"../../submodules/quickplotlib/lib"); import quickplotlib as qp
 #-----------------------------------------------------
 #=====================================================
 # Helper functions

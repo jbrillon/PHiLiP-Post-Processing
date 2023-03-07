@@ -1,5 +1,6 @@
+import os;CURRENT_PATH = os.path.split(os.path.realpath(__file__))[0]+"/";
 import sys
-sys.path.append("../../src");
+sys.path.append(CURRENT_PATH+"../../src");
 from plot_unsteady_integrated_turbulent_flow_quantities import plot_periodic_turbulence
 #-----------------------------------------------------
 #=====================================================

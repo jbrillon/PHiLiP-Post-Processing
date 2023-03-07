@@ -1,4 +1,5 @@
-import sys; sys.path.append("../../src/tools");
+import os;CURRENT_PATH = os.path.split(os.path.realpath(__file__))[0]+"/";
+import sys; sys.path.append(CURRENT_PATH+"../../src/tools");
 from generate_spectra_files import batch_assemble_mpi_flow_field_files_reorder_generate_spectra
 
 #=====================================================

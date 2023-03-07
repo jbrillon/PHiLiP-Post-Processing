@@ -1,5 +1,6 @@
 import numpy as np
-import sys; sys.path.append("../../src/tools");
+import os;CURRENT_PATH = os.path.split(os.path.realpath(__file__))[0]+"/";
+import sys; sys.path.append(CURRENT_PATH+"../../src/tools");
 from get_DOF_vars import get_DOF_vars
 from assemble_mpi_files import assemble_mpi_files
 

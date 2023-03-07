@@ -2,13 +2,14 @@
 # Import public libraries
 import numpy as np # NumPy: contains basic numerical routines
 #-----------------------------------------------------
+import os;CURRENT_PATH = os.path.split(os.path.realpath(__file__))[0]+"/";
 import sys
 # load tools
-sys.path.append("../../src/tools");
+sys.path.append(CURRENT_PATH+"../../src/tools");
 from assemble_mpi_flow_field_files_and_reorder import assemble_mpi_flow_field_files_and_reorder
 # load submodules
-sys.path.append("../../submodules/Energy_Spectrum"); import Energy_Spectrum as es
-sys.path.append("../../submodules/TurboGenPY"); from tkespec import compute_tke_spectrum
+sys.path.append(CURRENT_PATH+"../../submodules/Energy_Spectrum"); import Energy_Spectrum as es
+sys.path.append(CURRENT_PATH+"../../submodules/TurboGenPY"); from tkespec import compute_tke_spectrum
 #-----------------------------------------------------
 #=====================================================
 # Helper functions
