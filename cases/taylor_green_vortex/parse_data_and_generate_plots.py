@@ -1,5 +1,5 @@
 import sys
-sys.path.append("/Users/Julien/PHiLiP-Post-Processing/src");
+sys.path.append("../../src");
 from plot_unsteady_integrated_turbulent_flow_quantities import plot_periodic_turbulence
 #-----------------------------------------------------
 #=====================================================

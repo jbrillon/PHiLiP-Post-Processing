@@ -4,11 +4,11 @@ import numpy as np # NumPy: contains basic numerical routines
 #-----------------------------------------------------
 import sys
 # load tools
-sys.path.append("/Users/Julien/PHiLiP-Post-Processing/src/tools");
+sys.path.append("../../src/tools");
 from assemble_mpi_flow_field_files_and_reorder import assemble_mpi_flow_field_files_and_reorder
 # load submodules
-sys.path.append("/Users/Julien/PHiLiP-Post-Processing/submodules/Energy_Spectrum"); import Energy_Spectrum as es
-sys.path.append("/Users/Julien/PHiLiP-Post-Processing/submodules/TurboGenPY"); from tkespec import compute_tke_spectrum
+sys.path.append("../../submodules/Energy_Spectrum"); import Energy_Spectrum as es
+sys.path.append("../../submodules/TurboGenPY"); from tkespec import compute_tke_spectrum
 #-----------------------------------------------------
 #=====================================================
 # Helper functions

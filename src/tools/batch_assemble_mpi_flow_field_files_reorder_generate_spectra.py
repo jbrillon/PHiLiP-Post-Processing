@@ -1,4 +1,4 @@
-import sys; sys.path.append("/Users/Julien/PHiLiP-Post-Processing/src/tools");
+import sys; sys.path.append("../../src/tools");
 from generate_spectra_files import batch_assemble_mpi_flow_field_files_reorder_generate_spectra
 
 #=====================================================

@@ -12,7 +12,7 @@ import scipy # SciPy: contains additional numerical routines to numpy
 # Import personal libraries
 # from finite_difference_library import first_derivative, fd_non_uniform_grid
 import sys
-sys.path.append("/Users/Julien/PHiLiP-Post-Processing/submodules/quickplotlib/lib"); import quickplotlib as qp
+sys.path.append("../submodules/quickplotlib/lib"); import quickplotlib as qp
 #-----------------------------------------------------
 # define functions
 #-----------------------------------------------------

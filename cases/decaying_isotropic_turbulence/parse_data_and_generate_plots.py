@@ -5,11 +5,11 @@ from scipy.interpolate import interp1d
 #-----------------------------------------------------
 import sys
 # load tools
-sys.path.append("/Users/Julien/PHiLiP-Post-Processing/src/tools");
+sys.path.append("../../src/tools");
 from assemble_mpi_flow_field_files_and_reorder import assemble_mpi_flow_field_files_and_reorder
 from generate_spectra_files import generate_spectra_file_from_flow_field_file
 # load submodules
-sys.path.append("/Users/Julien/PHiLiP-Post-Processing/submodules/quickplotlib/lib"); import quickplotlib as qp
+sys.path.append("../../submodules/quickplotlib/lib"); import quickplotlib as qp
 #-----------------------------------------------------
 #=====================================================
 # Global variables
