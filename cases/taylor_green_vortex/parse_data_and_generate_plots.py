@@ -501,13 +501,11 @@ if(True):
     black_line_flag.append(False)
     dashed_line_flag.append(False)
     #-----------------------------------------------------
-    # uncomment once results are in
-    # subdirectories.append("filter_width_stabilization/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-0_dofs096_p5_procs512")
-    # filenames.append("turbulent_quantities.txt")
-    # # labels.append("Strong DG, Roe, GL flux nodes,\n $n_{quad}=2(P+1)$")
-    # labels.append("Strong DG-Roe-GL")
-    # black_line_flag.append(False)
-    # dashed_line_flag.append(True)
+    subdirectories.append("filter_width_stabilization/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("Strong DG-Roe-GL")
+    black_line_flag.append(False)
+    dashed_line_flag.append(True)
     #-----------------------------------------------------
     subdirectories.append("filter_width_stabilization/viscous_TGV_LES_SMAG_MC-0.18_std_strong_DG_Roe_GL_OI-0_dofs096_p5_procs512")
     filenames.append("turbulent_quantities.txt")
@@ -515,9 +513,46 @@ if(True):
     black_line_flag.append(False)
     dashed_line_flag.append(False)
     #-----------------------------------------------------
+    subdirectories.append("filter_width_stabilization/viscous_TGV_LES_SMAG_MC-0.18_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("Strong DG-Roe-GL-OI-Smag. $C_{S}=0.18$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(True)
+    #-----------------------------------------------------
+    # subdirectories.append("flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GLL_OI-6_dofs096_p5_procs512")
+    # filenames.append("turbulent_quantities.txt")
+    # # labels.append("Strong DG, Roe, GL flux nodes,\n $n_{quad}=2(P+1)$")
+    # labels.append("Strong DG-Roe-GLL-OI")
+    # black_line_flag.append(False)
+    # dashed_line_flag.append(False)
+    # #-----------------------------------------------------
+    # subdirectories.append("filter_width_stabilization/viscous_TGV_ILES_std_strong_DG_Roe_GLL_OI-0_dofs096_p5_procs512")
+    # filenames.append("turbulent_quantities.txt")
+    # labels.append("Strong DG-Roe-GLL")
+    # black_line_flag.append(False)
+    # dashed_line_flag.append(True)
+    # #-----------------------------------------------------
+    # subdirectories.append("filter_width_stabilization/viscous_TGV_LES_SMAG_MC-0.18_std_strong_DG_Roe_GLL_OI-0_dofs096_p5_procs512")
+    # filenames.append("turbulent_quantities.txt")
+    # labels.append("Strong DG-Roe-GLL-Smag. $C_{S}=0.18$")
+    # black_line_flag.append(False)
+    # dashed_line_flag.append(False)
+    # #-----------------------------------------------------
+    # subdirectories.append("filter_width_stabilization/viscous_TGV_LES_SMAG_MC-0.18_std_strong_DG_Roe_GLL_OI-6_dofs096_p5_procs512")
+    # filenames.append("turbulent_quantities.txt")
+    # labels.append("Strong DG-Roe-GLL-OI-Smag. $C_{S}=0.18$")
+    # black_line_flag.append(False)
+    # dashed_line_flag.append(False)
+    #-----------------------------------------------------
     subdirectories.append("filter_width_stabilization/viscous_TGV_LES_SMAG_MC-0.18_std_strong_DG_Roe_GL_OI-0_dofs096_p5_procs512_filter_width_flad_and_gassner")
     filenames.append("turbulent_quantities.txt")
     labels.append("Strong DG-Roe-GL-Smag. $C_{S}=0.18$ $\\Delta=\\frac{V}{(P+1)^{3}}$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    subdirectories.append("filter_width_stabilization/viscous_TGV_LES_SMAG_MC-0.18_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512_filter_width_flad_and_gassner")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("Strong DG-Roe-GL-OI-Smag. $C_{S}=0.18$ $\\Delta=\\frac{V}{(P+1)^{3}}$")
     black_line_flag.append(False)
     dashed_line_flag.append(False)
     #-----------------------------------------------------
@@ -543,6 +578,193 @@ if(True):
         legend_fontSize_input=14,
         solid_and_dashed_lines=False)
     #-----------------------------------------------------
+
+#=====================================================
+# DOFs: 96^3 | Filter width stabilization
+#-----------------------------------------------------
+if(True):
+    reinit_inputs()
+    data_directory_base="/Users/Julien/NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="2023_JCP"
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_filename_postfix = "96_filter_width_stabilization_gll"
+    legend_inside_input=True
+    # #-----------------------------------------------------
+    # subdirectories.append("flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512")
+    # filenames.append("turbulent_quantities.txt")
+    # # labels.append("Strong DG, Roe, GL flux nodes,\n $n_{quad}=2(P+1)$")
+    # labels.append("Strong DG-Roe-GL-OI")
+    # black_line_flag.append(False)
+    # dashed_line_flag.append(False)
+    # #-----------------------------------------------------
+    # subdirectories.append("filter_width_stabilization/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-0_dofs096_p5_procs512")
+    # filenames.append("turbulent_quantities.txt")
+    # labels.append("Strong DG-Roe-GL")
+    # black_line_flag.append(False)
+    # dashed_line_flag.append(True)
+    # #-----------------------------------------------------
+    # subdirectories.append("filter_width_stabilization/viscous_TGV_LES_SMAG_MC-0.18_std_strong_DG_Roe_GL_OI-0_dofs096_p5_procs512")
+    # filenames.append("turbulent_quantities.txt")
+    # labels.append("Strong DG-Roe-GL-Smag. $C_{S}=0.18$")
+    # black_line_flag.append(False)
+    # dashed_line_flag.append(False)
+    # #-----------------------------------------------------
+    # subdirectories.append("filter_width_stabilization/viscous_TGV_LES_SMAG_MC-0.18_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512")
+    # filenames.append("turbulent_quantities.txt")
+    # labels.append("Strong DG-Roe-GL-OI-Smag. $C_{S}=0.18$")
+    # black_line_flag.append(False)
+    # dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    subdirectories.append("flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GLL_OI-6_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    # labels.append("Strong DG, Roe, GL flux nodes,\n $n_{quad}=2(P+1)$")
+    labels.append("Strong DG-Roe-GLL-OI")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    subdirectories.append("filter_width_stabilization/viscous_TGV_ILES_std_strong_DG_Roe_GLL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("Strong DG-Roe-GLL")
+    black_line_flag.append(False)
+    dashed_line_flag.append(True)
+    #-----------------------------------------------------
+    subdirectories.append("filter_width_stabilization/viscous_TGV_LES_SMAG_MC-0.18_std_strong_DG_Roe_GLL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("Strong DG-Roe-GLL-Smag. $C_{S}=0.18$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    # #-----------------------------------------------------
+    # subdirectories.append("filter_width_stabilization/viscous_TGV_LES_SMAG_MC-0.18_std_strong_DG_Roe_GLL_OI-6_dofs096_p5_procs512")
+    # filenames.append("turbulent_quantities.txt")
+    # labels.append("Strong DG-Roe-GLL-OI-Smag. $C_{S}=0.18$")
+    # black_line_flag.append(False)
+    # dashed_line_flag.append(False)
+    # #-----------------------------------------------------
+    # subdirectories.append("filter_width_stabilization/viscous_TGV_LES_SMAG_MC-0.18_std_strong_DG_Roe_GL_OI-0_dofs096_p5_procs512_filter_width_flad_and_gassner")
+    # filenames.append("turbulent_quantities.txt")
+    # labels.append("Strong DG-Roe-GL-Smag. $C_{S}=0.18$ $\\Delta=\\frac{V}{(P+1)^{3}}$")
+    # black_line_flag.append(False)
+    # dashed_line_flag.append(False)
+    # #-----------------------------------------------------
+    # subdirectories.append("filter_width_stabilization/viscous_TGV_LES_SMAG_MC-0.18_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512_filter_width_flad_and_gassner")
+    # filenames.append("turbulent_quantities.txt")
+    # labels.append("Strong DG-Roe-GL-OI-Smag. $C_{S}=0.18$ $\\Delta=\\frac{V}{(P+1)^{3}}$")
+    # black_line_flag.append(False)
+    # dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    plot_periodic_turbulence(
+        figure_subdirectory,
+        subdirectories,
+        filenames,
+        labels,
+        black_line_flag,
+        dashed_line_flag,
+        figure_directory_base,
+        data_directory_base,
+        plot_reference_result,
+        path_to_reference_result,
+        figure_filename_postfix,
+        figure_title,
+        log_axes_input,
+        legend_on_input,
+        legend_inside_input,
+        nlegendcols_input,
+        transparent_legend_input=True,
+        tmax=20.0,
+        legend_fontSize_input=14,
+        solid_and_dashed_lines=False)
+    #-----------------------------------------------------
+
+# #=====================================================
+# # DOFs: 96^3 | Filter width stabilization
+# #-----------------------------------------------------
+# if(True):
+#     reinit_inputs()
+#     data_directory_base="/Users/Julien/NarvalFiles/2023_JCP/"
+#     date_for_runs="."
+#     figure_subdirectory="2023_JCP"
+#     figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+#     figure_filename_postfix = "96_filter_width_stabilization"
+#     legend_inside_input=True
+#     #-----------------------------------------------------
+#     subdirectories.append("flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512")
+#     filenames.append("turbulent_quantities.txt")
+#     # labels.append("Strong DG, Roe, GL flux nodes,\n $n_{quad}=2(P+1)$")
+#     labels.append("Strong DG-Roe-GL-OI")
+#     black_line_flag.append(False)
+#     dashed_line_flag.append(False)
+#     #-----------------------------------------------------
+#     subdirectories.append("filter_width_stabilization/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-0_dofs096_p5_procs512")
+#     filenames.append("turbulent_quantities.txt")
+#     labels.append("Strong DG-Roe-GL")
+#     black_line_flag.append(False)
+#     dashed_line_flag.append(True)
+#     #-----------------------------------------------------
+#     subdirectories.append("filter_width_stabilization/viscous_TGV_LES_SMAG_MC-0.18_std_strong_DG_Roe_GL_OI-0_dofs096_p5_procs512")
+#     filenames.append("turbulent_quantities.txt")
+#     labels.append("Strong DG-Roe-GL-Smag. $C_{S}=0.18$")
+#     black_line_flag.append(False)
+#     dashed_line_flag.append(False)
+#     #-----------------------------------------------------
+#     subdirectories.append("filter_width_stabilization/viscous_TGV_ILES_std_strong_DG_Roe_GLL_OI-0_dofs096_p5_procs512")
+#     filenames.append("turbulent_quantities.txt")
+#     labels.append("Strong DG-Roe-GLL")
+#     black_line_flag.append(False)
+#     dashed_line_flag.append(True)
+#     #-----------------------------------------------------
+#     subdirectories.append("filter_width_stabilization/viscous_TGV_LES_SMAG_MC-0.18_std_strong_DG_Roe_GLL_OI-0_dofs096_p5_procs512")
+#     filenames.append("turbulent_quantities.txt")
+#     labels.append("Strong DG-Roe-GLL-Smag. $C_{S}=0.18$")
+#     black_line_flag.append(False)
+#     dashed_line_flag.append(False)
+#     #-----------------------------------------------------
+#     subdirectories.append("filter_width_stabilization/viscous_TGV_LES_SMAG_MC-0.18_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512")
+#     filenames.append("turbulent_quantities.txt")
+#     labels.append("Strong DG-Roe-GL-OI-Smag. $C_{S}=0.18$")
+#     black_line_flag.append(False)
+#     dashed_line_flag.append(False)
+#     #-----------------------------------------------------
+#     subdirectories.append("filter_width_stabilization/viscous_TGV_LES_SMAG_MC-0.18_std_strong_DG_Roe_GLL_OI-6_dofs096_p5_procs512")
+#     filenames.append("turbulent_quantities.txt")
+#     labels.append("Strong DG-Roe-GLL-OI-Smag. $C_{S}=0.18$")
+#     black_line_flag.append(False)
+#     dashed_line_flag.append(False)
+#     #-----------------------------------------------------
+#     subdirectories.append("filter_width_stabilization/viscous_TGV_LES_SMAG_MC-0.18_std_strong_DG_Roe_GL_OI-0_dofs096_p5_procs512_filter_width_flad_and_gassner")
+#     filenames.append("turbulent_quantities.txt")
+#     labels.append("Strong DG-Roe-GL-Smag. $C_{S}=0.18$ $\\Delta=\\frac{V}{(P+1)^{3}}$")
+#     black_line_flag.append(False)
+#     dashed_line_flag.append(False)
+#     #-----------------------------------------------------
+#     subdirectories.append("filter_width_stabilization/viscous_TGV_LES_SMAG_MC-0.18_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512_filter_width_flad_and_gassner")
+#     filenames.append("turbulent_quantities.txt")
+#     labels.append("Strong DG-Roe-GL-OI-Smag. $C_{S}=0.18$ $\\Delta=\\frac{V}{(P+1)^{3}}$")
+#     black_line_flag.append(False)
+#     dashed_line_flag.append(False)
+#     #-----------------------------------------------------
+#     plot_periodic_turbulence(
+#         figure_subdirectory,
+#         subdirectories,
+#         filenames,
+#         labels,
+#         black_line_flag,
+#         dashed_line_flag,
+#         figure_directory_base,
+#         data_directory_base,
+#         plot_reference_result,
+#         path_to_reference_result,
+#         figure_filename_postfix,
+#         figure_title,
+#         log_axes_input,
+#         legend_on_input,
+#         legend_inside_input,
+#         nlegendcols_input,
+#         transparent_legend_input=True,
+#         tmax=20.0,
+#         legend_fontSize_input=14,
+#         solid_and_dashed_lines=False)
+#     #-----------------------------------------------------
 
 #=====================================================
 # DOFs: 96^3 | NSFR Correction Parameter
@@ -573,12 +795,12 @@ if(True):
     labels.append("$c_{HU}$ NSFR.IR-GL")
     black_line_flag.append(False)
     dashed_line_flag.append(True)
-    # #-----------------------------------------------------
-    # subdirectories.append("correction_parameter/viscous_TGV_ILES_NSFR_cSD_IR_2PF_GL_OI-0_dofs096_p5_procs512")
-    # filenames.append("turbulent_quantities.txt")
-    # labels.append("$c_{SD}$ NSFR.IR-GL")
-    # black_line_flag.append(False)
-    # dashed_line_flag.append(True)
+    #-----------------------------------------------------
+    subdirectories.append("correction_parameter/viscous_TGV_ILES_NSFR_cSD_IR_2PF_GL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{SD}$ NSFR.IR-GL")
+    black_line_flag.append(False)
+    dashed_line_flag.append(True)
     #-----------------------------------------------------
     plot_periodic_turbulence(
         figure_subdirectory,
@@ -745,17 +967,35 @@ if(True):
     black_line_flag.append(False)
     dashed_line_flag.append(False)
     #-----------------------------------------------------
+    subdirectories.append("robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-0_dofs048_p5_procs64")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$48^{3}$ DOFs, Strong DG-Roe-GL")
+    black_line_flag.append(False)
+    dashed_line_flag.append(True)
+    #-----------------------------------------------------
     subdirectories.append("robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs024_p5_procs16")
     filenames.append("turbulent_quantities.txt")
     labels.append("$24^{3}$ DOFs, Strong DG-Roe-GL-OI")
     black_line_flag.append(False)
     dashed_line_flag.append(False)
     #-----------------------------------------------------
+    subdirectories.append("robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-0_dofs024_p5_procs16")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$24^{3}$ DOFs, Strong DG-Roe-GL")
+    black_line_flag.append(False)
+    dashed_line_flag.append(True)
+    #-----------------------------------------------------
     subdirectories.append("robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs012_p5_procs16")
     filenames.append("turbulent_quantities.txt")
     labels.append("$12^{3}$ DOFs, Strong DG-Roe-GL-OI")
     black_line_flag.append(False)
     dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    subdirectories.append("robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-0_dofs012_p5_procs16")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$12^{3}$ DOFs, Strong DG-Roe-GL")
+    black_line_flag.append(False)
+    dashed_line_flag.append(True)
     #-----------------------------------------------------
     plot_periodic_turbulence(
         figure_subdirectory,

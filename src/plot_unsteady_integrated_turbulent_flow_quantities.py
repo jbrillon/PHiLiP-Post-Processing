@@ -169,11 +169,13 @@ def plot_periodic_turbulence(
                 legend_inside=legend_inside_input,
                 nlegendcols=nlegendcols_input,
                 figure_size=(6,6),
-                transparent_legend=transparent_legend_input,
+                transparent_legend=True,#transparent_legend_input,
                 legend_border_on=False,
                 grid_lines_on=False,
                 clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
-                legend_fontSize=legend_fontSize_input)
+                legend_fontSize=legend_fontSize_input,
+                legend_location="upper left",
+                legend_anchor=[0.025,0.3])
     
     #-----------------------------------------------------
     # evolution of kinetic energy dissipation rate:
@@ -196,7 +198,7 @@ def plot_periodic_turbulence(
                 legend_labels_tex=labels_store,
                 black_lines=False,
                 xlimits=[0,tmax],
-                ylimits=[0.0,0.016],
+                ylimits=[0.0,0.018],
                 log_axes=log_axes_input,
                 which_lines_black=which_lines_black_input,
                 which_lines_dashed=which_lines_dashed_input,
@@ -209,7 +211,8 @@ def plot_periodic_turbulence(
                 grid_lines_on=False,
                 fig_directory=figure_directory_base,
                 clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
-                legend_fontSize=legend_fontSize_input)
+                legend_fontSize=legend_fontSize_input,
+                legend_location="upper left")
 
     if(plot_reference_result):
         # DNS - enstrophy
@@ -228,7 +231,7 @@ def plot_periodic_turbulence(
                 markers=False,
                 legend_labels_tex=labels_store,
                 black_lines=False,
-                ylimits=[0,12],
+                ylimits=[0,14],
                 xlimits=[0,tmax],
                 log_axes=log_axes_input,
                 which_lines_black=which_lines_black_input,
@@ -242,7 +245,8 @@ def plot_periodic_turbulence(
                 grid_lines_on=False,
                 fig_directory=figure_directory_base,
                 clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
-                legend_fontSize=legend_fontSize_input)
+                legend_fontSize=legend_fontSize_input,
+                legend_location="upper left")
 
     # Remove the reference result for the lists
     if(plot_reference_result):
