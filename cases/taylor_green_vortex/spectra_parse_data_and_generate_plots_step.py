@@ -167,7 +167,128 @@ batch_paths = [ \
 "/Users/Julien/NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
 ]
 batch_labels = [ \
+"$c_{DG}$ NSFR.IR-GL", \
+]
+batch_plot_spectra(96,"sgs_models_gl_0",batch_paths,batch_labels,title_off=title_off_input,figure_directory=fig_dir_input,legend_fontSize_input=11)
+# =====================================================
+batch_paths = [ \
+"/Users/Julien/NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+"/Users/Julien/NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+]
+batch_labels = [ \
+"$c_{DG}$ NSFR.IR-GL", \
+"$c_{DG}$ NSFR.IR-GL-Smag. $C_{S}=0.10$", \
+]
+batch_plot_spectra(96,"sgs_models_gl_1",batch_paths,batch_labels,title_off=title_off_input,figure_directory=fig_dir_input,legend_fontSize_input=11)
+# =====================================================
+batch_paths = [ \
+"/Users/Julien/NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+"/Users/Julien/NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+"/Users/Julien/NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.18_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+]
+batch_labels = [ \
+"$c_{DG}$ NSFR.IR-GL", \
+"$c_{DG}$ NSFR.IR-GL-Smag. $C_{S}=0.10$", \
+"$c_{DG}$ NSFR.IR-GL-Smag. $C_{S}=0.18$", \
+]
+batch_plot_spectra(96,"sgs_models_gl_2",batch_paths,batch_labels,title_off=title_off_input,figure_directory=fig_dir_input,legend_fontSize_input=11)
+# =====================================================
+batch_paths = [ \
+"/Users/Julien/NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+"/Users/Julien/NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+"/Users/Julien/NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.18_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+"/Users/Julien/NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_WALE_MC-0.50_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+]
+batch_labels = [ \
+"$c_{DG}$ NSFR.IR-GL", \
+"$c_{DG}$ NSFR.IR-GL-Smag. $C_{S}=0.10$", \
+"$c_{DG}$ NSFR.IR-GL-Smag. $C_{S}=0.18$", \
+"$c_{DG}$ NSFR.IR-GL-WALE $C_{W}=0.50$", \
+]
+batch_plot_spectra(96,"sgs_models_gl_3",batch_paths,batch_labels,title_off=title_off_input,figure_directory=fig_dir_input,legend_fontSize_input=11)
+# =====================================================
+batch_paths = [ \
+"/Users/Julien/NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+"/Users/Julien/NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+"/Users/Julien/NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.18_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+"/Users/Julien/NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_WALE_MC-0.50_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+"/Users/Julien/NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_VRMN_MC-0.081_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+]
+batch_labels = [ \
+"$c_{DG}$ NSFR.IR-GL", \
+"$c_{DG}$ NSFR.IR-GL-Smag. $C_{S}=0.10$", \
+"$c_{DG}$ NSFR.IR-GL-Smag. $C_{S}=0.18$", \
+"$c_{DG}$ NSFR.IR-GL-WALE $C_{W}=0.50$", \
+"$c_{DG}$ NSFR.IR-GL-Vreman $C_{V}=0.081$", \
+]
+batch_plot_spectra(96,"sgs_models_gl_4",batch_paths,batch_labels,title_off=title_off_input,figure_directory=fig_dir_input,legend_fontSize_input=11)
+# =====================================================
+batch_paths = [ \
+"/Users/Julien/NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512/", \
+]
+batch_labels = [ \
 "$c_{DG}$ NSFR.IR-GLL", \
+]
+batch_plot_spectra(96,"sgs_models_gll_0",batch_paths,batch_labels,title_off=title_off_input,figure_directory=fig_dir_input,legend_fontSize_input=11)
+# =====================================================
+batch_paths = [ \
+"/Users/Julien/NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512/", \
+"/Users/Julien/NarvalFiles/2023_JCP/sgs_model_GLL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512/", \
+]
+batch_labels = [ \
+"$c_{DG}$ NSFR.IR-GLL", \
+"$c_{DG}$ NSFR.IR-GLL-Smag. $C_{S}=0.10$", \
+]
+batch_plot_spectra(96,"sgs_models_gll_1",batch_paths,batch_labels,title_off=title_off_input,figure_directory=fig_dir_input,legend_fontSize_input=11)
+# =====================================================
+batch_paths = [ \
+"/Users/Julien/NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512/", \
+"/Users/Julien/NarvalFiles/2023_JCP/sgs_model_GLL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512/", \
+"/Users/Julien/NarvalFiles/2023_JCP/sgs_model_GLL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.18_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512/", \
+]
+batch_labels = [ \
+"$c_{DG}$ NSFR.IR-GLL", \
+"$c_{DG}$ NSFR.IR-GLL-Smag. $C_{S}=0.10$", \
+"$c_{DG}$ NSFR.IR-GLL-Smag. $C_{S}=0.18$", \
+]
+batch_plot_spectra(96,"sgs_models_gll_2",batch_paths,batch_labels,title_off=title_off_input,figure_directory=fig_dir_input,legend_fontSize_input=11)
+# =====================================================
+batch_paths = [ \
+"/Users/Julien/NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512/", \
+"/Users/Julien/NarvalFiles/2023_JCP/sgs_model_GLL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512/", \
+"/Users/Julien/NarvalFiles/2023_JCP/sgs_model_GLL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.18_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512/", \
+"/Users/Julien/NarvalFiles/2023_JCP/sgs_model_GLL_flux_nodes/viscous_TGV_LES_WALE_MC-0.50_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512/", \
+]
+batch_labels = [ \
+"$c_{DG}$ NSFR.IR-GLL", \
+"$c_{DG}$ NSFR.IR-GLL-Smag. $C_{S}=0.10$", \
+"$c_{DG}$ NSFR.IR-GLL-Smag. $C_{S}=0.18$", \
+"$c_{DG}$ NSFR.IR-GLL-WALE $C_{W}=0.50$", \
+]
+batch_plot_spectra(96,"sgs_models_gll_3",batch_paths,batch_labels,title_off=title_off_input,figure_directory=fig_dir_input,legend_fontSize_input=11)
+# =====================================================
+batch_paths = [ \
+"/Users/Julien/NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512/", \
+"/Users/Julien/NarvalFiles/2023_JCP/sgs_model_GLL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512/", \
+"/Users/Julien/NarvalFiles/2023_JCP/sgs_model_GLL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.18_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512/", \
+"/Users/Julien/NarvalFiles/2023_JCP/sgs_model_GLL_flux_nodes/viscous_TGV_LES_WALE_MC-0.50_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512/", \
+"/Users/Julien/NarvalFiles/2023_JCP/sgs_model_GLL_flux_nodes/viscous_TGV_LES_VRMN_MC-0.081_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512/", \
+]
+batch_labels = [ \
+"$c_{DG}$ NSFR.IR-GLL", \
+"$c_{DG}$ NSFR.IR-GLL-Smag. $C_{S}=0.10$", \
+"$c_{DG}$ NSFR.IR-GLL-Smag. $C_{S}=0.18$", \
+"$c_{DG}$ NSFR.IR-GLL-WALE $C_{W}=0.50$", \
+"$c_{DG}$ NSFR.IR-GLL-Vreman $C_{V}=0.081$", \
+]
+batch_plot_spectra(96,"sgs_models_gll_4",batch_paths,batch_labels,title_off=title_off_input,figure_directory=fig_dir_input,legend_fontSize_input=11)
+exit()
+# =====================================================
+batch_paths = [ \
+"/Users/Julien/NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+]
+batch_labels = [ \
+"$c_{DG}$ NSFR.IR-GL", \
 ]
 batch_plot_spectra(96,"baseline_scheme_0",batch_paths,batch_labels,title_off=title_off_input,figure_directory=fig_dir_input,legend_fontSize_input=12)
 # =====================================================
@@ -323,36 +444,36 @@ batch_plot_spectra(96,"correction_parameter_0",batch_paths,batch_labels,title_of
 # =====================================================
 batch_paths = [ \
 "/Users/Julien/NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
-"/Users/Julien/NarvalFiles/2023_JCP/correction_parameter/viscous_TGV_ILES_NSFR_cHU_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+"/Users/Julien/NarvalFiles/2023_JCP/correction_parameter/viscous_TGV_ILES_NSFR_cPlus_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
 ]
 batch_labels = [ \
 "$c_{DG}$ NSFR.IR-GL", \
-"$c_{HU}$ NSFR.IR-GL", \
+"$c_{+}$ NSFR.IR-GL", \
 ]
 batch_plot_spectra(96,"correction_parameter_1",batch_paths,batch_labels,title_off=title_off_input,figure_directory=fig_dir_input,legend_fontSize_input=12,lnstl_input_store=['solid','solid','dashed','dashed','dashed'])
 # =====================================================
 batch_paths = [ \
 "/Users/Julien/NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
-"/Users/Julien/NarvalFiles/2023_JCP/correction_parameter/viscous_TGV_ILES_NSFR_cHU_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
 "/Users/Julien/NarvalFiles/2023_JCP/correction_parameter/viscous_TGV_ILES_NSFR_cPlus_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+"/Users/Julien/NarvalFiles/2023_JCP/correction_parameter/viscous_TGV_ILES_NSFR_cHU_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
 ]
 batch_labels = [ \
 "$c_{DG}$ NSFR.IR-GL", \
-"$c_{HU}$ NSFR.IR-GL", \
 "$c_{+}$ NSFR.IR-GL", \
+"$c_{HU}$ NSFR.IR-GL", \
 ]
 batch_plot_spectra(96,"correction_parameter_2",batch_paths,batch_labels,title_off=title_off_input,figure_directory=fig_dir_input,legend_fontSize_input=12,lnstl_input_store=['solid','solid','dashed','dashed','dashed'])
 # =====================================================
 batch_paths = [ \
 "/Users/Julien/NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
-"/Users/Julien/NarvalFiles/2023_JCP/correction_parameter/viscous_TGV_ILES_NSFR_cHU_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
 "/Users/Julien/NarvalFiles/2023_JCP/correction_parameter/viscous_TGV_ILES_NSFR_cPlus_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+"/Users/Julien/NarvalFiles/2023_JCP/correction_parameter/viscous_TGV_ILES_NSFR_cHU_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
 "/Users/Julien/NarvalFiles/2023_JCP/correction_parameter/viscous_TGV_ILES_NSFR_cSD_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
 ]
 batch_labels = [ \
 "$c_{DG}$ NSFR.IR-GL", \
-"$c_{HU}$ NSFR.IR-GL", \
 "$c_{+}$ NSFR.IR-GL", \
+"$c_{HU}$ NSFR.IR-GL", \
 "$c_{SD}$ NSFR-GL", \
 ]
 batch_plot_spectra(96,"correction_parameter_3",batch_paths,batch_labels,title_off=title_off_input,figure_directory=fig_dir_input,legend_fontSize_input=12,lnstl_input_store=['solid','solid','dashed','dashed','dashed'])

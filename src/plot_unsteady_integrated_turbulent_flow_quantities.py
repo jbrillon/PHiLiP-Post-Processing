@@ -30,7 +30,6 @@ def plot_periodic_turbulence(
     figure_directory_base,
     data_directory_base,
     plot_reference_result,
-    path_to_reference_result,
     figure_filename_postfix,
     figure_title,
     log_axes_input,
@@ -46,6 +45,7 @@ def plot_periodic_turbulence(
     legend_fontSize_input=16,
     tmax=20.0,
     solid_and_dashed_lines=False,
+    reference_result_author="Dairay et al.",
     ):
     # plotting parameters store
     labels_store = []
@@ -74,22 +74,35 @@ def plot_periodic_turbulence(
         figure_filename_postfix = "_" + figure_filename_postfix
     # reference result
     if(plot_reference_result):
-        # DNS - Kinetic Energy
-        filename=path_to_reference_result+"/"+"kinetic_energy"+".txt"
-        time, kinetic_energy = np.loadtxt(filename,skiprows=0,dtype=np.float64,unpack=True)
-        time_store.append(time)
-        kinetic_energy_store.append(kinetic_energy)
-        # labels_store.append("Spectral DNS (P4, $260^{3}$ DOFs)")
-        # labels_store.append("DNS ($260^{3}$ DOFs)\n [Vermeire, 2014]")
-        labels_store.append("DNS [Vermeire]")
-        # DNS - dissipation
-        filename=path_to_reference_result+"/"+"dissipation"+".txt"
-        time, dissipation = np.loadtxt(filename,skiprows=0,dtype=np.float64,unpack=True)
-        dissipation_store.append(dissipation)
-        # DNS - enstrophy
-        filename=path_to_reference_result+"/"+"enstrophy"+".txt"
-        time, enstrophy = np.loadtxt(filename,skiprows=1,delimiter=",",dtype=np.float64,unpack=True)
-        enstrophy_store.append(enstrophy)
+        if(reference_result_author=="Vermeire"):
+            # DNS - Kinetic Energy
+            path_to_reference_result=CURRENT_PATH+"../cases/taylor_green_vortex/data/vermiere"
+            filename=path_to_reference_result+"/"+"kinetic_energy"+".txt"
+            time, kinetic_energy = np.loadtxt(filename,skiprows=0,dtype=np.float64,unpack=True)
+            time_store.append(time)
+            kinetic_energy_store.append(kinetic_energy)
+            # labels_store.append("Spectral DNS (P4, $260^{3}$ DOFs)")
+            # labels_store.append("DNS ($260^{3}$ DOFs)\n [Vermeire, 2014]")
+            labels_store.append("DNS [Vermeire]")
+            # DNS - dissipation
+            filename=path_to_reference_result+"/"+"dissipation"+".txt"
+            time, dissipation = np.loadtxt(filename,skiprows=0,dtype=np.float64,unpack=True)
+            dissipation_store.append(dissipation)
+            # DNS - enstrophy
+            filename=path_to_reference_result+"/"+"enstrophy"+".txt"
+            time, enstrophy = np.loadtxt(filename,skiprows=1,delimiter=",",dtype=np.float64,unpack=True)
+            enstrophy_store.append(enstrophy)
+        elif(reference_result_author=="Dairay et al."):
+            labels_store.append("DNS [Dairay et al.]")
+            filename=CURRENT_PATH+"../cases/taylor_green_vortex/data/TGV_Re1600.dat"
+            time, kinetic_energy, dissipation, enstrophy = np.loadtxt(filename,skiprows=43,dtype=np.float64,unpack=True,usecols=(0,1,2,4))
+            time_store.append(time)
+            kinetic_energy_store.append(kinetic_energy)
+            dissipation_store.append(dissipation)
+            enstrophy_store.append(enstrophy)
+        else:
+            print("ERROR: Invalid value passed for reference_result_author. Aborting...")
+            exit()
         # black_line_flag.append(True) # inputs
         # dashed_line_flag.append(True) # inputs
         # if(black_line_flag[i_curve]):
@@ -180,8 +193,9 @@ def plot_periodic_turbulence(
     #-----------------------------------------------------
     # evolution of kinetic energy dissipation rate:
     #-----------------------------------------------------
-    if(plot_reference_result):
+    if(plot_reference_result and reference_result_author=="Vermeire"):
         # DNS - dissipation
+        path_to_reference_result=CURRENT_PATH+"../cases/taylor_green_vortex/data/vermiere"
         filename=path_to_reference_result+"/"+"dissipation"+".txt"
         time, dissipation = np.loadtxt(filename,skiprows=0,dtype=np.float64,unpack=True)
         time_store[0] = time # replace it -- this is a hack
@@ -214,8 +228,9 @@ def plot_periodic_turbulence(
                 legend_fontSize=legend_fontSize_input,
                 legend_location="upper left")
 
-    if(plot_reference_result):
+    if(plot_reference_result and reference_result_author=="Vermeire"):
         # DNS - enstrophy
+        path_to_reference_result=CURRENT_PATH+"../cases/taylor_green_vortex/data/vermiere"
         filename=path_to_reference_result+"/"+"enstrophy"+".txt"
         time, enstrophy = np.loadtxt(filename,skiprows=1,delimiter=",",dtype=np.float64,unpack=True)
         time_store[0] = time # replace it -- this is a hack

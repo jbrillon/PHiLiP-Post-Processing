@@ -11,8 +11,7 @@ dashed_line_flag, figure_filename_postfix, figure_title, \
 ylimits_kinetic_energy_input, ylimits_dissipation_input, \
 log_axes_input, legend_on_input, legend_inside_input, \
 plot_reference_result, nlegendcols_input, \
-figure_subdirectory, data_directory_base, figure_directory_base, \
-path_to_reference_result
+figure_subdirectory, data_directory_base, figure_directory_base
 #=====================================================
 def reinit_inputs():
     global subdirectories, filenames, labels, black_line_flag, \
@@ -20,8 +19,7 @@ def reinit_inputs():
     ylimits_kinetic_energy_input, ylimits_dissipation_input, \
     log_axes_input, legend_on_input, legend_inside_input, \
     plot_reference_result, nlegendcols_input, \
-    figure_subdirectory, data_directory_base, figure_directory_base, \
-    path_to_reference_result
+    figure_subdirectory, data_directory_base, figure_directory_base
 
     subdirectories = []
     filenames = []
@@ -39,11 +37,504 @@ def reinit_inputs():
     nlegendcols_input=1
     figure_subdirectory="" # default
     data_directory_base = "/Users/Julien/julien_phd/post_processing/data/taylor_green_vortex"
-    path_to_reference_result = "/Users/Julien/julien_phd/post_processing/data/taylor_green_vortex/dns"
     # figure_directory_base = "/Users/Julien/julien_phd/post_processing/figures/taylor_green_vortex"
     figure_directory_base = "figures"
 #=====================================================
 #-----------------------------------------------------
+
+#=====================================================
+# DOFs: 96^3 | Basic SGS Models on GL flux nodes (no filter width modifications)
+#-----------------------------------------------------
+if(True):
+    reinit_inputs()
+    data_directory_base="/Users/Julien/NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="siva"
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_filename_postfix = "96_sgs_models_gl_0"
+    legend_inside_input=True
+    #-----------------------------------------------------
+    subdirectories.append("flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GL")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    plot_periodic_turbulence(
+        figure_subdirectory,
+        subdirectories,
+        filenames,
+        labels,
+        black_line_flag,
+        dashed_line_flag,
+        figure_directory_base,
+        data_directory_base,
+        plot_reference_result,
+        figure_filename_postfix,
+        figure_title,
+        log_axes_input,
+        legend_on_input,
+        legend_inside_input,
+        nlegendcols_input,
+        transparent_legend_input=True,
+        tmax=20.0,
+        legend_fontSize_input=11,
+        solid_and_dashed_lines=False)
+    #-----------------------------------------------------
+    reinit_inputs()
+    data_directory_base="/Users/Julien/NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="siva"
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_filename_postfix = "96_sgs_models_gl_1"
+    legend_inside_input=True
+    #-----------------------------------------------------
+    subdirectories.append("flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GL")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    subdirectories.append("sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GL-Smag. $C_{S}=0.10$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    plot_periodic_turbulence(
+        figure_subdirectory,
+        subdirectories,
+        filenames,
+        labels,
+        black_line_flag,
+        dashed_line_flag,
+        figure_directory_base,
+        data_directory_base,
+        plot_reference_result,
+        figure_filename_postfix,
+        figure_title,
+        log_axes_input,
+        legend_on_input,
+        legend_inside_input,
+        nlegendcols_input,
+        transparent_legend_input=True,
+        tmax=20.0,
+        legend_fontSize_input=11,
+        solid_and_dashed_lines=False)
+    #-----------------------------------------------------
+    reinit_inputs()
+    data_directory_base="/Users/Julien/NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="siva"
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_filename_postfix = "96_sgs_models_gl_2"
+    legend_inside_input=True
+    #-----------------------------------------------------
+    subdirectories.append("flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GL")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    subdirectories.append("sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GL-Smag. $C_{S}=0.10$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    subdirectories.append("sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.18_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GL-Smag. $C_{S}=0.18$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    plot_periodic_turbulence(
+        figure_subdirectory,
+        subdirectories,
+        filenames,
+        labels,
+        black_line_flag,
+        dashed_line_flag,
+        figure_directory_base,
+        data_directory_base,
+        plot_reference_result,
+        figure_filename_postfix,
+        figure_title,
+        log_axes_input,
+        legend_on_input,
+        legend_inside_input,
+        nlegendcols_input,
+        transparent_legend_input=True,
+        tmax=20.0,
+        legend_fontSize_input=11,
+        solid_and_dashed_lines=False)
+    #-----------------------------------------------------
+    reinit_inputs()
+    data_directory_base="/Users/Julien/NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="siva"
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_filename_postfix = "96_sgs_models_gl_3"
+    legend_inside_input=True
+    #-----------------------------------------------------
+    subdirectories.append("flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GL")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    subdirectories.append("sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GL-Smag. $C_{S}=0.10$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    subdirectories.append("sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.18_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GL-Smag. $C_{S}=0.18$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    subdirectories.append("sgs_model_GL_flux_nodes/viscous_TGV_LES_WALE_MC-0.50_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GL-WALE $C_{W}=0.50$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    plot_periodic_turbulence(
+        figure_subdirectory,
+        subdirectories,
+        filenames,
+        labels,
+        black_line_flag,
+        dashed_line_flag,
+        figure_directory_base,
+        data_directory_base,
+        plot_reference_result,
+        figure_filename_postfix,
+        figure_title,
+        log_axes_input,
+        legend_on_input,
+        legend_inside_input,
+        nlegendcols_input,
+        transparent_legend_input=True,
+        tmax=20.0,
+        legend_fontSize_input=11,
+        solid_and_dashed_lines=False)
+    #-----------------------------------------------------
+    reinit_inputs()
+    data_directory_base="/Users/Julien/NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="siva"
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_filename_postfix = "96_sgs_models_gl_4"
+    legend_inside_input=True
+    #-----------------------------------------------------
+    subdirectories.append("flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GL")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    subdirectories.append("sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GL-Smag. $C_{S}=0.10$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    subdirectories.append("sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.18_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GL-Smag. $C_{S}=0.18$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    subdirectories.append("sgs_model_GL_flux_nodes/viscous_TGV_LES_WALE_MC-0.50_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GL-WALE $C_{W}=0.50$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    subdirectories.append("sgs_model_GL_flux_nodes/viscous_TGV_LES_VRMN_MC-0.081_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GL-Vreman $C_{V}=0.081$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    # #-----------------------------------------------------
+    # subdirectories.append("sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.18_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512_filter_width_flad_and_gassner")
+    # filenames.append("turbulent_quantities.txt")
+    # labels.append("$c_{DG}$ NSFR.IR-GL-Smag. $C_{S}=0.18$ $\\Delta=\\frac{V}{(P+1)^{3}}$")
+    # black_line_flag.append(False)
+    # dashed_line_flag.append(True)
+    #-----------------------------------------------------
+    plot_periodic_turbulence(
+        figure_subdirectory,
+        subdirectories,
+        filenames,
+        labels,
+        black_line_flag,
+        dashed_line_flag,
+        figure_directory_base,
+        data_directory_base,
+        plot_reference_result,
+        figure_filename_postfix,
+        figure_title,
+        log_axes_input,
+        legend_on_input,
+        legend_inside_input,
+        nlegendcols_input,
+        transparent_legend_input=True,
+        tmax=20.0,
+        legend_fontSize_input=11,
+        solid_and_dashed_lines=False)
+    #-----------------------------------------------------
+
+#=====================================================
+# DOFs: 96^3 | Basic SGS Models on GL flux nodes (no filter width modifications)
+#-----------------------------------------------------
+if(True):
+    reinit_inputs()
+    data_directory_base="/Users/Julien/NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="siva"
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_filename_postfix = "96_sgs_models_gll_0"
+    legend_inside_input=True
+    #-----------------------------------------------------
+    subdirectories.append("flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GLL")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    plot_periodic_turbulence(
+        figure_subdirectory,
+        subdirectories,
+        filenames,
+        labels,
+        black_line_flag,
+        dashed_line_flag,
+        figure_directory_base,
+        data_directory_base,
+        plot_reference_result,
+        figure_filename_postfix,
+        figure_title,
+        log_axes_input,
+        legend_on_input,
+        legend_inside_input,
+        nlegendcols_input,
+        transparent_legend_input=True,
+        tmax=20.0,
+        legend_fontSize_input=11,
+        solid_and_dashed_lines=False)
+    #-----------------------------------------------------
+    reinit_inputs()
+    data_directory_base="/Users/Julien/NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="siva"
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_filename_postfix = "96_sgs_models_gll_1"
+    legend_inside_input=True
+    #-----------------------------------------------------
+    subdirectories.append("flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GLL")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    subdirectories.append("sgs_model_GLL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GLL-Smag. $C_{S}=0.10$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    plot_periodic_turbulence(
+        figure_subdirectory,
+        subdirectories,
+        filenames,
+        labels,
+        black_line_flag,
+        dashed_line_flag,
+        figure_directory_base,
+        data_directory_base,
+        plot_reference_result,
+        figure_filename_postfix,
+        figure_title,
+        log_axes_input,
+        legend_on_input,
+        legend_inside_input,
+        nlegendcols_input,
+        transparent_legend_input=True,
+        tmax=20.0,
+        legend_fontSize_input=11,
+        solid_and_dashed_lines=False)
+    #-----------------------------------------------------
+    reinit_inputs()
+    data_directory_base="/Users/Julien/NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="siva"
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_filename_postfix = "96_sgs_models_gll_2"
+    legend_inside_input=True
+    #-----------------------------------------------------
+    subdirectories.append("flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GLL")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    subdirectories.append("sgs_model_GLL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GLL-Smag. $C_{S}=0.10$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    subdirectories.append("sgs_model_GLL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.18_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GLL-Smag. $C_{S}=0.18$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    plot_periodic_turbulence(
+        figure_subdirectory,
+        subdirectories,
+        filenames,
+        labels,
+        black_line_flag,
+        dashed_line_flag,
+        figure_directory_base,
+        data_directory_base,
+        plot_reference_result,
+        figure_filename_postfix,
+        figure_title,
+        log_axes_input,
+        legend_on_input,
+        legend_inside_input,
+        nlegendcols_input,
+        transparent_legend_input=True,
+        tmax=20.0,
+        legend_fontSize_input=11,
+        solid_and_dashed_lines=False)
+    #-----------------------------------------------------
+    reinit_inputs()
+    data_directory_base="/Users/Julien/NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="siva"
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_filename_postfix = "96_sgs_models_gll_3"
+    legend_inside_input=True
+    #-----------------------------------------------------
+    subdirectories.append("flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GLL")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    subdirectories.append("sgs_model_GLL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GLL-Smag. $C_{S}=0.10$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    subdirectories.append("sgs_model_GLL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.18_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GLL-Smag. $C_{S}=0.18$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    subdirectories.append("sgs_model_GLL_flux_nodes/viscous_TGV_LES_WALE_MC-0.50_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GLL-WALE $C_{W}=0.50$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    plot_periodic_turbulence(
+        figure_subdirectory,
+        subdirectories,
+        filenames,
+        labels,
+        black_line_flag,
+        dashed_line_flag,
+        figure_directory_base,
+        data_directory_base,
+        plot_reference_result,
+        figure_filename_postfix,
+        figure_title,
+        log_axes_input,
+        legend_on_input,
+        legend_inside_input,
+        nlegendcols_input,
+        transparent_legend_input=True,
+        tmax=20.0,
+        legend_fontSize_input=11,
+        solid_and_dashed_lines=False)
+    #-----------------------------------------------------
+    reinit_inputs()
+    data_directory_base="/Users/Julien/NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="siva"
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_filename_postfix = "96_sgs_models_gll_4"
+    legend_inside_input=True
+    #-----------------------------------------------------
+    subdirectories.append("flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GLL")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    subdirectories.append("sgs_model_GLL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GLL-Smag. $C_{S}=0.10$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    subdirectories.append("sgs_model_GLL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.18_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GLL-Smag. $C_{S}=0.18$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    subdirectories.append("sgs_model_GLL_flux_nodes/viscous_TGV_LES_WALE_MC-0.50_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GLL-WALE $C_{W}=0.50$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    subdirectories.append("sgs_model_GLL_flux_nodes/viscous_TGV_LES_VRMN_MC-0.081_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GLL-Vreman $C_{V}=0.081$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    # #-----------------------------------------------------
+    # subdirectories.append("sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.18_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512_filter_width_flad_and_gassner")
+    # filenames.append("turbulent_quantities.txt")
+    # labels.append("$c_{DG}$ NSFR.IR-GL-Smag. $C_{S}=0.18$ $\\Delta=\\frac{V}{(P+1)^{3}}$")
+    # black_line_flag.append(False)
+    # dashed_line_flag.append(True)
+    #-----------------------------------------------------
+    plot_periodic_turbulence(
+        figure_subdirectory,
+        subdirectories,
+        filenames,
+        labels,
+        black_line_flag,
+        dashed_line_flag,
+        figure_directory_base,
+        data_directory_base,
+        plot_reference_result,
+        figure_filename_postfix,
+        figure_title,
+        log_axes_input,
+        legend_on_input,
+        legend_inside_input,
+        nlegendcols_input,
+        transparent_legend_input=True,
+        tmax=20.0,
+        legend_fontSize_input=11,
+        solid_and_dashed_lines=False)
+    #-----------------------------------------------------
+
+exit()
 
 #=====================================================
 # DOFs: 96^3 | Filter width stabilization
@@ -73,7 +564,6 @@ if(True):
         figure_directory_base,
         data_directory_base,
         plot_reference_result,
-        path_to_reference_result,
         figure_filename_postfix,
         figure_title,
         log_axes_input,
@@ -115,7 +605,6 @@ if(True):
         figure_directory_base,
         data_directory_base,
         plot_reference_result,
-        path_to_reference_result,
         figure_filename_postfix,
         figure_title,
         log_axes_input,
@@ -163,7 +652,6 @@ if(True):
         figure_directory_base,
         data_directory_base,
         plot_reference_result,
-        path_to_reference_result,
         figure_filename_postfix,
         figure_title,
         log_axes_input,
@@ -204,7 +692,6 @@ if(True):
         figure_directory_base,
         data_directory_base,
         plot_reference_result,
-        path_to_reference_result,
         figure_filename_postfix,
         figure_title,
         log_axes_input,
@@ -246,7 +733,6 @@ if(True):
         figure_directory_base,
         data_directory_base,
         plot_reference_result,
-        path_to_reference_result,
         figure_filename_postfix,
         figure_title,
         log_axes_input,
@@ -287,7 +773,6 @@ if(True):
         figure_directory_base,
         data_directory_base,
         plot_reference_result,
-        path_to_reference_result,
         figure_filename_postfix,
         figure_title,
         log_axes_input,
@@ -329,7 +814,6 @@ if(True):
         figure_directory_base,
         data_directory_base,
         plot_reference_result,
-        path_to_reference_result,
         figure_filename_postfix,
         figure_title,
         log_axes_input,
@@ -378,7 +862,6 @@ if(True):
         figure_directory_base,
         data_directory_base,
         plot_reference_result,
-        path_to_reference_result,
         figure_filename_postfix,
         figure_title,
         log_axes_input,
@@ -434,7 +917,6 @@ if(True):
         figure_directory_base,
         data_directory_base,
         plot_reference_result,
-        path_to_reference_result,
         figure_filename_postfix,
         figure_title,
         log_axes_input,
@@ -475,7 +957,6 @@ if(True):
         figure_directory_base,
         data_directory_base,
         plot_reference_result,
-        path_to_reference_result,
         figure_filename_postfix,
         figure_title,
         log_axes_input,
@@ -517,7 +998,6 @@ if(True):
         figure_directory_base,
         data_directory_base,
         plot_reference_result,
-        path_to_reference_result,
         figure_filename_postfix,
         figure_title,
         log_axes_input,
@@ -565,7 +1045,6 @@ if(True):
         figure_directory_base,
         data_directory_base,
         plot_reference_result,
-        path_to_reference_result,
         figure_filename_postfix,
         figure_title,
         log_axes_input,
@@ -619,7 +1098,6 @@ if(True):
         figure_directory_base,
         data_directory_base,
         plot_reference_result,
-        path_to_reference_result,
         figure_filename_postfix,
         figure_title,
         log_axes_input,
@@ -660,7 +1138,6 @@ if(True):
         figure_directory_base,
         data_directory_base,
         plot_reference_result,
-        path_to_reference_result,
         figure_filename_postfix,
         figure_title,
         log_axes_input,
@@ -702,7 +1179,6 @@ if(True):
         figure_directory_base,
         data_directory_base,
         plot_reference_result,
-        path_to_reference_result,
         figure_filename_postfix,
         figure_title,
         log_axes_input,
@@ -750,7 +1226,6 @@ if(True):
         figure_directory_base,
         data_directory_base,
         plot_reference_result,
-        path_to_reference_result,
         figure_filename_postfix,
         figure_title,
         log_axes_input,
@@ -804,7 +1279,6 @@ if(True):
         figure_directory_base,
         data_directory_base,
         plot_reference_result,
-        path_to_reference_result,
         figure_filename_postfix,
         figure_title,
         log_axes_input,
@@ -845,7 +1319,6 @@ if(True):
         figure_directory_base,
         data_directory_base,
         plot_reference_result,
-        path_to_reference_result,
         figure_filename_postfix,
         figure_title,
         log_axes_input,
@@ -887,7 +1360,6 @@ if(True):
         figure_directory_base,
         data_directory_base,
         plot_reference_result,
-        path_to_reference_result,
         figure_filename_postfix,
         figure_title,
         log_axes_input,
@@ -935,7 +1407,6 @@ if(True):
         figure_directory_base,
         data_directory_base,
         plot_reference_result,
-        path_to_reference_result,
         figure_filename_postfix,
         figure_title,
         log_axes_input,
@@ -989,7 +1460,6 @@ if(True):
         figure_directory_base,
         data_directory_base,
         plot_reference_result,
-        path_to_reference_result,
         figure_filename_postfix,
         figure_title,
         log_axes_input,
@@ -1030,7 +1500,6 @@ if(True):
         figure_directory_base,
         data_directory_base,
         plot_reference_result,
-        path_to_reference_result,
         figure_filename_postfix,
         figure_title,
         log_axes_input,
@@ -1072,7 +1541,6 @@ if(True):
         figure_directory_base,
         data_directory_base,
         plot_reference_result,
-        path_to_reference_result,
         figure_filename_postfix,
         figure_title,
         log_axes_input,
@@ -1120,7 +1588,6 @@ if(True):
         figure_directory_base,
         data_directory_base,
         plot_reference_result,
-        path_to_reference_result,
         figure_filename_postfix,
         figure_title,
         log_axes_input,
@@ -1174,7 +1641,6 @@ if(True):
         figure_directory_base,
         data_directory_base,
         plot_reference_result,
-        path_to_reference_result,
         figure_filename_postfix,
         figure_title,
         log_axes_input,

@@ -11,8 +11,7 @@ dashed_line_flag, figure_filename_postfix, figure_title, \
 ylimits_kinetic_energy_input, ylimits_dissipation_input, \
 log_axes_input, legend_on_input, legend_inside_input, \
 plot_reference_result, nlegendcols_input, \
-figure_subdirectory, data_directory_base, figure_directory_base, \
-path_to_reference_result
+figure_subdirectory, data_directory_base, figure_directory_base
 #=====================================================
 def reinit_inputs():
     global subdirectories, filenames, labels, black_line_flag, \
@@ -20,8 +19,7 @@ def reinit_inputs():
     ylimits_kinetic_energy_input, ylimits_dissipation_input, \
     log_axes_input, legend_on_input, legend_inside_input, \
     plot_reference_result, nlegendcols_input, \
-    figure_subdirectory, data_directory_base, figure_directory_base, \
-    path_to_reference_result
+    figure_subdirectory, data_directory_base, figure_directory_base
 
     subdirectories = []
     filenames = []
@@ -39,7 +37,6 @@ def reinit_inputs():
     nlegendcols_input=1
     figure_subdirectory="" # default
     data_directory_base = "/Users/Julien/julien_phd/post_processing/data/taylor_green_vortex"
-    path_to_reference_result = "/Users/Julien/julien_phd/post_processing/data/taylor_green_vortex/dns"
     # figure_directory_base = "/Users/Julien/julien_phd/post_processing/figures/taylor_green_vortex"
     figure_directory_base = "figures"
 #=====================================================
@@ -79,7 +76,6 @@ if(True):
         figure_directory_base,
         data_directory_base,
         plot_reference_result,
-        path_to_reference_result,
         figure_filename_postfix,
         figure_title,
         log_axes_input,
@@ -138,7 +134,6 @@ if(True):
         figure_directory_base,
         data_directory_base,
         plot_reference_result,
-        path_to_reference_result,
         figure_filename_postfix,
         figure_title,
         log_axes_input,
@@ -199,7 +194,6 @@ if(True):
         figure_directory_base,
         data_directory_base,
         plot_reference_result,
-        path_to_reference_result,
         figure_filename_postfix,
         figure_title,
         log_axes_input,
@@ -272,7 +266,6 @@ if(True):
         figure_directory_base,
         data_directory_base,
         plot_reference_result,
-        path_to_reference_result,
         figure_filename_postfix,
         figure_title,
         log_axes_input,
@@ -351,7 +344,6 @@ if(True):
         figure_directory_base,
         data_directory_base,
         plot_reference_result,
-        path_to_reference_result,
         figure_filename_postfix,
         figure_title,
         log_axes_input,
@@ -410,7 +402,6 @@ if(True):
         figure_directory_base,
         data_directory_base,
         plot_reference_result,
-        path_to_reference_result,
         figure_filename_postfix,
         figure_title,
         log_axes_input,
@@ -469,7 +460,6 @@ if(True):
         figure_directory_base,
         data_directory_base,
         plot_reference_result,
-        path_to_reference_result,
         figure_filename_postfix,
         figure_title,
         log_axes_input,
@@ -566,7 +556,6 @@ if(True):
         figure_directory_base,
         data_directory_base,
         plot_reference_result,
-        path_to_reference_result,
         figure_filename_postfix,
         figure_title,
         log_axes_input,
@@ -663,7 +652,6 @@ if(True):
         figure_directory_base,
         data_directory_base,
         plot_reference_result,
-        path_to_reference_result,
         figure_filename_postfix,
         figure_title,
         log_axes_input,
@@ -753,7 +741,6 @@ if(True):
 #         figure_directory_base,
 #         data_directory_base,
 #         plot_reference_result,
-#         path_to_reference_result,
 #         figure_filename_postfix,
 #         figure_title,
 #         log_axes_input,
@@ -812,7 +799,6 @@ if(True):
         figure_directory_base,
         data_directory_base,
         plot_reference_result,
-        path_to_reference_result,
         figure_filename_postfix,
         figure_title,
         log_axes_input,
@@ -871,7 +857,6 @@ if(True):
         figure_directory_base,
         data_directory_base,
         plot_reference_result,
-        path_to_reference_result,
         figure_filename_postfix,
         figure_title,
         log_axes_input,
@@ -930,7 +915,6 @@ if(True):
         figure_directory_base,
         data_directory_base,
         plot_reference_result,
-        path_to_reference_result,
         figure_filename_postfix,
         figure_title,
         log_axes_input,
@@ -1007,7 +991,6 @@ if(True):
         figure_directory_base,
         data_directory_base,
         plot_reference_result,
-        path_to_reference_result,
         figure_filename_postfix,
         figure_title,
         log_axes_input,
