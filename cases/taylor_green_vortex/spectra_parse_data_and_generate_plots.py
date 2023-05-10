@@ -75,7 +75,7 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
             title_label=title_label,
             fig_directory=figure_directory,figure_filename=figure_filename,log_axes="both",figure_filetype="pdf",
             nlegendcols=1,
-            xlimits=[2e0,1e2],ylimits=[1e-7,3e-2],
+            xlimits=[2e0,10e2],ylimits=[1e-7,3e-2],
             markers=False,legend_on=True,legend_labels_tex=labels,
             which_lines_black=[0],
             # which_lines_markers=[0],
@@ -133,7 +133,7 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
             title_label=title_label,
             fig_directory=figure_directory,figure_filename=figure_filename,log_axes="both",figure_filetype="pdf",
             nlegendcols=1,
-            xlimits=[2e0,1e2],ylimits=[1e-7,3e-2],
+            xlimits=[2e0,10e2],ylimits=[1e-7,3e-2],
             markers=False,legend_on=True,legend_labels_tex=labels,
             which_lines_black=[0],
             transparent_legend=True,legend_border_on=False,grid_lines_on=False,lnstl_input=lnstl_input_store,
@@ -164,6 +164,18 @@ title_off_input=True
 # fig_dir_input="/Users/Julien/julien_phd/presentations/slides/wip_paper/20221205-AIAA/figures"
 fig_dir_input="/Users/Julien/PHiLiP-Post-Processing/cases/taylor_green_vortex/figures/2023_JCP"
 # =====================================================
+# to do: add the NSFR result
+batch_paths = [ \
+"/Users/Julien/NarvalFiles/2023_JCP/high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-8_dofs064_p7_procs512/", \
+"/Users/Julien/NarvalFiles/2023_JCP/high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs064_p7_procs512/", \
+]
+batch_labels = [ \
+"Strong DG-Roe-GL-OI", \
+"$c_{DG}$ NSFR.IR-GL", \
+]
+batch_plot_spectra(64,"high_poly_degree",batch_paths,batch_labels,title_off=title_off_input,figure_directory=fig_dir_input)
+exit()
+# =====================================================
 batch_paths = [ \
 "/Users/Julien/NarvalFiles/2023_JCP/verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p3_procs1024/", \
 ]
@@ -171,16 +183,6 @@ batch_labels = [ \
 "$c_{DG}$ NSFR.IR-GL", \
 ]
 batch_plot_spectra(256,"verification",batch_paths,batch_labels,title_off=title_off_input,figure_directory=fig_dir_input)
-exit()
-# =====================================================
-# to do: add the NSFR result
-batch_paths = [ \
-"/Users/Julien/NarvalFiles/2023_JCP/high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-8_dofs064_p7_procs512/", \
-]
-batch_labels = [ \
-"Strong DG-Roe-GL-OI", \
-]
-batch_plot_spectra(64,"high_poly_degree",batch_paths,batch_labels,title_off=title_off_input,figure_directory=fig_dir_input)
 exit()
 # =====================================================
 batch_paths = [ \

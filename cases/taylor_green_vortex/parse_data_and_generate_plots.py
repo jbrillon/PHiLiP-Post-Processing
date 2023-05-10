@@ -83,7 +83,7 @@ if(True):
         legend_fontSize_input=14,
         solid_and_dashed_lines=False)
     #-----------------------------------------------------
-exit()
+
 #=====================================================
 # DOFs: 96^3 | High order poly instabilities
 #-----------------------------------------------------
@@ -96,6 +96,12 @@ if(True):
     figure_title = "TGV at Re$_{\\infty}=1600$, P$7$, $64^{3}$ DOFs, CFL$=0.10$" # comment to turn off
     figure_filename_postfix = "64_high_poly_degree"
     legend_inside_input=True
+    #-----------------------------------------------------
+    subdirectories.append("high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs064_p7_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GL")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
     #-----------------------------------------------------
     subdirectories.append("high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-0_dofs064_p7_procs512")
     filenames.append("turbulent_quantities.txt")
@@ -127,7 +133,7 @@ if(True):
         nlegendcols_input,
         # clr_input=clr_input,
         transparent_legend_input=True,
-        tmax=20.0,
+        tmax=14.0,
         legend_fontSize_input=14,
         solid_and_dashed_lines=False)
     #-----------------------------------------------------
