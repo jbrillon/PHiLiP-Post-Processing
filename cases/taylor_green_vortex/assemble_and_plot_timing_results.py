@@ -27,19 +27,17 @@ n_poly_degree=len(poly_degree)
 NSFR_store_cpu_time_per_step = np.zeros((n_sets_of_runs_for_averaging,n_poly_degree))
 std_sDG_store_cpu_time_per_step = np.zeros((n_sets_of_runs_for_averaging,n_poly_degree))
 
-# for i,base_dir in base_directories:
-i=0
-base_dir=base_directories[0]
-for j,p in enumerate(poly_degree):
-    dofs = number_of_elements_per_direction*(p+1)
-    oi = p+1 # overintegration
-    std_sDG_job_name = "viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-%i_dofs0%i_p%i_CFL-0.1_procs512" % (oi,dofs,p)
-    NSFR_job_name = "viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-%i_dofs0%i_p%i_CFL-0.1_procs512" % (0,dofs,p)
-    std_sDG_cpu_time_per_step = np.loadtxt(base_dir+std_sDG_job_name+"/timer_values.txt",usecols=(2),skiprows=1)
-    NSFR_cpu_time_per_step = np.loadtxt(base_dir+NSFR_job_name+"/timer_values.txt",usecols=(2),skiprows=1)
-    print(NSFR_cpu_time_per_step)
-    std_sDG_store_cpu_time_per_step[i,j] = std_sDG_cpu_time_per_step
-    NSFR_store_cpu_time_per_step[i,j] = NSFR_cpu_time_per_step
+for i,base_dir in enumerate(base_directories):
+    for j,p in enumerate(poly_degree):
+        dofs = number_of_elements_per_direction*(p+1)
+        oi = p+1 # overintegration
+        std_sDG_job_name = "viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-%i_dofs0%i_p%i_CFL-0.1_procs512" % (oi,dofs,p)
+        NSFR_job_name = "viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-%i_dofs0%i_p%i_CFL-0.1_procs512" % (0,dofs,p)
+        std_sDG_cpu_time_per_step = np.loadtxt(base_dir+std_sDG_job_name+"/timer_values.txt",usecols=(2),skiprows=1)
+        NSFR_cpu_time_per_step = np.loadtxt(base_dir+NSFR_job_name+"/timer_values.txt",usecols=(2),skiprows=1)
+        print(NSFR_cpu_time_per_step)
+        std_sDG_store_cpu_time_per_step[i,j] = std_sDG_cpu_time_per_step
+        NSFR_store_cpu_time_per_step[i,j] = NSFR_cpu_time_per_step
 
 # average the values for all sets of runs
 avg_NSFR_store_cpu_time_per_step = np.zeros(n_poly_degree)
