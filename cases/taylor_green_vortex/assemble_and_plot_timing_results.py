@@ -15,11 +15,20 @@ sys.path.append(CURRENT_PATH+"../../submodules/quickplotlib/lib"); import quickp
 #=====================================================
 nCPUs=512
 p_min=1
-p_max=14 #15
-NSFR_poly_degree=np.arange(p_min,p_max+1)
-std_sDG_poly_degree=np.array([1,2,3,4,5,6,7,9,10,11])
+p_max=15 #15
+# NSFR_poly_degree=np.arange(p_min,p_max+1)
+# NSFR_poly_degree=np.array([1,2,3,4,5,6,7,8,9,10,11,12,13,14]) # failed: 15
+# std_sDG_poly_degree=np.array([1,2,3,4,5,6,7,8,9,10,11,12]) # failed: 13,14,15
+NSFR_poly_degree=np.array([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]) # failed: 
+std_sDG_poly_degree=np.array([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]) # failed: 
+NSFR_num_quad_int_strength = NSFR_poly_degree+1
+std_sDG_num_quad_int_strength = 2*(std_sDG_poly_degree+1)
+# std_sDG_poly_degree=np.array([1,2,3,4,5,6,7,9,10,11]) # failed: 8,12,13,14,15
+# note: as soon as nquad becomes >=16 it fails
+# std_sDG_poly_degree=np.arange(p_min,p_max+1) 
 number_of_elements_per_direction=4
-base_directories=["/Users/Julien/julien_phd/cluster-scripts/outputs/jcp/cpu_time_advantage/"]# UPDATE THIS
+# base_directories=["/Users/Julien/NarvalFiles/2023_JCP/cpu_time_advantage/"]
+base_directories=["/Users/Julien/julien_phd/cluster-scripts/outputs/jcp/cpu_time_advantage/with_overint_comp_cost/"]# UPDATE THIS
 
 
 n_sets_of_runs_for_averaging=len(base_directories)
@@ -53,28 +62,68 @@ for j,p in enumerate(std_sDG_poly_degree):
 for j,p in enumerate(NSFR_poly_degree):
     avg_NSFR_store_cpu_time_per_step[j] = np.average(NSFR_store_cpu_time_per_step[:,j])
 
+#-----------------------------------------------------
+# Plot 1
+#-----------------------------------------------------
 x_store = []
 y_store = []
 labels_store = []
-
+# - Strong DG
 x_store.append(std_sDG_poly_degree)
 y_store.append(avg_std_sDG_store_cpu_time_per_step)
 labels_store.append("Strong DG-Roe-GL-OI")
-
+# - NSFR
 x_store.append(NSFR_poly_degree)
 y_store.append(avg_NSFR_store_cpu_time_per_step)
 labels_store.append("$c_{DG}$ NSFR.IR-GL")
-
 title_label="TGV at Re$_{\\infty}=1600$ with $%i^3$ Elements on %i CPUs" % (4,nCPUs)
 qp.plotfxn(xdata=x_store,ydata=y_store,xlabel="Polynomial Degree",ylabel="CPU Time for One Time Step [s]",
             title_label=title_label,
-            fig_directory="figures",figure_filename="cpu_timing",log_axes="y",figure_filetype="pdf",
+            fig_directory="figures",
+            figure_filename="cpu_timing_vs_poly_with_overint_comp_cost",
+            # figure_filename="cpu_timing_vs_poly",
+            log_axes="y",figure_filetype="pdf",
             nlegendcols=1,
-            # xlimits=[2e0,10e2],ylimits=[1e-7,3e-2],
+            # xlimits=[2e0,10e2],
+            ylimits=[1e2,1e5],
             markers=True,legend_on=True,legend_labels_tex=labels_store,
             # which_lines_black=[0],
             # which_lines_markers=[0],
-            transparent_legend=True,legend_border_on=False,grid_lines_on=False,#lnstl_input=['solid','dashed','dotted'],
+            transparent_legend=True,legend_border_on=False,grid_lines_on=True,#lnstl_input=['solid','dashed','dotted'],
+            legend_fontSize=14,
+            # legend_location="upper left",
+            # legend_anchor=[0.025,0.3]
+            # which_lines_only_markers=[1,2,3],which_lines_dashed=[0]
+            )
+
+#-----------------------------------------------------
+# Plot 2
+#-----------------------------------------------------
+x_store = []
+y_store = []
+labels_store = []
+# - Strong DG
+x_store.append(std_sDG_num_quad_int_strength)
+y_store.append(avg_std_sDG_store_cpu_time_per_step)
+labels_store.append("Strong DG-Roe-GL-OI")
+# - NSFR
+x_store.append(NSFR_num_quad_int_strength)
+y_store.append(avg_NSFR_store_cpu_time_per_step)
+labels_store.append("$c_{DG}$ NSFR.IR-GL")
+title_label="TGV at Re$_{\\infty}=1600$ with $%i^3$ Elements on %i CPUs" % (4,nCPUs)
+qp.plotfxn(xdata=x_store,ydata=y_store,xlabel="Numerical Quad. Int. Strength",ylabel="CPU Time for One Time Step [s]",
+            title_label=title_label,
+            fig_directory="figures",
+            figure_filename="cpu_timing_vs_nquad_with_overint_comp_cost",
+            # figure_filename="cpu_timing_vs_nquad",
+            log_axes="y",figure_filetype="pdf",
+            nlegendcols=1,
+            # xlimits=[2e0,10e2],
+            ylimits=[1e2,1e5],
+            markers=True,legend_on=True,legend_labels_tex=labels_store,
+            # which_lines_black=[0],
+            # which_lines_markers=[0],
+            transparent_legend=True,legend_border_on=False,grid_lines_on=True,#lnstl_input=['solid','dashed','dotted'],
             legend_fontSize=14,
             # legend_location="upper left",
             # legend_anchor=[0.025,0.3]

@@ -96,6 +96,8 @@ def assemble_mpi_flow_field_files_and_reorder(
         print("Aborting...")
         exit()
 
+    print("Reordering file: %s" % velocity_file_from_philip)
+
     ez_L_base_base_base_base = 0
     for z_base_base_base_base in range(0,loop_bounds[4]):
         ey_L_base_base_base_base = 0
@@ -155,6 +157,7 @@ def assemble_mpi_flow_field_files_and_reorder(
     #-------------------------------------------------------------
     reordered_flow_field_file = file_path_and_prefix+"_reordered"+"."+file_extension
     file = open(reordered_flow_field_file,"w")
+    print("Writting to file: %s ..." % reordered_flow_field_file)
 
     # Write number of degrees of freedom
     wstr = "%i\n" % nDOF
@@ -174,4 +177,5 @@ def assemble_mpi_flow_field_files_and_reorder(
                             wstr = "\n"
                             file.write(wstr)
     file.close()
+    print("done.")
     return

@@ -46,7 +46,7 @@ def reinit_inputs():
 # DOFs: 256^3 | NSFR.IR-cDG-GL (BASELINE)
 #-----------------------------------------------------
 if(True):
-    clr_input = ['tab:red']#,'tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
     reinit_inputs()
     data_directory_base="/Users/Julien/NarvalFiles/2023_JCP/"
     date_for_runs="."
@@ -57,7 +57,13 @@ if(True):
     #-----------------------------------------------------
     subdirectories.append("verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p3_procs1024")
     filenames.append("turbulent_quantities.txt")
-    labels.append("$c_{DG}$ NSFR.IR-GL")
+    labels.append("$c_{DG}$ NSFR.IR-GL | CFL$=0.30$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    subdirectories.append("verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs0256_p3_procs1024")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GL-Roe | CFL$=0.15$")
     black_line_flag.append(False)
     dashed_line_flag.append(True)
     #-----------------------------------------------------
@@ -83,7 +89,7 @@ if(True):
         legend_fontSize_input=14,
         solid_and_dashed_lines=False)
     #-----------------------------------------------------
-
+exit()
 #=====================================================
 # DOFs: 96^3 | High order poly instabilities
 #-----------------------------------------------------
