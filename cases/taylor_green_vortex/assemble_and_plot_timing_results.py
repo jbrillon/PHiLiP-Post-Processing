@@ -13,14 +13,12 @@ sys.path.append(CURRENT_PATH+"../../submodules/quickplotlib/lib"); import quickp
 #=====================================================
 # Helper functions
 #=====================================================
-nCPUs=512
+nCPUs=16
 p_min=1
-p_max=15 #15
-# NSFR_poly_degree=np.arange(p_min,p_max+1)
-# NSFR_poly_degree=np.array([1,2,3,4,5,6,7,8,9,10,11,12,13,14]) # failed: 15
-# std_sDG_poly_degree=np.array([1,2,3,4,5,6,7,8,9,10,11,12]) # failed: 13,14,15
-NSFR_poly_degree=np.array([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]) # failed: 
-std_sDG_poly_degree=np.array([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]) # failed: 
+p_max=30 #15
+NSFR_poly_degree=np.arange(p_min,p_max+1)
+NSFR_poly_degree=np.arange(p_min,p_max+1)
+std_sDG_poly_degree=np.arange(p_min,p_max+1)
 NSFR_num_quad_int_strength = NSFR_poly_degree+1
 std_sDG_num_quad_int_strength = 2*(std_sDG_poly_degree+1)
 # std_sDG_poly_degree=np.array([1,2,3,4,5,6,7,9,10,11]) # failed: 8,12,13,14,15
@@ -28,7 +26,7 @@ std_sDG_num_quad_int_strength = 2*(std_sDG_poly_degree+1)
 # std_sDG_poly_degree=np.arange(p_min,p_max+1) 
 number_of_elements_per_direction=4
 # base_directories=["/Users/Julien/NarvalFiles/2023_JCP/cpu_time_advantage/"]
-base_directories=["/Users/Julien/julien_phd/cluster-scripts/outputs/jcp/cpu_time_advantage/with_overint_comp_cost/"]# UPDATE THIS
+base_directories=["/Users/Julien/julien_phd/cluster-scripts/outputs/jcp/cpu_time_advantage_2/"]# UPDATE THIS
 
 
 n_sets_of_runs_for_averaging=len(base_directories)
@@ -80,16 +78,16 @@ title_label="TGV at Re$_{\\infty}=1600$ with $%i^3$ Elements on %i CPUs" % (4,nC
 qp.plotfxn(xdata=x_store,ydata=y_store,xlabel="Polynomial Degree",ylabel="CPU Time for One Time Step [s]",
             title_label=title_label,
             fig_directory="figures",
-            figure_filename="cpu_timing_vs_poly_with_overint_comp_cost",
+            figure_filename="cpu_timing_vs_poly_with_overint_comp_cost_2_log",
             # figure_filename="cpu_timing_vs_poly",
-            log_axes="y",figure_filetype="pdf",
+            log_axes="both",figure_filetype="pdf",
             nlegendcols=1,
             # xlimits=[2e0,10e2],
-            ylimits=[1e2,1e5],
+            # ylimits=[1e2,1e5],
             markers=True,legend_on=True,legend_labels_tex=labels_store,
             # which_lines_black=[0],
             # which_lines_markers=[0],
-            transparent_legend=True,legend_border_on=False,grid_lines_on=True,#lnstl_input=['solid','dashed','dotted'],
+            transparent_legend=True,legend_border_on=False,grid_lines_on=False,#lnstl_input=['solid','dashed','dotted'],
             legend_fontSize=14,
             # legend_location="upper left",
             # legend_anchor=[0.025,0.3]
@@ -114,12 +112,12 @@ title_label="TGV at Re$_{\\infty}=1600$ with $%i^3$ Elements on %i CPUs" % (4,nC
 qp.plotfxn(xdata=x_store,ydata=y_store,xlabel="Numerical Quad. Int. Strength",ylabel="CPU Time for One Time Step [s]",
             title_label=title_label,
             fig_directory="figures",
-            figure_filename="cpu_timing_vs_nquad_with_overint_comp_cost",
+            figure_filename="cpu_timing_vs_nquad_with_overint_comp_cost_2",
             # figure_filename="cpu_timing_vs_nquad",
             log_axes="y",figure_filetype="pdf",
             nlegendcols=1,
             # xlimits=[2e0,10e2],
-            ylimits=[1e2,1e5],
+            # ylimits=[1e2,1e5],
             markers=True,legend_on=True,legend_labels_tex=labels_store,
             # which_lines_black=[0],
             # which_lines_markers=[0],
