@@ -13,7 +13,9 @@ import scipy # SciPy: contains additional numerical routines to numpy
 # from finite_difference_library import first_derivative, fd_non_uniform_grid
 import os;CURRENT_PATH = os.path.split(os.path.realpath(__file__))[0]+"/";
 import sys
-sys.path.append(CURRENT_PATH+"../submodules/quickplotlib/lib"); import quickplotlib as qp
+# sys.path.append(CURRENT_PATH+"../submodules/quickplotlib/lib"); import quickplotlib as qp
+sys.path.append("/Users/Julien/Python/quickplotlib/lib"); import quickplotlib as qp
+import matplotlib;from matplotlib.lines import Line2D
 #-----------------------------------------------------
 # define functions
 #-----------------------------------------------------
@@ -46,6 +48,7 @@ def plot_periodic_turbulence(
     tmax=20.0,
     solid_and_dashed_lines=False,
     reference_result_author="Dairay et al.",
+    plot_numerical_dissipation=False,
     ):
     # plotting parameters store
     labels_store = []
@@ -156,7 +159,7 @@ def plot_periodic_turbulence(
 
     # line parameters if doing solid and dashed lines
     if(solid_and_dashed_lines):
-        clr_input_store = ['k','tab:blue','tab:blue','tab:red','tab:red','tab:green','tab:green']#,'tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+        clr_input_store = ['^','tab:blue','tab:blue','tab:red','tab:red','tab:green','tab:green']#,'tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
         mrkr_input_store = ['None','None','None','None','None','None','None']
         lnstl_input_store = ['solid','dashed','solid','dashed','solid','dashed','solid']
     #-----------------------------------------------------
@@ -227,6 +230,66 @@ def plot_periodic_turbulence(
                 clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
                 legend_fontSize=legend_fontSize_input,
                 legend_location="upper left")
+
+    # numerical dissipation plot - can do a max of 4 different results (3 curves per result) -- need a custom legend for this -- can hack the indexing
+    if(plot_numerical_dissipation):
+        KE_molecular_and_numerical_dissipation_y_store = []
+        KE_molecular_and_numerical_dissipation_x_store = []
+        lnstl_input_dummy=['solid','solid','dashed','dashdot','dotted']
+        mrkr_input_dummy=['None','None','None','None','None']
+        clr_input_dummy=['r','k','k','k','k']
+        leg_elements_input=[]
+        # legend_components_input = []
+        if(number_of_result_curves>4):
+            print("ERROR: Can only plot numerical dissipation for 4 result curves. Aborting...")
+            exit()
+        for i in range(0,number_of_result_curves+1): # +1 for reference result
+            
+            KE_molecular_and_numerical_dissipation_y_store.append(dissipation_store[i])
+            KE_molecular_and_numerical_dissipation_x_store.append(time_store[i])
+
+            ls=lnstl_input_dummy[i]
+            mk=mrkr_input_dummy[i]
+            lc=clr_input_dummy[i]
+            leg_elements_input.append(Line2D([0],[0], label=labels_store[i], color=lc, marker=mk, markersize=6, mfc='None', linestyle=ls))
+
+            if(i>0):
+                # molecular dissipation
+                KE_molecular_and_numerical_dissipation_y_store.append(vorticity_based_dissipation_store[i-1])
+                KE_molecular_and_numerical_dissipation_x_store.append(time_store[i])
+                # numerical dissipation
+                KE_molecular_and_numerical_dissipation_y_store.append(dissipation_store[i] - vorticity_based_dissipation_store[i-1]) # minus 1 because no reference result
+                KE_molecular_and_numerical_dissipation_x_store.append(time_store[i])
+            
+            
+        qp.plotfxn(xdata=KE_molecular_and_numerical_dissipation_x_store,
+                    ydata=KE_molecular_and_numerical_dissipation_y_store,
+                    ylabel='Dissipation Components',
+                    # ylabel='$\\varepsilon\\left(\\zeta^{*}\\right)$',
+                    xlabel='$t^{*}$',
+                    figure_filename=figure_subdirectory+'numerical_dissipation_vs_time'+figure_filename_postfix,
+                    title_label=figure_title,
+                    markers=False,
+                    # legend_labels_tex=labels_store,
+                    leg_elements_input=leg_elements_input,
+                    black_lines=False,
+                    xlimits=[0,tmax],
+                    # ylimits=[0,0.008],
+                    log_axes=log_axes_input,
+                    which_lines_black=which_lines_black_input,
+                    which_lines_dashed=which_lines_dashed_input,
+                    legend_on=True,
+                    legend_inside=legend_inside_input,
+                    nlegendcols=nlegendcols_input,
+                    figure_size=(8,6),
+                    transparent_legend=transparent_legend_input,
+                    legend_border_on=False,
+                    grid_lines_on=False,
+                    fig_directory=figure_directory_base,
+                    clr_input=[clr_input_dummy[0],'k','k','k','k','k','k','k','k','k','k','k','k'],
+                    mrkr_input=[mrkr_input_dummy[0],'None','None','None','None','None','None','None','None','None','None','None','None'],
+                    lnstl_input=[lnstl_input_dummy[0],'solid','solid','solid','dashed','dashed','dashed','dashdot','dashdot','dashdot','dotted','dotted','dotted'],
+                    legend_fontSize=legend_fontSize_input)
 
     if(plot_reference_result and reference_result_author=="Vermeire"):
         # DNS - enstrophy
