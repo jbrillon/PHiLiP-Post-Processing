@@ -237,31 +237,54 @@ def plot_periodic_turbulence(
         KE_molecular_and_numerical_dissipation_x_store = []
         lnstl_input_dummy=['solid','solid','dashed','dashdot','dotted']
         mrkr_input_dummy=['None','None','None','None','None']
-        clr_input_dummy=['r','k','k','k','k']
+        clr_input_dummy=['k','tab:red','tab:blue','tab:green','tab:purple']
         leg_elements_input=[]
+        clr_input_store_numerical_dissipation=[]
+        mrkr_input_store_numerical_dissipation=[]
+        lnstl_input_store_numerical_dissipation=[]
         # legend_components_input = []
         if(number_of_result_curves>4):
             print("ERROR: Can only plot numerical dissipation for 4 result curves. Aborting...")
             exit()
         for i in range(0,number_of_result_curves+1): # +1 for reference result
-            
-            KE_molecular_and_numerical_dissipation_y_store.append(dissipation_store[i])
-            KE_molecular_and_numerical_dissipation_x_store.append(time_store[i])
-
-            ls=lnstl_input_dummy[i]
+            # ls=lnstl_input_dummy[i]
+            ls='solid'
             mk=mrkr_input_dummy[i]
             lc=clr_input_dummy[i]
             leg_elements_input.append(Line2D([0],[0], label=labels_store[i], color=lc, marker=mk, markersize=6, mfc='None', linestyle=ls))
+
+            KE_molecular_and_numerical_dissipation_y_store.append(dissipation_store[i])
+            KE_molecular_and_numerical_dissipation_x_store.append(time_store[i])
+            clr_input_store_numerical_dissipation.append(lc)
+            mrkr_input_store_numerical_dissipation.append(mk)
+            lnstl_input_store_numerical_dissipation.append(ls)
 
             if(i>0):
                 # molecular dissipation
                 KE_molecular_and_numerical_dissipation_y_store.append(vorticity_based_dissipation_store[i-1])
                 KE_molecular_and_numerical_dissipation_x_store.append(time_store[i])
+                ls='dashed'
+                clr_input_store_numerical_dissipation.append(lc)
+                mrkr_input_store_numerical_dissipation.append(mk)
+                lnstl_input_store_numerical_dissipation.append(ls)
                 # numerical dissipation
                 KE_molecular_and_numerical_dissipation_y_store.append(dissipation_store[i] - vorticity_based_dissipation_store[i-1]) # minus 1 because no reference result
                 KE_molecular_and_numerical_dissipation_x_store.append(time_store[i])
-            
-            
+                ls='dashdot'
+                clr_input_store_numerical_dissipation.append(lc)
+                mrkr_input_store_numerical_dissipation.append(mk)
+                lnstl_input_store_numerical_dissipation.append(ls)
+                
+        
+        # explain the linestyles
+        ls='solid'
+        # "$\\varepsilon=-\\frac{\\mathrm{d} K^{*}}{\\mathrm{d}t^{*}}$"
+        leg_elements_input.append(Line2D([0],[0], label="$\\varepsilon\\left(K^{*}\\right)$", color='k', marker='None', markersize=6, mfc='None', linestyle=ls))
+        ls='dashed'
+        leg_elements_input.append(Line2D([0],[0], label="$\\varepsilon\\left(\\zeta^{*}\\right)$", color='k', marker='None', markersize=6, mfc='None', linestyle=ls))
+        ls='dashdot'
+        leg_elements_input.append(Line2D([0],[0], label="Num. diss.", color='k', marker='None', markersize=6, mfc='None', linestyle=ls))
+
         qp.plotfxn(xdata=KE_molecular_and_numerical_dissipation_x_store,
                     ydata=KE_molecular_and_numerical_dissipation_y_store,
                     ylabel='Dissipation Components',
@@ -286,9 +309,9 @@ def plot_periodic_turbulence(
                     legend_border_on=False,
                     grid_lines_on=False,
                     fig_directory=figure_directory_base,
-                    clr_input=[clr_input_dummy[0],'k','k','k','k','k','k','k','k','k','k','k','k'],
-                    mrkr_input=[mrkr_input_dummy[0],'None','None','None','None','None','None','None','None','None','None','None','None'],
-                    lnstl_input=[lnstl_input_dummy[0],'solid','solid','solid','dashed','dashed','dashed','dashdot','dashdot','dashdot','dotted','dotted','dotted'],
+                    clr_input=clr_input_store_numerical_dissipation,
+                    mrkr_input=mrkr_input_store_numerical_dissipation,
+                    lnstl_input=lnstl_input_store_numerical_dissipation,
                     legend_fontSize=legend_fontSize_input)
 
     if(plot_reference_result and reference_result_author=="Vermeire"):
