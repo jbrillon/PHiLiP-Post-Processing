@@ -13,8 +13,8 @@ import scipy # SciPy: contains additional numerical routines to numpy
 # from finite_difference_library import first_derivative, fd_non_uniform_grid
 import os;CURRENT_PATH = os.path.split(os.path.realpath(__file__))[0]+"/";
 import sys
-# sys.path.append(CURRENT_PATH+"../submodules/quickplotlib/lib"); import quickplotlib as qp
-sys.path.append("/Users/Julien/Python/quickplotlib/lib"); import quickplotlib as qp
+sys.path.append(CURRENT_PATH+"../submodules/quickplotlib/lib"); import quickplotlib as qp
+# sys.path.append("/Users/Julien/Python/quickplotlib/lib"); import quickplotlib as qp # uncomment if testing quickplotlib changes
 import matplotlib;from matplotlib.lines import Line2D
 #-----------------------------------------------------
 # define functions

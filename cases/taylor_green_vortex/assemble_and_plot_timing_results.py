@@ -26,7 +26,19 @@ std_sDG_num_quad_int_strength = 2*(std_sDG_poly_degree+1)
 # std_sDG_poly_degree=np.arange(p_min,p_max+1) 
 number_of_elements_per_direction=4
 # base_directories=["/Users/Julien/NarvalFiles/2023_JCP/cpu_time_advantage/"]
-base_directories=["/Users/Julien/julien_phd/cluster-scripts/outputs/jcp/cpu_time_advantage_2/"]# UPDATE THIS
+# base_directories=["/Users/Julien/julien_phd/cluster-scripts/outputs/jcp/cpu_time_advantage_2/"]# UPDATE THIS
+base_directories=[\
+"/Users/Julien/julien_phd/cluster-scripts/outputs/jcp/cpu_time_advantage_runs_for_averaging/viscous_TGV_cpu_timing_run_01/",\
+"/Users/Julien/julien_phd/cluster-scripts/outputs/jcp/cpu_time_advantage_runs_for_averaging/viscous_TGV_cpu_timing_run_02/",\
+"/Users/Julien/julien_phd/cluster-scripts/outputs/jcp/cpu_time_advantage_runs_for_averaging/viscous_TGV_cpu_timing_run_03/",\
+"/Users/Julien/julien_phd/cluster-scripts/outputs/jcp/cpu_time_advantage_runs_for_averaging/viscous_TGV_cpu_timing_run_04/",\
+"/Users/Julien/julien_phd/cluster-scripts/outputs/jcp/cpu_time_advantage_runs_for_averaging/viscous_TGV_cpu_timing_run_05/",\
+"/Users/Julien/julien_phd/cluster-scripts/outputs/jcp/cpu_time_advantage_runs_for_averaging/viscous_TGV_cpu_timing_run_06/",\
+"/Users/Julien/julien_phd/cluster-scripts/outputs/jcp/cpu_time_advantage_runs_for_averaging/viscous_TGV_cpu_timing_run_07/",\
+"/Users/Julien/julien_phd/cluster-scripts/outputs/jcp/cpu_time_advantage_runs_for_averaging/viscous_TGV_cpu_timing_run_08/",\
+"/Users/Julien/julien_phd/cluster-scripts/outputs/jcp/cpu_time_advantage_runs_for_averaging/viscous_TGV_cpu_timing_run_09/",\
+"/Users/Julien/julien_phd/cluster-scripts/outputs/jcp/cpu_time_advantage_runs_for_averaging/viscous_TGV_cpu_timing_run_10/"\
+]
 
 
 n_sets_of_runs_for_averaging=len(base_directories)
@@ -78,7 +90,7 @@ title_label="TGV at Re$_{\\infty}=1600$ with $%i^3$ Elements on %i CPUs" % (4,nC
 qp.plotfxn(xdata=x_store,ydata=y_store,xlabel="Polynomial Degree",ylabel="CPU Time for One Time Step [s]",
             title_label=title_label,
             fig_directory="figures",
-            figure_filename="cpu_timing_vs_poly_with_overint_comp_cost_2_log",
+            figure_filename="cpu_timing_vs_poly_averaged_log",
             # figure_filename="cpu_timing_vs_poly",
             log_axes="both",figure_filetype="pdf",
             nlegendcols=1,
@@ -112,7 +124,7 @@ title_label="TGV at Re$_{\\infty}=1600$ with $%i^3$ Elements on %i CPUs" % (4,nC
 qp.plotfxn(xdata=x_store,ydata=y_store,xlabel="Numerical Quad. Int. Strength",ylabel="CPU Time for One Time Step [s]",
             title_label=title_label,
             fig_directory="figures",
-            figure_filename="cpu_timing_vs_nquad_with_overint_comp_cost_2",
+            figure_filename="cpu_timing_vs_nquad_averaged_2",
             # figure_filename="cpu_timing_vs_nquad",
             log_axes="y",figure_filetype="pdf",
             nlegendcols=1,
