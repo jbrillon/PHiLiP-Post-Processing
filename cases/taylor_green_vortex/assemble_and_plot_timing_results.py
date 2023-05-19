@@ -28,16 +28,16 @@ number_of_elements_per_direction=4
 # base_directories=["/Users/Julien/NarvalFiles/2023_JCP/cpu_time_advantage/"]
 # base_directories=["/Users/Julien/julien_phd/cluster-scripts/outputs/jcp/cpu_time_advantage_2/"]# UPDATE THIS
 base_directories=[\
-"/Users/Julien/julien_phd/cluster-scripts/outputs/jcp/cpu_time_advantage_runs_for_averaging/viscous_TGV_cpu_timing_run_01/",\
-"/Users/Julien/julien_phd/cluster-scripts/outputs/jcp/cpu_time_advantage_runs_for_averaging/viscous_TGV_cpu_timing_run_02/",\
-"/Users/Julien/julien_phd/cluster-scripts/outputs/jcp/cpu_time_advantage_runs_for_averaging/viscous_TGV_cpu_timing_run_03/",\
-"/Users/Julien/julien_phd/cluster-scripts/outputs/jcp/cpu_time_advantage_runs_for_averaging/viscous_TGV_cpu_timing_run_04/",\
-"/Users/Julien/julien_phd/cluster-scripts/outputs/jcp/cpu_time_advantage_runs_for_averaging/viscous_TGV_cpu_timing_run_05/",\
-"/Users/Julien/julien_phd/cluster-scripts/outputs/jcp/cpu_time_advantage_runs_for_averaging/viscous_TGV_cpu_timing_run_06/",\
-"/Users/Julien/julien_phd/cluster-scripts/outputs/jcp/cpu_time_advantage_runs_for_averaging/viscous_TGV_cpu_timing_run_07/",\
-"/Users/Julien/julien_phd/cluster-scripts/outputs/jcp/cpu_time_advantage_runs_for_averaging/viscous_TGV_cpu_timing_run_08/",\
-"/Users/Julien/julien_phd/cluster-scripts/outputs/jcp/cpu_time_advantage_runs_for_averaging/viscous_TGV_cpu_timing_run_09/",\
-"/Users/Julien/julien_phd/cluster-scripts/outputs/jcp/cpu_time_advantage_runs_for_averaging/viscous_TGV_cpu_timing_run_10/"\
+"/Users/Julien/julien_phd/cluster-scripts/outputs/jcp/cpu_time_advantage_runs_for_averaging/cpu_time_advantage_run_01/",\
+"/Users/Julien/julien_phd/cluster-scripts/outputs/jcp/cpu_time_advantage_runs_for_averaging/cpu_time_advantage_run_02/",\
+"/Users/Julien/julien_phd/cluster-scripts/outputs/jcp/cpu_time_advantage_runs_for_averaging/cpu_time_advantage_run_03/",\
+"/Users/Julien/julien_phd/cluster-scripts/outputs/jcp/cpu_time_advantage_runs_for_averaging/cpu_time_advantage_run_04/",\
+"/Users/Julien/julien_phd/cluster-scripts/outputs/jcp/cpu_time_advantage_runs_for_averaging/cpu_time_advantage_run_05/",\
+"/Users/Julien/julien_phd/cluster-scripts/outputs/jcp/cpu_time_advantage_runs_for_averaging/cpu_time_advantage_run_06/",\
+"/Users/Julien/julien_phd/cluster-scripts/outputs/jcp/cpu_time_advantage_runs_for_averaging/cpu_time_advantage_run_07/",\
+"/Users/Julien/julien_phd/cluster-scripts/outputs/jcp/cpu_time_advantage_runs_for_averaging/cpu_time_advantage_run_08/",\
+"/Users/Julien/julien_phd/cluster-scripts/outputs/jcp/cpu_time_advantage_runs_for_averaging/cpu_time_advantage_run_09/",\
+"/Users/Julien/julien_phd/cluster-scripts/outputs/jcp/cpu_time_advantage_runs_for_averaging/cpu_time_advantage_run_10/"\
 ]
 
 
