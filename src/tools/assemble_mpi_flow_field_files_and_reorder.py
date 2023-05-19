@@ -5,7 +5,7 @@ from get_DOF_vars import get_DOF_vars
 from assemble_mpi_files import assemble_mpi_files
 
 def read_and_store_element_coord_data(
-    ez_L,ez_R,ey_L,ey_R,ex_L,ex_R
+    ez_L,ez_R,ey_L,ey_R,ex_L,ex_R,
     fin,
     nValues_per_row,
     nQuadPoints_per_element):
