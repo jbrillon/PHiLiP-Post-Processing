@@ -82,20 +82,20 @@ labels_store = []
 x_store.append(std_sDG_poly_degree)
 y_store.append(avg_std_sDG_store_cpu_time_per_step)
 labels_store.append("Strong DG-Roe-GL-OI")
-# - NSFR
-x_store.append(NSFR_poly_degree)
-y_store.append(avg_NSFR_store_cpu_time_per_step)
-labels_store.append("$c_{DG}$ NSFR.IR-GL")
+# # - NSFR
+# x_store.append(NSFR_poly_degree)
+# y_store.append(avg_NSFR_store_cpu_time_per_step)
+# labels_store.append("$c_{DG}$ NSFR.IR-GL")
 title_label="TGV at Re$_{\\infty}=1600$ with $%i^3$ Elements on %i CPUs" % (4,nCPUs)
 qp.plotfxn(xdata=x_store,ydata=y_store,xlabel="Polynomial Degree",ylabel="CPU Time for One Time Step [s]",
             title_label=title_label,
-            fig_directory="figures",
-            figure_filename="cpu_timing_vs_poly_averaged_log",
+            fig_directory="figures/2023_JCP",
+            figure_filename="cpu_timing_vs_poly_averaged_log_0",
             # figure_filename="cpu_timing_vs_poly",
             log_axes="both",figure_filetype="pdf",
             nlegendcols=1,
-            # xlimits=[2e0,10e2],
-            # ylimits=[1e2,1e5],
+            xlimits=[1e0,3e1],
+            ylimits=[1e0,2e3],
             markers=True,legend_on=True,legend_labels_tex=labels_store,
             # which_lines_black=[0],
             # which_lines_markers=[0],
@@ -107,35 +107,69 @@ qp.plotfxn(xdata=x_store,ydata=y_store,xlabel="Polynomial Degree",ylabel="CPU Ti
             )
 
 #-----------------------------------------------------
-# Plot 2
+# Plot 1
 #-----------------------------------------------------
 x_store = []
 y_store = []
 labels_store = []
 # - Strong DG
-x_store.append(std_sDG_num_quad_int_strength)
+x_store.append(std_sDG_poly_degree)
 y_store.append(avg_std_sDG_store_cpu_time_per_step)
 labels_store.append("Strong DG-Roe-GL-OI")
 # - NSFR
-x_store.append(NSFR_num_quad_int_strength)
+x_store.append(NSFR_poly_degree)
 y_store.append(avg_NSFR_store_cpu_time_per_step)
 labels_store.append("$c_{DG}$ NSFR.IR-GL")
 title_label="TGV at Re$_{\\infty}=1600$ with $%i^3$ Elements on %i CPUs" % (4,nCPUs)
-qp.plotfxn(xdata=x_store,ydata=y_store,xlabel="Numerical Quad. Int. Strength",ylabel="CPU Time for One Time Step [s]",
+qp.plotfxn(xdata=x_store,ydata=y_store,xlabel="Polynomial Degree",ylabel="CPU Time for One Time Step [s]",
             title_label=title_label,
-            fig_directory="figures",
-            figure_filename="cpu_timing_vs_nquad_averaged_2",
-            # figure_filename="cpu_timing_vs_nquad",
-            log_axes="y",figure_filetype="pdf",
+            fig_directory="figures/2023_JCP",
+            figure_filename="cpu_timing_vs_poly_averaged_log_1",
+            # figure_filename="cpu_timing_vs_poly",
+            log_axes="both",figure_filetype="pdf",
             nlegendcols=1,
-            # xlimits=[2e0,10e2],
-            # ylimits=[1e2,1e5],
+            xlimits=[1e0,3e1],
+            ylimits=[1e0,2e3],
             markers=True,legend_on=True,legend_labels_tex=labels_store,
             # which_lines_black=[0],
             # which_lines_markers=[0],
-            transparent_legend=True,legend_border_on=False,grid_lines_on=True,#lnstl_input=['solid','dashed','dotted'],
+            transparent_legend=True,legend_border_on=False,grid_lines_on=False,#lnstl_input=['solid','dashed','dotted'],
             legend_fontSize=14,
             # legend_location="upper left",
             # legend_anchor=[0.025,0.3]
             # which_lines_only_markers=[1,2,3],which_lines_dashed=[0]
             )
+
+# #-----------------------------------------------------
+# # Plot 2
+# #-----------------------------------------------------
+# x_store = []
+# y_store = []
+# labels_store = []
+# # - Strong DG
+# x_store.append(std_sDG_num_quad_int_strength)
+# y_store.append(avg_std_sDG_store_cpu_time_per_step)
+# labels_store.append("Strong DG-Roe-GL-OI")
+# # - NSFR
+# x_store.append(NSFR_num_quad_int_strength)
+# y_store.append(avg_NSFR_store_cpu_time_per_step)
+# labels_store.append("$c_{DG}$ NSFR.IR-GL")
+# title_label="TGV at Re$_{\\infty}=1600$ with $%i^3$ Elements on %i CPUs" % (4,nCPUs)
+# qp.plotfxn(xdata=x_store,ydata=y_store,xlabel="Numerical Quad. Int. Strength",ylabel="CPU Time for One Time Step [s]",
+#             title_label=title_label,
+#             fig_directory="figures/2023_JCP",
+#             figure_filename="cpu_timing_vs_nquad_averaged_2",
+#             # figure_filename="cpu_timing_vs_nquad",
+#             log_axes="y",figure_filetype="pdf",
+#             nlegendcols=1,
+#             # xlimits=[2e0,10e2],
+#             # ylimits=[1e2,1e5],
+#             markers=True,legend_on=True,legend_labels_tex=labels_store,
+#             # which_lines_black=[0],
+#             # which_lines_markers=[0],
+#             transparent_legend=True,legend_border_on=False,grid_lines_on=True,#lnstl_input=['solid','dashed','dotted'],
+#             legend_fontSize=14,
+#             # legend_location="upper left",
+#             # legend_anchor=[0.025,0.3]
+#             # which_lines_only_markers=[1,2,3],which_lines_dashed=[0]
+#             )

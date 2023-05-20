@@ -9,10 +9,10 @@ import sys; sys.path.append("/Users/Julien/Python/quickplotlib/lib"); import qui
 # # path="/Users/Julien/NarvalFiles/2023_AIAA/2022-11-29_TGV_SPECTRA_96dofs_cDG_cPlus/viscous_TGV_ILES_cDG_IR_two_point_flux_dofs096_p5_procs512/"
 # filename=path+"flow_field_files/velocity_vorticity-0_reordered.dat"
 
-nDOFs_per_dim=96
+nDOFs_per_dim=256
 nDOFs_per_plane=nDOFs_per_dim*nDOFs_per_dim
 
-filename="vorticity_x_plane.dat"
+filename="vorticity_x_plane_DNS-1.dat"
 data=np.loadtxt(filename,dtype=np.float64)
 
 ny = nDOFs_per_dim
@@ -31,7 +31,7 @@ X = y_mesh
 Y = z_mesh
 Z = vorticity_mag_mesh
 
-figure_filename="vorticity_mag"
+figure_filename="vorticity_mag-1"
 # X=data[:,0]
 # Y=data[:,1]
 # Z=data[:,2]
@@ -52,30 +52,48 @@ axisTitle_FontSize = 16
 axisTickLabel_FontSize = 14
 legend_fontSize = 16
 
-y_label = "$z$"
-x_label = "$y$"
-z_label = "$|\\Omega|$"
+y_label = "$z^{*}$"
+x_label = "$y^{*}$"
+z_label = "Nondimensional Vorticity Magnitude, $|\\mathbf{\\omega}^{*}|$"
 
 print('Plotting: ' + figure_filename)
-fig, ax = plt.subplots(figsize=(6,6))
+fig, ax = plt.subplots(figsize=(9,6))
 # fig = plt.figure(figsize=(6,6))
 plt.xlim([np.amin(X),np.amax(X)])
 plt.ylim([np.amin(Y),np.amax(Y)])
 ax.set_xlabel(x_label,fontsize=axisTitle_FontSize)
 ax.set_ylabel(y_label,rotation=90,fontsize=axisTitle_FontSize)
 plt.setp(ax.get_xticklabels(),fontsize=axisTickLabel_FontSize); plt.setp(ax.get_yticklabels(),fontsize=axisTickLabel_FontSize);
-
-minZ=4
+ax.set_title("TGV at Re$_{\\infty}=1600$, P$3$, $256^{3}$ DOFs, CFL$=0.30$, $x^{*}=-\\pi$",fontsize=axisTitle_FontSize)
+minZ=1
 maxZ=15.0
+
+
+# levels = [1, 3, 5, 10, 15]
+# levels_lines = levels#[1, 5, 10, 15]
+levels = [1.5, 3, 4.5, 6, 7.5, 9, 10.5, 12, 13.5]
+levels_lines = [1, 3, 6, 9, 12, 15]
+# levels_lines = [1, 5, 10, 20, 30]
+# levels = [1, 5, 10, 20, 30]
+# levels = [3, 5, 7, 10, 15, 20, 25, 30]
+# CS3.cmap.set_under('yellow')
+# CS3.cmap.set_over('cyan')
+
 # cs = plt.contourf(X,Y,Z, np.linspace(np.amin(Z),np.amax(Z),100),cmap='rainbow')
-cs = plt.contourf(X,Y,Z, np.linspace(minZ,maxZ,100),cmap='rainbow',extend="both")
+
+cs = plt.contourf(X,Y,Z, levels,cmap='rainbow',extend="both")
+
+cs2 = plt.contour(X, Y, Z, levels_lines,colors=('k',),linewidths=(1,))
+# cs = plt.contour(X, Y, Z, levels_lines,cmap='rainbow',linewidths=(.3,))
 # cs = plt.contourf([X,Y,],Z,cmap='rainbow')
 
-cbar = fig.colorbar(cs,ticks=np.arange(minZ,maxZ,8))
+cbar = fig.colorbar(cs,ticks=levels)
 # cbar = fig.colorbar(cs,ticks=np.linspace(np.amin(Z),np.amax(Z),8))
 cbar.set_label(z_label,fontsize=axisTickLabel_FontSize)
 # cbar.ax.tick_params(fontsize=axisTickLabel_FontSize)
 plt.setp(cbar.ax.get_yticklabels(),fontsize=axisTickLabel_FontSize)
+ax.set_xlim([0,0.5*np.pi])
+ax.set_ylim([0.5*np.pi,np.pi])
 
 # Fix for the white lines between contour levels
 for c in cs.collections:

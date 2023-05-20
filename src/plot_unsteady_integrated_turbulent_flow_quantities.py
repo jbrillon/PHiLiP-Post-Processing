@@ -279,11 +279,11 @@ def plot_periodic_turbulence(
         # explain the linestyles
         ls='solid'
         # "$\\varepsilon=-\\frac{\\mathrm{d} K^{*}}{\\mathrm{d}t^{*}}$"
-        leg_elements_input.append(Line2D([0],[0], label="$\\varepsilon\\left(K^{*}\\right)$", color='k', marker='None', markersize=6, mfc='None', linestyle=ls))
+        leg_elements_input.append(Line2D([0],[0], label="$\\varepsilon\\left(K^{*}\\right)$", color='grey', marker='None', markersize=6, mfc='None', linestyle=ls))
         ls='dashed'
-        leg_elements_input.append(Line2D([0],[0], label="$\\varepsilon\\left(\\zeta^{*}\\right)$", color='k', marker='None', markersize=6, mfc='None', linestyle=ls))
+        leg_elements_input.append(Line2D([0],[0], label="$\\varepsilon\\left(\\zeta^{*}\\right)$", color='grey', marker='None', markersize=6, mfc='None', linestyle=ls))
         ls='dashdot'
-        leg_elements_input.append(Line2D([0],[0], label="Num. diss.", color='k', marker='None', markersize=6, mfc='None', linestyle=ls))
+        leg_elements_input.append(Line2D([0],[0], label="$\\varepsilon\\left(K^{*}\\right)-\\varepsilon\\left(\\zeta^{*}\\right)$", color='grey', marker='None', markersize=6, mfc='None', linestyle=ls))
 
         qp.plotfxn(xdata=KE_molecular_and_numerical_dissipation_x_store,
                     ydata=KE_molecular_and_numerical_dissipation_y_store,
