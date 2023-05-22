@@ -24,7 +24,7 @@ inputImage = cv2.imread(imageFile)
 # Conversion to CMYK (just the K channel):
 
 # Convert to float and divide by 255:
-imgFloat = inputImage.astype(np.float) / 255.
+imgFloat = inputImage.astype(np.float64) / 255.
 
 # Calculate channel K:
 kChannel = 1 - np.max(imgFloat, axis=2)
@@ -50,6 +50,8 @@ opIterations = 2
 morphKernel = cv2.getStructuringElement(cv2.MORPH_RECT, (kernelSize, kernelSize))
 # Perform closing:
 binaryImage = cv2.morphologyEx(binaryImage, cv2.MORPH_CLOSE, morphKernel, None, None, opIterations, cv2.BORDER_REFLECT101)
+# Invert colours so that background is white and curves are black
+binaryImage = cv2.bitwise_not(binaryImage)
 cv2.imwrite("vanRees2011DNS_vorticity-only_black.png",binaryImage)
 
 # cv2.imshow("binaryImage [closed]", binaryImage)
