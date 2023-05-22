@@ -235,10 +235,11 @@ def plot_periodic_turbulence(
     if(plot_numerical_dissipation):
         KE_molecular_and_numerical_dissipation_y_store = []
         KE_molecular_and_numerical_dissipation_x_store = []
-        lnstl_input_dummy=['solid','solid','dashed','dashdot','dotted']
+        lnstl_input_dummy=['solid','solid','dashed','dotted','dashdot']
         mrkr_input_dummy=['None','None','None','None','None']
-        clr_input_dummy=['k','tab:red','tab:blue','tab:green','tab:purple']
+        clr_input_dummy=['k','tab:blue','tab:red','tab:green','tab:purple']
         leg_elements_input=[]
+        second_leg_elements_input=[]
         clr_input_store_numerical_dissipation=[]
         mrkr_input_store_numerical_dissipation=[]
         lnstl_input_store_numerical_dissipation=[]
@@ -246,6 +247,17 @@ def plot_periodic_turbulence(
         if(number_of_result_curves>4):
             print("ERROR: Can only plot numerical dissipation for 4 result curves. Aborting...")
             exit()
+        
+        # explain the linestyles
+        ls='solid'
+        # "$\\varepsilon=-\\frac{\\mathrm{d} K^{*}}{\\mathrm{d}t^{*}}$"
+        second_leg_elements_input.append(Line2D([0],[0], label="$\\varepsilon\\left(K^{*}\\right)$", color='grey', marker='None', markersize=6, mfc='None', linestyle=ls))
+        ls='dashed'
+        second_leg_elements_input.append(Line2D([0],[0], label="$\\varepsilon\\left(\\zeta^{*}\\right)$", color='grey', marker='None', markersize=6, mfc='None', linestyle=ls))
+        ls='dotted'
+        second_leg_elements_input.append(Line2D([0],[0], label="$\\varepsilon\\left(K^{*}\\right)-\\varepsilon\\left(\\zeta^{*}\\right)$", color='grey', marker='None', markersize=6, mfc='None', linestyle=ls))
+        
+        # results
         for i in range(0,number_of_result_curves+1): # +1 for reference result
             # ls=lnstl_input_dummy[i]
             ls='solid'
@@ -270,24 +282,14 @@ def plot_periodic_turbulence(
                 # numerical dissipation
                 KE_molecular_and_numerical_dissipation_y_store.append(dissipation_store[i] - vorticity_based_dissipation_store[i-1]) # minus 1 because no reference result
                 KE_molecular_and_numerical_dissipation_x_store.append(time_store[i])
-                ls='dashdot'
+                ls='dotted'
                 clr_input_store_numerical_dissipation.append(lc)
                 mrkr_input_store_numerical_dissipation.append(mk)
                 lnstl_input_store_numerical_dissipation.append(ls)
-                
-        
-        # explain the linestyles
-        ls='solid'
-        # "$\\varepsilon=-\\frac{\\mathrm{d} K^{*}}{\\mathrm{d}t^{*}}$"
-        leg_elements_input.append(Line2D([0],[0], label="$\\varepsilon\\left(K^{*}\\right)$", color='grey', marker='None', markersize=6, mfc='None', linestyle=ls))
-        ls='dashed'
-        leg_elements_input.append(Line2D([0],[0], label="$\\varepsilon\\left(\\zeta^{*}\\right)$", color='grey', marker='None', markersize=6, mfc='None', linestyle=ls))
-        ls='dashdot'
-        leg_elements_input.append(Line2D([0],[0], label="$\\varepsilon\\left(K^{*}\\right)-\\varepsilon\\left(\\zeta^{*}\\right)$", color='grey', marker='None', markersize=6, mfc='None', linestyle=ls))
 
         qp.plotfxn(xdata=KE_molecular_and_numerical_dissipation_x_store,
                     ydata=KE_molecular_and_numerical_dissipation_y_store,
-                    ylabel='Dissipation Components',
+                    ylabel='Nondimensional Dissipation Components',
                     # ylabel='$\\varepsilon\\left(\\zeta^{*}\\right)$',
                     xlabel='$t^{*}$',
                     figure_filename=figure_subdirectory+'numerical_dissipation_vs_time'+figure_filename_postfix,
@@ -297,14 +299,14 @@ def plot_periodic_turbulence(
                     leg_elements_input=leg_elements_input,
                     black_lines=False,
                     xlimits=[0,tmax],
-                    # ylimits=[0,0.008],
+                    ylimits=[0,0.018],
                     log_axes=log_axes_input,
                     which_lines_black=which_lines_black_input,
                     which_lines_dashed=which_lines_dashed_input,
                     legend_on=True,
                     legend_inside=legend_inside_input,
                     nlegendcols=nlegendcols_input,
-                    figure_size=(8,6),
+                    figure_size=(6,6),
                     transparent_legend=transparent_legend_input,
                     legend_border_on=False,
                     grid_lines_on=False,
@@ -312,7 +314,9 @@ def plot_periodic_turbulence(
                     clr_input=clr_input_store_numerical_dissipation,
                     mrkr_input=mrkr_input_store_numerical_dissipation,
                     lnstl_input=lnstl_input_store_numerical_dissipation,
-                    legend_fontSize=legend_fontSize_input)
+                    legend_fontSize=legend_fontSize_input,
+                    legend_location="upper left",
+                    second_leg_elements_input=second_leg_elements_input)
 
     if(plot_reference_result and reference_result_author=="Vermeire"):
         # DNS - enstrophy

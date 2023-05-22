@@ -51,7 +51,49 @@ if(True):
     date_for_runs="."
     figure_subdirectory="2023_JCP"
     figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
-    figure_filename_postfix = "96_baseline_scheme"
+    figure_filename_postfix = "96_baseline_scheme_0"
+    legend_inside_input=True
+    #-----------------------------------------------------
+    subdirectories.append("flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GL")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    # #-----------------------------------------------------
+    # subdirectories.append("flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512")
+    # filenames.append("turbulent_quantities.txt")
+    # labels.append("$c_{DG}$ NSFR.IR-GLL")
+    # black_line_flag.append(False)
+    # dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    plot_periodic_turbulence(
+        figure_subdirectory,
+        subdirectories,
+        filenames,
+        labels,
+        black_line_flag,
+        dashed_line_flag,
+        figure_directory_base,
+        data_directory_base,
+        plot_reference_result,
+        figure_filename_postfix,
+        figure_title,
+        log_axes_input,
+        legend_on_input,
+        legend_inside_input,
+        nlegendcols_input,
+        transparent_legend_input=True,
+        tmax=20.0,
+        legend_fontSize_input=12,
+        solid_and_dashed_lines=False,
+        plot_numerical_dissipation=True)
+    #-----------------------------------------------------
+    reinit_inputs()
+    data_directory_base="/Users/Julien/NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="2023_JCP"
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_filename_postfix = "96_baseline_scheme_1"
     legend_inside_input=True
     #-----------------------------------------------------
     subdirectories.append("flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512")
@@ -84,17 +126,16 @@ if(True):
         nlegendcols_input,
         transparent_legend_input=True,
         tmax=20.0,
-        legend_fontSize_input=14,
+        legend_fontSize_input=12,
         solid_and_dashed_lines=False,
         plot_numerical_dissipation=True)
     #-----------------------------------------------------
-
 
 #=====================================================
 # DOFs: 256^3 | NSFR.IR-cDG-GL (BASELINE)
 #-----------------------------------------------------
 if(True):
-    clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    clr_input = ['tab:blue','tab:red','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
     reinit_inputs()
     data_directory_base="/Users/Julien/NarvalFiles/2023_JCP/"
     date_for_runs="."
@@ -105,7 +146,8 @@ if(True):
     #-----------------------------------------------------
     subdirectories.append("verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p3_procs1024")
     filenames.append("turbulent_quantities.txt")
-    labels.append("$c_{DG}$ NSFR.IR-GL | CFL$=0.30$")
+    # labels.append("$c_{DG}$ NSFR.IR-GL | CFL$=0.30$")
+    labels.append("$c_{DG}$ NSFR.IR-GL")
     black_line_flag.append(False)
     dashed_line_flag.append(False)
     # #-----------------------------------------------------
@@ -134,7 +176,7 @@ if(True):
         clr_input=clr_input,
         transparent_legend_input=True,
         tmax=20.0,
-        legend_fontSize_input=14,
+        legend_fontSize_input=12,
         solid_and_dashed_lines=False,
         plot_numerical_dissipation=True)
     #-----------------------------------------------------
