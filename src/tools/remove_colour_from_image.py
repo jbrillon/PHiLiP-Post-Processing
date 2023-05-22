@@ -53,7 +53,27 @@ binaryImage = cv2.morphologyEx(binaryImage, cv2.MORPH_CLOSE, morphKernel, None, 
 # Invert colours so that background is white and curves are black
 binaryImage = cv2.bitwise_not(binaryImage)
 cv2.imwrite("vanRees2011DNS_vorticity-only_black.png",binaryImage)
-
 # cv2.imshow("binaryImage [closed]", binaryImage)
 # cv2.waitKey(0)
 
+# make white background transparent
+from PIL import Image
+def convertImage():
+    img = Image.open("./vanRees2011DNS_vorticity-only_black.png")
+    img = img.convert("RGBA")
+ 
+    datas = img.getdata()
+ 
+    newData = []
+ 
+    for item in datas:
+        if item[0] == 255 and item[1] == 255 and item[2] == 255:
+            newData.append((255, 255, 255, 0))
+        else:
+            newData.append(item)
+ 
+    img.putdata(newData)
+    img.save("./vanRees2011DNS_vorticity-only_black.png", "PNG")
+    print("Successful")
+    return
+convertImage()
