@@ -69,30 +69,31 @@ z_label = "Nondimensional Vorticity Magnitude, $|\\mathbf{\\omega}^{*}|$"
 
 print('Plotting: ' + figure_filename)
 fig, ax = plt.subplots(figsize=(9,6))
-# fig = plt.figure(figsize=(6,6))
-plt.xlim([np.amin(X),np.amax(X)])
-plt.ylim([np.amin(Y),np.amax(Y)])
+# # fig = plt.figure(figsize=(6,6))
+# plt.xlim([np.amin(X),np.amax(X)])
+# plt.ylim([np.amin(Y),np.amax(Y)])
 ax.set_xlabel(x_label,fontsize=axisTitle_FontSize)
 ax.set_ylabel(y_label,rotation=90,fontsize=axisTitle_FontSize)
 plt.setp(ax.get_xticklabels(),fontsize=axisTickLabel_FontSize); plt.setp(ax.get_yticklabels(),fontsize=axisTickLabel_FontSize);
 ax.set_title("TGV at Re$_{\\infty}=1600$, P$3$, $256^{3}$ DOFs, CFL$=0.30$, $x^{*}=-\\pi$",fontsize=axisTitle_FontSize)
-minZ=1
-maxZ=15.0
+# minZ=1
+# maxZ=15.0
 
 
 # levels = [1, 3, 5, 10, 15]
-# levels_lines = levels#[1, 5, 10, 15]
-levels = [1.5, 3, 4.5, 6, 7.5, 9, 10.5, 12, 13.5]
-levels_lines = []
-# levels_lines = [1.5, 6, 9, 12]
-#levels_lines = [1, 3, 6, 9, 12, 15]
-# levels_lines = [1, 5, 10, 20, 30]
-# levels = [1, 5, 10, 20, 30]
-# levels = [3, 5, 7, 10, 15, 20, 25, 30]
-# CS3.cmap.set_under('yellow')
-# CS3.cmap.set_over('cyan')
+# # levels_lines = levels#[1, 5, 10, 15]
+# levels = [1, 3, 4.5, 6, 7.5, 9, 10.5, 12, 13.5]
+levels = [1, 5, 10, 20, 30]
+levels_lines = [] # none because using van rees curves
+# # levels_lines = [1.5, 6, 9, 12]
+# #levels_lines = [1, 3, 6, 9, 12, 15]
+# # levels_lines = [1, 5, 10, 20, 30]
 
-# cs = plt.contourf(X,Y,Z, np.linspace(np.amin(Z),np.amax(Z),100),cmap='rainbow')
+# # levels = [3, 5, 7, 10, 15, 20, 25, 30]
+# # CS3.cmap.set_under('yellow')
+# # CS3.cmap.set_over('cyan')
+
+# # cs = plt.contourf(X,Y,Z, np.linspace(np.amin(Z),np.amax(Z),100),cmap='rainbow')
 
 cs = plt.contourf(X,Y,Z, levels,cmap='rainbow',extend="both")
 
@@ -122,7 +123,6 @@ cbar.set_label(z_label,fontsize=axisTickLabel_FontSize)
 # cbar.ax.tick_params(fontsize=axisTickLabel_FontSize)
 plt.setp(cbar.ax.get_yticklabels(),fontsize=axisTickLabel_FontSize)
 ax.set_xlim([0,0.5*np.pi])
-# ax.set_ylim([0.5*np.pi,0.8*np.pi])
 ax.set_ylim([0.5*np.pi,2.6])
 
 # Fix for the white lines between contour levels
@@ -131,9 +131,21 @@ for c in cs.collections:
 
 # leg = plt.legend(loc='best', ncol=1, shadow=False, fancybox=True, fontsize=legend_fontSize, framealpha=1.0,edgecolor='inherit')
 
+from PIL import Image
+img2 = Image.open("vanRees2011DNS_vorticity-only_black.png")
+# GOOD ONES | ADJUST THESE TO GET GOOD ALIGNMENT
+# ax.imshow(img2,extent=[0+0.01,0.5*np.pi+0.1,0.5*np.pi-0.2,2.6-0.01],zorder=3)
+if(levels == [1, 3, 4.5, 6, 7.5, 9, 10.5, 12, 13.5]):    
+    ax.imshow(img2,extent=[0+0.00,0.5*np.pi+0.08,0.5*np.pi-0.2,2.6+0.02],zorder=3)
+if(levels == [1, 5, 10, 20, 30]):
+    ax.imshow(img2,extent=[0+0.00,0.5*np.pi+0.08,0.5*np.pi-0.2,2.6+0.018],zorder=3)
+# ax.imshow(img2,extent=[0+0.00,0.5*np.pi+0.08,0.5*np.pi-0.2,2.6+0.01],zorder=3) # levels = [1, 5, 10, 20, 30]
+
+ax.set_xlim([0,1.4])
+ax.set_ylim([0.5*np.pi,2.6])
 plt.tight_layout()
 print('... Saving figure ...')
-plt.savefig(fig_directory+"/"+figure_filename+'.'+figure_filetype,format=figure_filetype,dpi=500)
+plt.savefig(fig_directory+"/"+figure_filename+'.'+figure_filetype,format=figure_filetype,dpi=250)
 plt.close()
 
 # # qp.plotfield(xdata=x,ydata=y,udata=u,vdata=v,ylabel="$y$",xlabel="$x$",
