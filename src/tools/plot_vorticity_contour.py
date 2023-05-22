@@ -2,6 +2,8 @@ import numpy as np
 # import sys; sys.path.append("submodules/quickplotlib/lib"); import quickplotlib as qp
 import sys; sys.path.append("/Users/Julien/Python/quickplotlib/lib"); import quickplotlib as qp
 
+import scipy.ndimage
+
 # x_cut=-3.14159265358979
 
 # # path="/Users/Julien/NarvalFiles/2022-11-09_96dofs/viscous_TGV_ILES_cPlus_IR_two_point_flux_dofs096_p5_procs512/"
@@ -12,8 +14,16 @@ import sys; sys.path.append("/Users/Julien/Python/quickplotlib/lib"); import qui
 nDOFs_per_dim=256
 nDOFs_per_plane=nDOFs_per_dim*nDOFs_per_dim
 
-filename="vorticity_x_plane_DNS-1.dat"
+filename="vorticity_x_plane_DNS-0.dat"
+figure_filename="cDG-NSFR.IR-GL-dofs256_p3_vorticity-contour-t8"
+# filename="vorticity_x_plane_DNS-1.dat"
+# figure_filename="cDG-NSFR.IR-GL-dofs256_p3_vorticity-contour-t9"
 data=np.loadtxt(filename,dtype=np.float64)
+# Resample your data grid by a factor of 3 using cubic spline interpolation.
+# data = scipy.ndimage.zoom(data, 2)
+# data = scipy.ndimage.filters.gaussian_filter(data, 0.25)
+
+
 
 ny = nDOFs_per_dim
 nz = nDOFs_per_dim
@@ -31,7 +41,8 @@ X = y_mesh
 Y = z_mesh
 Z = vorticity_mag_mesh
 
-figure_filename="vorticity_mag-1"
+# figure_filename="vorticity_mag-1"
+
 # X=data[:,0]
 # Y=data[:,1]
 # Z=data[:,2]
@@ -72,7 +83,9 @@ maxZ=15.0
 # levels = [1, 3, 5, 10, 15]
 # levels_lines = levels#[1, 5, 10, 15]
 levels = [1.5, 3, 4.5, 6, 7.5, 9, 10.5, 12, 13.5]
-levels_lines = [1, 3, 6, 9, 12, 15]
+levels_lines = []
+# levels_lines = [1.5, 6, 9, 12]
+#levels_lines = [1, 3, 6, 9, 12, 15]
 # levels_lines = [1, 5, 10, 20, 30]
 # levels = [1, 5, 10, 20, 30]
 # levels = [3, 5, 7, 10, 15, 20, 25, 30]
@@ -83,7 +96,23 @@ levels_lines = [1, 3, 6, 9, 12, 15]
 
 cs = plt.contourf(X,Y,Z, levels,cmap='rainbow',extend="both")
 
-cs2 = plt.contour(X, Y, Z, levels_lines,colors=('k',),linewidths=(1,))
+if(levels_lines!=[]):
+    cs_lines = plt.contour(X, Y, Z, levels_lines,colors=('k',),linewidths=(1,))
+
+    for level in cs_lines.collections:
+        for kp,path in reversed(list(enumerate(level.get_paths()))):
+            # go in reversed order due to deletions!
+
+            # include test for "smallness" of your choice here:
+            # I'm using a simple estimation for the diameter based on the
+            #    x and y diameter...
+            verts = path.vertices # (N,2)-shape array of contour line coordinates
+            diameter = np.max(verts.max(axis=0) - verts.min(axis=0))
+
+            if diameter<0.3: # threshold to be refined for your actual dimensions!
+                del(level.get_paths()[kp])  # no remove() for Path objects:(
+
+
 # cs = plt.contour(X, Y, Z, levels_lines,cmap='rainbow',linewidths=(.3,))
 # cs = plt.contourf([X,Y,],Z,cmap='rainbow')
 
@@ -93,7 +122,8 @@ cbar.set_label(z_label,fontsize=axisTickLabel_FontSize)
 # cbar.ax.tick_params(fontsize=axisTickLabel_FontSize)
 plt.setp(cbar.ax.get_yticklabels(),fontsize=axisTickLabel_FontSize)
 ax.set_xlim([0,0.5*np.pi])
-ax.set_ylim([0.5*np.pi,np.pi])
+# ax.set_ylim([0.5*np.pi,0.8*np.pi])
+ax.set_ylim([0.5*np.pi,2.6])
 
 # Fix for the white lines between contour levels
 for c in cs.collections:
