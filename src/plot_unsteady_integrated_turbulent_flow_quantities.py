@@ -237,7 +237,7 @@ def plot_periodic_turbulence(
         KE_molecular_and_numerical_dissipation_x_store = []
         lnstl_input_dummy=['solid','solid','dashed','dotted','dashdot']
         mrkr_input_dummy=['None','None','None','None','None']
-        clr_input_dummy=['k','tab:blue','tab:red','tab:green','tab:purple']
+        clr_input_dummy=['k','tab:blue','tab:red','tab:green','tab:orange']
         leg_elements_input=[]
         second_leg_elements_input=[]
         clr_input_store_numerical_dissipation=[]

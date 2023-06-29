@@ -57,7 +57,7 @@ matplotlibrc('font', family='serif')
 
 # Figure parameters
 fig_directory = "."
-figure_filetype = "pdf"
+figure_filetype = "png"
 # Font sizes
 axisTitle_FontSize = 16
 axisTickLabel_FontSize = 14

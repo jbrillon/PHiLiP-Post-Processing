@@ -165,6 +165,32 @@ title_off_input=True
 fig_dir_input="/Users/Julien/PHiLiP-Post-Processing/cases/taylor_green_vortex/figures/2023_JCP"
 # =====================================================
 batch_paths = [ \
+"/Users/Julien/NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512/", \
+"/Users/Julien/NarvalFiles/2023_JCP/filter_width_stabilization/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-0_dofs096_p5_procs512/", \
+"/Users/Julien/NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+"/Users/Julien/NarvalFiles/2023_JCP/upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs096_p5_procs512/", \
+]
+batch_labels = [ \
+"Strong DG-Roe-GL-OI", \
+"Strong DG-Roe-GL", \
+"$c_{DG}$ NSFR.IR-GL", \
+"$c_{DG}$ NSFR.IR-GL-Roe", \
+]
+batch_plot_spectra(96,"overintegration_accuracy",batch_paths,batch_labels,title_off=title_off_input,figure_directory=fig_dir_input)
+exit()
+# =====================================================
+batch_paths = [ \
+"/Users/Julien/NarvalFiles/2023_JCP/upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs096_p5_procs512/", \
+"/Users/Julien/NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512/", \
+]
+batch_labels = [ \
+"$c_{DG}$ NSFR.IR-GL-Roe", \
+"Strong DG-Roe-GL-OI", \
+]
+batch_plot_spectra(96,"cDG_roe_vs_sDG",batch_paths,batch_labels,title_off=title_off_input,figure_directory=fig_dir_input)
+exit()
+# =====================================================
+batch_paths = [ \
 "/Users/Julien/NarvalFiles/2023_JCP/verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p3_procs1024/", \
 "/Users/Julien/NarvalFiles/2023_JCP/verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs0256_p3_procs1024/", \
 ]
