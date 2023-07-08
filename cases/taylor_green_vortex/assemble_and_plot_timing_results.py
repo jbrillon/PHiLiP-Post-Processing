@@ -13,6 +13,8 @@ sys.path.append(CURRENT_PATH+"../../submodules/quickplotlib/lib"); import quickp
 #=====================================================
 # Helper functions
 #=====================================================
+figure_filetype_input='png'
+# figure_filetype_input='pdf'
 nCPUs=16
 p_min=1
 p_max=30 #15
@@ -92,7 +94,7 @@ qp.plotfxn(xdata=x_store,ydata=y_store,xlabel="Polynomial Degree",ylabel="CPU Ti
             fig_directory="figures/2023_JCP",
             figure_filename="cpu_timing_vs_poly_averaged_log_0",
             # figure_filename="cpu_timing_vs_poly",
-            log_axes="both",figure_filetype="pdf",
+            log_axes="both",figure_filetype=figure_filetype_input,
             figure_size=(6,6),
             nlegendcols=1,
             xlimits=[1e0,3e1],
@@ -122,12 +124,33 @@ x_store.append(NSFR_poly_degree)
 y_store.append(avg_NSFR_store_cpu_time_per_step)
 labels_store.append("$c_{DG}$ NSFR.IR-GL")
 title_label="TGV at Re$_{\\infty}=1600$ with $%i^3$ Elements on %i CPUs" % (4,nCPUs)
+# loglog
 qp.plotfxn(xdata=x_store,ydata=y_store,xlabel="Polynomial Degree",ylabel="CPU Time for One Time Step [s]",
             title_label=title_label,
             fig_directory="figures/2023_JCP",
             figure_filename="cpu_timing_vs_poly_averaged_log_1",
             # figure_filename="cpu_timing_vs_poly",
-            log_axes="both",figure_filetype="pdf",
+            log_axes="both",figure_filetype=figure_filetype_input,
+            nlegendcols=1,
+            figure_size=(6,6),
+            xlimits=[1e0,3e1],
+            ylimits=[1e0,2e3],
+            markers=True,legend_on=True,legend_labels_tex=labels_store,
+            # which_lines_black=[0],
+            # which_lines_markers=[0],
+            transparent_legend=True,legend_border_on=False,grid_lines_on=False,#lnstl_input=['solid','dashed','dotted'],
+            legend_fontSize=14,
+            # legend_location="upper left",
+            # legend_anchor=[0.025,0.3]
+            # which_lines_only_markers=[1,2,3],which_lines_dashed=[0]
+            )
+# semilog
+qp.plotfxn(xdata=x_store,ydata=y_store,xlabel="Polynomial Degree",ylabel="CPU Time for One Time Step [s]",
+            title_label=title_label,
+            fig_directory="figures/2023_JCP",
+            figure_filename="cpu_timing_vs_poly_averaged_semilog_1",
+            # figure_filename="cpu_timing_vs_poly",
+            log_axes="y",figure_filetype=figure_filetype_input,
             nlegendcols=1,
             figure_size=(6,6),
             xlimits=[1e0,3e1],
