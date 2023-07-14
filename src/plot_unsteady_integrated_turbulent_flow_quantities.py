@@ -190,8 +190,8 @@ def plot_periodic_turbulence(
                 grid_lines_on=False,
                 clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
                 legend_fontSize=legend_fontSize_input,
-                legend_location="upper left",
-                legend_anchor=[0.025,0.3])
+                legend_location="lower left")#,
+                # legend_anchor=[0.025,0.3])
     
     #-----------------------------------------------------
     # evolution of kinetic energy dissipation rate:
@@ -236,16 +236,16 @@ def plot_periodic_turbulence(
         KE_molecular_and_numerical_dissipation_y_store = []
         KE_molecular_and_numerical_dissipation_x_store = []
         lnstl_input_dummy=['solid','solid','dashed','dotted','dashdot']
-        mrkr_input_dummy=['None','None','None','None','None']
-        clr_input_dummy=['k','tab:blue','tab:red','tab:green','tab:orange']
+        # mrkr_input_dummy=['None','None','None','None','None']
+        clr_input_dummy = ['k','tab:blue','tab:red','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
         leg_elements_input=[]
         second_leg_elements_input=[]
         clr_input_store_numerical_dissipation=[]
         mrkr_input_store_numerical_dissipation=[]
         lnstl_input_store_numerical_dissipation=[]
         # legend_components_input = []
-        if(number_of_result_curves>4):
-            print("ERROR: Can only plot numerical dissipation for 4 result curves. Aborting...")
+        if(number_of_result_curves>10):
+            print("ERROR: Can only plot numerical dissipation for 10 result curves. Aborting...")
             exit()
         
         # explain the linestyles
@@ -261,7 +261,8 @@ def plot_periodic_turbulence(
         for i in range(0,number_of_result_curves+1): # +1 for reference result
             # ls=lnstl_input_dummy[i]
             ls='solid'
-            mk=mrkr_input_dummy[i]
+            # mk=mrkr_input_dummy[i]
+            mk='None'
             lc=clr_input_dummy[i]
             leg_elements_input.append(Line2D([0],[0], label=labels_store[i], color=lc, marker=mk, markersize=6, mfc='None', linestyle=ls))
 
@@ -291,7 +292,7 @@ def plot_periodic_turbulence(
                     ydata=KE_molecular_and_numerical_dissipation_y_store,
                     ylabel='Nondimensional Dissipation Components',
                     # ylabel='$\\varepsilon\\left(\\zeta^{*}\\right)$',
-                    xlabel='$t^{*}$',
+                    xlabel='Nondimensional Time, $t^{*}$',
                     figure_filename=figure_subdirectory+'numerical_dissipation_vs_time'+figure_filename_postfix,
                     title_label=figure_title,
                     markers=False,
