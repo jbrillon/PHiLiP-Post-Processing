@@ -43,6 +43,266 @@ def reinit_inputs():
 #-----------------------------------------------------
 
 #=====================================================
+# DOFs: 96^3 | Time step advantage (CFL advantage)
+#-----------------------------------------------------
+if(True):
+    #-----------------------------------------------------
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base="/Users/Julien/NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="2023_JCP"
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_filename_postfix = "96_p5_cPlus_cfl"
+    legend_inside_input=True
+    #-----------------------------------------------------
+    subdirectories.append("correction_parameter/viscous_TGV_ILES_NSFR_cPlus_IR_2PF_GL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{+}$ NSFR.IR-GL CFL=$0.10$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    subdirectories.append("time_step_advantage/viscous_TGV_ILES_NSFR_cPlus_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.2_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{+}$ NSFR.IR-GL CFL=$0.20$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(True)
+    #-----------------------------------------------------
+    subdirectories.append("time_step_advantage/viscous_TGV_ILES_NSFR_cPlus_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.3_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{+}$ NSFR.IR-GL CFL=$0.30$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(True)
+    #-----------------------------------------------------
+    subdirectories.append("time_step_advantage/viscous_TGV_ILES_NSFR_cPlus_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.42_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{+}$ NSFR.IR-GL CFL=$0.42$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(True)
+    #-----------------------------------------------------
+    subdirectories.append("time_step_advantage/viscous_TGV_ILES_NSFR_cPlus_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.44_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{+}$ NSFR.IR-GL CFL=$0.44$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(True)
+    #-----------------------------------------------------
+    plot_periodic_turbulence(
+        figure_subdirectory,
+        subdirectories,
+        filenames,
+        labels,
+        black_line_flag,
+        dashed_line_flag,
+        figure_directory_base,
+        data_directory_base,
+        plot_reference_result,
+        figure_filename_postfix,
+        figure_title,
+        log_axes_input,
+        legend_on_input,
+        legend_inside_input,
+        nlegendcols_input,
+        # clr_input=clr_input,
+        transparent_legend_input=True,
+        tmax=12.5,#14
+        legend_fontSize_input=14,
+        solid_and_dashed_lines=False,
+        plot_numerical_dissipation=True)
+    #-----------------------------------------------------
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base="/Users/Julien/NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="2023_JCP"
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_filename_postfix = "96_p5_cDG_cfl"
+    legend_inside_input=True
+    #-----------------------------------------------------
+    subdirectories.append("flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GL CFL=$0.10$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    subdirectories.append("time_step_advantage/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.2_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GL CFL=$0.20$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(True)
+    #-----------------------------------------------------
+    subdirectories.append("time_step_advantage/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.32_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GL CFL=$0.32$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(True)
+    #-----------------------------------------------------
+    subdirectories.append("time_step_advantage/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.34_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GL CFL=$0.34$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(True)
+    #-----------------------------------------------------
+    plot_periodic_turbulence(
+        figure_subdirectory,
+        subdirectories,
+        filenames,
+        labels,
+        black_line_flag,
+        dashed_line_flag,
+        figure_directory_base,
+        data_directory_base,
+        plot_reference_result,
+        figure_filename_postfix,
+        figure_title,
+        log_axes_input,
+        legend_on_input,
+        legend_inside_input,
+        nlegendcols_input,
+        # clr_input=clr_input,
+        transparent_legend_input=True,
+        tmax=12.5,#14
+        legend_fontSize_input=14,
+        solid_and_dashed_lines=False,
+        plot_numerical_dissipation=True)
+    #-----------------------------------------------------
+    reinit_inputs()
+    data_directory_base="/Users/Julien/NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="2023_JCP"
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_filename_postfix = "96_p5_strong_DG_cfl"
+    legend_inside_input=True
+    #-----------------------------------------------------
+    subdirectories.append("flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    # labels.append("Strong DG, Roe, GL flux nodes,\n $n_{quad}=2(P+1)$")
+    labels.append("Strong DG-Roe-GL-OI CFL=$0.10$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    # #-----------------------------------------------------
+    # subdirectories.append("time_step_advantage_strong_DG/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_CFL-0.12_procs512")
+    # filenames.append("turbulent_quantities.txt")
+    # # labels.append("Strong DG, Roe, GL flux nodes,\n $n_{quad}=2(P+1)$")
+    # labels.append("Strong DG-Roe-GL-OI CFL=$0.12$")
+    # black_line_flag.append(False)
+    # dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    subdirectories.append("time_step_advantage_strong_DG/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_CFL-0.13_procs512")
+    filenames.append("turbulent_quantities.txt")
+    # labels.append("Strong DG, Roe, GL flux nodes,\n $n_{quad}=2(P+1)$")
+    labels.append("Strong DG-Roe-GL-OI CFL=$0.13$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(True)
+    #-----------------------------------------------------
+    subdirectories.append("time_step_advantage_strong_DG/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_CFL-0.14_procs512")
+    filenames.append("turbulent_quantities.txt")
+    # labels.append("Strong DG, Roe, GL flux nodes,\n $n_{quad}=2(P+1)$")
+    labels.append("Strong DG-Roe-GL-OI CFL=$0.14$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(True)
+    #-----------------------------------------------------
+    subdirectories.append("time_step_advantage_strong_DG/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_CFL-0.15_procs512")
+    filenames.append("turbulent_quantities.txt")
+    # labels.append("Strong DG, Roe, GL flux nodes,\n $n_{quad}=2(P+1)$")
+    labels.append("Strong DG-Roe-GL-OI CFL=$0.15$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(True)
+    #-----------------------------------------------------
+    plot_periodic_turbulence(
+        figure_subdirectory,
+        subdirectories,
+        filenames,
+        labels,
+        black_line_flag,
+        dashed_line_flag,
+        figure_directory_base,
+        data_directory_base,
+        plot_reference_result,
+        figure_filename_postfix,
+        figure_title,
+        log_axes_input,
+        legend_on_input,
+        legend_inside_input,
+        nlegendcols_input,
+        # clr_input=clr_input,
+        transparent_legend_input=True,
+        tmax=12.5,#14
+        legend_fontSize_input=14,
+        solid_and_dashed_lines=False,
+        plot_numerical_dissipation=True)
+    #-----------------------------------------------------
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base="/Users/Julien/NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="2023_JCP"
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_filename_postfix = "96_p5_cfl_advantage"
+    legend_inside_input=True
+    #-----------------------------------------------------
+    subdirectories.append("flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    # labels.append("Strong DG, Roe, GL flux nodes,\n $n_{quad}=2(P+1)$")
+    labels.append("Strong DG-Roe-GL-OI CFL=$0.10$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    subdirectories.append("flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GL CFL=$0.10$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    subdirectories.append("correction_parameter/viscous_TGV_ILES_NSFR_cPlus_IR_2PF_GL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{+}$ NSFR.IR-GL CFL=$0.10$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    subdirectories.append("time_step_advantage_strong_DG/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_CFL-0.14_procs512")
+    filenames.append("turbulent_quantities.txt")
+    # labels.append("Strong DG, Roe, GL flux nodes,\n $n_{quad}=2(P+1)$")
+    labels.append("Strong DG-Roe-GL-OI CFL=$0.14$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(True)
+    #-----------------------------------------------------
+    subdirectories.append("time_step_advantage/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.34_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GL CFL=$0.34$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(True)
+    #-----------------------------------------------------
+    subdirectories.append("time_step_advantage/viscous_TGV_ILES_NSFR_cPlus_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.44_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{+}$ NSFR.IR-GL CFL=$0.44$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(True)
+    #-----------------------------------------------------
+    plot_periodic_turbulence(
+        figure_subdirectory,
+        subdirectories,
+        filenames,
+        labels,
+        black_line_flag,
+        dashed_line_flag,
+        figure_directory_base,
+        data_directory_base,
+        plot_reference_result,
+        figure_filename_postfix,
+        figure_title,
+        log_axes_input,
+        legend_on_input,
+        legend_inside_input,
+        nlegendcols_input,
+        # clr_input=clr_input,
+        transparent_legend_input=True,
+        tmax=12.5,#14
+        legend_fontSize_input=14,
+        solid_and_dashed_lines=False,
+        plot_numerical_dissipation=True)
+    #-----------------------------------------------------
+
+#=====================================================
 # DOFs: 64^3 | Over-integration stabilization
 #-----------------------------------------------------
 if(True):
@@ -54,12 +314,12 @@ if(True):
     figure_title = "TGV at Re$_{\\infty}=1600$, P$7$, $64^{3}$ DOFs, CFL$=0.10$" # comment to turn off
     figure_filename_postfix = "64_p7_overintegration_stability"
     legend_inside_input=True
-    # #-----------------------------------------------------
-    # subdirectories.append("high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs064_p7_procs512")
-    # filenames.append("turbulent_quantities.txt")
-    # labels.append("$c_{DG}$ NSFR.IR-GL")
-    # black_line_flag.append(False)
-    # dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    subdirectories.append("high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs064_p7_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GL")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
     # #-----------------------------------------------------
     # subdirectories.append("high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-0_dofs064_p7_procs512")
     # filenames.append("turbulent_quantities.txt")
@@ -84,12 +344,12 @@ if(True):
     labels.append("Strong DG-Roe-GL-OI.2")
     black_line_flag.append(False)
     dashed_line_flag.append(False)
-    #-----------------------------------------------------
-    subdirectories.append("high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-4_dofs064_p7_CFL-0.10_procs512")
-    filenames.append("turbulent_quantities.txt")
-    labels.append("Strong DG-Roe-GL-OI.4")
-    black_line_flag.append(False)
-    dashed_line_flag.append(False)
+    # #-----------------------------------------------------
+    # subdirectories.append("high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-4_dofs064_p7_CFL-0.10_procs512")
+    # filenames.append("turbulent_quantities.txt")
+    # labels.append("Strong DG-Roe-GL-OI.4")
+    # black_line_flag.append(False)
+    # dashed_line_flag.append(False)
     #-----------------------------------------------------
     subdirectories.append("high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-8_dofs064_p7_procs512")
     filenames.append("turbulent_quantities.txt")
@@ -120,12 +380,11 @@ if(True):
         solid_and_dashed_lines=False,
         plot_numerical_dissipation=True)
     #-----------------------------------------------------
-exit()
 
 #=====================================================
 # DOFs: 96^3 | Over-Integration Accuracy sDG
 #-----------------------------------------------------
-if(True):
+if(False):
     reinit_inputs()
     data_directory_base="/Users/Julien/NarvalFiles/2023_JCP/"
     date_for_runs="."
@@ -199,7 +458,7 @@ if(True):
 #=====================================================
 # DOFs: 96^3 | Accuracy of Over-Integration vs NSFR
 #-----------------------------------------------------
-if(True):
+if(False):
     reinit_inputs()
     data_directory_base="/Users/Julien/NarvalFiles/2023_JCP/"
     date_for_runs="."
@@ -255,11 +514,11 @@ if(True):
         solid_and_dashed_lines=False,
         plot_numerical_dissipation=True)
     #-----------------------------------------------------
-exit()
+
 #=====================================================
 # DOFs: 96^3 | NSFR.IR-cDG-GL and NSFR.IR-cDG-GLL (BASELINE)
 #-----------------------------------------------------
-if(True):
+if(False):
     reinit_inputs()
     data_directory_base="/Users/Julien/NarvalFiles/2023_JCP/"
     date_for_runs="."
@@ -303,11 +562,11 @@ if(True):
         solid_and_dashed_lines=False,
         plot_numerical_dissipation=True)
     #-----------------------------------------------------
-exit()
+
 #=====================================================
 # DOFs: 96^3 | NSFR.IR-cDG-GL and NSFR.IR-cDG-GLL (BASELINE)
 #-----------------------------------------------------
-if(True):
+if(False):
     reinit_inputs()
     data_directory_base="/Users/Julien/NarvalFiles/2023_JCP/"
     date_for_runs="."
@@ -402,22 +661,23 @@ if(True):
     data_directory_base="/Users/Julien/NarvalFiles/2023_JCP/"
     date_for_runs="."
     figure_subdirectory="2023_JCP"
-    figure_title = "TGV at Re$_{\\infty}=1600$, P$3$, $256^{3}$ DOFs, CFL$=0.30$" # comment to turn off
+    # figure_title = "TGV at Re$_{\\infty}=1600$, P$3$, $256^{3}$ DOFs, CFL$=0.30$" # comment to turn off
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$3$, $256^{3}$ DOFs" # comment to turn off
     figure_filename_postfix = "256_verification"
     legend_inside_input=True
     #-----------------------------------------------------
     subdirectories.append("verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p3_procs1024")
     filenames.append("turbulent_quantities.txt")
-    # labels.append("$c_{DG}$ NSFR.IR-GL | CFL$=0.30$")
-    labels.append("$c_{DG}$ NSFR.IR-GL")
+    labels.append("$c_{DG}$ NSFR.IR-GL, CFL$=0.30$")
+    # labels.append("$c_{DG}$ NSFR.IR-GL")
     black_line_flag.append(False)
     dashed_line_flag.append(False)
-    # #-----------------------------------------------------
-    # subdirectories.append("verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs0256_p3_procs1024")
-    # filenames.append("turbulent_quantities.txt")
-    # labels.append("$c_{DG}$ NSFR.IR-GL-Roe | CFL$=0.15$")
-    # black_line_flag.append(False)
-    # dashed_line_flag.append(True)
+    #-----------------------------------------------------
+    subdirectories.append("verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs0256_p3_procs1024")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GL-Roe, CFL$=0.15$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(True)
     #-----------------------------------------------------
     plot_periodic_turbulence(
         figure_subdirectory,
@@ -442,11 +702,11 @@ if(True):
         solid_and_dashed_lines=False,
         plot_numerical_dissipation=True)
     #-----------------------------------------------------
-exit()
+
 #=====================================================
 # DOFs: 96^3 | High order poly instabilities
 #-----------------------------------------------------
-if(True):
+if(False):
     # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
     reinit_inputs()
     data_directory_base="/Users/Julien/NarvalFiles/2023_JCP/"
@@ -496,12 +756,11 @@ if(True):
         legend_fontSize_input=14,
         solid_and_dashed_lines=False)
     #-----------------------------------------------------
-exit()
 
 #=====================================================
 # DOFs: 96^3 | NSFR.IR-cDG (GL and GLL) WITH OVERINTEGRATION
 #-----------------------------------------------------
-if(True):
+if(False):
     reinit_inputs()
     data_directory_base="/Users/Julien/NarvalFiles/2023_JCP/"
     date_for_runs="."
@@ -559,7 +818,7 @@ if(True):
 #=====================================================
 # DOFs: 96^3 | Flux Nodes (cDG NSFR vs Strong DG)
 #-----------------------------------------------------
-if(True):
+if(False):
     reinit_inputs()
     data_directory_base="/Users/Julien/NarvalFiles/2023_JCP/"
     date_for_runs="."
@@ -619,7 +878,7 @@ if(True):
 #=====================================================
 # DOFs: 96^3 | Basic SGS Models on GLL flux nodes (no filter width modifications)
 #-----------------------------------------------------
-if(True):
+if(False):
     # batch_labels = [ \
     # "$c_{DG}$ NSFR", \
     # "$c_{DG}$ NSFR.IR-Smag. $C_{S}=0.10$", \
@@ -691,7 +950,7 @@ if(True):
 #=====================================================
 # DOFs: 96^3 | Basic SGS Models on GL flux nodes (no filter width modifications)
 #-----------------------------------------------------
-if(True):
+if(False):
     # batch_labels = [ \
     # "$c_{DG}$ NSFR", \
     # "$c_{DG}$ NSFR.IR-Smag. $C_{S}=0.10$", \
@@ -769,7 +1028,7 @@ if(True):
 #=====================================================
 # DOFs: 96^3 | Upwind dissipation on GL flux nodes
 #-----------------------------------------------------
-if(True):
+if(False):
     reinit_inputs()
     data_directory_base="/Users/Julien/NarvalFiles/2023_JCP/"
     date_for_runs="."
@@ -827,7 +1086,7 @@ if(True):
 #=====================================================
 # DOFs: 96^3 | Upwind dissipation on GLL flux nodes
 #-----------------------------------------------------
-if(True):
+if(False):
     reinit_inputs()
     data_directory_base="/Users/Julien/NarvalFiles/2023_JCP/"
     date_for_runs="."
@@ -885,7 +1144,7 @@ if(True):
 #=====================================================
 # DOFs: 96^3 | Filter width stabilization
 #-----------------------------------------------------
-if(True):
+if(False):
     reinit_inputs()
     data_directory_base="/Users/Julien/NarvalFiles/2023_JCP/"
     date_for_runs="."
@@ -981,7 +1240,7 @@ if(True):
 #=====================================================
 # DOFs: 96^3 | Filter width stabilization
 #-----------------------------------------------------
-if(True):
+if(False):
     reinit_inputs()
     data_directory_base="/Users/Julien/NarvalFiles/2023_JCP/"
     date_for_runs="."
@@ -1166,7 +1425,7 @@ if(True):
 #=====================================================
 # DOFs: 96^3 | NSFR Correction Parameter
 #-----------------------------------------------------
-if(True):
+if(False):
     reinit_inputs()
     data_directory_base="/Users/Julien/NarvalFiles/2023_JCP/"
     date_for_runs="."
@@ -1224,7 +1483,7 @@ if(True):
 #=====================================================
 # DOFs: 96^3 | NSFR Two-Point-Flux
 #-----------------------------------------------------
-if(True):
+if(False):
     reinit_inputs()
     data_directory_base="/Users/Julien/NarvalFiles/2023_JCP/"
     date_for_runs="."
@@ -1282,7 +1541,7 @@ if(True):
 #=====================================================
 # DOFs: ALL | NSFR CONVERGENCE
 #-----------------------------------------------------
-if(True):
+if(False):
     reinit_inputs()
     data_directory_base="/Users/Julien/NarvalFiles/2023_JCP/"
     date_for_runs="."
@@ -1340,7 +1599,7 @@ if(True):
 #=====================================================
 # DOFs: ALL | Strong DG CONVERGENCE
 #-----------------------------------------------------
-if(True):
+if(False):
     reinit_inputs()
     data_directory_base="/Users/Julien/NarvalFiles/2023_JCP/"
     date_for_runs="."
