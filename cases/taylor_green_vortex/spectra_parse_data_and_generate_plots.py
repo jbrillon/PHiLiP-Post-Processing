@@ -11,6 +11,13 @@ from generate_spectra_files import generate_spectra_file_from_flow_field_file
 # load submodules
 sys.path.append(CURRENT_PATH+"../../submodules/quickplotlib/lib"); import quickplotlib as qp
 #-----------------------------------------------------
+from sys import platform
+if platform == "linux" or platform == "linux2":
+    # linux
+    filesystem="/media/julien/Samsung_T5/"
+elif platform == "darwin":
+    # OS X
+    filesystem="/Volumes/Samsung_T5/"
 #=====================================================
 # Helper functions
 #=====================================================
@@ -22,7 +29,7 @@ def append_to_plot(x_,y_,label_):
 def batch_append_to_plot(paths_,labels_,filename):
     global x,y,labels
     for i,path in enumerate(paths_):
-        spectra = np.loadtxt(path+filename)
+        spectra = np.loadtxt(filesystem+path+filename)
         append_to_plot(spectra[:,0],spectra[:,1],labels_[i])
 #-----------------------------------------------------
 def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
@@ -166,10 +173,10 @@ fig_dir_input="/Users/Julien/PHiLiP-Post-Processing/cases/taylor_green_vortex/fi
 # =====================================================
 if(False):
     batch_paths = [ \
-    "/Users/Julien/NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512/", \
-    "/Users/Julien/NarvalFiles/2023_JCP/over_integration_accuracy_strong_DG/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-4_dofs096_p5_CFL-0.10_procs512/", \
-    "/Users/Julien/NarvalFiles/2023_JCP/over_integration_accuracy_strong_DG/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-2_dofs096_p5_CFL-0.10_procs512/", \
-    "/Users/Julien/NarvalFiles/2023_JCP/filter_width_stabilization/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/over_integration_accuracy_strong_DG/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-4_dofs096_p5_CFL-0.10_procs512/", \
+    "NarvalFiles/2023_JCP/over_integration_accuracy_strong_DG/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-2_dofs096_p5_CFL-0.10_procs512/", \
+    "NarvalFiles/2023_JCP/filter_width_stabilization/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-0_dofs096_p5_procs512/", \
     ]
     batch_labels = [ \
     "Strong DG-Roe-GL-OI-6", \
@@ -181,10 +188,10 @@ if(False):
 # =====================================================
 if(False):
     batch_paths = [ \
-    "/Users/Julien/NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512/", \
-    "/Users/Julien/NarvalFiles/2023_JCP/filter_width_stabilization/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-0_dofs096_p5_procs512/", \
-    "/Users/Julien/NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
-    "/Users/Julien/NarvalFiles/2023_JCP/upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/filter_width_stabilization/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs096_p5_procs512/", \
     ]
     batch_labels = [ \
     "Strong DG-Roe-GL-OI", \
@@ -196,8 +203,8 @@ if(False):
 # =====================================================
 if(False):
     batch_paths = [ \
-    "/Users/Julien/NarvalFiles/2023_JCP/upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs096_p5_procs512/", \
-    "/Users/Julien/NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512/", \
     ]
     batch_labels = [ \
     "$c_{DG}$ NSFR.IR-GL-Roe", \
@@ -207,8 +214,8 @@ if(False):
 # =====================================================
 if(True):
     batch_paths = [ \
-    "/Users/Julien/NarvalFiles/2023_JCP/verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p3_procs1024/", \
-    "/Users/Julien/NarvalFiles/2023_JCP/verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs0256_p3_procs1024/", \
+    "NarvalFiles/2023_JCP/verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p3_procs1024/", \
+    "NarvalFiles/2023_JCP/verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs0256_p3_procs1024/", \
     ]
     batch_labels = [ \
     "$c_{DG}$ NSFR.IR-GL, CFL$=0.30$", \
@@ -218,8 +225,8 @@ if(True):
 # =====================================================
 if(False):
     batch_paths = [ \
-    "/Users/Julien/NarvalFiles/2023_JCP/high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-8_dofs064_p7_procs512/", \
-    "/Users/Julien/NarvalFiles/2023_JCP/high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs064_p7_procs512/", \
+    "NarvalFiles/2023_JCP/high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-8_dofs064_p7_procs512/", \
+    "NarvalFiles/2023_JCP/high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs064_p7_procs512/", \
     ]
     batch_labels = [ \
     "Strong DG-Roe-GL-OI", \
@@ -229,8 +236,8 @@ if(False):
 # =====================================================
 if(False):
     batch_paths = [ \
-    "/Users/Julien/NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
-    "/Users/Julien/NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512/", \
     ]
     batch_labels = [ \
     "$c_{DG}$ NSFR.IR-GL", \
@@ -239,10 +246,10 @@ if(False):
     batch_plot_spectra(96,"baseline_scheme",batch_paths,batch_labels,title_off=title_off_input,figure_directory=fig_dir_input)
 # =====================================================
     batch_paths = [ \
-    "/Users/Julien/NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
-    "/Users/Julien/NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512/", \
-    "/Users/Julien/NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512/", \
-    "/Users/Julien/NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GLL_OI-6_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GLL_OI-6_dofs096_p5_procs512/", \
     ]
     batch_labels = [ \
     "$c_{DG}$ NSFR.IR-GL", \
@@ -254,11 +261,11 @@ if(False):
 # =====================================================
 if(False):
     batch_paths = [ \
-    "/Users/Julien/NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512/", \
-    "/Users/Julien/NarvalFiles/2023_JCP/sgs_model_GLL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512/", \
-    "/Users/Julien/NarvalFiles/2023_JCP/sgs_model_GLL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.18_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512/", \
-    "/Users/Julien/NarvalFiles/2023_JCP/sgs_model_GLL_flux_nodes/viscous_TGV_LES_WALE_MC-0.50_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512/", \
-    "/Users/Julien/NarvalFiles/2023_JCP/sgs_model_GLL_flux_nodes/viscous_TGV_LES_VRMN_MC-0.081_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/sgs_model_GLL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/sgs_model_GLL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.18_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/sgs_model_GLL_flux_nodes/viscous_TGV_LES_WALE_MC-0.50_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/sgs_model_GLL_flux_nodes/viscous_TGV_LES_VRMN_MC-0.081_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512/", \
     ]
     batch_labels = [ \
     "$c_{DG}$ NSFR.IR-GLL", \
@@ -271,12 +278,12 @@ if(False):
 # =====================================================
 if(False):
     batch_paths = [ \
-    "/Users/Julien/NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
-    "/Users/Julien/NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
-    "/Users/Julien/NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.18_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
-    "/Users/Julien/NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_WALE_MC-0.50_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
-    "/Users/Julien/NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_VRMN_MC-0.081_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
-    "/Users/Julien/NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.18_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512_filter_width_flad_and_gassner/", \
+    "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.18_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_WALE_MC-0.50_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_VRMN_MC-0.081_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.18_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512_filter_width_flad_and_gassner/", \
     ]
     batch_labels = [ \
     "$c_{DG}$ NSFR.IR-GL", \
@@ -290,10 +297,10 @@ if(False):
 # =====================================================
 if(False):
     batch_paths = [ \
-    "/Users/Julien/NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
-    "/Users/Julien/NarvalFiles/2023_JCP/upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-LxF_GL_OI-0_dofs096_p5_procs512/", \
-    "/Users/Julien/NarvalFiles/2023_JCP/upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs096_p5_procs512/", \
-    "/Users/Julien/NarvalFiles/2023_JCP/upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-L2R_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-LxF_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-L2R_GL_OI-0_dofs096_p5_procs512/", \
     ]
     batch_labels = [ \
     "$c_{DG}$ NSFR.IR-GL", \
@@ -305,10 +312,10 @@ if(False):
 # =====================================================
 if(False):
     batch_paths = [ \
-    "/Users/Julien/NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512/", \
-    "/Users/Julien/NarvalFiles/2023_JCP/upwind_dissipation_GLL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-LxF_GLL_OI-0_dofs096_p5_procs512/", \
-    "/Users/Julien/NarvalFiles/2023_JCP/upwind_dissipation_GLL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GLL_OI-0_dofs096_p5_procs512/", \
-    "/Users/Julien/NarvalFiles/2023_JCP/upwind_dissipation_GLL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-L2R_GLL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/upwind_dissipation_GLL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-LxF_GLL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/upwind_dissipation_GLL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GLL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/upwind_dissipation_GLL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-L2R_GLL_OI-0_dofs096_p5_procs512/", \
     ]
     batch_labels = [ \
     "$c_{DG}$ NSFR.IR-GLL", \
@@ -320,9 +327,9 @@ if(False):
 # =====================================================
 if(False):
     batch_paths = [ \
-    "/Users/Julien/NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512/", \
-    "/Users/Julien/NarvalFiles/2023_JCP/filter_width_stabilization/viscous_TGV_LES_SMAG_MC-0.18_std_strong_DG_Roe_GL_OI-0_dofs096_p5_procs512/", \
-    "/Users/Julien/NarvalFiles/2023_JCP/filter_width_stabilization/viscous_TGV_LES_SMAG_MC-0.18_std_strong_DG_Roe_GL_OI-0_dofs096_p5_procs512_filter_width_flad_and_gassner/", \
+    "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/filter_width_stabilization/viscous_TGV_LES_SMAG_MC-0.18_std_strong_DG_Roe_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/filter_width_stabilization/viscous_TGV_LES_SMAG_MC-0.18_std_strong_DG_Roe_GL_OI-0_dofs096_p5_procs512_filter_width_flad_and_gassner/", \
     ]
     batch_labels = [ \
     "Strong DG-Roe-GL-OI", \
@@ -333,10 +340,10 @@ if(False):
 # =====================================================
 if(False):
     batch_paths = [ \
-    "/Users/Julien/NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
-    "/Users/Julien/NarvalFiles/2023_JCP/correction_parameter/viscous_TGV_ILES_NSFR_cHU_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
-    "/Users/Julien/NarvalFiles/2023_JCP/correction_parameter/viscous_TGV_ILES_NSFR_cPlus_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
-    "/Users/Julien/NarvalFiles/2023_JCP/correction_parameter/viscous_TGV_ILES_NSFR_cSD_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/correction_parameter/viscous_TGV_ILES_NSFR_cHU_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/correction_parameter/viscous_TGV_ILES_NSFR_cPlus_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/correction_parameter/viscous_TGV_ILES_NSFR_cSD_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
     ]
     batch_labels = [ \
     "$c_{DG}$ NSFR.IR-GL", \
@@ -348,10 +355,10 @@ if(False):
 # =====================================================
 if(False):
     batch_paths = [ \
-    "/Users/Julien/NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
-    "/Users/Julien/NarvalFiles/2023_JCP/two_point_flux/viscous_TGV_ILES_NSFR_cDG_KG_2PF_GL_OI-0_dofs096_p5_procs512/", \
-    "/Users/Julien/NarvalFiles/2023_JCP/two_point_flux/viscous_TGV_ILES_NSFR_cDG_CH_2PF_GL_OI-0_dofs096_p5_procs512/", \
-    "/Users/Julien/NarvalFiles/2023_JCP/two_point_flux/viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/two_point_flux/viscous_TGV_ILES_NSFR_cDG_KG_2PF_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/two_point_flux/viscous_TGV_ILES_NSFR_cDG_CH_2PF_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/two_point_flux/viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GL_OI-0_dofs096_p5_procs512/", \
     ]
     batch_labels = [ \
     "$c_{DG}$ NSFR.IR-GL", \
@@ -363,10 +370,10 @@ if(False):
 # =====================================================
 if(False):
     batch_paths = [ \
-    "/Users/Julien/NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
-    "/Users/Julien/NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs048_p5_procs64/", \
-    "/Users/Julien/NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs024_p5_procs16/", \
-    "/Users/Julien/NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs012_p5_procs16/", \
+    "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs048_p5_procs64/", \
+    "NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs024_p5_procs16/", \
+    "NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs012_p5_procs16/", \
     ]
     batch_labels = [ \
     "$96^{3}$ DOFs, $c_{DG}$ NSFR.IR-GL", \
@@ -378,11 +385,11 @@ if(False):
 # =====================================================
 if(False):
     batch_paths = [ \
-    "/Users/Julien/NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512/", \
-    "/Users/Julien/NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs048_p5_procs64/", \
-    "/Users/Julien/NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-0_dofs048_p5_procs64/", \
-    "/Users/Julien/NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs024_p5_procs16/", \
-    "/Users/Julien/NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs012_p5_procs16/", \
+    "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs048_p5_procs64/", \
+    "NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-0_dofs048_p5_procs64/", \
+    "NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs024_p5_procs16/", \
+    "NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs012_p5_procs16/", \
     ]
     batch_labels = [ \
     "$96^{3}$ DOFs, Strong DG-Roe-GL-OI", \
@@ -394,10 +401,10 @@ if(False):
     batch_plot_spectra("all","strong_DG_convergence",batch_paths,batch_labels,title_off=title_off_input,figure_directory=fig_dir_input)
 # # =====================================================
 # batch_paths = [ \
-# "/Users/Julien/NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
-# "/Users/Julien/NarvalFiles/2023_JCP//", \
-# "/Users/Julien/NarvalFiles/2023_JCP//", \
-# "/Users/Julien/NarvalFiles/2023_JCP//", \
+# "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+# "NarvalFiles/2023_JCP//", \
+# "NarvalFiles/2023_JCP//", \
+# "NarvalFiles/2023_JCP//", \
 # ]
 # batch_labels = [ \
 # "$c_{DG}$ NSFR-GL", \
