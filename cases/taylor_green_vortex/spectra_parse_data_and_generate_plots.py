@@ -48,9 +48,9 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
         lnstl_input_store = ['solid','solid','dashed','solid','dashed','solid','dashed','solid']
 
     if(nDOF_=="all"):
-        title_label = "TGV at $t=8.0$"
+        title_label = "TKE Spectra at $t^{*}=8.0$"
     else:
-        title_label = "$%i^3$ DOFs, TGV at $t=8.0$" % nDOF_
+        title_label = "TKE Spectra at $t^{*}=8.0$ ($%i^3$ DOFs)" % nDOF_
     figure_filename = "spectra_t8_%s" % (str(nDOF_))
     if(figure_filename_post_fix!=""):
         figure_filename += "_%s" % (figure_filename_post_fix)
@@ -66,7 +66,7 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
         title_label=title_label,
         fig_directory=figure_directory,figure_filename=figure_filename,log_axes="both",figure_filetype="pdf",
         nlegendcols=1,
-        xlimits=[2e0,1e2],ylimits=[1e-7,3e-2],
+        xlimits=[2e0,1e2],ylimits=[1e-5,3e-2],
         markers=False,legend_on=True,legend_labels_tex=labels,
         which_lines_black=[0],
         # which_lines_markers=[0],
@@ -82,7 +82,7 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
             title_label=title_label,
             fig_directory=figure_directory,figure_filename=figure_filename,log_axes="both",figure_filetype="pdf",
             nlegendcols=1,
-            xlimits=[2e0,10e2],ylimits=[1e-7,3e-2],
+            xlimits=[2e0,1e2],ylimits=[1e-5,3e-2],
             markers=False,legend_on=True,legend_labels_tex=labels,
             which_lines_black=[0],
             # which_lines_markers=[0],
@@ -104,9 +104,9 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
     #     # which_lines_only_markers=[1,2,3],which_lines_dashed=[0]
     #     )
     if(nDOF_=="all"):
-        title_label = "TGV at $t=9.0$"
+        title_label = "TKE Spectra at $t^{*}=9.0$"
     else:
-        title_label = "$%i^3$ DOFs, TGV at $t=9.0$" % nDOF_
+        title_label = "TKE Spectra at $t^{*}=9.0$ ($%i^3$ DOFs)" % nDOF_
     figure_filename = "spectra_t9_%s" % (str(nDOF_))
     if(figure_filename_post_fix!=""):
         figure_filename += "_%s" % (figure_filename_post_fix)
@@ -124,7 +124,7 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
         title_label=title_label,
         fig_directory=figure_directory,figure_filename=figure_filename,log_axes="both",figure_filetype="pdf",
         nlegendcols=1,
-        xlimits=[2e0,1e2],ylimits=[1e-7,3e-2],
+        xlimits=[2e0,1e2],ylimits=[1e-5,3e-2],
         markers=False,legend_on=True,legend_labels_tex=labels,
         which_lines_black=[0],
         # which_lines_markers=[0],
@@ -140,7 +140,7 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
             title_label=title_label,
             fig_directory=figure_directory,figure_filename=figure_filename,log_axes="both",figure_filetype="pdf",
             nlegendcols=1,
-            xlimits=[2e0,10e2],ylimits=[1e-7,3e-2],
+            xlimits=[2e0,1e2],ylimits=[1e-5,3e-2],
             markers=False,legend_on=True,legend_labels_tex=labels,
             which_lines_black=[0],
             transparent_legend=True,legend_border_on=False,grid_lines_on=False,lnstl_input=lnstl_input_store,
@@ -166,10 +166,28 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
 #=====================================================
 global x,y,labels
 x=[];y=[];labels=[];
-title_off_input=True
+title_off_input=False
 # fig_dir_input="figures"
 # fig_dir_input="/Users/Julien/julien_phd/presentations/slides/wip_paper/20221205-AIAA/figures"
 fig_dir_input="/Users/Julien/PHiLiP-Post-Processing/cases/taylor_green_vortex/figures/2023_JCP"
+# =====================================================
+if(True):
+    batch_paths = [ \
+    "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512/", \
+    ]
+    batch_labels = [ \
+    "Strong DG-Roe-GL-OI", \
+    ]
+    batch_plot_spectra(96,"p5_OI_vs_SF_0",batch_paths,batch_labels,solid_and_dashed_lines=False,title_off=title_off_input,figure_directory=fig_dir_input)
+    batch_paths = [ \
+    "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+    ]
+    batch_labels = [ \
+    "Strong DG-Roe-GL-OI", \
+    "$c_{DG}$ NSFR.IR-GL", \
+    ]
+    batch_plot_spectra(96,"p5_OI_vs_SF_1",batch_paths,batch_labels,solid_and_dashed_lines=False,title_off=title_off_input,figure_directory=fig_dir_input)
 # =====================================================
 if(False):
     batch_paths = [ \
@@ -212,7 +230,7 @@ if(False):
     ]
     batch_plot_spectra(96,"cDG_roe_vs_sDG",batch_paths,batch_labels,title_off=title_off_input,figure_directory=fig_dir_input)
 # =====================================================
-if(True):
+if(False):
     batch_paths = [ \
     "NarvalFiles/2023_JCP/verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p3_procs1024/", \
     "NarvalFiles/2023_JCP/verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs0256_p3_procs1024/", \

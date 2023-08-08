@@ -19,8 +19,16 @@ import matplotlib;from matplotlib.lines import Line2D
 #-----------------------------------------------------
 # define functions
 #-----------------------------------------------------
-def get_dissipation_discrete(time,kinetic_energy):
-    return -np.gradient(kinetic_energy,time)
+from scipy.interpolate import splrep, splev
+def get_dissipation_discrete(time,kinetic_energy,smoothing=False):
+    if(smoothing):
+        # smoothing if noisy
+        dissipation_rate_val = splrep(time,kinetic_energy,k=5,s=0.0000001)
+        dissipation_rate_val = -splev(time,dissipation_rate_val,der=1)
+        return dissipation_rate_val
+    else:
+        dissipation_rate_val = -np.gradient(kinetic_energy,time)
+        return dissipation_rate_val
 #-----------------------------------------------------
 def plot_periodic_turbulence(
     figure_subdirectory,
@@ -49,6 +57,8 @@ def plot_periodic_turbulence(
     solid_and_dashed_lines=False,
     reference_result_author="Dairay et al.",
     plot_numerical_dissipation=False,
+    plot_PHiLiP_DNS_result_as_reference=False,
+    dissipation_rate_smoothing=[],
     ):
     # plotting parameters store
     labels_store = []
@@ -121,6 +131,27 @@ def plot_periodic_turbulence(
             mrkr_input_store.append('None')
         if(lnstl_input!=[]):
             lnstl_input_store.append('solid') # supported values are '-', '--', '-.', ':', 'None', ' ', '', 'solid', 'dashed', 'dashdot', 'dotted'
+    elif(plot_PHiLiP_DNS_result_as_reference):
+        labels_store.append("DNS ($256^3$ DOFs)")
+        path_to_reference_result=CURRENT_PATH+"../cases/taylor_green_vortex/data/brillon"
+        filename=path_to_reference_result+"/"+"turbulent_quantities"+".txt"
+        time, kinetic_energy, enstrophy, vorticity_based_dissipation, pressure_dilatation_based_dissipation, strain_rate_based_dissipation, deviatoric_strain_rate_based_dissipation = np.loadtxt(filename,skiprows=1,dtype=np.float64,unpack=True)
+        time_store.append(time)
+        kinetic_energy_store.append(kinetic_energy)
+        # -- compute dissipation
+        dissipation = get_dissipation_discrete(time,kinetic_energy)
+        dissipation_store.append(dissipation)
+        enstrophy_store.append(enstrophy)
+        vorticity_based_dissipation_store.append(vorticity_based_dissipation)
+        which_lines_black_input.append(i_curve)
+        # which_lines_dashed_input.append(i_curve) # uncomment for dashed DNS result
+        i_curve += 1
+        if(clr_input!=[]):
+            clr_input_store.append('k')
+        if(mrkr_input!=[]):
+            mrkr_input_store.append('None')
+        if(lnstl_input!=[]):
+            lnstl_input_store.append('solid') # supported values are '-', '--', '-.', ':', 'None', ' ', '', 'solid', 'dashed', 'dashdot', 'dotted'
     # PHiLiP Results
     number_of_result_curves = len(filenames)
     for i in range(0,number_of_result_curves):
@@ -137,9 +168,19 @@ def plot_periodic_turbulence(
         time_store.append(time)
         kinetic_energy_store.append(kinetic_energy)
         # -- compute dissipation
-        dissipation = get_dissipation_discrete(time,kinetic_energy)
-        dissipation_store.append(dissipation)
+        if(dissipation_rate_smoothing!=[]):
+            dissipation = get_dissipation_discrete(time,kinetic_energy,dissipation_rate_smoothing[i])
+            dissipation_store.append(dissipation)
+        else:
+            dissipation = get_dissipation_discrete(time,kinetic_energy)
+            dissipation_store.append(dissipation)
         # -- store other quantities
+        if(dissipation_rate_smoothing!=[]):
+            # smooth this too for the numerical dissipation plots
+            enstrophy = splrep(time,enstrophy,k=5,s=0.0000001)
+            enstrophy = splev(time,enstrophy)
+            vorticity_based_dissipation = splrep(time,vorticity_based_dissipation,k=5,s=0.0000001)
+            vorticity_based_dissipation = splev(time,vorticity_based_dissipation)
         enstrophy_store.append(enstrophy)
         vorticity_based_dissipation_store.append(vorticity_based_dissipation)
         pressure_dilatation_based_dissipation_store.append(pressure_dilatation_based_dissipation)
@@ -257,6 +298,10 @@ def plot_periodic_turbulence(
         ls='dotted'
         second_leg_elements_input.append(Line2D([0],[0], label="$\\varepsilon\\left(K^{*}\\right)-\\varepsilon\\left(\\zeta^{*}\\right)$", color='grey', marker='None', markersize=6, mfc='None', linestyle=ls))
         
+        index_shift_for_ref_result = 0 # initialize
+        if(plot_reference_result):
+            index_shift_for_ref_result = -1 # minus 1 because no reference result
+
         # results
         for i in range(0,number_of_result_curves+1): # +1 for reference result
             # ls=lnstl_input_dummy[i]
@@ -272,16 +317,16 @@ def plot_periodic_turbulence(
             mrkr_input_store_numerical_dissipation.append(mk)
             lnstl_input_store_numerical_dissipation.append(ls)
 
-            if(i>0):
+            if((plot_reference_result and i>0) or (plot_PHiLiP_DNS_result_as_reference)):
                 # molecular dissipation
-                KE_molecular_and_numerical_dissipation_y_store.append(vorticity_based_dissipation_store[i-1])
+                KE_molecular_and_numerical_dissipation_y_store.append(vorticity_based_dissipation_store[i+index_shift_for_ref_result])
                 KE_molecular_and_numerical_dissipation_x_store.append(time_store[i])
                 ls='dashed'
                 clr_input_store_numerical_dissipation.append(lc)
                 mrkr_input_store_numerical_dissipation.append(mk)
                 lnstl_input_store_numerical_dissipation.append(ls)
                 # numerical dissipation
-                KE_molecular_and_numerical_dissipation_y_store.append(dissipation_store[i] - vorticity_based_dissipation_store[i-1]) # minus 1 because no reference result
+                KE_molecular_and_numerical_dissipation_y_store.append(dissipation_store[i] - vorticity_based_dissipation_store[i+index_shift_for_ref_result])
                 KE_molecular_and_numerical_dissipation_x_store.append(time_store[i])
                 ls='dotted'
                 clr_input_store_numerical_dissipation.append(lc)
@@ -317,7 +362,8 @@ def plot_periodic_turbulence(
                     lnstl_input=lnstl_input_store_numerical_dissipation,
                     legend_fontSize=legend_fontSize_input,
                     legend_location="upper left",
-                    second_leg_elements_input=second_leg_elements_input)
+                    second_leg_elements_input=second_leg_elements_input,
+                    second_leg_anchor=[0.0,0.5])
 
     if(plot_reference_result and reference_result_author=="Vermeire"):
         # DNS - enstrophy
