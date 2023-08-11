@@ -19,7 +19,58 @@ dashed_line_flag, figure_filename_postfix, figure_title, \
 ylimits_kinetic_energy_input, ylimits_dissipation_input, \
 log_axes_input, legend_on_input, legend_inside_input, \
 plot_reference_result, nlegendcols_input, \
-figure_subdirectory, data_directory_base, figure_directory_base
+figure_subdirectory, data_directory_base, figure_directory_base, \
+smoothing_input
+#=====================================================
+def plot_for_presentation(
+    subdirectories_for_plot,
+    labels_for_plot,
+    black_line_flag_for_plot,
+    dashed_line_flag_for_plot):
+    global subdirectories, filenames, labels, black_line_flag, \
+    dashed_line_flag, figure_filename_postfix, figure_title, \
+    ylimits_kinetic_energy_input, ylimits_dissipation_input, \
+    log_axes_input, legend_on_input, legend_inside_input, \
+    plot_reference_result, nlegendcols_input, \
+    figure_subdirectory, data_directory_base, figure_directory_base, \
+    smoothing_input
+    #-----------------------------------------------------
+    for i in range(0,len(subdirectories_for_plot)):
+        figure_filename_postfix_input=figure_filename_postfix+"_%i" % i
+        #-----------------------------------------------------
+        subdirectories.append(subdirectories_for_plot[i])
+        filenames.append("turbulent_quantities.txt")
+        labels.append(labels_for_plot[i])
+        black_line_flag.append(black_line_flag_for_plot[i])
+        dashed_line_flag.append(dashed_line_flag_for_plot[i])
+        #-----------------------------------------------------
+        plot_periodic_turbulence(
+            figure_subdirectory,
+            subdirectories,
+            filenames,
+            labels,
+            black_line_flag,
+            dashed_line_flag,
+            figure_directory_base,
+            data_directory_base,
+            False,
+            figure_filename_postfix_input,
+            figure_title,
+            log_axes_input,
+            legend_on_input,
+            legend_inside_input,
+            nlegendcols_input,
+            # clr_input=clr_input,
+            transparent_legend_input=True,
+            tmax=10.0,
+            legend_fontSize_input=14,
+            solid_and_dashed_lines=False,
+            plot_kinetic_energy=False,
+            plot_enstrophy=False,
+            plot_numerical_dissipation=True,
+            plot_PHiLiP_DNS_result_as_reference=True,
+            dissipation_rate_smoothing=smoothing_input)
+    #-----------------------------------------------------
 #=====================================================
 def reinit_inputs():
     global subdirectories, filenames, labels, black_line_flag, \
@@ -27,7 +78,8 @@ def reinit_inputs():
     ylimits_kinetic_energy_input, ylimits_dissipation_input, \
     log_axes_input, legend_on_input, legend_inside_input, \
     plot_reference_result, nlegendcols_input, \
-    figure_subdirectory, data_directory_base, figure_directory_base
+    figure_subdirectory, data_directory_base, figure_directory_base, \
+    smoothing_input
 
     subdirectories = []
     filenames = []
@@ -47,13 +99,127 @@ def reinit_inputs():
     data_directory_base = "/Users/Julien/julien_phd/post_processing/data/taylor_green_vortex"
     # figure_directory_base = "/Users/Julien/julien_phd/post_processing/figures/taylor_green_vortex"
     figure_directory_base = "figures"
+    smoothing_input = []
 #=====================================================
 #-----------------------------------------------------
+#=====================================================
+# DOFs: 96^3 | Correction Parameter Accuracy
+#-----------------------------------------------------
+if(False):
+    #-----------------------------------------------------
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="2023_JCP"
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL=$0.10$" # comment to turn off
+    figure_filename_postfix = "96_p5_correction_parameter"
+    legend_inside_input=True
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "correction_parameter/viscous_TGV_ILES_NSFR_cPlus_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "correction_parameter/viscous_TGV_ILES_NSFR_cHU_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "correction_parameter/viscous_TGV_ILES_NSFR_cSD_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    ]
+    # labels
+    labels_for_plot=[\
+    "$c_{DG}$ NSFR.IR-GL",\
+    "$c_{+}$ NSFR.IR-GL",\
+    "$c_{HU}$ NSFR.IR-GL",\
+    "$c_{SD}$ NSFR.IR-GL",\
+    ]
+    black_line_flag_for_plot=[False,False,False,False]
+    dashed_line_flag_for_plot=[False,False,False,False]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot)
+#=====================================================
+# DOFs: 96^3 | Correction Parameter Time-Step
+#-----------------------------------------------------
+if(False):
+    #-----------------------------------------------------
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="2023_JCP"
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs" # comment to turn off
+    figure_filename_postfix = "96_p5_correction_parameter_cfl_advantage"
+    legend_inside_input=True
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "time_step_advantage_with_physical_check/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.26_procs512",\
+    "correction_parameter/viscous_TGV_ILES_NSFR_cPlus_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "time_step_advantage_with_physical_check/viscous_TGV_ILES_NSFR_cPlus_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.36_procs512",\
+    "flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512",\
+    "time_step_advantage_strong_DG/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_CFL-0.14_procs512",\
+    ] 
+    # labels
+    labels_for_plot=[\
+    "$c_{DG}$ NSFR.IR-GL, CFL=$0.10$",\
+    "$c_{DG}$ NSFR.IR-GL, CFL=$0.26$",\
+    "$c_{+}$ NSFR.IR-GL, CFL=$0.10$",\
+    "$c_{+}$ NSFR.IR-GL, CFL=$0.36$",\
+    "Strong DG-Roe-GL-OI, CFL=$0.10$",\
+    "Strong DG-Roe-GL-OI, CFL=$0.14$",\
+    ]
+    black_line_flag_for_plot=[\
+    False,\
+    False,\
+    False,\
+    False,\
+    False,\
+    False,\
+    ]
+    dashed_line_flag_for_plot=[\
+    False,\
+    True,\
+    False,\
+    True,\
+    False,\
+    True,\
+    ]
+    smoothing_input = [\
+    True,\
+    True,\
+    True,\
+    True,\
+    True,\
+    True,\
+    ]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot)
+#=====================================================
+# DOFs: 96^3 | Over-integration vs Split Form De-aliasing strategy
+#-----------------------------------------------------
+if(False):
+    #-----------------------------------------------------
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    # /Volumes/Samsung_T5/NarvalFiles
+    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="2023_JCP"
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL=$0.10$" # comment to turn off
+    figure_filename_postfix = "96_p5_OI_vs_SF"
+    legend_inside_input=True
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512",\
+    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    ] 
+    # labels
+    labels_for_plot=[\
+    "Strong DG-Roe-GL-OI",\
+    "$c_{DG}$ NSFR.IR-GL",\
+    ]
+    black_line_flag_for_plot=[False,False]
+    dashed_line_flag_for_plot=[False,False]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot)
 
 #=====================================================
 # DOFs: 96^3 | Time step advantage with physical solution check
 #-----------------------------------------------------
-if(True):
+if(False):
     #-----------------------------------------------------
     # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
     reinit_inputs()
@@ -64,7 +230,6 @@ if(True):
     figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs" # comment to turn off
     figure_filename_postfix = "96_p5_cPlus_cfl_physically_consistent"
     legend_inside_input=True
-    
     #-----------------------------------------------------
     subdirectories.append("time_step_advantage_with_physical_check/viscous_TGV_ILES_NSFR_cPlus_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.36_procs512")
     filenames.append("turbulent_quantities.txt")
@@ -581,7 +746,7 @@ if(False):
 #=====================================================
 # DOFs: 64^3 | Over-integration stabilization
 #-----------------------------------------------------
-if(False):
+if(True):
     # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
     reinit_inputs()
     data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
@@ -590,73 +755,32 @@ if(False):
     figure_title = "TGV at Re$_{\\infty}=1600$, P$7$, $64^{3}$ DOFs, CFL$=0.10$" # comment to turn off
     figure_filename_postfix = "64_p7_overintegration_stability"
     legend_inside_input=True
-    #-----------------------------------------------------
-    subdirectories.append("high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs064_p7_procs512")
-    filenames.append("turbulent_quantities.txt")
-    labels.append("$c_{DG}$ NSFR.IR-GL")
-    black_line_flag.append(False)
-    dashed_line_flag.append(False)
     # #-----------------------------------------------------
-    # subdirectories.append("high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-0_dofs064_p7_procs512")
+    # subdirectories.append("high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs064_p7_procs512")
     # filenames.append("turbulent_quantities.txt")
-    # labels.append("Strong DG-Roe-GL")
+    # labels.append("$c_{DG}$ NSFR.IR-GL")
     # black_line_flag.append(False)
     # dashed_line_flag.append(False)
     #-----------------------------------------------------
-    subdirectories.append("high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-0_dofs064_p7_CFL-0.10_procs512")
-    filenames.append("turbulent_quantities.txt")
-    labels.append("Strong DG-Roe-GL-OI.0")
-    black_line_flag.append(False)
-    dashed_line_flag.append(False)
-    #-----------------------------------------------------
-    subdirectories.append("high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-1_dofs064_p7_CFL-0.10_procs512")
-    filenames.append("turbulent_quantities.txt")
-    labels.append("Strong DG-Roe-GL-OI.1")
-    black_line_flag.append(False)
-    dashed_line_flag.append(False)
-    #-----------------------------------------------------
-    subdirectories.append("high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-2_dofs064_p7_CFL-0.10_procs512")
-    filenames.append("turbulent_quantities.txt")
-    labels.append("Strong DG-Roe-GL-OI.2")
-    black_line_flag.append(False)
-    dashed_line_flag.append(False)
-    # #-----------------------------------------------------
-    # subdirectories.append("high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-4_dofs064_p7_CFL-0.10_procs512")
-    # filenames.append("turbulent_quantities.txt")
-    # labels.append("Strong DG-Roe-GL-OI.4")
-    # black_line_flag.append(False)
-    # dashed_line_flag.append(False)
-    #-----------------------------------------------------
-    subdirectories.append("high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-8_dofs064_p7_procs512")
-    filenames.append("turbulent_quantities.txt")
-    labels.append("Strong DG-Roe-GL-OI.6")
-    black_line_flag.append(False)
-    dashed_line_flag.append(True)
-    #-----------------------------------------------------
-    plot_periodic_turbulence(
-        figure_subdirectory,
-        subdirectories,
-        filenames,
-        labels,
-        black_line_flag,
-        dashed_line_flag,
-        figure_directory_base,
-        data_directory_base,
-        plot_reference_result,
-        figure_filename_postfix,
-        figure_title,
-        log_axes_input,
-        legend_on_input,
-        legend_inside_input,
-        nlegendcols_input,
-        # clr_input=clr_input,
-        transparent_legend_input=True,
-        tmax=20.0,#14
-        legend_fontSize_input=14,
-        solid_and_dashed_lines=False,
-        plot_numerical_dissipation=True)
-    #-----------------------------------------------------
-
+    subdirectories_for_plot = [\
+    "high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-8_dofs064_p7_procs512",\
+    "high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-4_dofs064_p7_CFL-0.10_procs512",\
+    "high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-2_dofs064_p7_CFL-0.10_procs512",\
+    "high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-1_dofs064_p7_CFL-0.10_procs512",\
+    "high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-0_dofs064_p7_CFL-0.10_procs512",\
+    "high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs064_p7_procs512",\
+    ]
+    labels_for_plot=[\
+    "Strong DG-Roe-GL-OI.6",\
+    "Strong DG-Roe-GL-OI.4",\
+    "Strong DG-Roe-GL-OI.2",\
+    "Strong DG-Roe-GL-OI.1",\
+    "Strong DG-Roe-GL-OI.0",\
+    "$c_{DG}$ NSFR.IR-GL",\
+    ]
+    black_line_flag_for_plot=[False,False,False,False,False,False]
+    dashed_line_flag_for_plot=[False,True,False,False,False,True]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot)
 #=====================================================
 # DOFs: 96^3 | Over-Integration Accuracy sDG
 #-----------------------------------------------------

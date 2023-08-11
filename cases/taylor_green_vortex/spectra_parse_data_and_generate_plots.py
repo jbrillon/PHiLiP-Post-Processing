@@ -37,7 +37,8 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
     title_off=False,
     figure_directory="figures",
     legend_fontSize_input=14,
-    lnstl_input_store=['solid','solid','solid','solid','solid','solid','solid','solid']):
+    lnstl_input_store=['solid','solid','solid','solid','solid','solid','solid','solid'],
+    plot_PHiLiP_DNS_result_as_reference=False):
     # TO DO: Move this function to its own file
     global x,y,labels
     x=[];y=[];labels=[];
@@ -56,8 +57,13 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
         figure_filename += "_%s" % (figure_filename_post_fix)
     x=[];y=[];labels=[];
     # reference result
-    spectra = np.loadtxt("/Users/Julien/PHiLiP-Post-Processing/cases/taylor_green_vortex/data/mastellone2016_dns_spectra_t8.txt",skiprows=1,delimiter=',')
-    append_to_plot(spectra[:,0],spectra[:,1],"DNS [Mastellone]")
+    if(plot_PHiLiP_DNS_result_as_reference):
+        filepath_to_reference_result=CURRENT_PATH+"data/brillon/flow_field_files/velocity_vorticity-0_reordered_spectra.dat"
+        spectra = np.loadtxt(filepath_to_reference_result)
+        append_to_plot(spectra[:,0],spectra[:,1],"DNS ($256^3$ DOFs)")
+    else:
+        spectra = np.loadtxt(CURRENT_PATH+"data/mastellone2016_dns_spectra_t8.txt",skiprows=1,delimiter=',')
+        append_to_plot(spectra[:,0],spectra[:,1],"DNS [Mastellone]")
     batch_append_to_plot(batch_paths, batch_labels, "flow_field_files/velocity_vorticity-0_reordered_spectra.dat")
     if(title_off):
         title_label = " "
@@ -74,7 +80,7 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
         clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
         legend_fontSize=legend_fontSize_input,
         legend_location="upper left",
-        legend_anchor=[0.025,0.3]
+        legend_anchor=[0.0,0.35]
         # which_lines_only_markers=[1,2,3],which_lines_dashed=[0]
         )
     else:
@@ -89,7 +95,7 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
             transparent_legend=True,legend_border_on=False,grid_lines_on=False,lnstl_input=lnstl_input_store,
             legend_fontSize=legend_fontSize_input,
             legend_location="upper left",
-            legend_anchor=[0.025,0.3]
+            legend_anchor=[0.0,0.35]
             # which_lines_only_markers=[1,2,3],which_lines_dashed=[0]
             )
     # qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $k^{*}$",ylabel="Nondimensional TKE Spectra, $E^{*}(k^{*},t^{*})$",
@@ -112,8 +118,13 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
         figure_filename += "_%s" % (figure_filename_post_fix)
     x=[];y=[];labels=[];
     # reference result
-    spectra = np.loadtxt("/Users/Julien/PHiLiP-Post-Processing/cases/taylor_green_vortex/data/carton2014_dns_spectra_t9.txt",skiprows=1,delimiter=',')
-    append_to_plot(spectra[:,0],spectra[:,1],"DNS [Carton]")
+    if(plot_PHiLiP_DNS_result_as_reference):
+        filepath_to_reference_result=CURRENT_PATH+"data/brillon/flow_field_files/velocity_vorticity-1_reordered_spectra.dat"
+        spectra = np.loadtxt(filepath_to_reference_result)
+        append_to_plot(spectra[:,0],spectra[:,1],"DNS ($256^3$ DOFs)")
+    else:
+        spectra = np.loadtxt(CURRENT_PATH+"data/carton2014_dns_spectra_t9.txt",skiprows=1,delimiter=',')
+        append_to_plot(spectra[:,0],spectra[:,1],"DNS [Carton]")
     # - results
     # same as above
     batch_append_to_plot(batch_paths, batch_labels, "flow_field_files/velocity_vorticity-1_reordered_spectra.dat")
@@ -132,7 +143,7 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
         clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
         legend_fontSize=legend_fontSize_input,
         legend_location="upper left",
-        legend_anchor=[0.025,0.3]
+        legend_anchor=[0.0,0.35]
         # which_lines_only_markers=[1,2,3],which_lines_dashed=[0]
         )
     else:
@@ -146,7 +157,7 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
             transparent_legend=True,legend_border_on=False,grid_lines_on=False,lnstl_input=lnstl_input_store,
             legend_fontSize=legend_fontSize_input,
             legend_location="upper left",
-            legend_anchor=[0.025,0.3]
+            legend_anchor=[0.0,0.35]
             # which_lines_only_markers=[1,2,3],which_lines_dashed=[0]
             )
         # qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $k^{*}$",ylabel="Nondimensional TKE Spectra, $E^{*}(k^{*},t^{*})$",
@@ -174,20 +185,15 @@ fig_dir_input="/Users/Julien/PHiLiP-Post-Processing/cases/taylor_green_vortex/fi
 if(True):
     batch_paths = [ \
     "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512/", \
-    ]
-    batch_labels = [ \
-    "Strong DG-Roe-GL-OI", \
-    ]
-    batch_plot_spectra(96,"p5_OI_vs_SF_0",batch_paths,batch_labels,solid_and_dashed_lines=False,title_off=title_off_input,figure_directory=fig_dir_input)
-    batch_paths = [ \
-    "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512/", \
     "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
     ]
     batch_labels = [ \
     "Strong DG-Roe-GL-OI", \
     "$c_{DG}$ NSFR.IR-GL", \
     ]
-    batch_plot_spectra(96,"p5_OI_vs_SF_1",batch_paths,batch_labels,solid_and_dashed_lines=False,title_off=title_off_input,figure_directory=fig_dir_input)
+    for i in range(0,len(batch_paths)):
+        figure_filename_postfix_input="p5_OI_vs_SF_%i"%i
+        batch_plot_spectra(96,figure_filename_postfix_input,batch_paths[:(i+1)],batch_labels[:(i+1)],solid_and_dashed_lines=False,title_off=title_off_input,figure_directory=fig_dir_input,plot_PHiLiP_DNS_result_as_reference=True)
 # =====================================================
 if(False):
     batch_paths = [ \
@@ -359,17 +365,38 @@ if(False):
 if(False):
     batch_paths = [ \
     "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
-    "NarvalFiles/2023_JCP/correction_parameter/viscous_TGV_ILES_NSFR_cHU_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
     "NarvalFiles/2023_JCP/correction_parameter/viscous_TGV_ILES_NSFR_cPlus_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/correction_parameter/viscous_TGV_ILES_NSFR_cHU_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
     "NarvalFiles/2023_JCP/correction_parameter/viscous_TGV_ILES_NSFR_cSD_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
     ]
     batch_labels = [ \
     "$c_{DG}$ NSFR.IR-GL", \
-    "$c_{HU}$ NSFR.IR-GL", \
     "$c_{+}$ NSFR.IR-GL", \
-    "$c_{SD}$ NSFR-GL", \
+    "$c_{HU}$ NSFR.IR-GL", \
+    "$c_{SD}$ NSFR.IR-GL", \
     ]
-    batch_plot_spectra(96,"correction_parameter",batch_paths,batch_labels,title_off=title_off_input,figure_directory=fig_dir_input)
+    for i in range(0,len(batch_paths)):
+        figure_filename_postfix_input="correction_parameter_%i"%i
+        batch_plot_spectra(96,figure_filename_postfix_input,batch_paths[:(i+1)],batch_labels[:(i+1)],solid_and_dashed_lines=False,title_off=title_off_input,figure_directory=fig_dir_input,plot_PHiLiP_DNS_result_as_reference=True)
+# =====================================================
+if(False):
+    batch_paths = [ \
+    "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/correction_parameter/viscous_TGV_ILES_NSFR_cPlus_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/time_step_advantage_with_physical_check/viscous_TGV_ILES_NSFR_cPlus_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.32_procs512/", \
+    "NarvalFiles/2023_JCP/time_step_advantage_with_physical_check/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.24_procs512/", \
+    # "NarvalFiles/2023_JCP/time_step_advantage_strong_DG/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_CFL-0.14_procs512/", \
+    ]
+    batch_labels = [ \
+    "$c_{DG}$ NSFR.IR-GL, CFL=$0.10$",\
+    "$c_{+}$ NSFR.IR-GL, CFL=$0.10$",\
+    "$c_{+}$ NSFR.IR-GL, CFL=$0.32$",\
+    "$c_{DG}$ NSFR.IR-GL, CFL=$0.24$",\
+    #"Strong DG-Roe-GL-OI, CFL=$0.14$",\
+    ]
+    for i in range(0,len(batch_paths)):
+        figure_filename_postfix_input="correction_parameter_cfl_advantage_%i"%i
+        batch_plot_spectra(96,figure_filename_postfix_input,batch_paths[:(i+1)],batch_labels[:(i+1)],solid_and_dashed_lines=False,title_off=title_off_input,figure_directory=fig_dir_input,plot_PHiLiP_DNS_result_as_reference=True)
 # =====================================================
 if(False):
     batch_paths = [ \
