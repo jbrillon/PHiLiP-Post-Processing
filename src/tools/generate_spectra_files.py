@@ -42,21 +42,20 @@ def get_fluctuating_velocity_field(velocity_field):
     print(" - done.")
     return velocity_field
 #-----------------------------------------------------  
-def get_tke_spectra(velocity_fluctuation_field,use_TurboGenPy):
+def get_tke_spectra(velocity_fluctuation_field,use_TurboGenPy,use_smoothing):
     print(" - Computing spectra...")
     # compute tke spectra
     if(use_TurboGenPy):
         # code from turbogenpy
         u,v,w = get_velocity_components_as_3d_arrays_from_velocity_field(velocity_fluctuation_field)
 
-        # TO DO: Modify this function call
+        # TO DO: Modify this function call if needed; not neccessary for the Misra Lund DHIT spectra and TGV 
         # lx = 9.0*2.0*np.pi / 100.0 # [m]
         # ly = 9.0*2.0*np.pi / 100.0 # [m]
         # lz = 9.0*2.0*np.pi / 100.0 # [m]
         lx = 2.0*np.pi
         ly = 2.0*np.pi
         lz = 2.0*np.pi
-        use_smoothing=True # False by default
         knyquist, wavenumbers, tkespec = compute_tke_spectrum(u, v, w, lx, ly, lz, use_smoothing)
         
         # write spectra
@@ -87,11 +86,23 @@ def generate_spectra_file_from_flow_field_file(
     data = np.loadtxt(file,skiprows=n_skiprows,usecols=(3,4,5),dtype=np.float64)
     print(" - done.")
 
-    file_out = file_without_extension+"_spectra."+file_extension
-
     velocity_field = [data[:,0],data[:,1],data[:,2]] # u,v,w
-    spectra = get_tke_spectra(get_fluctuating_velocity_field(velocity_field),use_TurboGenPy)
-    np.savetxt(file_out,spectra)
+    file_out_without_extension = file_without_extension+"_spectra"
+
+    if(use_TurboGenPy):
+        # with smoothing
+        spectra = get_tke_spectra(get_fluctuating_velocity_field(velocity_field),use_TurboGenPy,True)
+        file_out = file_out_without_extension+"."+file_extension
+        np.savetxt(file_out,spectra)
+        # no smoothing
+        file_out_without_extension += "_no_smoothing"
+        spectra = get_tke_spectra(get_fluctuating_velocity_field(velocity_field),use_TurboGenPy,False)
+        file_out = file_out_without_extension+"."+file_extension
+        np.savetxt(file_out,spectra)
+    else:
+        spectra = get_tke_spectra(get_fluctuating_velocity_field(velocity_field),use_TurboGenPy)
+        file_out = file_out_without_extension+"."+file_extension
+        np.savetxt(file_out,spectra)
 
     print("done.")
     return

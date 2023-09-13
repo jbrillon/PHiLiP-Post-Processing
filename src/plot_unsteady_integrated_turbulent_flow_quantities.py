@@ -302,6 +302,10 @@ def plot_periodic_turbulence(
         if(plot_reference_result):
             index_shift_for_ref_result = -1 # minus 1 because no reference result
 
+        second_leg_anchor_input=[]
+        if(tmax!=20.0):
+            second_leg_anchor_input=[0.0,0.5]
+
         # results
         for i in range(0,number_of_result_curves+1): # +1 for reference result
             # ls=lnstl_input_dummy[i]
@@ -363,7 +367,7 @@ def plot_periodic_turbulence(
                     legend_fontSize=legend_fontSize_input,
                     legend_location="upper left",
                     second_leg_elements_input=second_leg_elements_input,
-                    second_leg_anchor=[0.0,0.5])
+                    second_leg_anchor=second_leg_anchor_input)
 
     if(plot_reference_result and reference_result_author=="Vermeire"):
         # DNS - enstrophy

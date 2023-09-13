@@ -18,6 +18,9 @@ filename="vorticity_x_plane_DNS-0.dat"
 figure_filename="cDG-NSFR.IR-GL-dofs256_p3_vorticity-contour-t8"
 # filename="vorticity_x_plane_DNS-1.dat"
 # figure_filename="cDG-NSFR.IR-GL-dofs256_p3_vorticity-contour-t9"
+# filename="vorticity_x_plane_strong_DG_DNS-0.dat"
+# figure_filename="std_strong_DG_Roe-GL-dofs256_p3_vorticity-contour-t8"
+
 data=np.loadtxt(filename,dtype=np.float64)
 # Resample your data grid by a factor of 3 using cubic spline interpolation.
 # data = scipy.ndimage.zoom(data, 2)
@@ -75,7 +78,11 @@ fig, ax = plt.subplots(figsize=(9,6))
 ax.set_xlabel(x_label,fontsize=axisTitle_FontSize)
 ax.set_ylabel(y_label,rotation=90,fontsize=axisTitle_FontSize)
 plt.setp(ax.get_xticklabels(),fontsize=axisTickLabel_FontSize); plt.setp(ax.get_yticklabels(),fontsize=axisTickLabel_FontSize);
-ax.set_title("TGV at Re$_{\\infty}=1600$, P$3$, $256^{3}$ DOFs, CFL$=0.30$, $x^{*}=-\\pi$",fontsize=axisTitle_FontSize)
+if(figure_filename=="cDG-NSFR.IR-GL-dofs256_p3_vorticity-contour-t8"):
+    ax.set_title("TGV at Re$_{\\infty}=1600$, P$3$, $256^{3}$ DOFs, CFL$=0.30$, $x^{*}=-\\pi$",fontsize=axisTitle_FontSize)
+else:
+    # strong DG
+    ax.set_title("TGV at Re$_{\\infty}=1600$, P$3$, $256^{3}$ DOFs, CFL$=0.15$, $x^{*}=-\\pi$",fontsize=axisTitle_FontSize)
 # minZ=1
 # maxZ=15.0
 
