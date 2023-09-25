@@ -68,7 +68,7 @@ def plot_for_presentation(
             legend_fontSize_input=legend_fontSize_input,
             solid_and_dashed_lines=False,
             plot_kinetic_energy=False,
-            plot_enstrophy=False,
+            plot_enstrophy=True,
             plot_numerical_dissipation=True,
             plot_PHiLiP_DNS_result_as_reference=True,
             dissipation_rate_smoothing=smoothing_input)
@@ -1414,18 +1414,20 @@ if(True):
     "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
     "sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
     "sgs_model_GL_flux_nodes/viscous_TGV_LES_SI.SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\
-    "sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL2_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\
+    # "sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL2_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\
     "sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\
-    "sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL4_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\
+    # "sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL4_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SS.VMS_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\
     ]
     # labels
     labels_for_plot=[\
     "$c_{DG}$ NSFR.IR-GL", \
     "$c_{DG}$ NSFR.IR-GL-Smag. $C_{S}=0.10$", \
     "$c_{DG}$ NSFR.IR-GL-SI.Smag. $C_{S}=0.10$", \
-    "$c_{DG}$ NSFR.IR-GL-HPF.Smag. $C_{S}=0.10$ $P_{L}=2$", \
+    # "$c_{DG}$ NSFR.IR-GL-HPF.Smag. $C_{S}=0.10$ $P_{L}=2$", \
     "$c_{DG}$ NSFR.IR-GL-HPF.Smag. $C_{S}=0.10$ $P_{L}=3$", \
-    "$c_{DG}$ NSFR.IR-GL-HPF.Smag. $C_{S}=0.10$ $P_{L}=4$", \
+    # "$c_{DG}$ NSFR.IR-GL-HPF.Smag. $C_{S}=0.10$ $P_{L}=4$", \
+    "$c_{DG}$ NSFR.IR-GL-SS.VMS $P_{L}=3$", \
     ]
     black_line_flag_for_plot=[\
     False,\
@@ -1438,7 +1440,7 @@ if(True):
     dashed_line_flag_for_plot=[\
     False,\
     False,\
-    False,\
+    True,\
     False,\
     False,\
     True,\
