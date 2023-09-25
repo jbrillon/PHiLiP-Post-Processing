@@ -11,19 +11,19 @@ mesh_size = 2.0*np.pi/(num_el_per_dir)
 cDG = 0.172*mesh_size/poly_degree
 # print(cDG)
 cSSVMS = 1.0 - (curve_fit_constant * p_ratio)**(4.0/3.0)
-print(cSSVMS)
 cSSVMS = (cSSVMS)**(-3.0/4.0)
-print(cSSVMS)
 cSSVMS *= cDG 
-print(cSSVMS)
 cSSVMS_sqr = cSSVMS * cSSVMS
 delta = mesh_size / (poly_degree+1.0)
 cSmag = 0.1
 cSmagDelta_sqr = (cSmag * delta)**2.0
-print("%e" % cSmagDelta_sqr)
-print("%e" % cSSVMS_sqr)
+cDG_sqr = cDG*cDG
+print("cDG_sqr: %e" % cDG_sqr)
+print("cSmagDelta_sqr: %e" % cSmagDelta_sqr)
+print("cSSVMS_sqr: %e" % cSSVMS_sqr)
 cFladCUSP_sqr = (0.33 * delta)**2.0
-print("%e" % cFladCUSP_sqr)
+if(poly_degree==7.0):
+    print("cFladCUSP_sqr: %e" % cFladCUSP_sqr)
 
 # flad_Cs = 9.21*np.exp(-3.03*poly_degree_large_scales/poly_degree)
 # print(flad_Cs)
