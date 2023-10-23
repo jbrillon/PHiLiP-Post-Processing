@@ -1,7 +1,13 @@
 import os;CURRENT_PATH = os.path.split(os.path.realpath(__file__))[0]+"/";
 import sys; sys.path.append(CURRENT_PATH+"../../src/tools");
 from generate_spectra_files import batch_assemble_mpi_flow_field_files_reorder_generate_spectra
-
+from sys import platform
+if platform == "linux" or platform == "linux2":
+    # linux
+    filesystem="/media/julien/Samsung_T5/"
+elif platform == "darwin":
+    # OS X
+    filesystem="/Volumes/Samsung_T5/"
 #=====================================================
 # Input variables
 #=====================================================
@@ -68,7 +74,7 @@ def batch_assemble_mpi_flow_field_files_reorder_generate_spectra_from_txt(input_
     file1 = open(input_file, 'r')
     paths = file1.readlines()
     for path in paths:
-        add_to_batch(file_path=path.rstrip('\n'))
+        add_to_batch(file_path=filesystem+path.rstrip('\n'))
     file1.close()
     # =========================================================
     # CALL THE BATCH FUNCTION
