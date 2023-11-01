@@ -1431,7 +1431,7 @@ if(True):
     "$c_{DG}$ NSFR.IR-GL-SI.Smag. $C_{S}=0.10$", \
     # "$c_{DG}$ NSFR.IR-GL-SS.VMS $P_{L}=3$", \
     "$c_{DG}$ NSFR.IR-GL-HPF.SI.Smag. $C_{S}=0.10$ $P_{L}=3$", \
-    "$c_{DG}$ NSFR.IR-GL-Dynamic.Smag. ($P_{TF}=3$,no clipping)", \
+    "$c_{DG}$ NSFR.IR-GL-Dynamic.Smag. ($P_{TF}=3$, $C_{max}=0.1$)", \
     ]
     black_line_flag_for_plot=[\
     False,\
