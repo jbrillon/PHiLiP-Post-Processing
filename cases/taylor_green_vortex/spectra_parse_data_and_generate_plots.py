@@ -360,6 +360,7 @@ if(True):
     "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_SI.SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512/",\
     "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SI.SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512/",\
     "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_DYNAMIC.SMAG-pL3_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512/",\
+    "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512/",\
     ]
     batch_labels = [ \
     "$c_{DG}$ NSFR.IR-GL", \
@@ -370,6 +371,7 @@ if(True):
     "$c_{DG}$ NSFR.IR-GL-SI.Smag. $C_{S}=0.10$", \
     "$c_{DG}$ NSFR.IR-GL-HPF.SI.Smag. $C_{S}=0.10$ $P_{L}=3$", \
     "$c_{DG}$ NSFR.IR-GL-Dynamic.Smag. ($P_{TF}=3$, $C_{max}=0.1$)", \
+    "$c_{DG}$ NSFR.IR-GL-Smag.LRNC $C_{S}=0.10$", \
     ]
     # batch_plot_spectra(96,"sgs_models_gl",batch_paths,batch_labels,solid_and_dashed_lines=True,title_off=title_off_input,figure_directory=fig_dir_input)
     for i in range(0,len(batch_paths)):

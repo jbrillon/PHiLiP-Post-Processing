@@ -1420,6 +1420,7 @@ if(True):
     # "sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SS.VMS_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\
     "sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SI.SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\
     "sgs_model_GL_flux_nodes/viscous_TGV_LES_DYNAMIC.SMAG-pL3_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\
     ]
     # labels
     labels_for_plot=[\
@@ -1432,8 +1433,10 @@ if(True):
     # "$c_{DG}$ NSFR.IR-GL-SS.VMS $P_{L}=3$", \
     "$c_{DG}$ NSFR.IR-GL-HPF.SI.Smag. $C_{S}=0.10$ $P_{L}=3$", \
     "$c_{DG}$ NSFR.IR-GL-Dynamic.Smag. ($P_{TF}=3$, $C_{max}=0.1$)", \
+    "$c_{DG}$ NSFR.IR-GL-Smag.LRNC $C_{S}=0.10$", \
     ]
     black_line_flag_for_plot=[\
+    False,\
     False,\
     False,\
     False,\
@@ -1448,8 +1451,10 @@ if(True):
     False,\
     False,\
     False,\
+    True,\
     ]
     smoothing_input = [\
+    False,\
     False,\
     False,\
     False,\
