@@ -1266,7 +1266,7 @@ if(False):
     # "$c_{DG}$ NSFR.IR-Smag. $C_{S}=0.10$", \
     # "$c_{DG}$ NSFR.IR-Smag. $C_{S}=0.18$", \
     # "$c_{DG}$ NSFR.IR-WALE", \
-    # "$c_{DG}$ NSFR.IR-Vreman", \
+    # "$c_{DG}$ NSFR.IR-VRMN", \
     # "$c_{DG}$ NSFR.IR-Smag. $C_{S}=0.1$, $\\Delta_{min}$", \
     # ]
     reinit_inputs()
@@ -1303,7 +1303,7 @@ if(False):
     #-----------------------------------------------------
     subdirectories.append("sgs_model_GLL_flux_nodes/viscous_TGV_LES_VRMN_MC-0.081_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512")
     filenames.append("turbulent_quantities.txt")
-    labels.append("$c_{DG}$ NSFR.IR-GLL-Vreman $C_{V}=0.081$")
+    labels.append("$c_{DG}$ NSFR.IR-GLL-VRMN $C_{V}=0.081$")
     black_line_flag.append(False)
     dashed_line_flag.append(False)
     #-----------------------------------------------------
@@ -1338,7 +1338,7 @@ if(True):
     # "$c_{DG}$ NSFR.IR-Smag. $C_{S}=0.10$", \
     # "$c_{DG}$ NSFR.IR-Smag. $C_{S}=0.18$", \
     # "$c_{DG}$ NSFR.IR-WALE", \
-    # "$c_{DG}$ NSFR.IR-Vreman", \
+    # "$c_{DG}$ NSFR.IR-VRMN", \
     # "$c_{DG}$ NSFR.IR-Smag. $C_{S}=0.1$, $\\Delta_{min}$", \
     # ]
     reinit_inputs()
@@ -1368,8 +1368,8 @@ if(True):
     "$c_{DG}$ NSFR.IR-GL", \
     "$c_{DG}$ NSFR.IR-GL-Smag. $C_{S}=0.18$", \
     "$c_{DG}$ NSFR.IR-GL-Smag. $C_{S}=0.10$", \
-    "$c_{DG}$ NSFR.IR-GL-WALE. $C_{W}=0.50$", \
-    "$c_{DG}$ NSFR.IR-GL-Vreman. $C_{V}=0.081$", \
+    "$c_{DG}$ NSFR.IR-GL-WALE $C_{W}=0.50$", \
+    "$c_{DG}$ NSFR.IR-GL-VRMN $C_{V}=0.081$", \
     "$c_{DG}$ NSFR.IR-GL-SI.Smag. $C_{S}=0.10$", \
     ]
     black_line_flag_for_plot=[\
@@ -1389,6 +1389,138 @@ if(True):
     True,\
     ]
     smoothing_input = [\
+    False,\
+    False,\
+    False,\
+    False,\
+    False,\
+    False,\
+    ]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,legend_fontSize_input=12)
+
+#=====================================================
+# DOFs: 96^3 | LRNC Advanced SGS Models on GL flux nodes (no filter width modifications)
+#-----------------------------------------------------
+if(True):
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="2023_JCP"
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_filename_postfix = "96_lrnc_sgs_models_gl"
+    legend_inside_input=True
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_WALE_MC-0.50_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_VRMN_MC-0.081_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_WALE.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_VRMN.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16",\
+    ]
+    # labels
+    labels_for_plot=[\
+    "$c_{DG}$ NSFR.IR-GL", \
+    "$c_{DG}$ NSFR.IR-GL-Smag. $C_{S}=0.10$", \
+    "$c_{DG}$ NSFR.IR-GL-WALE $C_{W}=0.50$", \
+    "$c_{DG}$ NSFR.IR-GL-VRMN $C_{V}=0.081$", \
+    "$c_{DG}$ NSFR.IR-GL-Smag.LRNC $C_{S}=0.10$", \
+    "$c_{DG}$ NSFR.IR-GL-WALE.LRNC $C_{W}=0.50$", \
+    "$c_{DG}$ NSFR.IR-GL-VRMN.LRNC $C_{V}=0.081$", \
+    ]
+    black_line_flag_for_plot=[\
+    False,\
+    False,\
+    False,\
+    False,\
+    False,\
+    False,\
+    False,\
+    ]
+    dashed_line_flag_for_plot=[\
+    False,\
+    False,\
+    False,\
+    False,\
+    True,\
+    True,\
+    True,\
+    ]
+    smoothing_input = [\
+    False,\
+    False,\
+    False,\
+    False,\
+    True,\
+    True,\
+    True,\
+    ]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,legend_fontSize_input=12)
+
+#=====================================================
+# DOFs: 96^3 | LRNC Advanced SGS Models on GL flux nodes (no filter width modifications)
+#-----------------------------------------------------
+if(True):
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="2023_JCP"
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_filename_postfix = "96_lrnc_advanced_sgs_models_gl"
+    legend_inside_input=True
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_SI.SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SI.SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_DYNAMIC.SMAG.LRNC_CLIPMC-0.01-pL3_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16",\
+    ]
+    # labels
+    labels_for_plot=[\
+    "$c_{DG}$ NSFR.IR-GL", \
+    "$c_{DG}$ NSFR.IR-GL-Smag. $C_{S}=0.10$", \
+    "$c_{DG}$ NSFR.IR-GL-Smag.LRNC $C_{S}=0.10$", \
+    # "$c_{DG}$ NSFR.IR-GL-HPF.Smag. $C_{S}=0.10$ $P_{L}=2$", \
+    # "$c_{DG}$ NSFR.IR-GL-HPF.Smag. $C_{S}=0.10$ $P_{L}=4$", \
+    "$c_{DG}$ NSFR.IR-GL-SI.Smag.LRNC $C_{S}=0.10$", \
+    # "$c_{DG}$ NSFR.IR-GL-SS.VMS $P_{L}=3$", \
+    "$c_{DG}$ NSFR.IR-GL-HPF.Smag.LRNC $C_{S}=0.10$ $P_{L}=3$", \
+    "$c_{DG}$ NSFR.IR-GL-HPF.SI.Smag.LRNC $C_{S}=0.10$ $P_{L}=3$", \
+    "$c_{DG}$ NSFR.IR-GL-Dynamic.Smag.LRNC ($P_{TF}=3$, $C_{max}=0.1$)", \
+    ]
+    black_line_flag_for_plot=[\
+    False,\
+    False,\
+    False,\
+    False,\
+    False,\
+    False,\
+    False,\
+    False,\
+    False,\
+    False,\
+    ]
+    dashed_line_flag_for_plot=[\
+    False,\
+    False,\
+    False,\
+    False,\
+    False,\
+    False,\
+    False,\
+    False,\
+    False,\
+    False,\
+    ]
+    smoothing_input = [\
+    False,\
+    False,\
+    False,\
+    False,\
     False,\
     False,\
     False,\
