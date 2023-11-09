@@ -324,7 +324,7 @@ if(False):
     "$c_{DG}$ NSFR.IR-GLL-Smag. $C_{S}=0.18$", \
     "$c_{DG}$ NSFR.IR-GLL-Smag. $C_{S}=0.10$", \
     "$c_{DG}$ NSFR.IR-GLL-WALE $C_{W}=0.50$", \
-    "$c_{DG}$ NSFR.IR-GLL-Vreman $C_{V}=0.081$", \
+    "$c_{DG}$ NSFR.IR-GLL-VRMN $C_{V}=0.081$", \
     ]
     batch_plot_spectra(96,"sgs_models_gll",batch_paths,batch_labels,title_off=title_off_input,figure_directory=fig_dir_input)
 # =====================================================
@@ -342,12 +342,36 @@ if(True):
     "$c_{DG}$ NSFR.IR-GL-Smag. $C_{S}=0.18$", \
     "$c_{DG}$ NSFR.IR-GL-Smag. $C_{S}=0.10$", \
     "$c_{DG}$ NSFR.IR-GL-WALE $C_{W}=0.50$", \
-    "$c_{DG}$ NSFR.IR-GL-Vreman $C_{V}=0.081$", \
+    "$c_{DG}$ NSFR.IR-GL-VRMN $C_{V}=0.081$", \
     # "$c_{DG}$ NSFR.IR-GL-Smag. $C_{S}=0.18$ $\\Delta=\\frac{V}{(P+1)^{3}}$", \
     ]
     # batch_plot_spectra(96,"sgs_models_gl",batch_paths,batch_labels,solid_and_dashed_lines=True,title_off=title_off_input,figure_directory=fig_dir_input)
     for i in range(0,len(batch_paths)):
         figure_filename_postfix_input="sgs_models_gl_%i"%i
+        batch_plot_spectra(96,figure_filename_postfix_input,batch_paths[:(i+1)],batch_labels[:(i+1)],solid_and_dashed_lines=False,title_off=title_off_input,figure_directory=fig_dir_input,plot_PHiLiP_DNS_result_as_reference=True,legend_fontSize_input=12)
+# =====================================================
+if(True):
+    batch_paths = [ \
+    "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_WALE_MC-0.50_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_VRMN_MC-0.081_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512/",\
+    "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_WALE.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16/",\
+    "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_VRMN.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16/",\
+    ]
+    batch_labels = [ \
+    "$c_{DG}$ NSFR.IR-GL", \
+    "$c_{DG}$ NSFR.IR-GL-Smag. $C_{S}=0.10$", \
+    "$c_{DG}$ NSFR.IR-GL-WALE $C_{W}=0.50$", \
+    "$c_{DG}$ NSFR.IR-GL-VRMN $C_{V}=0.081$", \
+    "$c_{DG}$ NSFR.IR-GL-Smag.LRNC $C_{S}=0.10$", \
+    "$c_{DG}$ NSFR.IR-GL-WALE.LRNC $C_{W}=0.50$", \
+    "$c_{DG}$ NSFR.IR-GL-VRMN.LRNC $C_{V}=0.081$", \
+    ]
+    # batch_plot_spectra(96,"sgs_models_gl",batch_paths,batch_labels,solid_and_dashed_lines=True,title_off=title_off_input,figure_directory=fig_dir_input)
+    for i in range(0,len(batch_paths)):
+        figure_filename_postfix_input="lrnc_sgs_models_gl_%i"%i
         batch_plot_spectra(96,figure_filename_postfix_input,batch_paths[:(i+1)],batch_labels[:(i+1)],solid_and_dashed_lines=False,title_off=title_off_input,figure_directory=fig_dir_input,plot_PHiLiP_DNS_result_as_reference=True,legend_fontSize_input=12)
 # =====================================================
 if(True):
@@ -376,6 +400,30 @@ if(True):
     # batch_plot_spectra(96,"sgs_models_gl",batch_paths,batch_labels,solid_and_dashed_lines=True,title_off=title_off_input,figure_directory=fig_dir_input)
     for i in range(0,len(batch_paths)):
         figure_filename_postfix_input="advanced_sgs_models_gl_%i"%i
+        batch_plot_spectra(96,figure_filename_postfix_input,batch_paths[:(i+1)],batch_labels[:(i+1)],solid_and_dashed_lines=False,title_off=title_off_input,figure_directory=fig_dir_input,plot_PHiLiP_DNS_result_as_reference=True,legend_fontSize_input=12)
+# =====================================================
+if(True):
+    batch_paths = [ \
+    "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
+    "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
+    "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512/",\
+    "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_SI.SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16/",\
+    "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16/",\
+    "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SI.SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16/",\
+    "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_DYNAMIC.SMAG.LRNC_CLIPMC-0.01-pL3_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16/",\
+    ]
+    batch_labels = [ \
+    "$c_{DG}$ NSFR.IR-GL", \
+    "$c_{DG}$ NSFR.IR-GL-Smag. $C_{S}=0.10$", \
+    "$c_{DG}$ NSFR.IR-GL-Smag.LRNC $C_{S}=0.10$", \
+    "$c_{DG}$ NSFR.IR-GL-SI.Smag.LRNC $C_{S}=0.10$", \
+    "$c_{DG}$ NSFR.IR-GL-HPF.Smag.LRNC $C_{S}=0.10$ $P_{L}=3$", \
+    "$c_{DG}$ NSFR.IR-GL-HPF.SI.Smag.LRNC $C_{S}=0.10$ $P_{L}=3$", \
+    "$c_{DG}$ NSFR.IR-GL-Dyn.Smag.LRNC ($P_{TF}=3$, $C_{max}=0.1$)", \
+    ]
+    # batch_plot_spectra(96,"sgs_models_gl",batch_paths,batch_labels,solid_and_dashed_lines=True,title_off=title_off_input,figure_directory=fig_dir_input)
+    for i in range(0,len(batch_paths)):
+        figure_filename_postfix_input="lrnc_advanced_sgs_models_gl_%i"%i
         batch_plot_spectra(96,figure_filename_postfix_input,batch_paths[:(i+1)],batch_labels[:(i+1)],solid_and_dashed_lines=False,title_off=title_off_input,figure_directory=fig_dir_input,plot_PHiLiP_DNS_result_as_reference=True,legend_fontSize_input=12)
 # =====================================================
 if(True):

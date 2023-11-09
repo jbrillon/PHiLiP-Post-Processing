@@ -1484,13 +1484,10 @@ if(True):
     "$c_{DG}$ NSFR.IR-GL", \
     "$c_{DG}$ NSFR.IR-GL-Smag. $C_{S}=0.10$", \
     "$c_{DG}$ NSFR.IR-GL-Smag.LRNC $C_{S}=0.10$", \
-    # "$c_{DG}$ NSFR.IR-GL-HPF.Smag. $C_{S}=0.10$ $P_{L}=2$", \
-    # "$c_{DG}$ NSFR.IR-GL-HPF.Smag. $C_{S}=0.10$ $P_{L}=4$", \
     "$c_{DG}$ NSFR.IR-GL-SI.Smag.LRNC $C_{S}=0.10$", \
-    # "$c_{DG}$ NSFR.IR-GL-SS.VMS $P_{L}=3$", \
     "$c_{DG}$ NSFR.IR-GL-HPF.Smag.LRNC $C_{S}=0.10$ $P_{L}=3$", \
     "$c_{DG}$ NSFR.IR-GL-HPF.SI.Smag.LRNC $C_{S}=0.10$ $P_{L}=3$", \
-    "$c_{DG}$ NSFR.IR-GL-Dynamic.Smag.LRNC ($P_{TF}=3$, $C_{max}=0.1$)", \
+    "$c_{DG}$ NSFR.IR-GL-Dyn.Smag.LRNC ($P_{TF}=3$, $C_{max}=0.1$)", \
     ]
     black_line_flag_for_plot=[\
     False,\
@@ -1564,7 +1561,7 @@ if(True):
     "$c_{DG}$ NSFR.IR-GL-SI.Smag. $C_{S}=0.10$", \
     # "$c_{DG}$ NSFR.IR-GL-SS.VMS $P_{L}=3$", \
     "$c_{DG}$ NSFR.IR-GL-HPF.SI.Smag. $C_{S}=0.10$ $P_{L}=3$", \
-    "$c_{DG}$ NSFR.IR-GL-Dynamic.Smag. ($P_{TF}=3$, $C_{max}=0.1$)", \
+    "$c_{DG}$ NSFR.IR-GL-Dyn.Smag. ($P_{TF}=3$, $C_{max}=0.1$)", \
     "$c_{DG}$ NSFR.IR-GL-Smag.LRNC $C_{S}=0.10$", \
     ]
     black_line_flag_for_plot=[\
