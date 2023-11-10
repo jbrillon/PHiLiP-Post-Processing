@@ -34,11 +34,14 @@ y_store=[]
 labels_store=[]
 
 # current
-filename="/home/julien/Codes/2023-07-24/PHiLiP/build_release/tau_wall_first_run.txt"
-time,tau_wall = np.loadtxt(filename,skiprows=1,usecols=(0,1),dtype=np.float64,unpack=True)
+# filename="/home/julien/Codes/2023-07-24/PHiLiP/build_release/tau_wall_first_run.txt"
+filename="turbulent_quantities.txt"
+
+time,tau_wall,skin_friction_coefficient,bulk_density,bulk_velocity = np.loadtxt(filename,skiprows=1,dtype=np.float64,unpack=True)
 x_store.append(time)
-y_store.append(tau_wall)
-labels_store.append("$\\tau_{w}(t)$")
+y_store.append(skin_friction_coefficient)
+# labels_store.append("$\\tau_{w}(t)$")
+labels_store.append("$C_{f}(t)$")
 
 qp.plotfxn(x_store,y_store,
     figure_filename="flow_convergence",
