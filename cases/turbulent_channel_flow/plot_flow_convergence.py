@@ -57,7 +57,10 @@ def plot_transient(filenames_,labels_,which_lines_dashed_):
         title_label="Transient Flow Convergence",
         xlabel="$t$",
         ylabel="$C_{f}(t)$/$C_{f}^{expected}$",
-        which_lines_dashed=which_lines_dashed_store)
+        which_lines_dashed=which_lines_dashed_store,
+        transparent_legend=False,
+        legend_border_on=False,
+        grid_lines_on=False)
     figure_filename="wall_shear_stress"
     qp.plotfxn(time_store,wall_shear_stress_store,
         figure_filename=figure_filename,
@@ -67,7 +70,10 @@ def plot_transient(filenames_,labels_,which_lines_dashed_):
         title_label="Transient Flow Convergence",
         xlabel="$t$",
         ylabel="$\\tau_{w}$",
-        which_lines_dashed=which_lines_dashed_store)
+        which_lines_dashed=which_lines_dashed_store,
+        transparent_legend=False,
+        legend_border_on=False,
+        grid_lines_on=False)
     figure_filename="bulk_mass_flow"
     qp.plotfxn(time_store,bulk_mass_flow_store,
         figure_filename=figure_filename,
@@ -77,7 +83,10 @@ def plot_transient(filenames_,labels_,which_lines_dashed_):
         title_label="Transient Flow Convergence",
         xlabel="$t$",
         ylabel="$\\rho_{b}U_{b}$",
-        which_lines_dashed=which_lines_dashed_store)
+        which_lines_dashed=which_lines_dashed_store,
+        transparent_legend=False,
+        legend_border_on=False,
+        grid_lines_on=False)
     return
 #=====================================================
 # Plot the transient quantities
