@@ -94,5 +94,5 @@ which_lines_dashed=[\
 False,\
 True,\
 ]
-plot_transient(filenames_,labels_,which_lines_dashed_)
+plot_transient(filenames,labels,which_lines_dashed)
 
