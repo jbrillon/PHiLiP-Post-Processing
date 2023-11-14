@@ -36,7 +36,7 @@ def plotfxn(x_store,y_store,x_label,y_label,figure_filename,labels_store,which_l
 def plot_transient(filenames_,labels_,which_lines_dashed_,
     plot_skin_friction_coefficient=True,
     plot_wall_shear_stress=True,
-    plot_bulk_mass_flow_rate=True,
+    plot_bulk_mass_flow=True,
     starting_data_index_for_plot=8
     ):
     expected_mean_value_for_skin_friction_coefficient = 6.25e-3 # from Lodato's source term paper
