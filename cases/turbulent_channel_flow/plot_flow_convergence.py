@@ -87,9 +87,9 @@ filenames=[\
 "/home/julien/Codes/dummy_dir_for_testing/turbulent_quantities.txt",\
 ]
 labels=[\
-"failed",\
-"local",\
-]
+"failed: $\\Delta t=0.000343973$, $\\alpha=0.3$",\
+"local: $\\Delta t=0.000068$, $\\alpha=0.3$",\
+]#6.8\times10^{-5},3.44\times10^{-4}
 which_lines_dashed=[\
 False,\
 True,\
