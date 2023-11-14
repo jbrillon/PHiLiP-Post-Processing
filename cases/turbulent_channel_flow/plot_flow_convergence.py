@@ -17,48 +17,82 @@ elif platform == "darwin":
     filesystem="/Volumes/Samsung_T5/"
 #-----------------------------------------------------
 #=====================================================
-# Input variables for plotting
+# Helper functions
 #=====================================================
+def plot_transient(filenames_,labels_,which_lines_dashed_):
+    expected_mean_value_for_skin_friction_coefficient = 6.25e-3 # from Lodato's source term paper
 
-# filename=filesystem+"NarvalFiles/2023_JCP/"
-# # filename+="flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512"
-# # filename+="time_step_advantage/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.34_procs512"
-# # filename+="time_step_advantage_strong_DG/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_CFL-0.15_procs512"
-# filename+="time_step_advantage_with_physical_check/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.26_procs512"
-# filename+="/turbulent_quantities.txt"
-# time, kinetic_energy, enstrophy, vorticity_based_dissipation, pressure_dilatation_based_dissipation, strain_rate_based_dissipation, deviatoric_strain_rate_based_dissipation = np.loadtxt(filename,skiprows=1,dtype=np.float64,unpack=True)
-# kinetic_energy = np.loadtxt(filename,skiprows=1,usecols=1,dtype=np.float64,unpack=True)
+    # data store
+    time_store=[]
+    skin_friction_coefficient_store=[]
+    wall_shear_stress_store=[]
+    skin_friction_coefficient_store=[]
+    bulk_mass_flow_store=[]
+    # plot function inputs
+    labels_store=[]
+    which_lines_dashed_store=[]
 
-x_store=[]
-y_store=[]
-labels_store=[]
+    for i,filename in enumerate(filenames_):
+        # load data
+        time,wall_shear_stress,skin_friction_coefficient,bulk_density,bulk_velocity = np.loadtxt(filename,skiprows=1,dtype=np.float64,unpack=True)
+        # compute the bulk mass flow
+        bulk_mass_flow = bulk_density*bulk_velocity
+        # compute the skin friction coefficient
+        skin_friction_coefficient /= expected_mean_value_for_skin_friction_coefficient
 
-# current
-# filename="/home/julien/Codes/2023-07-24/PHiLiP/build_release/tau_wall_first_run.txt"
-filename="/home/julien/Codes/dummy_dir_for_testing/turbulent_quantities.txt"
-figure_filename="flow_convergence-local"
-#filename="turbulent_quantities-1.txt"
-#figure_filename="flow_convergence-failed"
-# load data
-time,tau_wall,skin_friction_coefficient,bulk_density,bulk_velocity = np.loadtxt(filename,skiprows=1,dtype=np.float64,unpack=True)
-bulk_mass_flow = bulk_density*bulk_velocity
+        # store the data
+        time_store.append(time)
+        labels_store.append(labels_[i])
+        wall_shear_stress_store.append(wall_shear_stress)
+        skin_friction_coefficient_store.append(skin_friction_coefficient)
+        bulk_mass_flow_store.append(bulk_mass_flow)
 
-x_store.append(time)
-#y_store.append(bulk_mass_flow)
-y_store.append(skin_friction_coefficient)
-#labels_store.append("$\\tau_{w}(t)$")
-labels_store.append("$C_{f}(t)$/$C_{f}^{expected}$")
+    # plot the quantities
+    figure_filename="skin_friction_coefficient"
+    qp.plotfxn(time_store,skin_friction_coefficient_store,
+        figure_filename=figure_filename,
+        figure_size=(6,6),
+        legend_labels_tex=labels_store,
+        figure_filetype="pdf",
+        title_label="Transient Flow Convergence",
+        xlabel="$t$",
+        ylabel="$C_{f}(t)$/$C_{f}^{expected}$",
+        which_lines_dashed=which_lines_dashed_store)
+    figure_filename="wall_shear_stress"
+    qp.plotfxn(time_store,wall_shear_stress_store,
+        figure_filename=figure_filename,
+        figure_size=(6,6),
+        legend_labels_tex=labels_store,
+        figure_filetype="pdf",
+        title_label="Transient Flow Convergence",
+        xlabel="$t$",
+        ylabel="$\\tau_{w}$",
+        which_lines_dashed=which_lines_dashed_store)
+    figure_filename="bulk_mass_flow"
+    qp.plotfxn(time_store,bulk_mass_flow_store,
+        figure_filename=figure_filename,
+        figure_size=(6,6),
+        legend_labels_tex=labels_store,
+        figure_filetype="pdf",
+        title_label="Transient Flow Convergence",
+        xlabel="$t$",
+        ylabel="$\\rho_{b}U_{b}$",
+        which_lines_dashed=which_lines_dashed_store)
+    return
+#=====================================================
+# Plot the transient quantities
+#=====================================================
+filenames=[\
+"turbulent_quantities-1.txt",\
+"/home/julien/Codes/dummy_dir_for_testing/turbulent_quantities.txt",\
+]
+labels=[\
+"failed",\
+"local",\
+]
+which_lines_dashed=[\
+False,\
+True,\
+]
+plot_transient(filenames_,labels_,which_lines_dashed_)
 
-expected_mean_value_for_skin_friction_coefficient = 6.25e-3
-skin_friction_coefficient /= expected_mean_value_for_skin_friction_coefficient
-# y_store.append(bulk_velocity)
-# labels_store.append("$U_b$")
-
-qp.plotfxn(x_store,y_store,
-    figure_filename=figure_filename,
-    figure_size=(6,6),
-    legend_labels_tex=labels_store,
-    figure_filetype="pdf",
-    title_label="Flow Satistical Convergence",
-    xlabel="$t$",
-    ylabel="Bulk Flow Property")
