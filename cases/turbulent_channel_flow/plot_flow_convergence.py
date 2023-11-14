@@ -29,9 +29,9 @@ def plotfxn(x_store,y_store,x_label,y_label,figure_filename,labels_store,which_l
         xlabel=x_label,
         ylabel=y_label,
         which_lines_dashed=which_lines_dashed_store,
-        transparent_legend=False,
+        transparent_legend=True,
         legend_border_on=False,
-        grid_lines_on=False)
+        grid_lines_on=True)
     return
 def plot_transient(filenames_,labels_,which_lines_dashed_,
     plot_skin_friction_coefficient=True,
