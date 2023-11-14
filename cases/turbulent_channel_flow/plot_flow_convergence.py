@@ -35,16 +35,27 @@ labels_store=[]
 
 # current
 # filename="/home/julien/Codes/2023-07-24/PHiLiP/build_release/tau_wall_first_run.txt"
-filename="turbulent_quantities.txt"
-
+filename="/home/julien/Codes/dummy_dir_for_testing/turbulent_quantities.txt"
+figure_filename="flow_convergence-local"
+#filename="turbulent_quantities-1.txt"
+#figure_filename="flow_convergence-failed"
+# load data
 time,tau_wall,skin_friction_coefficient,bulk_density,bulk_velocity = np.loadtxt(filename,skiprows=1,dtype=np.float64,unpack=True)
+bulk_mass_flow = bulk_density*bulk_velocity
+
 x_store.append(time)
+#y_store.append(bulk_mass_flow)
 y_store.append(skin_friction_coefficient)
-# labels_store.append("$\\tau_{w}(t)$")
-labels_store.append("$C_{f}(t)$")
+#labels_store.append("$\\tau_{w}(t)$")
+labels_store.append("$C_{f}(t)$/$C_{f}^{expected}$")
+
+expected_mean_value_for_skin_friction_coefficient = 6.25e-3
+skin_friction_coefficient /= expected_mean_value_for_skin_friction_coefficient
+# y_store.append(bulk_velocity)
+# labels_store.append("$U_b$")
 
 qp.plotfxn(x_store,y_store,
-    figure_filename="flow_convergence",
+    figure_filename=figure_filename,
     figure_size=(6,6),
     legend_labels_tex=labels_store,
     figure_filetype="pdf",
