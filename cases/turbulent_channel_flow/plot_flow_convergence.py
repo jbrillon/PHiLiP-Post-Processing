@@ -19,7 +19,26 @@ elif platform == "darwin":
 #=====================================================
 # Helper functions
 #=====================================================
-def plot_transient(filenames_,labels_,which_lines_dashed_):
+def plotfxn(x_store,y_store,x_label,y_label,figure_filename,labels_store,which_lines_dashed_store):
+    qp.plotfxn(x_store,y_store,
+        figure_filename=figure_filename,
+        figure_size=(6,6),
+        legend_labels_tex=labels_store,
+        figure_filetype="pdf",
+        title_label="Transient Flow Convergence",
+        xlabel=x_label,
+        ylabel=y_label,
+        which_lines_dashed=which_lines_dashed_store,
+        transparent_legend=False,
+        legend_border_on=False,
+        grid_lines_on=False)
+    return
+def plot_transient(filenames_,labels_,which_lines_dashed_,
+    plot_skin_friction_coefficient=True,
+    plot_wall_shear_stress=True,
+    plot_bulk_mass_flow_rate=True,
+    starting_data_index_for_plot=8
+    ):
     expected_mean_value_for_skin_friction_coefficient = 6.25e-3 # from Lodato's source term paper
 
     # data store
@@ -41,52 +60,25 @@ def plot_transient(filenames_,labels_,which_lines_dashed_):
         skin_friction_coefficient /= expected_mean_value_for_skin_friction_coefficient
 
         # store the data
-        time_store.append(time)
+        time_store.append(time[starting_data_index_for_plot:])
         labels_store.append(labels_[i])
-        wall_shear_stress_store.append(wall_shear_stress)
-        skin_friction_coefficient_store.append(skin_friction_coefficient)
-        bulk_mass_flow_store.append(bulk_mass_flow)
+        wall_shear_stress_store.append(wall_shear_stress[starting_data_index_for_plot:])
+        skin_friction_coefficient_store.append(skin_friction_coefficient[starting_data_index_for_plot:])
+        bulk_mass_flow_store.append(bulk_mass_flow[starting_data_index_for_plot:])
 
     # plot the quantities
-    figure_filename="skin_friction_coefficient"
-    qp.plotfxn(time_store,skin_friction_coefficient_store,
-        figure_filename=figure_filename,
-        figure_size=(6,6),
-        legend_labels_tex=labels_store,
-        figure_filetype="pdf",
-        title_label="Transient Flow Convergence",
-        xlabel="$t$",
-        ylabel="$C_{f}(t)$/$C_{f}^{expected}$",
-        which_lines_dashed=which_lines_dashed_store,
-        transparent_legend=False,
-        legend_border_on=False,
-        grid_lines_on=False)
-    figure_filename="wall_shear_stress"
-    qp.plotfxn(time_store,wall_shear_stress_store,
-        figure_filename=figure_filename,
-        figure_size=(6,6),
-        legend_labels_tex=labels_store,
-        figure_filetype="pdf",
-        title_label="Transient Flow Convergence",
-        xlabel="$t$",
-        ylabel="$\\tau_{w}$",
-        which_lines_dashed=which_lines_dashed_store,
-        transparent_legend=False,
-        legend_border_on=False,
-        grid_lines_on=False)
-    figure_filename="bulk_mass_flow"
-    qp.plotfxn(time_store,bulk_mass_flow_store,
-        figure_filename=figure_filename,
-        figure_size=(6,6),
-        legend_labels_tex=labels_store,
-        figure_filetype="pdf",
-        title_label="Transient Flow Convergence",
-        xlabel="$t$",
-        ylabel="$\\rho_{b}U_{b}$",
-        which_lines_dashed=which_lines_dashed_store,
-        transparent_legend=False,
-        legend_border_on=False,
-        grid_lines_on=False)
+    if(plot_skin_friction_coefficient):
+        plotfxn(time_store,skin_friction_coefficient_store,\
+            "$t$","$C_{f}(t)$/$C_{f}^{expected}$","skin_friction_coefficient",\
+            labels_store,which_lines_dashed_store)
+    if(plot_wall_shear_stress):
+        plotfxn(time_store,wall_shear_stress_store,\
+            "$t$","$\\tau_{w}$","wall_shear_stress",\
+            labels_store,which_lines_dashed_store)
+    if(plot_bulk_mass_flow):
+        plotfxn(time_store,bulk_mass_flow_store,\
+            "$t$","$\\rho_{b}U_{b}$","bulk_mass_flow",\
+            labels_store,which_lines_dashed_store)
     return
 #=====================================================
 # Plot the transient quantities
