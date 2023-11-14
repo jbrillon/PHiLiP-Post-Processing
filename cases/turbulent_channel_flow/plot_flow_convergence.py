@@ -83,16 +83,22 @@ def plot_transient(filenames_,labels_,which_lines_dashed_):
 # Plot the transient quantities
 #=====================================================
 filenames=[\
-"turbulent_quantities-1.txt",\
+"turbulent_quantities-22892028.txt",\
+"turbulent_quantities-22907920.txt",\
+# "turbulent_quantities-22909869.txt",\
 "/home/julien/Codes/dummy_dir_for_testing/turbulent_quantities.txt",\
 ]
 labels=[\
-"failed: $\\Delta t=0.000343973$, $\\alpha=0.3$",\
-"local: $\\Delta t=0.000068$, $\\alpha=0.3$",\
-]#6.8\times10^{-5},3.44\times10^{-4}
+"failed: $\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.3$",\
+"running: $\\Delta t=1.75\\times10^{-4}$, $\\alpha=0.3$",\
+# "running: $\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.2$",\
+"running: $\\Delta t=6.8\\times10^{-5}$, $\\alpha=0.3$",\
+]#,
 which_lines_dashed=[\
 False,\
 True,\
+False,\
+False,\
 ]
 plot_transient(filenames,labels,which_lines_dashed)
 
