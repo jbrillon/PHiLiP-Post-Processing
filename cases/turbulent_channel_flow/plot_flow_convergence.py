@@ -19,7 +19,10 @@ elif platform == "darwin":
 #=====================================================
 # Helper functions
 #=====================================================
-def plotfxn(x_store,y_store,x_label,y_label,figure_filename,labels_store,which_lines_dashed_store):
+#-----------------------------------------------------
+def plotfxn(x_store,y_store,x_label,y_label,
+    figure_filename,labels_store,which_lines_dashed_store,
+    log_axes=None):
     qp.plotfxn(x_store,y_store,
         figure_filename=figure_filename,
         figure_size=(6,6),
@@ -31,8 +34,10 @@ def plotfxn(x_store,y_store,x_label,y_label,figure_filename,labels_store,which_l
         which_lines_dashed=which_lines_dashed_store,
         transparent_legend=True,
         legend_border_on=False,
-        grid_lines_on=True)
+        grid_lines_on=True,
+        log_axes=log_axes)
     return
+#-----------------------------------------------------
 def plot_transient(filenames_,labels_,which_lines_dashed_,
     plot_skin_friction_coefficient=True,
     plot_wall_shear_stress=True,
@@ -78,28 +83,28 @@ def plot_transient(filenames_,labels_,which_lines_dashed_,
     if(plot_bulk_mass_flow):
         plotfxn(time_store,bulk_mass_flow_store,\
             "$t$","$\\rho_{b}U_{b}$","bulk_mass_flow",\
-            labels_store,which_lines_dashed_store)
+            labels_store,which_lines_dashed_store,log_axes="y")
     return
+#-----------------------------------------------------
 #=====================================================
 # Plot the transient quantities
 #=====================================================
 filenames=[\
+"/home/julien/Codes/dummy_dir_for_testing/turbulent_quantities.txt",\
 "turbulent_quantities-22892028.txt",\
 "turbulent_quantities-22907920.txt",\
 # "turbulent_quantities-22909869.txt",\
-"/home/julien/Codes/dummy_dir_for_testing/turbulent_quantities.txt",\
 ]
 labels=[\
+"running: $\\Delta t=6.8\\times10^{-5}$, $\\alpha=0.3$",\
 "failed: $\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.3$",\
 "running: $\\Delta t=1.75\\times10^{-4}$, $\\alpha=0.3$",\
 # "running: $\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.2$",\
-"running: $\\Delta t=6.8\\times10^{-5}$, $\\alpha=0.3$",\
 ]#,
 which_lines_dashed=[\
 False,\
-True,\
+False,\
 False,\
 False,\
 ]
 plot_transient(filenames,labels,which_lines_dashed)
-
