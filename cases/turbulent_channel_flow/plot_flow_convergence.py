@@ -90,22 +90,22 @@ def plot_transient(filenames_,labels_,which_lines_dashed_,
 # Plot the transient quantities
 #=====================================================
 filenames=[\
-"/home/julien/Codes/dummy_dir_for_testing/turbulent_quantities.txt",\
-"turbulent_quantities-22892028.txt",\
-"turbulent_quantities-22907920.txt",\
-"turbulent_quantities-22909869.txt",\
-"turbulent_quantities-22909869.txt",\
+# "/home/julien/Codes/dummy_dir_for_testing/turbulent_quantities.txt",\
+# "turbulent_quantities-22892028.txt",\
+# "turbulent_quantities-22907920.txt",\
+# "turbulent_quantities-22909869.txt",\
+# "turbulent_quantities-22909869.txt",\
+"turbulent_quantities-22931922.txt",\
 ]
 labels=[\
-"running: $\\Delta t=6.8\\times10^{-5}$, $\\alpha=0.3$",\
-"failed: $\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.3$",\
-"running: $\\Delta t=1.75\\times10^{-4}$, $\\alpha=0.3$",\
-"running: $\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.2$",\
-"failed: $\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.05$",\
+# "running: $\\Delta t=6.8\\times10^{-5}$, $\\alpha=0.3$",\
+# "failed: $\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.3$",\
+# "running: $\\Delta t=1.75\\times10^{-4}$, $\\alpha=0.3$",\
+# "running: $\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.2$",\
+# "failed: $\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.05$",\
+"running: $\\Delta t=1.0\\times10^{-4}$, $\\alpha=0.3$",\
 ]#,
 which_lines_dashed=[\
-False,\
-False,\
 False,\
 False,\
 ]
