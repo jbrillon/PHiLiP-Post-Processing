@@ -94,12 +94,14 @@ filenames=[\
 "turbulent_quantities-22892028.txt",\
 "turbulent_quantities-22907920.txt",\
 "turbulent_quantities-22909869.txt",\
+"turbulent_quantities-22909869.txt",\
 ]
 labels=[\
 "running: $\\Delta t=6.8\\times10^{-5}$, $\\alpha=0.3$",\
 "failed: $\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.3$",\
 "running: $\\Delta t=1.75\\times10^{-4}$, $\\alpha=0.3$",\
 "running: $\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.2$",\
+"failed: $\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.05$",\
 ]#,
 which_lines_dashed=[\
 False,\
