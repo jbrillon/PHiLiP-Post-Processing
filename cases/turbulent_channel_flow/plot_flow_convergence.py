@@ -90,26 +90,36 @@ def plot_transient(filenames_,labels_,which_lines_dashed_,
 # Plot the transient quantities
 #=====================================================
 filenames=[\
-# "/home/julien/Codes/dummy_dir_for_testing/turbulent_quantities.txt",\
-# "turbulent_quantities-22892028.txt",\
 # "turbulent_quantities-22907920.txt",\
 # "turbulent_quantities-22909869.txt",\
 # "turbulent_quantities-22909869.txt",\
 # "turbulent_quantities-22911528.txt",\
 # "turbulent_quantities-22916636.txt",\
 # "turbulent_quantities-22916869.txt",\
-"turbulent_quantities-22931922.txt",\
+# "turbulent_quantities-22931922.txt",\
+# only below this is good to plot
+# "turbulent_quantities-22892028.txt",\
+# "turbulent_quantities-23080330.txt",\
+# "turbulent_quantities-23077970.txt",\
+# "turbulent_quantities-23117286.txt",\
+# "turbulent_quantities-23117307.txt",\
+"turbulent_quantities-lam-check.txt",\
 ]
 labels=[\
-# "running: $\\Delta t=6.8\\times10^{-5}$, $\\alpha=0.3$",\
-# "failed: $\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.3$",\
 # "running: $\\Delta t=1.75\\times10^{-4}$, $\\alpha=0.3$",\
 # "running: $\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.2$",\
 # "failed: $\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.05$",\
 # "running: $\\Delta t=6.8\\times10^{-5}$, $\\alpha=0.3$",\
 # "running: $\\Delta t=3.5\\times10^{-4}$, $\\alpha=0.1$",\
 # "running: $\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.05$",\
-"running: $\\Delta t=1.0\\times10^{-4}$, $\\alpha=0.3$",\
+# "running: $\\Delta t=1.0\\times10^{-4}$, $\\alpha=0.3$",\
+# only below this is good to plot
+# "$\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.3$",\
+# "$\\Delta t=5\\times10^{-5}$, $\\alpha=0.3$",\
+# "$\\Delta t=5\\times10^{-5}$, $\\alpha=0.3$, $|\\tau_{w}|$",\
+# "$\\Delta t=1\\times10^{-5}$, $\\alpha=0.3$",\
+# "$\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.3$, Chao",\
+"$\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.3$, Chao, Laminar",\
 ]
-which_lines_dashed==[2,3]
+which_lines_dashed=[2,3,4]
 plot_transient(filenames,labels,which_lines_dashed)
