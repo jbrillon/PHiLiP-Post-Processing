@@ -12,6 +12,14 @@ from generate_spectra_files import generate_spectra_file_from_flow_field_file
 # load submodules
 sys.path.append(CURRENT_PATH+"../../submodules/quickplotlib/lib"); import quickplotlib as qp
 #-----------------------------------------------------
+from sys import platform
+if platform == "linux" or platform == "linux2":
+    # linux
+    filesystem="/media/julien/Samsung_T5/"
+elif platform == "darwin":
+    # OS X
+    filesystem="/Volumes/Samsung_T5/"
+#-----------------------------------------------------
 #=====================================================
 # Global variables
 #=====================================================
@@ -124,16 +132,16 @@ append_to_plot(cbc_spectra_t2[:,0],cbc_spectra_t2[:,1],"CBC $t^{*}=2$")
 
 
 
-spectra = np.loadtxt("/Volumes/Samsung_T5/NarvalFiles/2023_JCP/DHIT/viscous_DHIT_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs128_p3_CFL-0.2_procs512/flow_field_files/velocity_vorticity-0_reordered_spectra_smoothing_on.dat",skiprows=0,dtype=np.float64)
+spectra = np.loadtxt(filesystem+"NarvalFiles/2023_JCP/DHIT/viscous_DHIT_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs128_p3_CFL-0.2_procs512/flow_field_files/velocity_vorticity-0_reordered_spectra_smoothing_on.dat",skiprows=0,dtype=np.float64)
 append_to_plot(spectra[:,0],spectra[:,1],"$t^{*}=0$")
 
 # spectra = np.loadtxt("/Volumes/Samsung_T5/NarvalFiles/2023_JCP/DHIT/viscous_DHIT_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs128_p3_CFL-0.2_procs512/flow_field_files/velocity_vorticity-1_reordered_spectra.dat",skiprows=0,dtype=np.float64)
 # append_to_plot(spectra[:,0],spectra[:,1],"$c_{DG}$ NSFR.IR-GLL, t=0.5")
 
-spectra = np.loadtxt("/Volumes/Samsung_T5/NarvalFiles/2023_JCP/DHIT/viscous_DHIT_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs128_p3_CFL-0.2_procs512/flow_field_files/velocity_vorticity-2_reordered_spectra_smoothing_on.dat",skiprows=0,dtype=np.float64)
+spectra = np.loadtxt(filesystem+"NarvalFiles/2023_JCP/DHIT/viscous_DHIT_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs128_p3_CFL-0.2_procs512/flow_field_files/velocity_vorticity-2_reordered_spectra_smoothing_on.dat",skiprows=0,dtype=np.float64)
 append_to_plot(spectra[:,0],spectra[:,1],"$t^{*}=1$")
 
-spectra = np.loadtxt("/Volumes/Samsung_T5/NarvalFiles/2023_JCP/DHIT/viscous_DHIT_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs128_p3_CFL-0.2_procs512/flow_field_files/velocity_vorticity-4_reordered_spectra_smoothing_on.dat",skiprows=0,dtype=np.float64)
+spectra = np.loadtxt(filesystem+"NarvalFiles/2023_JCP/DHIT/viscous_DHIT_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs128_p3_CFL-0.2_procs512/flow_field_files/velocity_vorticity-4_reordered_spectra_smoothing_on.dat",skiprows=0,dtype=np.float64)
 append_to_plot(spectra[:,0],spectra[:,1],"$t^{*}=2$")
 
 # # spectra = np.loadtxt("/Users/Julien/DHIT-Flow-Setup/dofs048_p5_velocity/flow_field_files/velocity_vorticity-1_reordered_spectra.dat",skiprows=0,dtype=np.float64)
@@ -189,13 +197,13 @@ append_to_plot(cbc_spectra_t0[:,0],cbc_spectra_t0[:,1],"CBC $t^{*}=0$")
 append_to_plot(cbc_spectra_t1[:,0],cbc_spectra_t1[:,1],"CBC $t^{*}=1$")
 append_to_plot(cbc_spectra_t2[:,0],cbc_spectra_t2[:,1],"CBC $t^{*}=2$")
 
-spectra = np.loadtxt("/Volumes/Samsung_T5/NarvalFiles/2023_JCP/DHIT/viscous_DHIT_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs128_p3_CFL-0.2_procs512/flow_field_files/velocity_vorticity-0_reordered_spectra.dat",skiprows=0,dtype=np.float64)
+spectra = np.loadtxt(filesystem+"NarvalFiles/2023_JCP/DHIT/viscous_DHIT_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs128_p3_CFL-0.2_procs512/flow_field_files/velocity_vorticity-0_reordered_spectra.dat",skiprows=0,dtype=np.float64)
 append_to_plot(spectra[:,0],spectra[:,1],"$t^{*}=0$")
 
-spectra = np.loadtxt("/Volumes/Samsung_T5/NarvalFiles/2023_JCP/DHIT/viscous_DHIT_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs128_p3_CFL-0.2_procs512/flow_field_files/velocity_vorticity-2_reordered_spectra.dat",skiprows=0,dtype=np.float64)
+spectra = np.loadtxt(filesystem+"NarvalFiles/2023_JCP/DHIT/viscous_DHIT_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs128_p3_CFL-0.2_procs512/flow_field_files/velocity_vorticity-2_reordered_spectra.dat",skiprows=0,dtype=np.float64)
 append_to_plot(spectra[:,0],spectra[:,1],"$t^{*}=1$")
 
-spectra = np.loadtxt("/Volumes/Samsung_T5/NarvalFiles/2023_JCP/DHIT/viscous_DHIT_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs128_p3_CFL-0.2_procs512/flow_field_files/velocity_vorticity-4_reordered_spectra.dat",skiprows=0,dtype=np.float64)
+spectra = np.loadtxt(filesystem+"NarvalFiles/2023_JCP/DHIT/viscous_DHIT_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs128_p3_CFL-0.2_procs512/flow_field_files/velocity_vorticity-4_reordered_spectra.dat",skiprows=0,dtype=np.float64)
 append_to_plot(spectra[:,0],spectra[:,1],"$t^{*}=2$")
 
 qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $k^{*}$",ylabel="Nondimensional TKE Spectra, $E^{*}(k^{*},t^{*})$",
@@ -237,9 +245,9 @@ append_to_plot(vermeire_spectra_p3_84dofs[:,0],vermeire_spectra_p3_84dofs[:,1],"
 append_to_plot(vermeire_spectra_p4_80dofs[:,0],vermeire_spectra_p4_80dofs[:,1],"Vermeire P4 ($80^3$ DOFs)")
 append_to_plot(vermeire_spectra_p5_78dofs[:,0],vermeire_spectra_p5_78dofs[:,1],"Vermeire P5 ($78^3$ DOFs)")
 
-spectra = np.loadtxt("/Volumes/Samsung_T5/NarvalFiles/2023_JCP/DHIT/viscous_DHIT_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs128_p3_CFL-0.2_procs512/flow_field_files/velocity_vorticity-4_reordered_spectra_smoothing_on.dat",skiprows=0,dtype=np.float64)
+spectra = np.loadtxt(filesystem+"NarvalFiles/2023_JCP/DHIT/viscous_DHIT_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs128_p3_CFL-0.2_procs512/flow_field_files/velocity_vorticity-4_reordered_spectra_smoothing_on.dat",skiprows=0,dtype=np.float64)
 append_to_plot(spectra[:,0],spectra[:,1],"P3 ($128^3$ DOFs) smoothing on")
-spectra = np.loadtxt("/Volumes/Samsung_T5/NarvalFiles/2023_JCP/DHIT/viscous_DHIT_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs128_p3_CFL-0.2_procs512/flow_field_files/velocity_vorticity-4_reordered_spectra.dat",skiprows=0,dtype=np.float64)
+spectra = np.loadtxt(filesystem+"NarvalFiles/2023_JCP/DHIT/viscous_DHIT_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs128_p3_CFL-0.2_procs512/flow_field_files/velocity_vorticity-4_reordered_spectra.dat",skiprows=0,dtype=np.float64)
 append_to_plot(spectra[:,0],spectra[:,1],"P3 ($128^3$ DOFs) smoothing off")
 
 qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $k^{*}$",ylabel="Nondimensional TKE Spectra, $E^{*}(k^{*},t^{*})$",
