@@ -35,7 +35,8 @@ def plotfxn(x_store,y_store,x_label,y_label,
         transparent_legend=True,
         legend_border_on=False,
         grid_lines_on=True,
-        log_axes=log_axes)
+        log_axes=log_axes,
+        legend_location="upper right")
     return
 #-----------------------------------------------------
 def plot_transient(filenames_,labels_,which_lines_dashed_,
@@ -54,7 +55,6 @@ def plot_transient(filenames_,labels_,which_lines_dashed_,
     bulk_mass_flow_store=[]
     # plot function inputs
     labels_store=[]
-    which_lines_dashed_store=[]
 
     for i,filename in enumerate(filenames_):
         # load data
@@ -75,38 +75,51 @@ def plot_transient(filenames_,labels_,which_lines_dashed_,
     if(plot_skin_friction_coefficient):
         plotfxn(time_store,skin_friction_coefficient_store,\
             "$t$","$C_{f}(t)$/$C_{f}^{expected}$","skin_friction_coefficient",\
-            labels_store,which_lines_dashed_store)
+            labels_store,which_lines_dashed_)
     if(plot_wall_shear_stress):
         plotfxn(time_store,wall_shear_stress_store,\
             "$t$","$\\tau_{w}$","wall_shear_stress",\
-            labels_store,which_lines_dashed_store)
+            labels_store,which_lines_dashed_)
     if(plot_bulk_mass_flow):
         plotfxn(time_store,bulk_mass_flow_store,\
             "$t$","$\\rho_{b}U_{b}$","bulk_mass_flow",\
-            labels_store,which_lines_dashed_store,log_axes="y")
+            labels_store,which_lines_dashed_,log_axes="y")
     return
 #-----------------------------------------------------
 #=====================================================
 # Plot the transient quantities
 #=====================================================
 filenames=[\
-# "/home/julien/Codes/dummy_dir_for_testing/turbulent_quantities.txt",\
-# "turbulent_quantities-22892028.txt",\
 # "turbulent_quantities-22907920.txt",\
 # "turbulent_quantities-22909869.txt",\
 # "turbulent_quantities-22909869.txt",\
-"turbulent_quantities-22931922.txt",\
+# "turbulent_quantities-22911528.txt",\
+# "turbulent_quantities-22916636.txt",\
+# "turbulent_quantities-22916869.txt",\
+# "turbulent_quantities-22931922.txt",\
+# only below this is good to plot
+# "turbulent_quantities-22892028.txt",\
+# "turbulent_quantities-23080330.txt",\
+# "turbulent_quantities-23077970.txt",\
+# "turbulent_quantities-23117286.txt",\
+# "turbulent_quantities-23117307.txt",\
+"turbulent_quantities-lam-check.txt",\
 ]
 labels=[\
-# "running: $\\Delta t=6.8\\times10^{-5}$, $\\alpha=0.3$",\
-# "failed: $\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.3$",\
 # "running: $\\Delta t=1.75\\times10^{-4}$, $\\alpha=0.3$",\
 # "running: $\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.2$",\
 # "failed: $\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.05$",\
-"running: $\\Delta t=1.0\\times10^{-4}$, $\\alpha=0.3$",\
-]#,
-which_lines_dashed=[\
-False,\
-False,\
+# "running: $\\Delta t=6.8\\times10^{-5}$, $\\alpha=0.3$",\
+# "running: $\\Delta t=3.5\\times10^{-4}$, $\\alpha=0.1$",\
+# "running: $\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.05$",\
+# "running: $\\Delta t=1.0\\times10^{-4}$, $\\alpha=0.3$",\
+# only below this is good to plot
+# "$\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.3$",\
+# "$\\Delta t=5\\times10^{-5}$, $\\alpha=0.3$",\
+# "$\\Delta t=5\\times10^{-5}$, $\\alpha=0.3$, $|\\tau_{w}|$",\
+# "$\\Delta t=1\\times10^{-5}$, $\\alpha=0.3$",\
+# "$\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.3$, Chao",\
+"$\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.3$, Chao, Laminar",\
 ]
+which_lines_dashed=[2,3,4]
 plot_transient(filenames,labels,which_lines_dashed)
