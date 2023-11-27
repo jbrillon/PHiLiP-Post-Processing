@@ -25,7 +25,7 @@ def plotfxn(x_store,y_store,x_label,y_label,
     log_axes=None):
     qp.plotfxn(x_store,y_store,
         figure_filename=figure_filename,
-        figure_size=(6,6),
+        figure_size=(8,6),
         legend_labels_tex=labels_store,
         figure_filetype="pdf",
         title_label="Transient Flow Convergence",
@@ -36,7 +36,7 @@ def plotfxn(x_store,y_store,x_label,y_label,
         legend_border_on=False,
         grid_lines_on=True,
         log_axes=log_axes,
-        legend_location="upper right")
+        legend_location="upper left")
     return
 #-----------------------------------------------------
 def plot_transient(filenames_,labels_,which_lines_dashed_,
@@ -98,12 +98,13 @@ filenames=[\
 # "turbulent_quantities-22916869.txt",\
 # "turbulent_quantities-22931922.txt",\
 # only below this is good to plot
-# "turbulent_quantities-22892028.txt",\
+"turbulent_quantities-22892028.txt",\
 # "turbulent_quantities-23080330.txt",\
 # "turbulent_quantities-23077970.txt",\
 # "turbulent_quantities-23117286.txt",\
-# "turbulent_quantities-23117307.txt",\
-"turbulent_quantities-lam-check.txt",\
+"turbulent_quantities-23117307.txt",\
+"turbulent_quantities-23134131.txt",\
+"turbulent_quantities-23135133.txt",\
 ]
 labels=[\
 # "running: $\\Delta t=1.75\\times10^{-4}$, $\\alpha=0.3$",\
@@ -114,12 +115,13 @@ labels=[\
 # "running: $\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.05$",\
 # "running: $\\Delta t=1.0\\times10^{-4}$, $\\alpha=0.3$",\
 # only below this is good to plot
-# "$\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.3$",\
+"$\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.3$, before fixes, Turb. IC",\
 # "$\\Delta t=5\\times10^{-5}$, $\\alpha=0.3$",\
 # "$\\Delta t=5\\times10^{-5}$, $\\alpha=0.3$, $|\\tau_{w}|$",\
 # "$\\Delta t=1\\times10^{-5}$, $\\alpha=0.3$",\
-# "$\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.3$, Chao",\
-"$\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.3$, Chao, Laminar",\
+"$\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.3$, Chao fix, Turb. IC",\
+"$\\Delta t=1.5\\times10^{-4}$, $\\alpha=0.3$, Chao fix, Turb. IC",\
+"$\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.3$, Chao fix, Lam. IC",\
 ]
 which_lines_dashed=[2,3,4]
 plot_transient(filenames,labels,which_lines_dashed)
