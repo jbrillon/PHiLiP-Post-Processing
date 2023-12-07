@@ -67,7 +67,7 @@ def plot_for_presentation(
             tmax=final_time_for_plot,
             legend_fontSize_input=legend_fontSize_input,
             solid_and_dashed_lines=False,
-            plot_kinetic_energy=False,
+            plot_kinetic_energy=True,
             plot_enstrophy=True,
             plot_numerical_dissipation=True,
             plot_PHiLiP_DNS_result_as_reference=True,
@@ -105,6 +105,37 @@ def reinit_inputs():
 #=====================================================
 #-----------------------------------------------------
 #=====================================================
+# DOFs: 96^3 | cDG vs cPlus
+#-----------------------------------------------------
+if(True):
+    #-----------------------------------------------------
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="."
+    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL=$0.10$" # comment to turn off
+    figure_filename_postfix = "96_p5_cDG_vs_cPlus"
+    legend_inside_input=True
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    # "correction_parameter/viscous_TGV_ILES_NSFR_cSD_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    # "correction_parameter/viscous_TGV_ILES_NSFR_cHU_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "correction_parameter/viscous_TGV_ILES_NSFR_cPlus_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    ]
+    # labels
+    labels_for_plot=[\
+    "$c_{DG}$ NSFR.IR-GL",\
+    # "$c_{SD}$ NSFR.IR-GL",\
+    # "$c_{HU}$ NSFR.IR-GL",\
+    "$c_{+}$ NSFR.IR-GL",\
+    ]
+    black_line_flag_for_plot=[False,False,False,False]
+    dashed_line_flag_for_plot=[False,False,False,False]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0)
+exit()
+#=====================================================
 # DOFs: 96^3 | Correction Parameter Accuracy
 #-----------------------------------------------------
 if(True):
@@ -134,6 +165,7 @@ if(True):
     black_line_flag_for_plot=[False,False,False,False]
     dashed_line_flag_for_plot=[False,False,False,False]
     plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot)
+
 #=====================================================
 # DOFs: 96^3 | Correction Parameter Time-Step
 #-----------------------------------------------------
