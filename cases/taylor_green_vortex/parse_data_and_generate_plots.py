@@ -63,6 +63,8 @@ def plot_for_presentation(
             legend_inside_input,
             nlegendcols_input,
             # clr_input=clr_input,
+            plot_numerical_viscosity=True,
+            plot_dissipation_components=True,
             transparent_legend_input=True,
             tmax=final_time_for_plot,
             legend_fontSize_input=legend_fontSize_input,
@@ -114,7 +116,7 @@ if(True):
     data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
     date_for_runs="."
     figure_subdirectory="."
-    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL=$0.10$" # comment to turn off
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL=$0.10$" # comment to turn off
     figure_filename_postfix = "96_p5_cDG_vs_cPlus"
     legend_inside_input=True
     #-----------------------------------------------------

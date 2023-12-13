@@ -51,6 +51,7 @@ def plot_periodic_turbulence(
     plot_dissipation_rate=True,
     plot_enstrophy=True,
     plot_dissipation_components=False,
+    plot_numerical_viscosity=False,
     clr_input=[],mrkr_input=[],lnstl_input=[],
     legend_fontSize_input=16,
     tmax=20.0,
@@ -77,6 +78,7 @@ def plot_periodic_turbulence(
     eps_S_plus_eps_p_store = []
     eps_p_store = []
     eps_S_store = []
+    numerical_viscosity_store = []
     clr_input_store=[]
     mrkr_input_store=[]
     lnstl_input_store=[]
@@ -143,6 +145,14 @@ def plot_periodic_turbulence(
         dissipation_store.append(dissipation)
         enstrophy_store.append(enstrophy)
         vorticity_based_dissipation_store.append(vorticity_based_dissipation)
+        pressure_dilatation_based_dissipation_store.append(pressure_dilatation_based_dissipation)
+        strain_rate_based_dissipation_store.append(strain_rate_based_dissipation)
+        deviatoric_strain_rate_based_dissipation_store.append(deviatoric_strain_rate_based_dissipation)
+        eps_K_minus_eps_S_minus_eps_p_store.append(dissipation - strain_rate_based_dissipation - pressure_dilatation_based_dissipation)
+        eps_S_plus_eps_p_store.append(strain_rate_based_dissipation + pressure_dilatation_based_dissipation)
+        eps_p_store.append(pressure_dilatation_based_dissipation)
+        eps_S_store.append(strain_rate_based_dissipation)
+        numerical_viscosity_store.append(dissipation/(2.0*enstrophy))
         which_lines_black_input.append(i_curve)
         # which_lines_dashed_input.append(i_curve) # uncomment for dashed DNS result
         i_curve += 1
@@ -190,6 +200,7 @@ def plot_periodic_turbulence(
         eps_S_plus_eps_p_store.append(strain_rate_based_dissipation + pressure_dilatation_based_dissipation)
         eps_p_store.append(pressure_dilatation_based_dissipation)
         eps_S_store.append(strain_rate_based_dissipation)
+        numerical_viscosity_store.append(dissipation/(2.0*enstrophy))
         # store inputted line color, markers, and linestyles
         if(clr_input!=[]):
             clr_input_store.append(clr_input[i])
@@ -428,6 +439,34 @@ def plot_periodic_turbulence(
         if(lnstl_input!=[]):
             lnstl_input_store.pop(0)
 
+    if(plot_numerical_viscosity):
+        qp.plotfxn(xdata=time_store,
+                ydata=numerical_viscosity_store,
+                # ylabel='$\\varepsilon=-\\frac{\\mathrm{d} K^{*}}{\\mathrm{d}t^{*}}$',
+                ylabel='Nondimensional Numerical Viscosity, $\\frac{\\varepsilon^{*}}{2\\zeta^{*}}$',
+                xlabel='Nondimensional Time, $t^{*}$',
+                figure_filename=figure_subdirectory+'numerical_viscosity_vs_time'+figure_filename_postfix,
+                title_label=figure_title,
+                markers=False,
+                legend_labels_tex=labels_store,
+                black_lines=False,
+                xlimits=[0,tmax],
+                # ylimits=[0.0,0.018],
+                log_axes=log_axes_input,
+                which_lines_black=which_lines_black_input,
+                which_lines_dashed=which_lines_dashed_input,
+                legend_on=legend_on_input,
+                legend_inside=legend_inside_input,
+                nlegendcols=nlegendcols_input,
+                figure_size=(6,6),
+                transparent_legend=transparent_legend_input,
+                legend_border_on=False,
+                grid_lines_on=False,
+                fig_directory=figure_directory_base,
+                clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
+                legend_fontSize=legend_fontSize_input,
+                legend_location="best")
+
     if(plot_dissipation_components):
         # vorticity component
         qp.plotfxn(xdata=time_store,
@@ -447,7 +486,7 @@ def plot_periodic_turbulence(
                 legend_on=legend_on_input,
                 legend_inside=legend_inside_input,
                 nlegendcols=nlegendcols_input,
-                figure_size=(8,6),
+                figure_size=(6,6),
                 transparent_legend=transparent_legend_input,
                 legend_border_on=False,
                 grid_lines_on=False,
@@ -466,14 +505,14 @@ def plot_periodic_turbulence(
                 legend_labels_tex=labels_store,
                 black_lines=False,
                 xlimits=[0,tmax],
-                ylimits=[0,0.014],
+                # ylimits=[0,0.014],
                 log_axes=log_axes_input,
                 which_lines_black=which_lines_black_input,
                 which_lines_dashed=which_lines_dashed_input,
                 legend_on=legend_on_input,
                 legend_inside=legend_inside_input,
                 nlegendcols=nlegendcols_input,
-                figure_size=(8,6),
+                figure_size=(6,6),
                 transparent_legend=transparent_legend_input,
                 legend_border_on=False,
                 grid_lines_on=False,
@@ -491,14 +530,14 @@ def plot_periodic_turbulence(
                 legend_labels_tex=labels_store,
                 black_lines=False,
                 xlimits=[0,tmax],
-                ylimits=[0,0.014],
+                # ylimits=[0,0.014],
                 log_axes=log_axes_input,
                 which_lines_black=which_lines_black_input,
                 which_lines_dashed=which_lines_dashed_input,
                 legend_on=legend_on_input,
                 legend_inside=legend_inside_input,
                 nlegendcols=nlegendcols_input,
-                figure_size=(8,6),
+                figure_size=(6,6),
                 transparent_legend=transparent_legend_input,
                 legend_border_on=False,
                 grid_lines_on=False,
@@ -517,14 +556,14 @@ def plot_periodic_turbulence(
                 legend_labels_tex=labels_store,
                 black_lines=False,
                 xlimits=[0,tmax],
-                ylimits=[-1e-1,1e-1],
+                # ylimits=[-1e-1,1e-1],
                 log_axes=log_axes_input,
                 which_lines_black=which_lines_black_input,
                 which_lines_dashed=which_lines_dashed_input,
                 legend_on=legend_on_input,
                 legend_inside=legend_inside_input,
                 nlegendcols=nlegendcols_input,
-                figure_size=(8,6),
+                figure_size=(6,6),
                 transparent_legend=transparent_legend_input,
                 legend_border_on=False,
                 grid_lines_on=False,
