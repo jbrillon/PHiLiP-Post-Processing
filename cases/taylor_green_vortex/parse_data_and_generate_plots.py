@@ -28,7 +28,8 @@ def plot_for_presentation(
     black_line_flag_for_plot,
     dashed_line_flag_for_plot,
     final_time_for_plot=10.0,
-    legend_fontSize_input=14):
+    legend_fontSize_input=14,
+    low_order_solution_flag=[]):
     global subdirectories, filenames, labels, black_line_flag, \
     dashed_line_flag, figure_filename_postfix, figure_title, \
     ylimits_kinetic_energy_input, ylimits_dissipation_input, \
@@ -41,10 +42,13 @@ def plot_for_presentation(
         figure_filename_postfix_input=figure_filename_postfix+"_%i" % i
         #-----------------------------------------------------
         subdirectories.append(subdirectories_for_plot[i])
-        filenames.append("turbulent_quantities.txt")
         labels.append(labels_for_plot[i])
         black_line_flag.append(black_line_flag_for_plot[i])
         dashed_line_flag.append(dashed_line_flag_for_plot[i])
+        if(low_order_solution_flag!=[] and low_order_solution_flag[i]==True):
+            filenames.append("turbulent_quantities_low_order_solution.txt")
+        else:
+            filenames.append("turbulent_quantities.txt")
         #-----------------------------------------------------
         plot_periodic_turbulence(
             figure_subdirectory,
@@ -107,6 +111,36 @@ def reinit_inputs():
 #=====================================================
 #-----------------------------------------------------
 #=====================================================
+# DOFs: 256^3 and projected 96^3
+#-----------------------------------------------------
+if(True):
+    #-----------------------------------------------------
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="."
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL=$0.10$" # comment to turn off
+    figure_filename_postfix = "256_p7_projection_to_96_p2"
+    legend_inside_input=True
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "filtered_dns_viscous_tgv/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p3_procs1024",\
+    "filtered_dns_viscous_tgv/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p3_procs1024",\
+    ]
+    # labels
+    labels_for_plot=[\
+    "$96^3$ P$5$ $c_{DG}$ NSFR.IR-GL",\
+    "$256^3$ P$7$ $c_{DG}$ NSFR.IR-GL",\
+    "$96^3$ P$2$ (projected)",\
+    ]
+    black_line_flag_for_plot=[False,False,False,False]
+    dashed_line_flag_for_plot=[False,False,True,False]
+    low_order_solution_flag=[False,False,True]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0)
+exit()
+#=====================================================
 # DOFs: 96^3 | cDG vs cPlus
 #-----------------------------------------------------
 if(True):
@@ -136,7 +170,6 @@ if(True):
     black_line_flag_for_plot=[False,False,False,False]
     dashed_line_flag_for_plot=[False,False,False,False]
     plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0)
-exit()
 #=====================================================
 # DOFs: 96^3 | Correction Parameter Accuracy
 #-----------------------------------------------------
