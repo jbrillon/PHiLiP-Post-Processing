@@ -28,15 +28,15 @@ def plotfxn(x_store,y_store,x_label,y_label,
         figure_size=(8,6),
         legend_labels_tex=labels_store,
         figure_filetype="pdf",
-        title_label="Transient Flow Convergence",
+        title_label="Turbulent Channel Flow $Re_{\\tau}\\approx395$, $CFL\\approx0.2$, $\\alpha=0.0$",
         xlabel=x_label,
         ylabel=y_label,
         which_lines_dashed=which_lines_dashed_store,
-        transparent_legend=True,
-        legend_border_on=False,
+        transparent_legend=False,
+        legend_border_on=True,
         grid_lines_on=True,
         log_axes=log_axes,
-        legend_location="upper left")
+        legend_location="best")
     return
 #-----------------------------------------------------
 def plot_transient(filenames_,labels_,which_lines_dashed_,
@@ -61,8 +61,6 @@ def plot_transient(filenames_,labels_,which_lines_dashed_,
         time,wall_shear_stress,skin_friction_coefficient,bulk_density,bulk_velocity = np.loadtxt(filename,skiprows=1,dtype=np.float64,unpack=True)
         # compute the bulk mass flow
         bulk_mass_flow = bulk_density*bulk_velocity
-        # compute the skin friction coefficient
-        skin_friction_coefficient /= expected_mean_value_for_skin_friction_coefficient
 
         # store the data
         time_store.append(time[starting_data_index_for_plot:])
@@ -74,15 +72,18 @@ def plot_transient(filenames_,labels_,which_lines_dashed_,
     # plot the quantities
     if(plot_skin_friction_coefficient):
         plotfxn(time_store,skin_friction_coefficient_store,\
-            "$t$","$C_{f}(t)$/$C_{f}^{expected}$","skin_friction_coefficient",\
+            "$t$","Skin Friction Coefficient, $C_{f}$","skin_friction_coefficient",\
             labels_store,which_lines_dashed_)
+        # plotfxn(time_store,skin_friction_coefficient_store/expected_mean_value_for_skin_friction_coefficient,\
+        #     "$t$","$C_{f}(t)$/$C_{f}^{expected}$","skin_friction_coefficient",\
+        #     labels_store,which_lines_dashed_)
     if(plot_wall_shear_stress):
         plotfxn(time_store,wall_shear_stress_store,\
-            "$t$","$\\tau_{w}$","wall_shear_stress",\
+            "$t$","Nondimensional Wall Shear Stress, $\\tau_{w}$","wall_shear_stress",\
             labels_store,which_lines_dashed_)
     if(plot_bulk_mass_flow):
         plotfxn(time_store,bulk_mass_flow_store,\
-            "$t$","$\\rho_{b}U_{b}$","bulk_mass_flow",\
+            "$t$","Nondimensional Bulk Mass Flow Rate, $\\rho_{b}U_{b}$","bulk_mass_flow",\
             labels_store,which_lines_dashed_,log_axes="y")
     return
 #-----------------------------------------------------
@@ -102,9 +103,16 @@ filenames=[\
 # "turbulent_quantities-23080330.txt",\
 # "turbulent_quantities-23077970.txt",\
 # "turbulent_quantities-23117286.txt",\
-"turbulent_quantities-23117307.txt",\
-"turbulent_quantities-23134131.txt",\
-"turbulent_quantities-23135133.txt",\
+# "turbulent_quantities-23117307.txt",\
+# "turbulent_quantities-23134131.txt",\
+# "turbulent_quantities-23135133.txt",\
+# "turbulent_quantities-23117307.txt",\
+# "turbulent_quantities-nov25-local-roe.txt",\
+# "turbulent_quantities-23226879.txt",\
+filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GL_OI-0_Re395_p3/turbulent_quantities.txt",\
+filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cPlus_IR_2PF_GL_OI-0_Re395_p3/turbulent_quantities.txt",\
+filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_Re395_p3/turbulent_quantities.txt",\
+filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cPlus_IR_2PF-Roe_GL_OI-0_Re395_p3/turbulent_quantities.txt",\
 ]
 labels=[\
 # "running: $\\Delta t=1.75\\times10^{-4}$, $\\alpha=0.3$",\
@@ -119,9 +127,17 @@ labels=[\
 # "$\\Delta t=5\\times10^{-5}$, $\\alpha=0.3$",\
 # "$\\Delta t=5\\times10^{-5}$, $\\alpha=0.3$, $|\\tau_{w}|$",\
 # "$\\Delta t=1\\times10^{-5}$, $\\alpha=0.3$",\
-"$\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.3$, Chao fix, Turb. IC",\
-"$\\Delta t=1.5\\times10^{-4}$, $\\alpha=0.3$, Chao fix, Turb. IC",\
-"$\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.3$, Chao fix, Lam. IC",\
+# "$\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.3$, Chao fix, Turb. IC",\
+# "$\\Delta t=1.5\\times10^{-4}$, $\\alpha=0.3$, Chao fix, Turb. IC",\
+# "$\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.3$, Chao fix, Lam. IC",\
+# "$\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.3$, Chao",\
+# "$\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.3$, Chao, Laminar",\
+# "$\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.0$, Chao, Brian, Roe, Laminar",\
+# "$\\Delta t=6.8\\times10^{-5}$, $\\alpha=0.0$, Chao, Brian, 2PF, Laminar",\
+"$c_{DG}$ NSFR.IR",\
+"$c_{+}$ NSFR.IR",\
+"$c_{DG}$ NSFR.IR.Roe",\
+"$c_{+}$ NSFR.IR.Roe",\
 ]
-which_lines_dashed=[2,3,4]
+which_lines_dashed=[2,3]
 plot_transient(filenames,labels,which_lines_dashed)
