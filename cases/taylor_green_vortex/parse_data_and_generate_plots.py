@@ -137,8 +137,8 @@ if(True):
     ]
     black_line_flag_for_plot=[False,False,False,False]
     dashed_line_flag_for_plot=[False,False,True,False]
-    low_order_solution_flag=[False,False,True]
-    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0)
+    low_order_solution_flag_for_plot=[False,False,True]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0,low_order_solution_flag=low_order_solution_flag_for_plot)
 exit()
 #=====================================================
 # DOFs: 96^3 | cDG vs cPlus
