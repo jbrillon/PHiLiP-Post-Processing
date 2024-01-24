@@ -29,7 +29,11 @@ def plot_for_presentation(
     dashed_line_flag_for_plot,
     final_time_for_plot=10.0,
     legend_fontSize_input=14,
-    low_order_solution_flag=[]):
+    plot_filtered_dns_input=False):
+    
+    # flag to generate only the final plot with all the curves to save plotting time
+    generate_only_final_plot_with_all_curves=True
+
     global subdirectories, filenames, labels, black_line_flag, \
     dashed_line_flag, figure_filename_postfix, figure_title, \
     ylimits_kinetic_energy_input, ylimits_dissipation_input, \
@@ -38,46 +42,46 @@ def plot_for_presentation(
     figure_subdirectory, data_directory_base, figure_directory_base, \
     smoothing_input
     #-----------------------------------------------------
-    for i in range(0,len(subdirectories_for_plot)):
+    number_of_result_curves=len(subdirectories_for_plot)
+    for i in range(0,number_of_result_curves):
         figure_filename_postfix_input=figure_filename_postfix+"_%i" % i
         #-----------------------------------------------------
         subdirectories.append(subdirectories_for_plot[i])
         labels.append(labels_for_plot[i])
         black_line_flag.append(black_line_flag_for_plot[i])
         dashed_line_flag.append(dashed_line_flag_for_plot[i])
-        if(low_order_solution_flag!=[] and low_order_solution_flag[i]==True):
-            filenames.append("turbulent_quantities_low_order_solution.txt")
-        else:
-            filenames.append("turbulent_quantities.txt")
+        filenames.append("turbulent_quantities.txt")
         #-----------------------------------------------------
-        plot_periodic_turbulence(
-            figure_subdirectory,
-            subdirectories,
-            filenames,
-            labels,
-            black_line_flag,
-            dashed_line_flag,
-            figure_directory_base,
-            data_directory_base,
-            False,
-            figure_filename_postfix_input,
-            figure_title,
-            log_axes_input,
-            legend_on_input,
-            legend_inside_input,
-            nlegendcols_input,
-            # clr_input=clr_input,
-            plot_numerical_viscosity=True,
-            plot_dissipation_components=True,
-            transparent_legend_input=True,
-            tmax=final_time_for_plot,
-            legend_fontSize_input=legend_fontSize_input,
-            solid_and_dashed_lines=False,
-            plot_kinetic_energy=True,
-            plot_enstrophy=True,
-            plot_numerical_dissipation=True,
-            plot_PHiLiP_DNS_result_as_reference=True,
-            dissipation_rate_smoothing=smoothing_input)
+        if(generate_only_final_plot_with_all_curves==False or i==(number_of_result_curves-1)):
+            plot_periodic_turbulence(
+                figure_subdirectory,
+                subdirectories,
+                filenames,
+                labels,
+                black_line_flag,
+                dashed_line_flag,
+                figure_directory_base,
+                data_directory_base,
+                plot_reference_result,
+                figure_filename_postfix_input,
+                figure_title,
+                log_axes_input,
+                legend_on_input,
+                legend_inside_input,
+                nlegendcols_input,
+                # clr_input=clr_input,
+                plot_numerical_viscosity=True,
+                plot_dissipation_components=True,
+                transparent_legend_input=True,
+                tmax=final_time_for_plot,
+                legend_fontSize_input=legend_fontSize_input,
+                solid_and_dashed_lines=False,
+                plot_kinetic_energy=True,
+                plot_enstrophy=True,
+                plot_numerical_dissipation=True,
+                plot_PHiLiP_DNS_result_as_reference=True,
+                dissipation_rate_smoothing=smoothing_input,
+                plot_filtered_dns=plot_filtered_dns_input)
     #-----------------------------------------------------
 #=====================================================
 def reinit_inputs():
@@ -101,7 +105,7 @@ def reinit_inputs():
     log_axes_input=None # default
     legend_on_input=True # default
     legend_inside_input=False # default
-    plot_reference_result=True # default
+    plot_reference_result=False # default
     nlegendcols_input=1
     figure_subdirectory="" # default
     data_directory_base = "/Users/Julien/julien_phd/post_processing/data/taylor_green_vortex"
@@ -126,19 +130,18 @@ if(True):
     #-----------------------------------------------------
     subdirectories_for_plot=[\
     "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
-    "filtered_dns_viscous_tgv/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p3_procs1024",\
-    "filtered_dns_viscous_tgv/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p3_procs1024",\
+    "filtered_dns_viscous_tgv/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024",\
+    "verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p3_procs1024",\
     ]
     # labels
     labels_for_plot=[\
     "$96^3$ P$5$ $c_{DG}$ NSFR.IR-GL",\
     "$256^3$ P$7$ $c_{DG}$ NSFR.IR-GL",\
-    "$96^3$ P$2$ (projected)",\
+    "$256^3$ P$3$ $c_{DG}$ NSFR.IR-GL",\
     ]
     black_line_flag_for_plot=[False,False,False,False]
     dashed_line_flag_for_plot=[False,False,True,False]
-    low_order_solution_flag_for_plot=[False,False,True]
-    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0,low_order_solution_flag=low_order_solution_flag_for_plot)
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0,plot_filtered_dns_input=True)
 exit()
 #=====================================================
 # DOFs: 96^3 | cDG vs cPlus
