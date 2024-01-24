@@ -60,6 +60,7 @@ def plot_periodic_turbulence(
     plot_numerical_dissipation=False,
     plot_PHiLiP_DNS_result_as_reference=False,
     dissipation_rate_smoothing=[],
+    plot_filtered_dns=False,
     ):
     # plotting parameters store
     labels_store = []
@@ -134,9 +135,9 @@ def plot_periodic_turbulence(
         if(lnstl_input!=[]):
             lnstl_input_store.append('solid') # supported values are '-', '--', '-.', ':', 'None', ' ', '', 'solid', 'dashed', 'dashdot', 'dotted'
     elif(plot_PHiLiP_DNS_result_as_reference):
-        labels_store.append("DNS ($256^3$ DOFs)")
+        labels_store.append("DNS ($256^3$ DOFs, P$7$)")
         path_to_reference_result=CURRENT_PATH+"../cases/taylor_green_vortex/data/brillon"
-        filename=path_to_reference_result+"/"+"turbulent_quantities"+".txt"
+        filename=path_to_reference_result+"/"+"turbulent_quantities_256dofs_p7"+".txt"
         time, kinetic_energy, enstrophy, vorticity_based_dissipation, pressure_dilatation_based_dissipation, strain_rate_based_dissipation, deviatoric_strain_rate_based_dissipation = np.loadtxt(filename,skiprows=1,dtype=np.float64,unpack=True)
         time_store.append(time)
         kinetic_energy_store.append(kinetic_energy)
@@ -162,6 +163,35 @@ def plot_periodic_turbulence(
             mrkr_input_store.append('None')
         if(lnstl_input!=[]):
             lnstl_input_store.append('solid') # supported values are '-', '--', '-.', ':', 'None', ' ', '', 'solid', 'dashed', 'dashdot', 'dotted'
+    if(plot_filtered_dns):
+        labels_store.append("Filtered DNS, $96^3$ P$2$")
+        path_to_reference_result=CURRENT_PATH+"../cases/taylor_green_vortex/data/brillon/filtered_dns"
+        filename=path_to_reference_result+"/"+"turbulent_quantities_96dofs_p2"+".txt"
+        time, kinetic_energy, enstrophy, vorticity_based_dissipation, pressure_dilatation_based_dissipation, strain_rate_based_dissipation, deviatoric_strain_rate_based_dissipation = np.loadtxt(filename,skiprows=1,dtype=np.float64,unpack=True)
+        time_store.append(time)
+        kinetic_energy_store.append(kinetic_energy)
+        # -- compute dissipation
+        dissipation = get_dissipation_discrete(time,kinetic_energy)
+        dissipation_store.append(dissipation)
+        enstrophy_store.append(enstrophy)
+        vorticity_based_dissipation_store.append(vorticity_based_dissipation)
+        pressure_dilatation_based_dissipation_store.append(pressure_dilatation_based_dissipation)
+        strain_rate_based_dissipation_store.append(strain_rate_based_dissipation)
+        deviatoric_strain_rate_based_dissipation_store.append(deviatoric_strain_rate_based_dissipation)
+        eps_K_minus_eps_S_minus_eps_p_store.append(dissipation - strain_rate_based_dissipation - pressure_dilatation_based_dissipation)
+        eps_S_plus_eps_p_store.append(strain_rate_based_dissipation + pressure_dilatation_based_dissipation)
+        eps_p_store.append(pressure_dilatation_based_dissipation)
+        eps_S_store.append(strain_rate_based_dissipation)
+        numerical_viscosity_store.append(dissipation/(2.0*enstrophy))
+        which_lines_black_input.append(i_curve)
+        which_lines_dashed_input.append(i_curve) # for dashed filtered DNS result
+        i_curve += 1
+        if(clr_input!=[]):
+            clr_input_store.append('k')
+        if(mrkr_input!=[]):
+            mrkr_input_store.append('None')
+        if(lnstl_input!=[]):
+            lnstl_input_store.append('.') # supported values are '-', '--', '-.', ':', 'None', ' ', '', 'solid', 'dashed', 'dashdot', 'dotted'
     # PHiLiP Results
     number_of_result_curves = len(filenames)
     for i in range(0,number_of_result_curves):
