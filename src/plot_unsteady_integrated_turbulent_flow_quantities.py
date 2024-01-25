@@ -358,9 +358,8 @@ def plot_periodic_turbulence(
             # mk=mrkr_input_dummy[i]
             mk='None'
             if(plot_filtered_dns and i==1):
-                lc="tab:gray"
-            else:
-                lc=clr_input_dummy[i]
+                clr_input_dummy.insert(i,"tab:gray")
+            lc=clr_input_dummy[i]
             leg_elements_input.append(Line2D([0],[0], label=labels_store[i], color=lc, marker=mk, markersize=6, mfc='None', linestyle=ls))
 
             KE_molecular_and_numerical_dissipation_y_store.append(dissipation_store[i])
