@@ -40,11 +40,13 @@ def plot_for_presentation(
     log_axes_input, legend_on_input, legend_inside_input, \
     plot_reference_result, nlegendcols_input, \
     figure_subdirectory, data_directory_base, figure_directory_base, \
-    smoothing_input
+    smoothing_input, plot_PHiLiP_DNS_result_as_reference_input
     #-----------------------------------------------------
     number_of_result_curves=len(subdirectories_for_plot)
     for i in range(0,number_of_result_curves):
-        figure_filename_postfix_input=figure_filename_postfix+"_%i" % i
+        figure_filename_postfix_input=figure_filename_postfix
+        if(generate_only_final_plot_with_all_curves==False):
+            figure_filename_postfix_input+="_%i" % i
         #-----------------------------------------------------
         subdirectories.append(subdirectories_for_plot[i])
         labels.append(labels_for_plot[i])
@@ -79,7 +81,7 @@ def plot_for_presentation(
                 plot_kinetic_energy=True,
                 plot_enstrophy=True,
                 plot_numerical_dissipation=True,
-                plot_PHiLiP_DNS_result_as_reference=True,
+                plot_PHiLiP_DNS_result_as_reference=plot_PHiLiP_DNS_result_as_reference_input,
                 dissipation_rate_smoothing=smoothing_input,
                 plot_filtered_dns=plot_filtered_dns_input)
     #-----------------------------------------------------
@@ -91,7 +93,7 @@ def reinit_inputs():
     log_axes_input, legend_on_input, legend_inside_input, \
     plot_reference_result, nlegendcols_input, \
     figure_subdirectory, data_directory_base, figure_directory_base, \
-    smoothing_input
+    smoothing_input, plot_PHiLiP_DNS_result_as_reference_input
 
     subdirectories = []
     filenames = []
@@ -112,67 +114,362 @@ def reinit_inputs():
     # figure_directory_base = "/Users/Julien/julien_phd/post_processing/figures/taylor_green_vortex"
     figure_directory_base = "figures"
     smoothing_input = []
+    plot_PHiLiP_DNS_result_as_reference_input=True # default
 #=====================================================
 #-----------------------------------------------------
+
 #=====================================================
-# DOFs: 256^3 and projected 96^3
+# DOFs: 96^3 | Basic SGS Models on GLL flux nodes (no filter width modifications)
 #-----------------------------------------------------
-if(True):
-    #-----------------------------------------------------
-    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+if(False):
+    # batch_labels = [ \
+    # "$c_{DG}$ NSFR", \
+    # "$c_{DG}$ NSFR.IR-Smag. $C_{S}=0.10$", \
+    # "$c_{DG}$ NSFR.IR-Smag. $C_{S}=0.18$", \
+    # "$c_{DG}$ NSFR.IR-WALE", \
+    # "$c_{DG}$ NSFR.IR-VRMN", \
+    # "$c_{DG}$ NSFR.IR-Smag. $C_{S}=0.1$, $\\Delta_{min}$", \
+    # ]
     reinit_inputs()
     data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
     date_for_runs="."
-    figure_subdirectory="."
-    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL=$0.10$" # comment to turn off
-    figure_filename_postfix = "256_p7_projection_to_96_p2"
+    figure_subdirectory="2023_JCP"
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_filename_postfix = "96_sgs_models_gll"
+    legend_inside_input=True
+    #-----------------------------------------------------
+    subdirectories.append("flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GLL")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    subdirectories.append("sgs_model_GLL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GLL-Smag. $C_{S}=0.10$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    subdirectories.append("sgs_model_GLL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.18_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GLL-Smag. $C_{S}=0.18$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    subdirectories.append("sgs_model_GLL_flux_nodes/viscous_TGV_LES_WALE_MC-0.50_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GLL-WALE $C_{W}=0.50$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    subdirectories.append("sgs_model_GLL_flux_nodes/viscous_TGV_LES_VRMN_MC-0.081_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512")
+    filenames.append("turbulent_quantities.txt")
+    labels.append("$c_{DG}$ NSFR.IR-GLL-VRMN $C_{V}=0.081$")
+    black_line_flag.append(False)
+    dashed_line_flag.append(False)
+    #-----------------------------------------------------
+    plot_periodic_turbulence(
+        figure_subdirectory,
+        subdirectories,
+        filenames,
+        labels,
+        black_line_flag,
+        dashed_line_flag,
+        figure_directory_base,
+        data_directory_base,
+        plot_reference_result,
+        figure_filename_postfix,
+        figure_title,
+        log_axes_input,
+        legend_on_input,
+        legend_inside_input,
+        nlegendcols_input,
+        transparent_legend_input=True,
+        tmax=20.0,
+        legend_fontSize_input=14,
+        solid_and_dashed_lines=False)
+    #-----------------------------------------------------
+
+#=====================================================
+# DOFs: 96^3 | Basic SGS Models on GL flux nodes (no filter width modifications)
+#-----------------------------------------------------
+if(True):
+    # batch_labels = [ \
+    # "$c_{DG}$ NSFR", \
+    # "$c_{DG}$ NSFR.IR-Smag. $C_{S}=0.10$", \
+    # "$c_{DG}$ NSFR.IR-Smag. $C_{S}=0.18$", \
+    # "$c_{DG}$ NSFR.IR-WALE", \
+    # "$c_{DG}$ NSFR.IR-VRMN", \
+    # "$c_{DG}$ NSFR.IR-Smag. $C_{S}=0.1$, $\\Delta_{min}$", \
+    # ]
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="2023_JCP"
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_filename_postfix = "96_p5_sgs_models_gl"
+    legend_inside_input=True
+    # #-----------------------------------------------------
+    # subdirectories.append("sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.18_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512_filter_width_flad_and_gassner")
+    # filenames.append("turbulent_quantities.txt")
+    # labels.append("$c_{DG}$ NSFR.IR-GL-Smag. $C_{S}=0.18$ $\\Delta=\\frac{V}{(P+1)^{3}}$")
+    # black_line_flag.append(False)
+    # dashed_line_flag.append(True)
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.18_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_WALE_MC-0.50_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_VRMN_MC-0.081_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_SI.SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\
+    ]
+    # labels
+    labels_for_plot=[\
+    "$c_{DG}$ NSFR.IR-GL (No Model)", \
+    "Smag. $C_{S}=0.18$", \
+    "Smag. $C_{S}=0.10$", \
+    "WALE $C_{W}=0.50$", \
+    "VRMN $C_{V}=0.081$", \
+    "SI.Smag. $C_{S}=0.10$", \
+    ]
+    black_line_flag_for_plot=[False,False,False,False,False,False]
+    dashed_line_flag_for_plot=[False,False,False,False,False,True]
+    smoothing_input=[False,False,False,False,False,False]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12)
+
+#=====================================================
+# DOFs: 96^3 | LRNC Advanced SGS Models on GL flux nodes (no filter width modifications)
+#-----------------------------------------------------
+if(True):
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="2023_JCP"
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_filename_postfix = "96_p5_lrnc_sgs_models_gl"
     legend_inside_input=True
     #-----------------------------------------------------
     subdirectories_for_plot=[\
     "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
-    "filtered_dns_viscous_tgv/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024",\
-    "verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p3_procs1024",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_WALE_MC-0.50_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_VRMN_MC-0.081_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_WALE.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_VRMN.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16",\
     ]
     # labels
     labels_for_plot=[\
-    "$96^3$ P$5$ $c_{DG}$ NSFR.IR-GL",\
-    "$256^3$ P$7$ $c_{DG}$ NSFR.IR-GL",\
-    "$256^3$ P$3$ $c_{DG}$ NSFR.IR-GL",\
+    "$c_{DG}$ NSFR.IR-GL (No Model)", \
+    "Smag. $C_{S}=0.10$", \
+    "WALE $C_{W}=0.50$", \
+    "VRMN $C_{V}=0.081$", \
+    "Smag.LRNC $C_{S}=0.10$", \
+    "WALE.LRNC $C_{W}=0.10$", \
+    "VRMN.LRNC $C_{V}=0.10$", \
     ]
-    black_line_flag_for_plot=[False,False,False,False]
-    dashed_line_flag_for_plot=[False,False,True,False]
-    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0,plot_filtered_dns_input=True)
+    black_line_flag_for_plot=[False,False,False,False,False,False,False]
+    dashed_line_flag_for_plot=[False,False,False,False,True,True,True]
+    smoothing_input=[False,False,False,False,True,True,True]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12)
+
+#=====================================================
+# DOFs: 96^3 | LRNC Advanced SGS Models on GL flux nodes (no filter width modifications)
+#-----------------------------------------------------
+if(True):
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="2023_JCP"
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_filename_postfix = "96_p5_lrnc_advanced_sgs_models_gl"
+    legend_inside_input=True
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_SI.SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SI.SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_DYNAMIC.SMAG.LRNC_CLIPMC-0.01-pL3_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16",\
+    ]
+    # labels
+    labels_for_plot=[\
+    "$c_{DG}$ NSFR.IR-GL (No Model)", \
+    "Smag. $C_{S}=0.10$", \
+    "Smag.LRNC $C_{S}=0.10$", \
+    "SI.Smag.LRNC $C_{S}=0.10$", \
+    "HPF.Smag.LRNC $C_{S}=0.10$ $P_{L}=3$", \
+    "HPF.SI.Smag.LRNC $C_{S}=0.10$ $P_{L}=3$", \
+    "Dyn.Smag.LRNC ($P_{TF}=3$, $C_{max}=0.1$)", \
+    ]
+    black_line_flag_for_plot=[False,False,False,False,False,False,False,False,False,False]
+    dashed_line_flag_for_plot=[False,False,False,False,False,False,False,False,False,False]
+    smoothing_input=[False,False,False,False,False,False,False,False,False,False]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12)
+
+#=====================================================
+# DOFs: 96^3 | Advanced SGS Models on GL flux nodes (no filter width modifications)
+#-----------------------------------------------------
+if(True):
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="2023_JCP"
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_filename_postfix = "96_p5_advanced_sgs_models_gl"
+    legend_inside_input=True
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    # "sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL2_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\
+    # "sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL4_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_SI.SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\
+    # "sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SS.VMS_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SI.SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_DYNAMIC.SMAG-pL3_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\
+    ]
+    # labels
+    labels_for_plot=[\
+    "$c_{DG}$ NSFR.IR-GL (No Model)", \
+    "Smag. $C_{S}=0.10$", \
+    #HPF.Smag. $C_{S}=0.10$ $P_{L}=2$", \
+    "HPF.Smag. $C_{S}=0.10$ $P_{L}=3$", \
+    #HPF.Smag. $C_{S}=0.10$ $P_{L}=4$", \
+    "SI.Smag. $C_{S}=0.10$", \
+    # "$SS.VMS $P_{L}=3$", \
+    "HPF.SI.Smag. $C_{S}=0.10$ $P_{L}=3$", \
+    "Dyn.Smag. ($P_{TF}=3$, $C_{max}=0.1$)", \
+    "Smag.LRNC $C_{S}=0.10$", \
+    ]
+    black_line_flag_for_plot=[False,False,False,False,False,False,False]
+    dashed_line_flag_for_plot=[False,False,False,False,False,False,True]
+    smoothing_input=[False,False,False,False,False,False,False]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12)
 exit()
 #=====================================================
-# DOFs: 96^3 | cDG vs cPlus
+# DOFs: ALL | NSFR CONVERGENCE
 #-----------------------------------------------------
 if(True):
-    #-----------------------------------------------------
-    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
     reinit_inputs()
     data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
     date_for_runs="."
-    figure_subdirectory="."
-    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL=$0.10$" # comment to turn off
-    figure_filename_postfix = "96_p5_cDG_vs_cPlus"
+    figure_subdirectory="2023_JCP"
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_filename_postfix = "cDG_NSFR_convergence"
     legend_inside_input=True
     #-----------------------------------------------------
     subdirectories_for_plot=[\
     "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
-    # "correction_parameter/viscous_TGV_ILES_NSFR_cSD_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
-    # "correction_parameter/viscous_TGV_ILES_NSFR_cHU_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
-    "correction_parameter/viscous_TGV_ILES_NSFR_cPlus_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs064_p7_procs512",\
+    "robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs048_p5_procs64",\
+    "robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs024_p5_procs16",\
+    "robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs012_p5_procs16",\
     ]
     # labels
     labels_for_plot=[\
-    "$c_{DG}$ NSFR.IR-GL",\
-    # "$c_{SD}$ NSFR.IR-GL",\
-    # "$c_{HU}$ NSFR.IR-GL",\
-    "$c_{+}$ NSFR.IR-GL",\
+    "$96^{3}$ DOFs, P$5$, $c_{DG}$ NSFR.IR-GL", \
+    "$64^{3}$ DOFs, P$7$, $c_{DG}$ NSFR.IR-GL", \
+    "$48^{3}$ DOFs, P$5$, $c_{DG}$ NSFR.IR-GL",\
+    "$24^{3}$ DOFs, P$5$, $c_{DG}$ NSFR.IR-GL",\
+    "$12^{3}$ DOFs, P$5$, $c_{DG}$ NSFR.IR-GL",\
+    ]
+    black_line_flag_for_plot=[False,False,False,False,False,False,False]
+    dashed_line_flag_for_plot=[False,False,False,False,False,False,False]
+    smoothing_input = [False,False,False,False,False,False,False]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12)
+
+#=====================================================
+# DOFs: 96^3 | Collocated vs Uncollocated
+#-----------------------------------------------------
+if(True):
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="2023_JCP"
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_filename_postfix = "96_p5_flux_nodes"
+    legend_inside_input=True
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512",\
+    ]
+    # labels
+    labels_for_plot=[\
+    "$c_{DG}$ NSFR.IR-GL", \
+    "$c_{DG}$ NSFR.IR-GLL",\
     ]
     black_line_flag_for_plot=[False,False,False,False]
     dashed_line_flag_for_plot=[False,False,False,False]
-    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0)
+    smoothing_input = [False,False,False,False]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12)
+
+#=====================================================
+# DOFs: 96^3 | Upwind dissipation on GL flux nodes
+#-----------------------------------------------------
+if(True):
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="2023_JCP"
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_filename_postfix = "96_p5_upwind_gl"
+    legend_inside_input=True
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-LxF_GL_OI-0_dofs096_p5_procs512",\
+    "upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs096_p5_procs512",\
+    "upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-L2R_GL_OI-0_dofs096_p5_procs512",\
+    ]
+    # labels
+    labels_for_plot=[\
+    "$c_{DG}$ NSFR.IR-GL", \
+    "$c_{DG}$ NSFR.IR-GL-LxF", \
+    "$c_{DG}$ NSFR.IR-GL-Roe", \
+    "$c_{DG}$ NSFR.IR-GL-L2R", \
+    ]
+    black_line_flag_for_plot=[False,False,False,False]
+    dashed_line_flag_for_plot=[False,False,False,False]
+    smoothing_input = [False,False,False,False]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12)
+
+#=====================================================
+# DOFs: 96^3 | NSFR Two-Point-Flux
+#-----------------------------------------------------
+if(True):
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="2023_JCP"
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_filename_postfix = "96_p5_two_point_flux"
+    legend_inside_input=True
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "two_point_flux/viscous_TGV_ILES_NSFR_cDG_KG_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "two_point_flux/viscous_TGV_ILES_NSFR_cDG_CH_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "two_point_flux/viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GL_OI-0_dofs096_p5_procs512",\
+    ]
+    # labels
+    labels_for_plot=[\
+    "$c_{DG}$ NSFR.IR-GL", \
+    "$c_{DG}$ NSFR.KG-GL", \
+    "$c_{DG}$ NSFR.CH-GL", \
+    "$c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$-GL", \
+    ]
+    black_line_flag_for_plot=[False,False,False,False]
+    dashed_line_flag_for_plot=[False,True,True,True]
+    smoothing_input = [False,False,False,False]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12)
+
 #=====================================================
 # DOFs: 96^3 | Correction Parameter Accuracy
 #-----------------------------------------------------
@@ -202,7 +499,72 @@ if(True):
     ]
     black_line_flag_for_plot=[False,False,False,False]
     dashed_line_flag_for_plot=[False,False,False,False]
-    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot)
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12)
+
+#=====================================================
+# DOFs: 256^3 | All results
+#-----------------------------------------------------
+if(True):
+    #-----------------------------------------------------
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="2023_JCP"
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL=$0.10$" # comment to turn off
+    figure_filename_postfix = "256_verification"
+    legend_inside_input=True
+    plot_reference_result=True
+    plot_PHiLiP_DNS_result_as_reference_input=False
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "filtered_dns_viscous_tgv/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024",\
+    "verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p3_procs1024",\
+    "verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs0256_p3_procs1024",\
+    "verification/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-4_dofs0256_p3_CFL-0.15_procs1024",\
+    ]
+    # labels
+    labels_for_plot=[\
+    "$256^3$ P$7$ $c_{DG}$ NSFR.IR-GL",\
+    "$256^3$ P$3$ $c_{DG}$ NSFR.IR-GL",\
+    "$256^3$ P$3$ $c_{DG}$ NSFR.IR-GL-Roe",\
+    "$256^3$ P$3$ Strong DG-Roe-GL-OI",\
+    ]
+    black_line_flag_for_plot=[False,False,False,False]
+    dashed_line_flag_for_plot=[False,False,False,True]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0,plot_filtered_dns_input=False,legend_fontSize_input=12)
+exit()
+#////////// everything after has not been updated
+#=====================================================
+# DOFs: 96^3 | cDG vs cPlus
+#-----------------------------------------------------
+if(True):
+    #-----------------------------------------------------
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="2023_JCP"
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL=$0.10$" # comment to turn off
+    figure_filename_postfix = "96_p5_cDG_vs_cPlus"
+    legend_inside_input=True
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    # "correction_parameter/viscous_TGV_ILES_NSFR_cSD_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    # "correction_parameter/viscous_TGV_ILES_NSFR_cHU_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "correction_parameter/viscous_TGV_ILES_NSFR_cPlus_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    ]
+    # labels
+    labels_for_plot=[\
+    "$c_{DG}$ NSFR.IR-GL",\
+    # "$c_{SD}$ NSFR.IR-GL",\
+    # "$c_{HU}$ NSFR.IR-GL",\
+    "$c_{+}$ NSFR.IR-GL",\
+    ]
+    black_line_flag_for_plot=[False,False,False,False]
+    dashed_line_flag_for_plot=[False,False,False,False]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0)
 
 #=====================================================
 # DOFs: 96^3 | Correction Parameter Time-Step
@@ -1328,387 +1690,6 @@ if(False):
     #-----------------------------------------------------
 
 #=====================================================
-# DOFs: 96^3 | Basic SGS Models on GLL flux nodes (no filter width modifications)
-#-----------------------------------------------------
-if(False):
-    # batch_labels = [ \
-    # "$c_{DG}$ NSFR", \
-    # "$c_{DG}$ NSFR.IR-Smag. $C_{S}=0.10$", \
-    # "$c_{DG}$ NSFR.IR-Smag. $C_{S}=0.18$", \
-    # "$c_{DG}$ NSFR.IR-WALE", \
-    # "$c_{DG}$ NSFR.IR-VRMN", \
-    # "$c_{DG}$ NSFR.IR-Smag. $C_{S}=0.1$, $\\Delta_{min}$", \
-    # ]
-    reinit_inputs()
-    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
-    date_for_runs="."
-    figure_subdirectory="2023_JCP"
-    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
-    figure_filename_postfix = "96_sgs_models_gll"
-    legend_inside_input=True
-    #-----------------------------------------------------
-    subdirectories.append("flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512")
-    filenames.append("turbulent_quantities.txt")
-    labels.append("$c_{DG}$ NSFR.IR-GLL")
-    black_line_flag.append(False)
-    dashed_line_flag.append(False)
-    #-----------------------------------------------------
-    subdirectories.append("sgs_model_GLL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512")
-    filenames.append("turbulent_quantities.txt")
-    labels.append("$c_{DG}$ NSFR.IR-GLL-Smag. $C_{S}=0.10$")
-    black_line_flag.append(False)
-    dashed_line_flag.append(False)
-    #-----------------------------------------------------
-    subdirectories.append("sgs_model_GLL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.18_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512")
-    filenames.append("turbulent_quantities.txt")
-    labels.append("$c_{DG}$ NSFR.IR-GLL-Smag. $C_{S}=0.18$")
-    black_line_flag.append(False)
-    dashed_line_flag.append(False)
-    #-----------------------------------------------------
-    subdirectories.append("sgs_model_GLL_flux_nodes/viscous_TGV_LES_WALE_MC-0.50_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512")
-    filenames.append("turbulent_quantities.txt")
-    labels.append("$c_{DG}$ NSFR.IR-GLL-WALE $C_{W}=0.50$")
-    black_line_flag.append(False)
-    dashed_line_flag.append(False)
-    #-----------------------------------------------------
-    subdirectories.append("sgs_model_GLL_flux_nodes/viscous_TGV_LES_VRMN_MC-0.081_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512")
-    filenames.append("turbulent_quantities.txt")
-    labels.append("$c_{DG}$ NSFR.IR-GLL-VRMN $C_{V}=0.081$")
-    black_line_flag.append(False)
-    dashed_line_flag.append(False)
-    #-----------------------------------------------------
-    plot_periodic_turbulence(
-        figure_subdirectory,
-        subdirectories,
-        filenames,
-        labels,
-        black_line_flag,
-        dashed_line_flag,
-        figure_directory_base,
-        data_directory_base,
-        plot_reference_result,
-        figure_filename_postfix,
-        figure_title,
-        log_axes_input,
-        legend_on_input,
-        legend_inside_input,
-        nlegendcols_input,
-        transparent_legend_input=True,
-        tmax=20.0,
-        legend_fontSize_input=14,
-        solid_and_dashed_lines=False)
-    #-----------------------------------------------------
-
-#=====================================================
-# DOFs: 96^3 | Basic SGS Models on GL flux nodes (no filter width modifications)
-#-----------------------------------------------------
-if(True):
-    # batch_labels = [ \
-    # "$c_{DG}$ NSFR", \
-    # "$c_{DG}$ NSFR.IR-Smag. $C_{S}=0.10$", \
-    # "$c_{DG}$ NSFR.IR-Smag. $C_{S}=0.18$", \
-    # "$c_{DG}$ NSFR.IR-WALE", \
-    # "$c_{DG}$ NSFR.IR-VRMN", \
-    # "$c_{DG}$ NSFR.IR-Smag. $C_{S}=0.1$, $\\Delta_{min}$", \
-    # ]
-    reinit_inputs()
-    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
-    date_for_runs="."
-    figure_subdirectory="2023_JCP"
-    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
-    figure_filename_postfix = "96_sgs_models_gl"
-    legend_inside_input=True
-    # #-----------------------------------------------------
-    # subdirectories.append("sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.18_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512_filter_width_flad_and_gassner")
-    # filenames.append("turbulent_quantities.txt")
-    # labels.append("$c_{DG}$ NSFR.IR-GL-Smag. $C_{S}=0.18$ $\\Delta=\\frac{V}{(P+1)^{3}}$")
-    # black_line_flag.append(False)
-    # dashed_line_flag.append(True)
-    #-----------------------------------------------------
-    subdirectories_for_plot=[\
-    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
-    "sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.18_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
-    "sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
-    "sgs_model_GL_flux_nodes/viscous_TGV_LES_WALE_MC-0.50_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
-    "sgs_model_GL_flux_nodes/viscous_TGV_LES_VRMN_MC-0.081_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
-    "sgs_model_GL_flux_nodes/viscous_TGV_LES_SI.SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\
-    ]
-    # labels
-    labels_for_plot=[\
-    "$c_{DG}$ NSFR.IR-GL", \
-    "$c_{DG}$ NSFR.IR-GL-Smag. $C_{S}=0.18$", \
-    "$c_{DG}$ NSFR.IR-GL-Smag. $C_{S}=0.10$", \
-    "$c_{DG}$ NSFR.IR-GL-WALE $C_{W}=0.50$", \
-    "$c_{DG}$ NSFR.IR-GL-VRMN $C_{V}=0.081$", \
-    "$c_{DG}$ NSFR.IR-GL-SI.Smag. $C_{S}=0.10$", \
-    ]
-    black_line_flag_for_plot=[\
-    False,\
-    False,\
-    False,\
-    False,\
-    False,\
-    False,\
-    ]
-    dashed_line_flag_for_plot=[\
-    False,\
-    False,\
-    False,\
-    False,\
-    False,\
-    True,\
-    ]
-    smoothing_input = [\
-    False,\
-    False,\
-    False,\
-    False,\
-    False,\
-    False,\
-    ]
-    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,legend_fontSize_input=12)
-
-#=====================================================
-# DOFs: 96^3 | LRNC Advanced SGS Models on GL flux nodes (no filter width modifications)
-#-----------------------------------------------------
-if(True):
-    reinit_inputs()
-    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
-    date_for_runs="."
-    figure_subdirectory="2023_JCP"
-    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
-    figure_filename_postfix = "96_lrnc_sgs_models_gl"
-    legend_inside_input=True
-    #-----------------------------------------------------
-    subdirectories_for_plot=[\
-    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
-    "sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
-    "sgs_model_GL_flux_nodes/viscous_TGV_LES_WALE_MC-0.50_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
-    "sgs_model_GL_flux_nodes/viscous_TGV_LES_VRMN_MC-0.081_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
-    "sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\
-    "sgs_model_GL_flux_nodes/viscous_TGV_LES_WALE.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16",\
-    "sgs_model_GL_flux_nodes/viscous_TGV_LES_VRMN.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16",\
-    ]
-    # labels
-    labels_for_plot=[\
-    "$c_{DG}$ NSFR.IR-GL", \
-    "$c_{DG}$ NSFR.IR-GL-Smag. $C_{S}=0.10$", \
-    "$c_{DG}$ NSFR.IR-GL-WALE $C_{W}=0.50$", \
-    "$c_{DG}$ NSFR.IR-GL-VRMN $C_{V}=0.081$", \
-    "$c_{DG}$ NSFR.IR-GL-Smag.LRNC $C_{S}=0.10$", \
-    "$c_{DG}$ NSFR.IR-GL-WALE.LRNC $C_{W}=0.50$", \
-    "$c_{DG}$ NSFR.IR-GL-VRMN.LRNC $C_{V}=0.081$", \
-    ]
-    black_line_flag_for_plot=[\
-    False,\
-    False,\
-    False,\
-    False,\
-    False,\
-    False,\
-    False,\
-    ]
-    dashed_line_flag_for_plot=[\
-    False,\
-    False,\
-    False,\
-    False,\
-    True,\
-    True,\
-    True,\
-    ]
-    smoothing_input = [\
-    False,\
-    False,\
-    False,\
-    False,\
-    True,\
-    True,\
-    True,\
-    ]
-    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,legend_fontSize_input=12)
-
-#=====================================================
-# DOFs: 96^3 | LRNC Advanced SGS Models on GL flux nodes (no filter width modifications)
-#-----------------------------------------------------
-if(True):
-    reinit_inputs()
-    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
-    date_for_runs="."
-    figure_subdirectory="2023_JCP"
-    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
-    figure_filename_postfix = "96_lrnc_advanced_sgs_models_gl"
-    legend_inside_input=True
-    #-----------------------------------------------------
-    subdirectories_for_plot=[\
-    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
-    "sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
-    "sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\
-    "sgs_model_GL_flux_nodes/viscous_TGV_LES_SI.SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16",\
-    "sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16",\
-    "sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SI.SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16",\
-    "sgs_model_GL_flux_nodes/viscous_TGV_LES_DYNAMIC.SMAG.LRNC_CLIPMC-0.01-pL3_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16",\
-    ]
-    # labels
-    labels_for_plot=[\
-    "$c_{DG}$ NSFR.IR-GL", \
-    "$c_{DG}$ NSFR.IR-GL-Smag. $C_{S}=0.10$", \
-    "$c_{DG}$ NSFR.IR-GL-Smag.LRNC $C_{S}=0.10$", \
-    "$c_{DG}$ NSFR.IR-GL-SI.Smag.LRNC $C_{S}=0.10$", \
-    "$c_{DG}$ NSFR.IR-GL-HPF.Smag.LRNC $C_{S}=0.10$ $P_{L}=3$", \
-    "$c_{DG}$ NSFR.IR-GL-HPF.SI.Smag.LRNC $C_{S}=0.10$ $P_{L}=3$", \
-    "$c_{DG}$ NSFR.IR-GL-Dyn.Smag.LRNC ($P_{TF}=3$, $C_{max}=0.1$)", \
-    ]
-    black_line_flag_for_plot=[\
-    False,\
-    False,\
-    False,\
-    False,\
-    False,\
-    False,\
-    False,\
-    False,\
-    False,\
-    False,\
-    ]
-    dashed_line_flag_for_plot=[\
-    False,\
-    False,\
-    False,\
-    False,\
-    False,\
-    False,\
-    False,\
-    False,\
-    False,\
-    False,\
-    ]
-    smoothing_input = [\
-    False,\
-    False,\
-    False,\
-    False,\
-    False,\
-    False,\
-    False,\
-    False,\
-    False,\
-    False,\
-    ]
-    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,legend_fontSize_input=12)
-
-#=====================================================
-# DOFs: 96^3 | Advanced SGS Models on GL flux nodes (no filter width modifications)
-#-----------------------------------------------------
-if(True):
-    reinit_inputs()
-    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
-    date_for_runs="."
-    figure_subdirectory="2023_JCP"
-    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
-    figure_filename_postfix = "96_advanced_sgs_models_gl"
-    legend_inside_input=True
-    #-----------------------------------------------------
-    subdirectories_for_plot=[\
-    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
-    "sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
-    # "sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL2_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\
-    "sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\
-    # "sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL4_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\
-    "sgs_model_GL_flux_nodes/viscous_TGV_LES_SI.SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\
-    # "sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SS.VMS_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\
-    "sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SI.SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\
-    "sgs_model_GL_flux_nodes/viscous_TGV_LES_DYNAMIC.SMAG-pL3_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\
-    "sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\
-    ]
-    # labels
-    labels_for_plot=[\
-    "$c_{DG}$ NSFR.IR-GL", \
-    "$c_{DG}$ NSFR.IR-GL-Smag. $C_{S}=0.10$", \
-    # "$c_{DG}$ NSFR.IR-GL-HPF.Smag. $C_{S}=0.10$ $P_{L}=2$", \
-    "$c_{DG}$ NSFR.IR-GL-HPF.Smag. $C_{S}=0.10$ $P_{L}=3$", \
-    # "$c_{DG}$ NSFR.IR-GL-HPF.Smag. $C_{S}=0.10$ $P_{L}=4$", \
-    "$c_{DG}$ NSFR.IR-GL-SI.Smag. $C_{S}=0.10$", \
-    # "$c_{DG}$ NSFR.IR-GL-SS.VMS $P_{L}=3$", \
-    "$c_{DG}$ NSFR.IR-GL-HPF.SI.Smag. $C_{S}=0.10$ $P_{L}=3$", \
-    "$c_{DG}$ NSFR.IR-GL-Dyn.Smag. ($P_{TF}=3$, $C_{max}=0.1$)", \
-    "$c_{DG}$ NSFR.IR-GL-Smag.LRNC $C_{S}=0.10$", \
-    ]
-    black_line_flag_for_plot=[\
-    False,\
-    False,\
-    False,\
-    False,\
-    False,\
-    False,\
-    False,\
-    ]
-    dashed_line_flag_for_plot=[\
-    False,\
-    False,\
-    False,\
-    False,\
-    False,\
-    False,\
-    True,\
-    ]
-    smoothing_input = [\
-    False,\
-    False,\
-    False,\
-    False,\
-    False,\
-    False,\
-    False,\
-    ]
-    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,legend_fontSize_input=12)
-
-#=====================================================
-# DOFs: 96^3 | Upwind dissipation on GL flux nodes
-#-----------------------------------------------------
-if(True):
-    reinit_inputs()
-    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
-    date_for_runs="."
-    figure_subdirectory="2023_JCP"
-    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
-    figure_filename_postfix = "96_upwind_gl"
-    legend_inside_input=True
-    #-----------------------------------------------------
-    subdirectories_for_plot=[\
-    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
-    "upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-LxF_GL_OI-0_dofs096_p5_procs512",\
-    "upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs096_p5_procs512",\
-    "upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-L2R_GL_OI-0_dofs096_p5_procs512",\
-    ]
-    # labels
-    labels_for_plot=[\
-    "$c_{DG}$ NSFR.IR-GL", \
-    "$c_{DG}$ NSFR.IR-GL-LxF", \
-    "$c_{DG}$ NSFR.IR-GL-Roe", \
-    "$c_{DG}$ NSFR.IR-GL-L2R", \
-    ]
-    black_line_flag_for_plot=[\
-    False,\
-    False,\
-    False,\
-    False,\
-    ]
-    dashed_line_flag_for_plot=[\
-    False,\
-    False,\
-    False,\
-    False,\
-    ]
-    smoothing_input = [\
-    False,\
-    False,\
-    False,\
-    False,\
-    ]
-    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20,legend_fontSize_input=12)
-
-#=====================================================
 # DOFs: 96^3 | Upwind dissipation on GLL flux nodes
 #-----------------------------------------------------
 if(False):
@@ -2105,108 +2086,7 @@ if(False):
         solid_and_dashed_lines=False)
     #-----------------------------------------------------
 
-#=====================================================
-# DOFs: 96^3 | NSFR Two-Point-Flux
-#-----------------------------------------------------
-if(True):
-    reinit_inputs()
-    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
-    date_for_runs="."
-    figure_subdirectory="2023_JCP"
-    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
-    figure_filename_postfix = "96_two_point_flux"
-    legend_inside_input=True
-    #-----------------------------------------------------
-    subdirectories_for_plot=[\
-    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
-    "two_point_flux/viscous_TGV_ILES_NSFR_cDG_KG_2PF_GL_OI-0_dofs096_p5_procs512",\
-    "two_point_flux/viscous_TGV_ILES_NSFR_cDG_CH_2PF_GL_OI-0_dofs096_p5_procs512",\
-    "two_point_flux/viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GL_OI-0_dofs096_p5_procs512",\
-    ]
-    # labels
-    labels_for_plot=[\
-    "$c_{DG}$ NSFR.IR-GL", \
-    "$c_{DG}$ NSFR.KG-GL", \
-    "$c_{DG}$ NSFR.CH-GL", \
-    "$c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$-GL", \
-    ]
-    black_line_flag_for_plot=[\
-    False,\
-    False,\
-    False,\
-    False,\
-    ]
-    dashed_line_flag_for_plot=[\
-    False,\
-    True,\
-    True,\
-    True,\
-    ]
-    smoothing_input = [\
-    False,\
-    False,\
-    False,\
-    False,\
-    ]
-    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20,legend_fontSize_input=12)
 
-#=====================================================
-# DOFs: ALL | NSFR CONVERGENCE
-#-----------------------------------------------------
-if(False):
-    reinit_inputs()
-    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
-    date_for_runs="."
-    figure_subdirectory="2023_JCP"
-    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, CFL$=0.10$" # comment to turn off
-    figure_filename_postfix = "cDG_NSFR_convergence"
-    legend_inside_input=True
-    #-----------------------------------------------------
-    subdirectories.append("flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512")
-    filenames.append("turbulent_quantities.txt")
-    labels.append("$96^{3}$ DOFs, $c_{DG}$ NSFR.IR-GL")
-    black_line_flag.append(False)
-    dashed_line_flag.append(False)
-    #-----------------------------------------------------
-    subdirectories.append("robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs048_p5_procs64")
-    filenames.append("turbulent_quantities.txt")
-    labels.append("$48^{3}$ DOFs, $c_{DG}$ NSFR.IR-GL")
-    black_line_flag.append(False)
-    dashed_line_flag.append(False)
-    #-----------------------------------------------------
-    subdirectories.append("robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs024_p5_procs16")
-    filenames.append("turbulent_quantities.txt")
-    labels.append("$24^{3}$ DOFs, $c_{DG}$ NSFR.IR-GL")
-    black_line_flag.append(False)
-    dashed_line_flag.append(False)
-    #-----------------------------------------------------
-    subdirectories.append("robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs012_p5_procs16")
-    filenames.append("turbulent_quantities.txt")
-    labels.append("$12^{3}$ DOFs, $c_{DG}$ NSFR.IR-GL")
-    black_line_flag.append(False)
-    dashed_line_flag.append(False)
-    #-----------------------------------------------------
-    plot_periodic_turbulence(
-        figure_subdirectory,
-        subdirectories,
-        filenames,
-        labels,
-        black_line_flag,
-        dashed_line_flag,
-        figure_directory_base,
-        data_directory_base,
-        plot_reference_result,
-        figure_filename_postfix,
-        figure_title,
-        log_axes_input,
-        legend_on_input,
-        legend_inside_input,
-        nlegendcols_input,
-        transparent_legend_input=True,
-        tmax=20.0,
-        legend_fontSize_input=14,
-        solid_and_dashed_lines=False)
-    #-----------------------------------------------------
 
 #=====================================================
 # DOFs: ALL | Strong DG CONVERGENCE
