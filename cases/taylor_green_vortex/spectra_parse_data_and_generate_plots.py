@@ -64,9 +64,9 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
     which_lines_black=[]
     if(plot_PHiLiP_DNS_result_as_reference):
         which_lines_black.append(0)
-        filepath_to_reference_result=CURRENT_PATH+"data/brillon/flow_field_files/velocity_vorticity-0_reordered_spectra.dat"
+        filepath_to_reference_result=CURRENT_PATH+"data/brillon/flow_field_files/velocity_vorticity_p7_dofs256-0_reordered_spectra.dat"
         spectra = np.loadtxt(filepath_to_reference_result)
-        append_to_plot(spectra[:,0],spectra[:,1],"DNS ($256^3$ DOFs)")
+        append_to_plot(spectra[:,0],spectra[:,1],"DNS ($256^3$ DOFs, P$3$)")
     elif(plot_reference_result):
         which_lines_black.append(0)
         spectra = np.loadtxt(CURRENT_PATH+"data/mastellone2016_dns_spectra_t8.txt",skiprows=1,delimiter=',')
@@ -128,9 +128,9 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
     x=[];y=[];labels=[];
     # reference result
     if(plot_PHiLiP_DNS_result_as_reference):
-        filepath_to_reference_result=CURRENT_PATH+"data/brillon/flow_field_files/velocity_vorticity-1_reordered_spectra.dat"
+        filepath_to_reference_result=CURRENT_PATH+"data/brillon/flow_field_files/velocity_vorticity_p7_dofs256-1_reordered_spectra.dat"
         spectra = np.loadtxt(filepath_to_reference_result)
-        append_to_plot(spectra[:,0],spectra[:,1],"DNS ($256^3$ DOFs)")
+        append_to_plot(spectra[:,0],spectra[:,1],"DNS ($256^3$ DOFs, P$7$)")
     elif(plot_reference_result):
         spectra = np.loadtxt(CURRENT_PATH+"data/carton2014_dns_spectra_t9.txt",skiprows=1,delimiter=',')
         append_to_plot(spectra[:,0],spectra[:,1],"DNS [Carton]")
