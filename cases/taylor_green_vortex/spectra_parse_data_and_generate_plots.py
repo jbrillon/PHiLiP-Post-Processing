@@ -66,12 +66,12 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
         which_lines_black.append(0)
         filepath_to_reference_result=CURRENT_PATH+"data/brillon/flow_field_files/velocity_vorticity_p7_dofs256-0_reordered_spectra.dat"
         spectra = np.loadtxt(filepath_to_reference_result)
-        append_to_plot(spectra[:,0],spectra[:,1],"DNS ($256^3$ DOFs, P$3$)")
+        append_to_plot(spectra[:,0],spectra[:,1],"DNS ($256^3$ DOFs, P$7$)")
     elif(plot_reference_result):
         which_lines_black.append(0)
         spectra = np.loadtxt(CURRENT_PATH+"data/mastellone2016_dns_spectra_t8.txt",skiprows=1,delimiter=',')
         append_to_plot(spectra[:,0],spectra[:,1],"DNS [Mastellone]")
-    batch_append_to_plot(batch_paths, batch_labels, "flow_field_files/velocity_vorticity-0_reordered_spectra.dat")
+    batch_append_to_plot(batch_paths, batch_labels, "flow_field_files/velocity_vorticity-0_reordered_spectra_no_smoothing.dat")
     if(title_off):
         title_label = " "
     if(solid_and_dashed_lines):
@@ -95,14 +95,15 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
             title_label=title_label,
             fig_directory=figure_directory,figure_filename=figure_filename,log_axes="both",figure_filetype="pdf",
             nlegendcols=1,
-            xlimits=[2e0,5.5e1],ylimits=[1.0e-5,3e-2],
+            # xlimits=[2e0,5.5e1],ylimits=[1.0e-5,3e-2],
+            xlimits=[2.0e0,2.0e2],ylimits=[1.0e-9,5e-2],
             markers=False,legend_on=True,legend_labels_tex=labels,
             which_lines_black=which_lines_black,
             # which_lines_markers=[0],
             transparent_legend=True,legend_border_on=False,grid_lines_on=False,lnstl_input=lnstl_input_store,
             legend_fontSize=legend_fontSize_input,
-            legend_location="upper left",
-            legend_anchor=[0.0,0.45]
+            # legend_location="upper left",
+            # legend_anchor=[0.0,0.45]
             # which_lines_only_markers=[1,2,3],which_lines_dashed=[0]
             )
     # qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $k^{*}$",ylabel="Nondimensional TKE Spectra, $E^{*}(k^{*},t^{*})$",
@@ -136,7 +137,7 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
         append_to_plot(spectra[:,0],spectra[:,1],"DNS [Carton]")
     # - results
     # same as above
-    batch_append_to_plot(batch_paths, batch_labels, "flow_field_files/velocity_vorticity-1_reordered_spectra.dat")
+    batch_append_to_plot(batch_paths, batch_labels, "flow_field_files/velocity_vorticity-1_reordered_spectra_no_smoothing.dat")
     if(title_off):
         title_label = " "
     if(solid_and_dashed_lines):
@@ -160,13 +161,14 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
             title_label=title_label,
             fig_directory=figure_directory,figure_filename=figure_filename,log_axes="both",figure_filetype="pdf",
             nlegendcols=1,
-            xlimits=[2e0,7e1],ylimits=[2.45e-5,3e-2],
+            # xlimits=[2e0,7e1],ylimits=[2.45e-5,3e-2],
+            xlimits=[2.0e0,2.0e2],ylimits=[1.0e-9,5e-2],
             markers=False,legend_on=True,legend_labels_tex=labels,
             which_lines_black=which_lines_black,
             transparent_legend=True,legend_border_on=False,grid_lines_on=False,lnstl_input=lnstl_input_store,
             legend_fontSize=legend_fontSize_input,
-            legend_location="upper left",
-            legend_anchor=[0.0,0.45]
+            # legend_location="upper left",
+            # legend_anchor=[0.0,0.45]
             # which_lines_only_markers=[1,2,3],which_lines_dashed=[0]
             )
         # qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $k^{*}$",ylabel="Nondimensional TKE Spectra, $E^{*}(k^{*},t^{*})$",
