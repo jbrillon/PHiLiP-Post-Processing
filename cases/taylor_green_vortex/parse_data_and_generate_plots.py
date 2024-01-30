@@ -699,7 +699,7 @@ if(True):
     black_line_flag_for_plot=[False,False,False,False,False,False]
     dashed_line_flag_for_plot=[False,True,False,True,False,True]
     smoothing_input = [True,True,True,True,True,True]
-    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot)
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0,plot_filtered_dns_input=False,legend_fontSize_input=12)
 
 exit()
 #////////// everything after has not been updated
