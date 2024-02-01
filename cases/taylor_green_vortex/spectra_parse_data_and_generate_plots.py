@@ -293,11 +293,11 @@ if(True):
     "NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs012_p5_procs16/",\
     ]
     batch_labels = [ \
-    "$96^{3}$ DOFs, P$5$, Strong DG-Roe-GL-OI", \
-    "$64^{3}$ DOFs, P$7$, Strong DG-Roe-GL-OI", \
-    "$48^{3}$ DOFs, P$5$, Strong DG-Roe-GL-OI",\
-    "$24^{3}$ DOFs, P$5$, Strong DG-Roe-GL-OI",\
-    "$12^{3}$ DOFs, P$5$, Strong DG-Roe-GL-OI",\
+    "$96^{3}$ DOFs, P$5$", \
+    "$64^{3}$ DOFs, P$7$", \
+    "$48^{3}$ DOFs, P$5$",\
+    "$24^{3}$ DOFs, P$5$",\
+    "$12^{3}$ DOFs, P$5$",\
     ]
     # title_postfix_input=" using $c_{DG}$ NSFR.IR-GL"
     # batch_plot_spectra("all","cDG_NSFR_convergence",batch_paths,batch_labels,title_off=title_off_input,figure_directory=fig_dir_input)
@@ -315,11 +315,11 @@ if(True):
     "NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs012_p5_procs16/",\
     ]
     batch_labels = [ \
-    "$96^{3}$ DOFs, P$5$, $c_{DG}$ NSFR.IR-GL", \
-    "$64^{3}$ DOFs, P$7$, $c_{DG}$ NSFR.IR-GL", \
-    "$48^{3}$ DOFs, P$5$, $c_{DG}$ NSFR.IR-GL",\
-    "$24^{3}$ DOFs, P$5$, $c_{DG}$ NSFR.IR-GL",\
-    "$12^{3}$ DOFs, P$5$, $c_{DG}$ NSFR.IR-GL",\
+    "$96^{3}$ DOFs, P$5$", \
+    "$64^{3}$ DOFs, P$7$", \
+    "$48^{3}$ DOFs, P$5$",\
+    "$24^{3}$ DOFs, P$5$",\
+    "$12^{3}$ DOFs, P$5$",\
     ]
     # title_postfix_input=" using $c_{DG}$ NSFR.IR-GL"
     # batch_plot_spectra("all","cDG_NSFR_convergence",batch_paths,batch_labels,title_off=title_off_input,figure_directory=fig_dir_input)

@@ -119,6 +119,42 @@ def reinit_inputs():
 #-----------------------------------------------------
 
 #=====================================================
+# DOFs: 96^3 | Correction Parameter Time-Step
+#-----------------------------------------------------
+if(True):
+    #-----------------------------------------------------
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="2023_JCP"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs" # comment to turn off
+    figure_filename_postfix = "96_p5_correction_parameter_cfl_advantage"
+    legend_inside_input=True
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "time_step_advantage_with_physical_check/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.26_procs512",\
+    "correction_parameter/viscous_TGV_ILES_NSFR_cPlus_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "time_step_advantage_with_physical_check/viscous_TGV_ILES_NSFR_cPlus_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.36_procs512",\
+    "flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512",\
+    "time_step_advantage_strong_DG/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_CFL-0.14_procs512",\
+    ] 
+    # labels
+    labels_for_plot=[\
+    "$c_{DG}$: CFL=$0.10$",\
+    "$c_{DG}$: CFL=$0.26$",\
+    "$c_{+}$: CFL=$0.10$",\
+    "$c_{+}$: CFL=$0.36$",\
+    "sDG: CFL=$0.10$",\
+    "sDG: CFL=$0.14$",\
+    ]
+    black_line_flag_for_plot=[False,False,False,False,False,False]
+    dashed_line_flag_for_plot=[False,True,False,True,False,True]
+    smoothing_input = [True,True,True,True,True,True]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12)
+
+#=====================================================
 # DOFs: 96^3 | Basic SGS Models on GLL flux nodes (no filter width modifications)
 #-----------------------------------------------------
 if(False):
@@ -199,7 +235,8 @@ if(True):
     "over_integration_accuracy_strong_DG/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-4_dofs096_p5_CFL-0.10_procs512",\
     "over_integration_accuracy_strong_DG/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-2_dofs096_p5_CFL-0.10_procs512",\
     "filter_width_stabilization/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-0_dofs096_p5_procs512",\
-    "upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs096_p5_procs512",\
+    # "upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs096_p5_procs512",\
+    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
     ]
     # labels
     labels_for_plot=[\
@@ -207,13 +244,14 @@ if(True):
     "Strong DG-Roe-GL-OI-4", \
     "Strong DG-Roe-GL-OI-2",\
     "Strong DG-Roe-GL",\
-    "$c_{DG}$ NSFR.IR-GL-Roe",\
+    # "$c_{DG}$ NSFR.IR-GL-Roe",\
+    "$c_{DG}$ NSFR.IR-GL",\
     ]
     black_line_flag_for_plot=[False,False,False,False,False,False,False]
     dashed_line_flag_for_plot=[False,False,False,False,False,False,False]
     smoothing_input = [False,False,False,False,False,False,False]
     plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12)
-
+exit()
 #=====================================================
 # DOFs: ALL | Strong DG CONVERGENCE
 #-----------------------------------------------------
@@ -623,10 +661,10 @@ if(True):
     ]
     # labels
     labels_for_plot=[\
-    "$c_{DG}$ NSFR.IR-GL",\
-    "$c_{SD}$ NSFR.IR-GL",\
-    "$c_{HU}$ NSFR.IR-GL",\
-    "$c_{+}$ NSFR.IR-GL",\
+    "$c_{DG}$",\
+    "$c_{SD}$",\
+    "$c_{HU}$",\
+    "$c_{+}$",\
     ]
     black_line_flag_for_plot=[False,False,False,False]
     dashed_line_flag_for_plot=[False,False,False,False]
@@ -663,42 +701,6 @@ if(True):
     ]
     black_line_flag_for_plot=[False,False,False,False]
     dashed_line_flag_for_plot=[False,False,False,True]
-    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0,plot_filtered_dns_input=False,legend_fontSize_input=12)
-
-#=====================================================
-# DOFs: 96^3 | Correction Parameter Time-Step
-#-----------------------------------------------------
-if(True):
-    #-----------------------------------------------------
-    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
-    reinit_inputs()
-    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
-    date_for_runs="."
-    figure_subdirectory="2023_JCP"
-    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs" # comment to turn off
-    figure_filename_postfix = "96_p5_correction_parameter_cfl_advantage"
-    legend_inside_input=True
-    #-----------------------------------------------------
-    subdirectories_for_plot=[\
-    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
-    "time_step_advantage_with_physical_check/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.26_procs512",\
-    "correction_parameter/viscous_TGV_ILES_NSFR_cPlus_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
-    "time_step_advantage_with_physical_check/viscous_TGV_ILES_NSFR_cPlus_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.36_procs512",\
-    "flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512",\
-    "time_step_advantage_strong_DG/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_CFL-0.14_procs512",\
-    ] 
-    # labels
-    labels_for_plot=[\
-    "$c_{DG}$ NSFR.IR-GL, CFL=$0.10$",\
-    "$c_{DG}$ NSFR.IR-GL, CFL=$0.26$",\
-    "$c_{+}$ NSFR.IR-GL, CFL=$0.10$",\
-    "$c_{+}$ NSFR.IR-GL, CFL=$0.36$",\
-    "Strong DG-Roe-GL-OI, CFL=$0.10$",\
-    "Strong DG-Roe-GL-OI, CFL=$0.14$",\
-    ]
-    black_line_flag_for_plot=[False,False,False,False,False,False]
-    dashed_line_flag_for_plot=[False,True,False,True,False,True]
-    smoothing_input = [True,True,True,True,True,True]
     plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0,plot_filtered_dns_input=False,legend_fontSize_input=12)
 
 exit()
