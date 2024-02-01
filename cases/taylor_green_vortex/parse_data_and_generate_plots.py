@@ -126,15 +126,38 @@ if(True):
     data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
     date_for_runs="."
     figure_subdirectory="2023_JCP"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_filename_postfix = "96_p5_flux_nodes_with_sDG"
+    legend_inside_input=True
+    #-----------------------------------------------------
+    subdirectories_for_plot = [\
+    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512", \
+    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512", \
+    "flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512", \
+    "flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GLL_OI-6_dofs096_p5_procs512", \
+    ]
+    labels_for_plot=[\
+    "$c_{DG}$ NSFR.IR-GL", \
+    "$c_{DG}$ NSFR.IR-GLL", \
+    "Strong DG-Roe-GL-OI", \
+    "Strong DG-Roe-GLL-OI", \
+    ]
+    black_line_flag_for_plot=[False,False,False,False,False,False]
+    dashed_line_flag_for_plot=[False,False,False,True,False,True]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12)
+
+#=====================================================
+# DOFs: 64^3 | Over-integration stabilization
+#-----------------------------------------------------
+if(True):
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="2023_JCP"
     # figure_title = "TGV at Re$_{\\infty}=1600$, P$7$, $64^{3}$ DOFs, CFL$=0.10$" # comment to turn off
     figure_filename_postfix = "64_p7_overintegration_stability"
     legend_inside_input=True
-    # #-----------------------------------------------------
-    # subdirectories.append("high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs064_p7_procs512")
-    # filenames.append("turbulent_quantities.txt")
-    # labels.append("$c_{DG}$ NSFR.IR-GL")
-    # black_line_flag.append(False)
-    # dashed_line_flag.append(False)
     #-----------------------------------------------------
     subdirectories_for_plot = [\
     "high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs064_p7_procs512",\
@@ -153,8 +176,8 @@ if(True):
     "sDG-OI.0",\
     ]
     black_line_flag_for_plot=[False,False,False,False,False,False]
-    dashed_line_flag_for_plot=[False,True,False,False,False,True]
-    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12)
+    dashed_line_flag_for_plot=[False,False,True,False,False,True]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0,plot_filtered_dns_input=False,legend_fontSize_input=12)
 
 #=====================================================
 # DOFs: 48,64,96 | Strong DG vs NSFR CONVERGENCE
@@ -197,7 +220,7 @@ if(True):
     dashed_line_flag_for_plot=[False,False,False,False,False,False,False]
     smoothing_input = [False,False,False,False,False,False,False]
     plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12)
-exit()
+
 #=====================================================
 # DOFs: 96^3 | Correction Parameter Time-Step
 #-----------------------------------------------------
@@ -266,7 +289,6 @@ if(False):
     smoothing_input = [False,False,False,False,False,False,False]
     plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12)
 
-
 #=====================================================
 # DOFs: 96^3 | sDG with and without OI vs NSFR
 #-----------------------------------------------------
@@ -297,7 +319,6 @@ if(True):
     smoothing_input = [False,False,False,False,False,False,False]
     plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12)
 
-
 #=====================================================
 # DOFs: 96^3 | OI Stability on GL flux nodes
 #-----------------------------------------------------
@@ -311,27 +332,27 @@ if(True):
     legend_inside_input=True
     #-----------------------------------------------------
     subdirectories_for_plot=[\
+    # "upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs096_p5_procs512",\
+    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
     "flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512",\
     "over_integration_accuracy_strong_DG/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-4_dofs096_p5_CFL-0.10_procs512",\
     "over_integration_accuracy_strong_DG/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-2_dofs096_p5_CFL-0.10_procs512",\
     "filter_width_stabilization/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-0_dofs096_p5_procs512",\
-    # "upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs096_p5_procs512",\
-    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
     ]
     # labels
     labels_for_plot=[\
-    "Strong DG-Roe-GL-OI-6", \
-    "Strong DG-Roe-GL-OI-4", \
-    "Strong DG-Roe-GL-OI-2",\
-    "Strong DG-Roe-GL",\
     # "$c_{DG}$ NSFR.IR-GL-Roe",\
     "$c_{DG}$ NSFR.IR-GL",\
+    "sDG-OI-6", \
+    "sDG-OI-4", \
+    "sDG-OI-2",\
+    "sDG-OI-0",\
     ]
     black_line_flag_for_plot=[False,False,False,False,False,False,False]
     dashed_line_flag_for_plot=[False,False,False,False,False,False,False]
     smoothing_input = [False,False,False,False,False,False,False]
     plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12)
-
+exit()
 #=====================================================
 # DOFs: ALL | Strong DG CONVERGENCE
 #-----------------------------------------------------
