@@ -117,8 +117,36 @@ def reinit_inputs():
     plot_PHiLiP_DNS_result_as_reference_input=True # default
 #=====================================================
 #-----------------------------------------------------
+
 #=====================================================
-# DOFs: 64^3 | Over-integration stabilization
+# DOFs: 96^3 | Strong DG GLL without OI, SGS model stabilization
+#-----------------------------------------------------
+if(True):
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="2023_JCP"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_filename_postfix = "96_sDG_gll_sgs_model_stabilization"
+    legend_inside_input=True
+    #-----------------------------------------------------
+    subdirectories_for_plot = [\
+    "flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GLL_OI-6_dofs096_p5_procs512", \
+    "filter_width_stabilization/viscous_TGV_ILES_std_strong_DG_Roe_GLL_OI-0_dofs096_p5_procs512", \
+    "filter_width_stabilization/viscous_TGV_LES_SMAG_MC-0.18_std_strong_DG_Roe_GLL_OI-0_dofs096_p5_procs512", \
+    ]
+    labels_for_plot=[\
+    "Strong DG-Roe-GLL-OI", \
+    "Strong DG-Roe-GLL", \
+    "Strong DG-Roe-GLL-Smag. $C_{S}=0.18$", \
+    ]
+    black_line_flag_for_plot=[False,False,False,False,False,False]
+    dashed_line_flag_for_plot=[False,True,False,False,False]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12)
+
+#=====================================================
+# DOFs: 96^3 | NSFR vs Strong DG on GL and GLL flux nodes
 #-----------------------------------------------------
 if(True):
     # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
