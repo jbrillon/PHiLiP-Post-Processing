@@ -79,13 +79,14 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
     index_of_reference_curve = len(batch_labels)+1
     x_ref_curve = np.linspace(2.0e0,2.0e2,100)
     order_for_ref_curve = -5.0/3.0
+    ref_curve_label = "$\\left(k^{*}\\right)^{-5/3}$"
     shift = 2.0
     y_ref_curve = (x_ref_curve**(order_for_ref_curve))/np.exp(shift)
-    clr_input_store[index_of_reference_curve] = "k"#"tab:gray"
-    lnstl_input_store[index_of_reference_curve] = "dotted"
+    clr_input_store.insert(index_of_reference_curve,"k")#"tab:gray"
+    lnstl_input_store.insert(index_of_reference_curve,"dotted")
 
     # add reference curve
-    append_to_plot(x_ref_curve,y_ref_curve,"$\\kappa^{-5/3}$")
+    append_to_plot(x_ref_curve,y_ref_curve,ref_curve_label)
     
     if(title_off):
         title_label = " "
@@ -157,7 +158,7 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
     shift = 2.2
     y_ref_curve = (x_ref_curve**(order_for_ref_curve))/np.exp(shift)
     # add reference curve
-    append_to_plot(x_ref_curve,y_ref_curve,"$\\kappa^{-5/3}$")
+    append_to_plot(x_ref_curve,y_ref_curve,ref_curve_label)
     if(title_off):
         title_label = " "
     if(solid_and_dashed_lines):
@@ -242,7 +243,7 @@ if(True):
     # "$12^{3}$, P$5$",\
     ]
     batch_plot_spectra("all","convergence_comparison",batch_paths,batch_labels,solid_and_dashed_lines=False,title_off=title_off_input,figure_directory=fig_dir_input,plot_PHiLiP_DNS_result_as_reference=True)
-exit()
+
 # =====================================================
 if(True):
     batch_paths = [ \

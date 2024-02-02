@@ -125,7 +125,7 @@ else:
 # y_store.append(avg_NSFR_store_cpu_time_per_step)
 # labels_store.append("$c_{DG}$ NSFR.IR-GL")
 title_label="TGV at Re$_{\\infty}=1600$ with $%i^3$ Elements on %i CPUs" % (4,nCPUs)
-qp.plotfxn(xdata=x_store,ydata=y_store,xlabel="Polynomial Degree",ylabel="CPU Time for One Time Step [s]",
+qp.plotfxn(xdata=x_store,ydata=y_store,xlabel="Polynomial Degree, P",ylabel="CPU Time for One Time Step [s]",
             title_label=title_label,
             fig_directory="figures/2023_JCP",
             figure_filename=figure_filename_input,
@@ -179,7 +179,7 @@ labels_store.append("P$^{d+1}$")
 #        (2) split this code into the assembly that generates the file for (1); and the other that takes that assembled file and plots it
 
 # loglog
-qp.plotfxn(xdata=x_store,ydata=y_store,xlabel="Polynomial Degree",ylabel="CPU Time for One Time Step [s]",
+qp.plotfxn(xdata=x_store,ydata=y_store,xlabel="Polynomial Degree, P",ylabel="CPU Time for One Time Step [s]",
             title_label=title_label,
             fig_directory="figures/2023_JCP",
             figure_filename=figure_filename_input,
@@ -205,7 +205,7 @@ if(strong_DG_vs_NSFR):
     figure_filename_input = "cpu_timing_vs_poly_averaged_semilog_1"
 else:
     figure_filename_input = "cpu_timing_coll_vs_uncoll_averaged_semilog_1"
-qp.plotfxn(xdata=x_store,ydata=y_store,xlabel="Polynomial Degree",ylabel="CPU Time for One Time Step [s]",
+qp.plotfxn(xdata=x_store,ydata=y_store,xlabel="Polynomial Degree, P",ylabel="CPU Time for One Time Step [s]",
             title_label=title_label,
             fig_directory="figures/2023_JCP",
             figure_filename=figure_filename_input,
