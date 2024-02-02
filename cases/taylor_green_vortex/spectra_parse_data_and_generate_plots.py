@@ -37,14 +37,14 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
     title_off=False,
     figure_directory="figures",
     legend_fontSize_input=14,
-    lnstl_input_store=['solid','solid','solid','solid','solid','solid','solid','solid'],
+    lnstl_input_store=['solid','solid','solid','solid','solid','solid','solid','solid','solid','solid'],
     plot_PHiLiP_DNS_result_as_reference=False,
     plot_reference_result=True,
     title_postfix_input=""):
     # TO DO: Move this function to its own file
     global x,y,labels
     x=[];y=[];labels=[];
-
+    clr_input_store = ['tab:blue','tab:red','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
     if(solid_and_dashed_lines):
         clr_input_store = ['k','tab:blue','tab:blue','tab:red','tab:red','tab:green','tab:green']#,'tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
         mrkr_input_store = ['None','None','None','None','None','None','None']
@@ -63,15 +63,30 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
     # reference result
     which_lines_black=[]
     if(plot_PHiLiP_DNS_result_as_reference):
-        which_lines_black.append(0)
+        # which_lines_black.append(0)
+        clr_input_store.insert(0,"k")
         filepath_to_reference_result=CURRENT_PATH+"data/brillon/flow_field_files/velocity_vorticity_p7_dofs256-0_reordered_spectra.dat"
         spectra = np.loadtxt(filepath_to_reference_result)
         append_to_plot(spectra[:,0],spectra[:,1],"DNS ($256^3$ DOFs, P$7$)")
     elif(plot_reference_result):
-        which_lines_black.append(0)
+        # which_lines_black.append(0)
+        clr_input_store.insert(0,"k")
         spectra = np.loadtxt(CURRENT_PATH+"data/mastellone2016_dns_spectra_t8.txt",skiprows=1,delimiter=',')
         append_to_plot(spectra[:,0],spectra[:,1],"DNS [Mastellone]")
     batch_append_to_plot(batch_paths, batch_labels, "flow_field_files/velocity_vorticity-0_reordered_spectra_no_smoothing.dat")
+    
+    # compute reference curve 1
+    index_of_reference_curve = len(batch_labels)+1
+    x_ref_curve = np.linspace(2.0e0,2.0e2,100)
+    order_for_ref_curve = -5.0/3.0
+    shift = 2.0
+    y_ref_curve = (x_ref_curve**(order_for_ref_curve))/np.exp(shift)
+    clr_input_store[index_of_reference_curve] = "k"#"tab:gray"
+    lnstl_input_store[index_of_reference_curve] = "dotted"
+
+    # add reference curve
+    append_to_plot(x_ref_curve,y_ref_curve,"$\\kappa^{-5/3}$")
+    
     if(title_off):
         title_label = " "
     if(solid_and_dashed_lines):
@@ -100,7 +115,7 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
             markers=False,legend_on=True,legend_labels_tex=labels,
             which_lines_black=which_lines_black,
             # which_lines_markers=[0],
-            transparent_legend=True,legend_border_on=False,grid_lines_on=False,lnstl_input=lnstl_input_store,
+            transparent_legend=True,legend_border_on=False,grid_lines_on=False,clr_input=clr_input_store,lnstl_input=lnstl_input_store,
             legend_fontSize=legend_fontSize_input,
             # legend_location="upper left",
             # legend_anchor=[0.0,0.45]
@@ -138,6 +153,11 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
     # - results
     # same as above
     batch_append_to_plot(batch_paths, batch_labels, "flow_field_files/velocity_vorticity-1_reordered_spectra_no_smoothing.dat")
+    # adjust the reference curve shift
+    shift = 2.2
+    y_ref_curve = (x_ref_curve**(order_for_ref_curve))/np.exp(shift)
+    # add reference curve
+    append_to_plot(x_ref_curve,y_ref_curve,"$\\kappa^{-5/3}$")
     if(title_off):
         title_label = " "
     if(solid_and_dashed_lines):
@@ -165,7 +185,7 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
             xlimits=[2.0e0,2.0e2],ylimits=[1.0e-9,5e-2],
             markers=False,legend_on=True,legend_labels_tex=labels,
             which_lines_black=which_lines_black,
-            transparent_legend=True,legend_border_on=False,grid_lines_on=False,lnstl_input=lnstl_input_store,
+            transparent_legend=True,legend_border_on=False,grid_lines_on=False,clr_input=clr_input_store,lnstl_input=lnstl_input_store,
             legend_fontSize=legend_fontSize_input,
             # legend_location="upper left",
             # legend_anchor=[0.0,0.45]
