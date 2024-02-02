@@ -37,7 +37,7 @@ std_sDG_num_quad_int_strength = 2*(std_sDG_poly_degree+1)
 number_of_elements_per_direction=4
 # base_directories=["/Users/Julien/NarvalFiles/2023_JCP/cpu_time_advantage/"]
 # base_directories=["/Users/Julien/julien_phd/cluster-scripts/outputs/jcp/cpu_time_advantage_2/"]# UPDATE THIS
-strong_DG_vs_NSFR=False
+strong_DG_vs_NSFR=True
 if(strong_DG_vs_NSFR):
     base_directories=[\
     "NarvalFiles/2023_JCP/cpu_time_advantage_runs_for_averaging/cpu_time_advantage_run_01/",\
@@ -167,6 +167,14 @@ y_store.append(avg_NSFR_store_cpu_time_per_step)
 labels_store.append("$c_{DG}$ NSFR.IR-GL")
 title_label="TGV at Re$_{\\infty}=1600$ with $%i^3$ Elements on %i CPUs" % (4,nCPUs)
 
+# reference curve
+shift = 6.55
+reference_curve_x = np.linspace(0.1,50.0,100)
+order_for_ref_curve = 3.0+1.0
+reference_curve = (reference_curve_x**(order_for_ref_curve))/np.exp(shift)
+x_store.append(reference_curve_x)
+y_store.append(reference_curve) # p^(d+1)
+labels_store.append("P$^{d+1}$")
 # to do: (1) See task (2) first; write these x and y data to files so that I can delete the entire cpu_time_advantage_runs_for_averaging directory and plot faster
 #        (2) split this code into the assembly that generates the file for (1); and the other that takes that assembled file and plots it
 
@@ -181,9 +189,11 @@ qp.plotfxn(xdata=x_store,ydata=y_store,xlabel="Polynomial Degree",ylabel="CPU Ti
             figure_size=(6,6),
             xlimits=[1e0,3e1],
             ylimits=[1e0,2e3],
-            markers=True,legend_on=True,legend_labels_tex=labels_store,
+            # markers=True,
+            legend_on=True,legend_labels_tex=labels_store,
             # which_lines_black=[0],
-            # which_lines_markers=[0],
+            which_lines_markers=[0,1],
+            which_lines_dashed=[2],
             transparent_legend=True,legend_border_on=False,grid_lines_on=False,#lnstl_input=['solid','dashed','dotted'],
             legend_fontSize=14,
             # legend_location="upper left",
