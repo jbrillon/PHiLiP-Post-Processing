@@ -12,25 +12,48 @@ sys.path.append(CURRENT_PATH+"../../submodules/quickplotlib/lib");
 import quickplotlib as qp
 import numpy as np
 import pandas as pd
+import matplotlib.tri as tri
 
-x_cut=-3.14159265358979
 
 # # path="/Users/Julien/NarvalFiles/2022-11-09_96dofs/viscous_TGV_ILES_cPlus_IR_two_point_flux_dofs096_p5_procs512/"
 # path="/Users/Julien/NarvalFiles/2023_AIAA/2022-11-29_TGV_SPECTRA_48dofs/viscous_TGV_LES_smagorinsky_cPlus_IR_two_point_flux_with_l2roe_dissipation_dofs048_p5_procs64_filter36timeslarger/"
 
 
 path = filesystem+"NarvalFiles/2023_JCP/verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p3_procs1024/solution_files/"
-filename = path+"vorticity_plane_from_paraview_test.txt"
+filename = path+"extracted_quadrant_from_slice.dat"
+y,z,scalar = np.loadtxt(filename,unpack=True,dtype=np.float64)
 
-df = pd.read_csv(filename,sep=",",header=0)
-scalar = df["vorticity_magnitude"].to_numpy()
-x = df["x"].to_numpy()
-y = df["y"].to_numpy()
-z = df["z"].to_numpy()
-np.savetxt("dummy_y.txt",y)
-np.savetxt("dummy_z.txt",z)
+# filename = path+"vorticity_plane_from_paraview_x_zero.txt"
+# # Load values
+# df = pd.read_csv(filename,sep=",",header=0)
+# scalar = df["vorticity_magnitude"].to_numpy()
+# x = df["Points:0"].to_numpy()
+# y = df["Points:1"].to_numpy()
+# z = df["Points:2"].to_numpy()
 
+
+X = y
+Y = z
+Z = scalar
 # ----------------------------------------
+# # ----------------------------------------
+# # Smooth data; ref: https://matplotlib.org/stable/gallery/images_contours_and_fields/tricontour_smooth_user.html
+# # ---------------------------------------- 
+# min_radius = np.amin(Z)
+# # Now create the Triangulation.
+# # (Creating a Triangulation without specifying the triangles results in the
+# # Delaunay triangulation of the points.)
+# triang = tri.Triangulation(X, Y)
+
+# # Mask off unwanted triangles.
+# triang.set_mask(np.hypot(X[triang.triangles].mean(axis=1),
+#                          Y[triang.triangles].mean(axis=1))
+#                 < min_radius)
+
+# refiner = tri.UniformTriRefiner(triang)
+# tri_refi, z_test_refi = refiner.refine_field(Z, subdiv=1)
+
+# # ----------------------------------------
 
 # plotting code
 import matplotlib.pyplot as plt
@@ -55,17 +78,15 @@ fig, ax = plt.subplots(figsize=(6,6))
 # fig = plt.figure(figsize=(6,6))
 # plt.xlim([np.amin(X),np.amax(X)])
 # plt.ylim([np.amin(Y),np.amax(Y)])
-# plt.xlim([0.0,1.4])
-# plt.ylim([1.6,2.6])
+# plt.xlim([0.0,np.pi])
+# plt.ylim([0.0,-np.pi])
 ax.set_xlabel(x_label,fontsize=axisTitle_FontSize)
 ax.set_ylabel(y_label,rotation=90,fontsize=axisTitle_FontSize)
 plt.setp(ax.get_xticklabels(),fontsize=axisTickLabel_FontSize); plt.setp(ax.get_yticklabels(),fontsize=axisTickLabel_FontSize);
 
-X = y
-Y = z
-Z = scalar
-plt.tricontourf(X, Y, Z, np.linspace(np.amin(Z),np.amax(Z),100),cmap='rainbow')
-cbar = fig.colorbar(cs,ticks=np.arange(np.amin(Z),np.amax(Z),50.0))
+# cs = plt.tricontourf(tri_refi, z_test_refi, np.linspace(np.amin(Z),np.amax(Z),100),cmap='rainbow')
+cs = plt.tricontourf(X, Y, Z, np.linspace(np.amin(Z),np.amax(Z),100),cmap='rainbow')
+cbar = fig.colorbar(cs,ticks=np.arange(np.amin(Z),np.amax(Z),10.0))
 # cbar = fig.colorbar(cs,ticks=np.linspace(np.amin(Z),np.amax(Z),8))
 cbar.set_label(z_label,fontsize=axisTickLabel_FontSize)
 # cbar.ax.tick_params(fontsize=axisTickLabel_FontSize)
