@@ -126,7 +126,7 @@ else:
 # labels_store.append("$c_{DG}$ NSFR.IR-GL")
 title_label="TGV at Re$_{\\infty}=1600$ with $%i^3$ Elements on %i CPUs" % (4,nCPUs)
 qp.plotfxn(xdata=x_store,ydata=y_store,xlabel="Polynomial Degree, P",ylabel="CPU Time for One Time Step [s]",
-            title_label=title_label,
+            # title_label=title_label,
             fig_directory="figures/2023_JCP",
             figure_filename=figure_filename_input,
             # figure_filename="cpu_timing_vs_poly",
@@ -180,7 +180,7 @@ labels_store.append("P$^{d+1}$")
 
 # loglog
 qp.plotfxn(xdata=x_store,ydata=y_store,xlabel="Polynomial Degree, P",ylabel="CPU Time for One Time Step [s]",
-            title_label=title_label,
+            # title_label=title_label,
             fig_directory="figures/2023_JCP",
             figure_filename=figure_filename_input,
             # figure_filename="cpu_timing_vs_poly",
@@ -206,11 +206,11 @@ if(strong_DG_vs_NSFR):
 else:
     figure_filename_input = "cpu_timing_coll_vs_uncoll_averaged_semilog_1"
 qp.plotfxn(xdata=x_store,ydata=y_store,xlabel="Polynomial Degree, P",ylabel="CPU Time for One Time Step [s]",
-            title_label=title_label,
+            # title_label=title_label,
             fig_directory="figures/2023_JCP",
             figure_filename=figure_filename_input,
             # figure_filename="cpu_timing_vs_poly",
-            log_axes="y",figure_filetype=figure_filetype_input,
+            log_axes=None,figure_filetype=figure_filetype_input,
             nlegendcols=1,
             figure_size=(6,6),
             xlimits=[1e0,3e1],
@@ -224,6 +224,44 @@ qp.plotfxn(xdata=x_store,ydata=y_store,xlabel="Polynomial Degree, P",ylabel="CPU
             # legend_anchor=[0.025,0.3]
             # which_lines_only_markers=[1,2,3],which_lines_dashed=[0]
             )
+
+if(strong_DG_vs_NSFR):
+    #-----------------------------------------------------
+    # Plot 2: ratio of cpu time
+    #-----------------------------------------------------
+    x_store = []
+    y_store = []
+    labels_store = []
+    # x_store.append(NSFR_poly_degree)
+    x_store.append(std_sDG_poly_degree)
+    y_store.append(avg_std_sDG_store_cpu_time_per_step/avg_NSFR_store_cpu_time_per_step)
+    figure_filename_input = "cpu_timing_vs_poly_averaged_ratio"
+    labels_store.append("Strong DG-Roe-GL-OI / $c_{DG}$ NSFR.IR-GLL")
+
+    title_label="TGV at Re$_{\\infty}=1600$ with $%i^3$ Elements on %i CPUs" % (4,nCPUs)
+
+    # loglog
+    qp.plotfxn(xdata=x_store,ydata=y_store,xlabel="Polynomial Degree, P",ylabel="Ratio of CPU Time for One Time Step",
+                # title_label=title_label,
+                fig_directory="figures/2023_JCP",
+                figure_filename=figure_filename_input,
+                # figure_filename="cpu_timing_vs_poly",
+                log_axes=None,figure_filetype=figure_filetype_input,
+                nlegendcols=1,
+                figure_size=(6,6),
+                xlimits=[1e0,3e1],
+                # ylimits=[1e0,2e3],
+                # markers=True,
+                legend_on=True,legend_labels_tex=labels_store,
+                # which_lines_black=[0],
+                which_lines_markers=[0],
+                # which_lines_dashed=[2],
+                transparent_legend=True,legend_border_on=False,grid_lines_on=False,#lnstl_input=['solid','dashed','dotted'],
+                legend_fontSize=14,
+                # legend_location="upper left",
+                # legend_anchor=[0.025,0.3]
+                # which_lines_only_markers=[1,2,3],which_lines_dashed=[0]
+                )
 
 # #-----------------------------------------------------
 # # Plot 2
