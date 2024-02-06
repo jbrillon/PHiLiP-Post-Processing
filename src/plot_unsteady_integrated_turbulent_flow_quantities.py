@@ -14,7 +14,14 @@ import scipy # SciPy: contains additional numerical routines to numpy
 import os;CURRENT_PATH = os.path.split(os.path.realpath(__file__))[0]+"/";
 import sys
 sys.path.append(CURRENT_PATH+"../submodules/quickplotlib/lib"); import quickplotlib as qp
-# sys.path.append("/Users/Julien/Python/quickplotlib/lib"); import quickplotlib as qp # uncomment if testing quickplotlib changes
+# from sys import platform
+# if platform == "linux" or platform == "linux2":
+#     # linux
+#     sys.path.append("/home/julien/Codes/quickplotlib/lib"); import quickplotlib as qp # uncomment if testing quickplotlib changes
+# elif platform == "darwin":
+#     # OS X
+#     sys.path.append("/Users/Julien/Python/quickplotlib/lib"); import quickplotlib as qp # uncomment if testing quickplotlib changes
+
 import matplotlib;from matplotlib.lines import Line2D
 #-----------------------------------------------------
 # define functions
@@ -61,6 +68,9 @@ def plot_periodic_turbulence(
     plot_PHiLiP_DNS_result_as_reference=False,
     dissipation_rate_smoothing=[],
     plot_filtered_dns=False,
+    plot_zoomed_section_dissipation_rate=False,
+    plot_zoomed_section_numerical_dissipation_components=False,
+    plot_zoomed_section_enstrophy=False
     ):
     # plotting parameters store
     labels_store = []
@@ -311,7 +321,10 @@ def plot_periodic_turbulence(
                 fig_directory=figure_directory_base,
                 clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
                 legend_fontSize=legend_fontSize_input,
-                legend_location="upper left")
+                legend_location="upper left",
+                plot_zoomed_section=plot_zoomed_section_dissipation_rate,
+                x_limits_zoom=[8.0, 10.5],y_limits_zoom=[0.010, 0.0135],
+                zoom_box_origin_and_extent=[0.65, 0.65, 0.32, 0.32])
 
     # numerical dissipation plot - can do a max of 4 different results (3 curves per result) -- need a custom legend for this -- can hack the indexing
     if(plot_numerical_dissipation):
@@ -346,6 +359,8 @@ def plot_periodic_turbulence(
         second_leg_anchor_input=[]
         if(tmax!=20.0):
             second_leg_anchor_input=[0.0,0.5]
+        elif(plot_zoomed_section_numerical_dissipation_components):
+            second_leg_anchor_input=[0.0,0.7]
 
         # results
         number_of_refernce_curves_numerical_dissipation=1 # default has one
@@ -414,7 +429,10 @@ def plot_periodic_turbulence(
                     legend_fontSize=legend_fontSize_input,
                     legend_location="upper left",
                     second_leg_elements_input=second_leg_elements_input,
-                    second_leg_anchor=second_leg_anchor_input)
+                    second_leg_anchor=second_leg_anchor_input,
+                    plot_zoomed_section=plot_zoomed_section_numerical_dissipation_components,
+                    x_limits_zoom=[8, 10.5],y_limits_zoom=[0.010, 0.0135],
+                    zoom_box_origin_and_extent=[0.65, 0.65, 0.32, 0.32])
 
     if(plot_reference_result and reference_result_author=="Vermeire"):
         # DNS - enstrophy
@@ -449,7 +467,10 @@ def plot_periodic_turbulence(
                 fig_directory=figure_directory_base,
                 clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
                 legend_fontSize=legend_fontSize_input,
-                legend_location="upper left")
+                legend_location="upper left",
+                plot_zoomed_section=plot_zoomed_section_enstrophy,
+                x_limits_zoom=[8, 10.5],y_limits_zoom=[8.0, 10.5],
+                zoom_box_origin_and_extent=[0.65, 0.65, 0.32, 0.32])
 
     # Remove the reference result for the lists
     if(plot_reference_result):
