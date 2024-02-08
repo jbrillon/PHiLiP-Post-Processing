@@ -15,14 +15,17 @@ import pandas as pd
 import matplotlib.tri as tri
 
 def plot_vorticity_plane(path,filename_without_extension,file_extension,fig_directory,fig_prepre_fix,
-    subdivide=False,title_label=" "):
+    subdivide=False,title_label=" ",fill_contour=False):
     # TO DO: move this somewhere else eventually
     figure_filename = fig_prepre_fix+filename_without_extension
     if(subdivide):
         figure_filename += "_with_subdivision"
     else:
         figure_filename += "_no_subdivision"
-
+    if(fill_contour):
+        figure_filename += "_filled"
+    else:
+        figure_filename += "_no_fill"
     # load data
     filename = path+filename_without_extension+"."+file_extension
     y,z,scalar = np.loadtxt(filename,unpack=True,dtype=np.float64)
@@ -51,9 +54,12 @@ def plot_vorticity_plane(path,filename_without_extension,file_extension,fig_dire
 
     # ----------------------------------------
 
+    # contour_levels = [1, 3, 5, 10, 15, 20, 30]
+    if(fill_contour):
+        contour_levels = [1, 5, 10, 20, 30]
+    else:
+        contour_levels = np.linspace(1,30,20)
 
-    contour_levels = [1.2,9.0,11.0]
-    colors=["0.25","0.25","0.25"]
     # Figure parameters
     # fig_directory = "figures"
     figure_filetype = "pdf"
@@ -86,25 +92,41 @@ def plot_vorticity_plane(path,filename_without_extension,file_extension,fig_dire
     plt.setp(ax.get_xticklabels(),fontsize=axisTickLabel_FontSize); plt.setp(ax.get_yticklabels(),fontsize=axisTickLabel_FontSize);
 
     if(subdivide):
-        cs = plt.tricontourf(tri_refi, z_test_refi, np.linspace(np.amin(Z),np.amax(Z),100),cmap='rainbow',extend="both")
-        # plt.tricontour(tri_refi, z_test_refi)
+        if(fill_contour):
+            cs = plt.tricontourf(tri_refi, z_test_refi, np.linspace(np.amin(Z),np.amax(Z),100),cmap='rainbow',extend="both")
+        cs_lines = plt.tricontour(tri_refi,z_test_refi,levels=contour_levels,colors=('k',),linewidths=(1,))
     else:
-        cs = plt.tricontourf(X, Y, Z, np.linspace(np.amin(Z),np.amax(Z),100),cmap='rainbow')
-        # plt.tricontour(X, Y, Z,levels=contour_levels,colors=colors)
+        if(fill_contour):
+            cs = plt.tricontourf(X, Y, Z, np.linspace(np.amin(Z),np.amax(Z),100),cmap='rainbow')
+        cs_lines = plt.tricontour(X,Y,Z,levels=contour_levels,colors=('k',),linewidths=(1,))
 
-    cbar = fig.colorbar(cs,ticks=np.arange(np.amin(Z),np.amax(Z),10.0))
-    # cbar = fig.colorbar(cs,ticks=np.linspace(np.amin(Z),np.amax(Z),8))
-    cbar.set_label(z_label,fontsize=axisTickLabel_FontSize)
-    # cbar.ax.tick_params(fontsize=axisTickLabel_FontSize)
-    plt.setp(cbar.ax.get_yticklabels(),fontsize=axisTickLabel_FontSize)
+    for level in cs_lines.collections:
+        for kp,lpath in reversed(list(enumerate(level.get_paths()))):
+            # go in reversed order due to deletions!
 
-    # Fix for the white lines between contour levels
-    for c in cs.collections:
-        c.set_edgecolor("face")
+            # include test for "smallness" of your choice here:
+            # I'm using a simple estimation for the diameter based on the
+            #    x and y diameter...
+            verts = lpath.vertices # (N,2)-shape array of contour line coordinates
+            diameter = np.max(verts.max(axis=0) - verts.min(axis=0))
+
+            if diameter<0.15: # threshold to be refined for your actual dimensions!
+                del(level.get_paths()[kp])  # no remove() for Path objects:(
+
+    if(fill_contour):
+        cbar = fig.colorbar(cs,ticks=contour_levels)
+        # cbar = fig.colorbar(cs,ticks=np.linspace(np.amin(Z),np.amax(Z),8))
+        cbar.set_label(z_label,fontsize=axisTickLabel_FontSize)
+        # cbar.ax.tick_params(fontsize=axisTickLabel_FontSize)
+        plt.setp(cbar.ax.get_yticklabels(),fontsize=axisTickLabel_FontSize)
+
+        # Fix for the white lines between contour levels
+        for c in cs.collections:
+            c.set_edgecolor("face")
 
     plt.tight_layout()
     print('\t ... Saving figure ...')
-    plt.savefig(fig_directory+"/"+figure_filename+'.'+figure_filetype,format=figure_filetype,dpi=500)
+    plt.savefig(fig_directory+"/"+figure_filename+'.'+figure_filetype,format=figure_filetype,dpi=500)#,rasterized=True
     plt.close()
     print('\t     Saved.')
     print("---------------------------------------------")
@@ -146,8 +168,10 @@ fig_prepre_fix = [\
 
 
 for i in range(0,n_paths):
+# for i in range(0,1):
     for j in range(0,files_per_path[i]):
+    # for j in range(3,4):
         filename_without_extension = prefix+str(j)+"_quadrant"
         plot_title = labels_for_plot[i]+", $t^{*}=%i$" % output_solution_fixed_times_string[j]
-        plot_vorticity_plane(paths[i],filename_without_extension,file_extension,fig_directory,fig_prepre_fix[i],subdivide=False,title_label=plot_title)
+        plot_vorticity_plane(paths[i],filename_without_extension,file_extension,fig_directory,fig_prepre_fix[i],subdivide=False,title_label=plot_title,fill_contour=True)
 
