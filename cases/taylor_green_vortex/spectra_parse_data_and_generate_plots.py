@@ -9,7 +9,15 @@ sys.path.append(CURRENT_PATH+"../../src/tools");
 from assemble_mpi_flow_field_files_and_reorder import assemble_mpi_flow_field_files_and_reorder
 from generate_spectra_files import generate_spectra_file_from_flow_field_file
 # load submodules
-sys.path.append(CURRENT_PATH+"../../submodules/quickplotlib/lib"); import quickplotlib as qp
+# sys.path.append(CURRENT_PATH+"../../submodules/quickplotlib/lib"); import quickplotlib as qp
+from sys import platform
+if platform == "linux" or platform == "linux2":
+    # linux
+    sys.path.append("/home/julien/Codes/quickplotlib/lib"); import quickplotlib as qp # uncomment if testing quickplotlib changes
+elif platform == "darwin":
+    # OS X
+    sys.path.append("/Users/Julien/Python/quickplotlib/lib"); import quickplotlib as qp # uncomment if testing quickplotlib changes
+
 #-----------------------------------------------------
 from sys import platform
 if platform == "linux" or platform == "linux2":
@@ -34,21 +42,31 @@ def batch_append_to_plot(paths_,labels_,filename):
 #-----------------------------------------------------
 def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
     solid_and_dashed_lines=False,
+    dashed_and_solid_lines=False,
     title_off=False,
     figure_directory="figures",
     legend_fontSize_input=14,
     lnstl_input_store=['solid','solid','solid','solid','solid','solid','solid','solid','solid','solid'],
     plot_PHiLiP_DNS_result_as_reference=False,
     plot_reference_result=True,
-    title_postfix_input=""):
+    title_postfix_input="",
+    plot_zoomed_section=False):
     # TO DO: Move this function to its own file
     global x,y,labels
     x=[];y=[];labels=[];
-    clr_input_store = ['tab:blue','tab:red','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
     if(solid_and_dashed_lines):
-        clr_input_store = ['k','tab:blue','tab:blue','tab:red','tab:red','tab:green','tab:green']#,'tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+        clr_input_store = ['tab:blue','tab:blue','tab:red','tab:red','tab:green','tab:green']#,'tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
         mrkr_input_store = ['None','None','None','None','None','None','None']
-        lnstl_input_store = ['solid','solid','dashed','solid','dashed','solid','dashed','solid']
+        lnstl_input_store = ['solid','dashed','solid','dashed','solid','dashed','solid']
+    elif(dashed_and_solid_lines):
+        clr_input_store = ['tab:blue','tab:blue','tab:red','tab:red','tab:green','tab:green','tab:orange','tab:orange']#,'tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+        mrkr_input_store = ['None','None','None','None','None','None','None','None']
+        lnstl_input_store = ['dashed','solid','dashed','solid','dashed','solid','dashed','solid']
+    else:
+        clr_input_store = ['tab:blue','tab:red','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+        mrkr_input_store = []
+        # lnstl_input_store = []
+
 
     if(nDOF_=="all"):
         title_label = "TKE Spectra at $t^{*}=8.0$"
@@ -74,6 +92,11 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
         spectra = np.loadtxt(CURRENT_PATH+"data/mastellone2016_dns_spectra_t8.txt",skiprows=1,delimiter=',')
         append_to_plot(spectra[:,0],spectra[:,1],"DNS [Mastellone]")
     batch_append_to_plot(batch_paths, batch_labels, "flow_field_files/velocity_vorticity-0_reordered_spectra_no_smoothing.dat")
+
+    if(plot_PHiLiP_DNS_result_as_reference or plot_reference_result):
+        if(solid_and_dashed_lines or dashed_and_solid_lines):
+            mrkr_input_store.insert(0,'None')
+            lnstl_input_store.insert(0,'solid')
     
     # compute reference curve 1
     index_of_reference_curve = len(batch_labels)+1
@@ -87,52 +110,42 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
 
     # add reference curve
     append_to_plot(x_ref_curve,y_ref_curve,ref_curve_label)
-    
+
+    x_limits_zoom=[25, 55]
+    y_limits_zoom=[6.0e-5, 2.0e-4]
+    # if(nDOF_==256):
+    #     x_limits_zoom=[30, 60]
+    #     y_limits_zoom=[1.0e-4, 3.0e-4]
+    # elif(nDOF_==96):
+    #     x_limits_zoom=[25, 50]
+    #     y_limits_zoom=[6.0e-5, 2.0e-4]
+    # elif(nDOF_=="all"):
+    #     x_limits_zoom=[30, 60]
+    #     y_limits_zoom=[1.0e-4, 3.0e-4]
+
     if(title_off):
         title_label = " "
-    if(solid_and_dashed_lines):
-        qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $k^{*}$",ylabel="Nondimensional TKE Spectra, $E^{*}(k^{*},t^{*})$",
+    
+    qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $k^{*}$",ylabel="Nondimensional TKE Spectra, $E^{*}(k^{*},t^{*})$",
         title_label=title_label,
         fig_directory=figure_directory,figure_filename=figure_filename,log_axes="both",figure_filetype="pdf",
         nlegendcols=1,
-        xlimits=[2e0,5.5e1],ylimits=[2.45e-5,3e-2],
+        # xlimits=[2e0,5.5e1],ylimits=[1.0e-5,3e-2],
+        xlimits=[2.0e0,2.0e2],ylimits=[1.0e-6,5e-2],
         markers=False,legend_on=True,legend_labels_tex=labels,
         which_lines_black=which_lines_black,
         # which_lines_markers=[0],
         transparent_legend=True,legend_border_on=False,grid_lines_on=False,
         clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
         legend_fontSize=legend_fontSize_input,
-        legend_location="upper left",
-        legend_anchor=[0.0,0.45]
-        # which_lines_only_markers=[1,2,3],which_lines_dashed=[0]
+        # legend_location="upper left",
+        # legend_anchor=[0.0,0.45]
+        # which_lines_only_markers=[1,2,3],which_lines_dashed=[0],
+        plot_zoomed_section=plot_zoomed_section,
+        x_limits_zoom=x_limits_zoom,y_limits_zoom=y_limits_zoom,
+        zoom_box_origin_and_extent=[0.65, 0.65, 0.32, 0.32]
         )
-    else:
-        qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $k^{*}$",ylabel="Nondimensional TKE Spectra, $E^{*}(k^{*},t^{*})$",
-            title_label=title_label,
-            fig_directory=figure_directory,figure_filename=figure_filename,log_axes="both",figure_filetype="pdf",
-            nlegendcols=1,
-            # xlimits=[2e0,5.5e1],ylimits=[1.0e-5,3e-2],
-            xlimits=[2.0e0,2.0e2],ylimits=[1.0e-9,5e-2],
-            markers=False,legend_on=True,legend_labels_tex=labels,
-            which_lines_black=which_lines_black,
-            # which_lines_markers=[0],
-            transparent_legend=True,legend_border_on=False,grid_lines_on=False,clr_input=clr_input_store,lnstl_input=lnstl_input_store,
-            legend_fontSize=legend_fontSize_input,
-            # legend_location="upper left",
-            # legend_anchor=[0.0,0.45]
-            # which_lines_only_markers=[1,2,3],which_lines_dashed=[0]
-            )
-    # qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $k^{*}$",ylabel="Nondimensional TKE Spectra, $E^{*}(k^{*},t^{*})$",
-    #     title_label=title_label,
-    #     fig_directory=figure_directory,figure_filename=figure_filename+"_zoom",log_axes="both",figure_filetype="pdf",
-    #     nlegendcols=1,
-    #     # xlimits=[2e1,8e1],ylimits=[1e-6,1e-3],
-    #     xlimits=[3e1,6e1],ylimits=[1e-5,2e-4],
-    #     markers=False,legend_on=True,legend_labels_tex=labels,
-    #     which_lines_black=[0],
-    #     which_lines_markers=[0],transparent_legend=True,legend_border_on=False,grid_lines_on=False
-    #     # which_lines_only_markers=[1,2,3],which_lines_dashed=[0]
-    #     )
+
     if(nDOF_=="all"):
         title_label = "TKE Spectra at $t^{*}=9.0$"
     else:
@@ -161,47 +174,26 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
     append_to_plot(x_ref_curve,y_ref_curve,ref_curve_label)
     if(title_off):
         title_label = " "
-    if(solid_and_dashed_lines):
-        qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $k^{*}$",ylabel="Nondimensional TKE Spectra, $E^{*}(k^{*},t^{*})$",
+
+    qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $k^{*}$",ylabel="Nondimensional TKE Spectra, $E^{*}(k^{*},t^{*})$",
         title_label=title_label,
         fig_directory=figure_directory,figure_filename=figure_filename,log_axes="both",figure_filetype="pdf",
         nlegendcols=1,
-        xlimits=[2e0,7e1],ylimits=[2.45e-5,3e-2],
+        # xlimits=[2e0,7e1],ylimits=[2.45e-5,3e-2],
+        xlimits=[2.0e0,2.0e2],ylimits=[1.0e-6,5e-2],
         markers=False,legend_on=True,legend_labels_tex=labels,
         which_lines_black=which_lines_black,
-        # which_lines_markers=[0],
         transparent_legend=True,legend_border_on=False,grid_lines_on=False,
         clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
         legend_fontSize=legend_fontSize_input,
-        legend_location="upper left",
-        legend_anchor=[0.0,0.45]
-        # which_lines_only_markers=[1,2,3],which_lines_dashed=[0]
+        # legend_location="upper left",
+        # legend_anchor=[0.0,0.45]
+        # which_lines_only_markers=[1,2,3],which_lines_dashed=[0],
+        plot_zoomed_section=plot_zoomed_section,
+        x_limits_zoom=x_limits_zoom,y_limits_zoom=y_limits_zoom,
+        zoom_box_origin_and_extent=[0.65, 0.65, 0.32, 0.32]
         )
-    else:
-        qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $k^{*}$",ylabel="Nondimensional TKE Spectra, $E^{*}(k^{*},t^{*})$",
-            title_label=title_label,
-            fig_directory=figure_directory,figure_filename=figure_filename,log_axes="both",figure_filetype="pdf",
-            nlegendcols=1,
-            # xlimits=[2e0,7e1],ylimits=[2.45e-5,3e-2],
-            xlimits=[2.0e0,2.0e2],ylimits=[1.0e-9,5e-2],
-            markers=False,legend_on=True,legend_labels_tex=labels,
-            which_lines_black=which_lines_black,
-            transparent_legend=True,legend_border_on=False,grid_lines_on=False,clr_input=clr_input_store,lnstl_input=lnstl_input_store,
-            legend_fontSize=legend_fontSize_input,
-            # legend_location="upper left",
-            # legend_anchor=[0.0,0.45]
-            # which_lines_only_markers=[1,2,3],which_lines_dashed=[0]
-            )
-        # qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $k^{*}$",ylabel="Nondimensional TKE Spectra, $E^{*}(k^{*},t^{*})$",
-        #     title_label=title_label,
-        #     fig_directory=figure_directory,figure_filename=figure_filename+"_zoom",log_axes="both",figure_filetype="pdf",
-        #     nlegendcols=1,
-        #     xlimits=[3e1,6e1],ylimits=[1e-5,2e-4],
-        #     markers=False,legend_on=True,legend_labels_tex=labels,
-        #     # which_lines_black=[0],
-        #     transparent_legend=True,legend_border_on=False,grid_lines_on=False
-        #     # which_lines_only_markers=[1,2,3],which_lines_dashed=[0]
-        #     )
+    
     return
 
 #=====================================================
@@ -216,6 +208,68 @@ fig_dir_input="./figures/2023_JCP"
 # =====================================================
 # =====================================================
 # =====================================================
+
+# =====================================================
+if(True):
+    batch_paths = [ \
+    "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/over_integration/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-3_dofs096_p5_procs512/",\
+    # "NarvalFiles/2023_JCP/over_integration/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-3_dofs096_p5_procs512/",\
+    ]
+    batch_labels = [ \
+    "$c_{DG}$ NSFR.IR-GL", \
+    "$c_{DG}$ NSFR.IR-GLL", \
+    "$c_{DG}$ NSFR.IR-GL-OI-3", \
+    # "$c_{DG}$ NSFR.IR-GLL-OI-3", \
+    ]
+    batch_plot_spectra(96,"p5_flux_nodes",batch_paths,batch_labels,
+        solid_and_dashed_lines=False,title_off=title_off_input,
+        figure_directory=fig_dir_input,plot_PHiLiP_DNS_result_as_reference=True,
+        plot_zoomed_section=True)
+
+#=====================================================
+# DOFs: 96^3 | Correction Parameter Time-Step
+#-----------------------------------------------------
+if(True):
+    batch_paths = [ \
+    "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
+    "NarvalFiles/2023_JCP/time_step_advantage_with_physical_check/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.26_procs512/",\
+    "NarvalFiles/2023_JCP/correction_parameter/viscous_TGV_ILES_NSFR_cPlus_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
+    "NarvalFiles/2023_JCP/time_step_advantage_with_physical_check/viscous_TGV_ILES_NSFR_cPlus_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.36_procs512/",\
+    "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512/",\
+    "NarvalFiles/2023_JCP/time_step_advantage_strong_DG/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_CFL-0.14_procs512/",\
+    ] 
+    batch_labels = [ \
+    "$c_{DG}$: CFL=$0.10$",\
+    "$c_{DG}$: CFL=$0.26$",\
+    "$c_{+}$: CFL=$0.10$",\
+    "$c_{+}$: CFL=$0.36$",\
+    "sDG: CFL=$0.10$",\
+    "sDG: CFL=$0.14$",\
+    ]
+    batch_plot_spectra(96,"p5_correction_parameter_cfl_advantage",batch_paths,batch_labels,solid_and_dashed_lines=False,dashed_and_solid_lines=True,title_off=title_off_input,figure_directory=fig_dir_input,plot_PHiLiP_DNS_result_as_reference=True)
+
+#======================================================
+# DOFs: 96^3 | Strong DG GLL without OI, SGS model stabilization
+#-----------------------------------------------------
+if(True):
+    batch_paths = [ \
+    "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GLL_OI-6_dofs096_p5_procs512/", \
+    # "NarvalFiles/2023_JCP/filter_width_stabilization/viscous_TGV_ILES_std_strong_DG_Roe_GLL_OI-0_dofs096_p5_procs512/", \
+    # "NarvalFiles/2023_JCP/filter_width_stabilization/viscous_TGV_LES_SMAG_MC-0.18_std_strong_DG_Roe_GLL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SI.SMAG.LRNC_MC-0.10_strong_DG_Roe_GLL_OI-0_dofs096_p5_CFL-0.1_procs512/", \
+    ]
+    batch_labels = [ \
+    "Strong DG-Roe-GLL-OI", \
+    # "Strong DG-Roe-GLL", \
+    # "Strong DG-Roe-GLL-Smag. $C_{S}=0.18$", \
+    "Strong DG-Roe-GLL-HPF.SI.Smag.LRNC $C_{S}=0.10$ $P_{L}=3$", \
+    ]
+    black_line_flag_for_plot=[False,False,False,False,False,False]
+    dashed_line_flag_for_plot=[False,True,False,False,False]
+    batch_plot_spectra(96,"sDG_gll_sgs_model_stabilization",batch_paths,batch_labels,solid_and_dashed_lines=False,title_off=title_off_input,figure_directory=fig_dir_input,plot_PHiLiP_DNS_result_as_reference=True)
+exit()
 # =====================================================
 if(True):
     batch_paths = [ \
@@ -242,7 +296,7 @@ if(True):
     # "$12^{3}$, P$5$",\
     # "$12^{3}$, P$5$",\
     ]
-    batch_plot_spectra("all","convergence_comparison",batch_paths,batch_labels,solid_and_dashed_lines=False,title_off=title_off_input,figure_directory=fig_dir_input,plot_PHiLiP_DNS_result_as_reference=True)
+    batch_plot_spectra("all","convergence_comparison",batch_paths,batch_labels,solid_and_dashed_lines=True,title_off=title_off_input,figure_directory=fig_dir_input,plot_PHiLiP_DNS_result_as_reference=True)
 
 # =====================================================
 if(True):
@@ -342,7 +396,7 @@ if(True):
     "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_VRMN_MC-0.081_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
     "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512/",\
     "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_WALE.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16/",\
-    "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_VRMN.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16/",\
+    "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_VRMN.LRNC_MC-0.081_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16/",\
     ]
     batch_labels = [ \
     "$c_{DG}$ NSFR.IR-GL (No Model)", \
@@ -351,7 +405,7 @@ if(True):
     "VRMN $C_{V}=0.081$", \
     "Smag.LRNC $C_{S}=0.10$", \
     "WALE.LRNC $C_{W}=0.10$", \
-    "VRMN.LRNC $C_{V}=0.10$", \
+    "VRMN.LRNC $C_{V}=0.081$", \
     ]
     batch_plot_spectra(96,"p5_lrnc_sgs_models_gl",batch_paths,batch_labels,solid_and_dashed_lines=False,title_off=title_off_input,figure_directory=fig_dir_input,plot_PHiLiP_DNS_result_as_reference=True)
 # =====================================================
@@ -449,17 +503,6 @@ if(True):
 if(True):
     batch_paths = [ \
     "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
-    "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512/", \
-    ]
-    batch_labels = [ \
-    "$c_{DG}$ NSFR.IR-GL", \
-    "$c_{DG}$ NSFR.IR-GLL", \
-    ]
-    batch_plot_spectra(96,"p5_flux_nodes",batch_paths,batch_labels,solid_and_dashed_lines=False,title_off=title_off_input,figure_directory=fig_dir_input,plot_PHiLiP_DNS_result_as_reference=True)
-# =====================================================
-if(True):
-    batch_paths = [ \
-    "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
     "NarvalFiles/2023_JCP/upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-LxF_GL_OI-0_dofs096_p5_procs512/", \
     "NarvalFiles/2023_JCP/upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs096_p5_procs512/", \
     "NarvalFiles/2023_JCP/upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-L2R_GL_OI-0_dofs096_p5_procs512/", \
@@ -516,14 +559,16 @@ if(True):
     "NarvalFiles/2023_JCP/verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p3_procs1024/",\
     "NarvalFiles/2023_JCP/verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs0256_p3_procs1024/",\
     "NarvalFiles/2023_JCP/verification/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-4_dofs0256_p3_CFL-0.15_procs1024/",\
+    "NarvalFiles/2023_JCP/verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs1024",\
     ]
     batch_labels = [ \
-    "$256^3$ P$7$ $c_{DG}$ NSFR.IR-GL",\
-    "$256^3$ P$3$ $c_{DG}$ NSFR.IR-GL",\
-    "$256^3$ P$3$ $c_{DG}$ NSFR.IR-GL-Roe",\
-    "$256^3$ P$3$ Strong DG-Roe-GL-OI",\
+    "P$7$ $c_{DG}$ NSFR.IR-GL",\
+    "P$3$ $c_{DG}$ NSFR.IR-GL",\
+    "P$3$ $c_{DG}$ NSFR.IR-GL-Roe",\
+    "P$3$ Strong DG-Roe-GL-OI",\
+    "P$7$ $c_{DG}$ NSFR.IR-GLL",\
     ]
-    lnstl_input=['solid','solid','solid','solid','dashed']
+    lnstl_input=['solid','solid','solid','solid','dashed','dashed']
     for i in range(3,len(batch_paths)):# change to 0 if OK
         figure_filename_postfix_input="verification_%i"%i
         batch_plot_spectra(256,figure_filename_postfix_input,batch_paths[:(i+1)],batch_labels[:(i+1)],solid_and_dashed_lines=False,title_off=title_off_input,figure_directory=fig_dir_input,lnstl_input_store=lnstl_input,plot_PHiLiP_DNS_result_as_reference=False)
@@ -684,7 +729,7 @@ if(True):
     "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_VRMN_MC-0.081_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
     "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512/",\
     "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_WALE.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16/",\
-    "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_VRMN.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16/",\
+    "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_VRMN.LRNC_MC-0.081_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16/",\
     ]
     batch_labels = [ \
     "$c_{DG}$ NSFR.IR-GL", \
@@ -692,7 +737,7 @@ if(True):
     "$c_{DG}$ NSFR.IR-GL-WALE $C_{W}=0.50$", \
     "$c_{DG}$ NSFR.IR-GL-VRMN $C_{V}=0.081$", \
     "$c_{DG}$ NSFR.IR-GL-Smag.LRNC $C_{S}=0.10$", \
-    "$c_{DG}$ NSFR.IR-GL-WALE.LRNC $C_{W}=0.50$", \
+    "$c_{DG}$ NSFR.IR-GL-WALE.LRNC $C_{W}=0.10$", \
     "$c_{DG}$ NSFR.IR-GL-VRMN.LRNC $C_{V}=0.081$", \
     ]
     # batch_plot_spectra(96,"sgs_models_gl",batch_paths,batch_labels,solid_and_dashed_lines=True,title_off=title_off_input,figure_directory=fig_dir_input)

@@ -63,6 +63,7 @@ def plot_periodic_turbulence(
     legend_fontSize_input=16,
     tmax=20.0,
     solid_and_dashed_lines=False,
+    dashed_and_solid_lines=False,
     reference_result_author="Dairay et al.",
     plot_numerical_dissipation=False,
     plot_PHiLiP_DNS_result_as_reference=False,
@@ -70,7 +71,8 @@ def plot_periodic_turbulence(
     plot_filtered_dns=False,
     plot_zoomed_section_dissipation_rate=False,
     plot_zoomed_section_numerical_dissipation_components=False,
-    plot_zoomed_section_enstrophy=False
+    plot_zoomed_section_enstrophy=False,
+    dofs_for_zoomed_section=256,
     ):
     # plotting parameters store
     labels_store = []
@@ -126,6 +128,8 @@ def plot_periodic_turbulence(
             kinetic_energy_store.append(kinetic_energy)
             dissipation_store.append(dissipation)
             enstrophy_store.append(enstrophy)
+            numerical_viscosity_store.append(dissipation/(2.0*enstrophy))
+            vorticity_based_dissipation_store.append((2.0/1600.0)*enstrophy)
         else:
             print("ERROR: Invalid value passed for reference_result_author. Aborting...")
             exit()
@@ -251,9 +255,21 @@ def plot_periodic_turbulence(
 
     # line parameters if doing solid and dashed lines
     if(solid_and_dashed_lines):
-        clr_input_store = ['^','tab:blue','tab:blue','tab:red','tab:red','tab:green','tab:green']#,'tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
-        mrkr_input_store = ['None','None','None','None','None','None','None']
-        lnstl_input_store = ['solid','dashed','solid','dashed','solid','dashed','solid']
+        clr_input_store = ['k','tab:blue','tab:blue','tab:red','tab:red','tab:green','tab:green','tab:orange','tab:orange']#,'tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+        mrkr_input_store = ['None','None','None','None','None','None','None','None']
+        lnstl_input_store = ['solid','solid','dashed','solid','dashed','solid','dashed','solid','dashed']
+        if(plot_filtered_dns):
+            clr_input_store.insert(1,'k')
+            mrkr_input_store.insert(1,'None')
+            lnstl_input_store.insert(1,'dashed')
+    elif(dashed_and_solid_lines):
+        clr_input_store = ['k','tab:blue','tab:blue','tab:red','tab:red','tab:green','tab:green','tab:orange','tab:orange']#,'tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+        mrkr_input_store = ['None','None','None','None','None','None','None','None']
+        lnstl_input_store = ['dashed','dashed','solid','dashed','solid','dashed','solid','dashed','solid']
+        if(plot_filtered_dns):
+            clr_input_store.insert(1,'k')
+            mrkr_input_store.insert(1,'None')
+            lnstl_input_store.insert(1,'solid')
     #-----------------------------------------------------
     # evolution of kinetic energy:
     #-----------------------------------------------------
@@ -353,7 +369,7 @@ def plot_periodic_turbulence(
         second_leg_elements_input.append(Line2D([0],[0], label="$\\varepsilon\\left(K^{*}\\right)-\\varepsilon\\left(\\zeta^{*}\\right)$", color='grey', marker='None', markersize=6, mfc='None', linestyle=ls))
         
         index_shift_for_ref_result = 0 # initialize
-        if(plot_reference_result):
+        if(plot_reference_result and reference_result_author!="Dairay et al."):
             index_shift_for_ref_result = -1 # minus 1 because no reference result
 
         second_leg_anchor_input=[]
@@ -383,7 +399,7 @@ def plot_periodic_turbulence(
             mrkr_input_store_numerical_dissipation.append(mk)
             lnstl_input_store_numerical_dissipation.append(ls)
 
-            if((plot_reference_result and i>0) or (plot_PHiLiP_DNS_result_as_reference)):
+            if(((plot_reference_result and reference_result_author!="Dairay et al.") and i>0) or ((plot_PHiLiP_DNS_result_as_reference) or (plot_reference_result and reference_result_author=="Dairay et al."))):
                 # molecular dissipation
                 KE_molecular_and_numerical_dissipation_y_store.append(vorticity_based_dissipation_store[i+index_shift_for_ref_result])
                 KE_molecular_and_numerical_dissipation_x_store.append(time_store[i])
@@ -398,6 +414,13 @@ def plot_periodic_turbulence(
                 clr_input_store_numerical_dissipation.append(lc)
                 mrkr_input_store_numerical_dissipation.append(mk)
                 lnstl_input_store_numerical_dissipation.append(ls)
+
+        x_limits_zoom=[8, 10.5]
+        y_limits_zoom=[0.010, 0.0135]
+        if(plot_zoomed_section_enstrophy):
+            if(dofs_for_zoomed_section==96):
+                y_limits_zoom=[0.008, 0.0135]
+                x_limits_zoom=[7.5, 11]
 
         qp.plotfxn(xdata=KE_molecular_and_numerical_dissipation_x_store,
                     ydata=KE_molecular_and_numerical_dissipation_y_store,
@@ -431,7 +454,7 @@ def plot_periodic_turbulence(
                     second_leg_elements_input=second_leg_elements_input,
                     second_leg_anchor=second_leg_anchor_input,
                     plot_zoomed_section=plot_zoomed_section_numerical_dissipation_components,
-                    x_limits_zoom=[8, 10.5],y_limits_zoom=[0.010, 0.0135],
+                    x_limits_zoom=x_limits_zoom,y_limits_zoom=y_limits_zoom,
                     zoom_box_origin_and_extent=[0.65, 0.65, 0.32, 0.32])
 
     if(plot_reference_result and reference_result_author=="Vermeire"):
@@ -443,6 +466,13 @@ def plot_periodic_turbulence(
 
     if(plot_enstrophy):
         # entrophy
+        x_limits_zoom=[8, 10.5]
+        y_limits_zoom=[8.0, 10.5]
+        if(plot_zoomed_section_enstrophy):
+            if(dofs_for_zoomed_section==96):
+                y_limits_zoom=[6.5, 8.5]
+                x_limits_zoom=[8, 11]
+                
         qp.plotfxn(xdata=time_store,
                 ydata=enstrophy_store,
                 ylabel='Nondimensional Enstrophy, $\\zeta^{*}$',
@@ -469,11 +499,11 @@ def plot_periodic_turbulence(
                 legend_fontSize=legend_fontSize_input,
                 legend_location="upper left",
                 plot_zoomed_section=plot_zoomed_section_enstrophy,
-                x_limits_zoom=[8, 10.5],y_limits_zoom=[8.0, 10.5],
+                x_limits_zoom=x_limits_zoom,y_limits_zoom=y_limits_zoom,
                 zoom_box_origin_and_extent=[0.65, 0.65, 0.32, 0.32])
 
     # Remove the reference result for the lists
-    if(plot_reference_result):
+    if(plot_reference_result and reference_result_author!="Dairay et al."):
         # No reference result for the following plots so remove all the DNS data
         # and reset the which_lines_black_input and which_lines_dashed_input
         time_store.pop(0)
@@ -550,6 +580,32 @@ def plot_periodic_turbulence(
                 fig_directory=figure_directory_base,
                 clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
                 legend_fontSize=legend_fontSize_input)
+
+        # Remove the reference result for the lists
+        if(plot_reference_result and reference_result_author=="Dairay et al."):
+            # No reference result for the following plots so remove all the DNS data
+            # and reset the which_lines_black_input and which_lines_dashed_input
+            time_store.pop(0)
+            kinetic_energy_store.pop(0)
+            dissipation_store.pop(0)
+            vorticity_based_dissipation_store.pop(0)
+            numerical_viscosity_store.pop(0)
+            labels_store.pop(0)
+            which_lines_dashed_input = []
+            which_lines_black_input = []
+            i_curve = 0 # reset the which_lines_black_input and which_lines_dashed_input
+            for i in range(0,number_of_result_curves):
+                if(black_line_flag[i]):
+                    which_lines_black_input.append(i_curve)
+                if(dashed_line_flag[i]):
+                    which_lines_dashed_input.append(i_curve)
+                i_curve += 1
+            if(clr_input!=[]):
+                clr_input_store.pop(0)
+            if(mrkr_input!=[]):
+                mrkr_input_store.pop(0)
+            if(lnstl_input!=[]):
+                lnstl_input_store.pop(0)
 
         # strain rate and pressure dilatation components
         qp.plotfxn(xdata=time_store,
