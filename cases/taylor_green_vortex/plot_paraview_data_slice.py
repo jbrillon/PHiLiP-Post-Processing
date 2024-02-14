@@ -140,13 +140,20 @@ def plot_vorticity_plane(path,filename_without_extension,file_extension,fig_dire
 # filename="/home/julien/NarvalFiles/2023_JCP/verification/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-4_dofs0256_p3_CFL-0.15_procs1024/solution_files/vorticity_mag_slice_x0_plane_t_3_quadrant.txt"
 
 #-------------------------------------------------------------
+# paths=(
+# "/home/julien/NarvalFiles/2023_JCP/filtered_dns_viscous_tgv/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024/solution_files/",\
+# "/home/julien/NarvalFiles/2023_JCP/verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p3_procs1024/solution_files/",\
+# "/home/julien/NarvalFiles/2023_JCP/verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs0256_p3_procs1024/solution_files/",\
+# "/home/julien/NarvalFiles/2023_JCP/verification/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-4_dofs0256_p3_CFL-0.15_procs1024/solution_files/",\
+# )
+# files_per_path=[10,10,7,7]
+
 paths=(
-"/home/julien/NarvalFiles/2023_JCP/filtered_dns_viscous_tgv/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024/solution_files/",\
-"/home/julien/NarvalFiles/2023_JCP/verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p3_procs1024/solution_files/",\
-"/home/julien/NarvalFiles/2023_JCP/verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs0256_p3_procs1024/solution_files/",\
-"/home/julien/NarvalFiles/2023_JCP/verification/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-4_dofs0256_p3_CFL-0.15_procs1024/solution_files/",\
+# filesystem+"NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/solution_files/",\
+filesystem+"NarvalFiles/2023_JCP/verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs1024/solution_files/",\
 )
-files_per_path=[10,10,7,7]
+files_per_path=[10]
+
 prefix="vorticity_mag_slice_x0_plane_t_"
 file_extension="txt"
 scalar_field_name = "vorticity_magnitude"
@@ -154,16 +161,20 @@ n_paths=len(paths)
 output_solution_fixed_times_string = [0.0,4.0,5.0,8.0,9.0,10.0,12.0,15.0,16.0,20.0]
 fig_directory = "./figures/2023_JCP"
 labels_for_plot=[\
-    "$256^3$ P$7$ $c_{DG}$ NSFR.IR-GL",\
-    "$256^3$ P$3$ $c_{DG}$ NSFR.IR-GL",\
-    "$256^3$ P$3$ $c_{DG}$ NSFR.IR-GL-Roe",\
-    "$256^3$ P$3$ Strong DG-Roe-GL-OI",\
-    ]
+    # "$256^3$ P$7$ $c_{DG}$ NSFR.IR-GL",\
+    # "$256^3$ P$3$ $c_{DG}$ NSFR.IR-GL",\
+    # "$256^3$ P$3$ $c_{DG}$ NSFR.IR-GL-Roe",\
+    # "$256^3$ P$3$ Strong DG-Roe-GL-OI",\
+    # "$96^3$ P$5$ $c_{DG}$ NSFR.IR-GL",\
+    "$256^3$ P$7$ $c_{DG}$ NSFR.IR-GLL",\
+]
 fig_prepre_fix = [\
-    "256_p7_NSFR_cDG_IR_GL_",\
-    "256_p3_NSFR_cDG_IR_GL_",\
-    "256_p3_NSFR_cDG_IR_Roe_GL_",\
-    "256_p3_strong_DG_Roe_GL_OI-4_",\
+    # "256_p7_NSFR_cDG_IR_GL_",\
+    # "256_p3_NSFR_cDG_IR_GL_",\
+    # "256_p3_NSFR_cDG_IR_Roe_GL_",\
+    # "256_p3_strong_DG_Roe_GL_OI-4_",\
+    # "96_p5_NSFR_cDG_IR_GL_",\
+    "256_p7_NSFR_cDG_IR_GLL_",\
 ]
 
 
@@ -173,5 +184,6 @@ for i in range(0,n_paths):
     # for j in range(3,4):
         filename_without_extension = prefix+str(j)+"_quadrant"
         plot_title = labels_for_plot[i]+", $t^{*}=%i$" % output_solution_fixed_times_string[j]
-        plot_vorticity_plane(paths[i],filename_without_extension,file_extension,fig_directory,fig_prepre_fix[i],subdivide=False,title_label=plot_title,fill_contour=True)
+        plot_vorticity_plane(paths[i],filename_without_extension,file_extension,fig_directory,fig_prepre_fix[i],
+            subdivide=True,title_label=plot_title,fill_contour=False)
 
