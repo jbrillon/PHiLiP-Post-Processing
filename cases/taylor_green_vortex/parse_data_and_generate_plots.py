@@ -159,7 +159,6 @@ if(True):
     dashed_line_flag_for_plot=[False,False,False,False]
     smoothing_input = [False,False,False,False]
     plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12)
-exit()
 
 #=====================================================
 # DOFs: 256^3 | All results
@@ -333,17 +332,17 @@ if(True):
     "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
     "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512",\
     "over_integration/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-3_dofs096_p5_procs512",\
-    # "over_integration/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-3_dofs096_p5_procs512",\
+    "over_integration/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-3_dofs096_p5_procs512",\
     ]
     # labels
     labels_for_plot=[\
-    "$c_{DG}$ NSFR.IR-GL", \
-    "$c_{DG}$ NSFR.IR-GLL", \
-    "$c_{DG}$ NSFR.IR-GL-OI-3", \
-    # "$c_{DG}$ NSFR.IR-GLL-OI-3", \
+    "GL", \
+    "GLL", \
+    "GL-OI-3", \
+    "GLL-OI-3", \
     ]
     black_line_flag_for_plot=[False,False,False,False]
-    dashed_line_flag_for_plot=[False,False,False,False]
+    dashed_line_flag_for_plot=[False,False,False,True]
     smoothing_input = [False,False,False,False]
     plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
         final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12,
@@ -353,7 +352,7 @@ if(True):
         dofs_for_zoomed_section=96,
         solid_and_dashed_lines=False,
         dashed_and_solid_lines=False)
-
+exit()
 #=====================================================
 # DOFs: 96^3 | Correction Parameter Time-Step
 #-----------------------------------------------------
@@ -652,7 +651,7 @@ if(True):
     "sgs_model_GL_flux_nodes/viscous_TGV_LES_WALE_MC-0.50_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
     "sgs_model_GL_flux_nodes/viscous_TGV_LES_VRMN_MC-0.081_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
     "sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\
-    "sgs_model_GL_flux_nodes/viscous_TGV_LES_WALE.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_WALE.LRNC_MC-0.50_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16",\
     "sgs_model_GL_flux_nodes/viscous_TGV_LES_VRMN.LRNC_MC-0.081_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16",\
     ]
     # labels
@@ -662,7 +661,7 @@ if(True):
     "WALE $C_{W}=0.50$", \
     "VRMN $C_{V}=0.081$", \
     "Smag.LRNC $C_{S}=0.10$", \
-    "WALE.LRNC $C_{W}=0.10$", \
+    "WALE.LRNC $C_{W}=0.50$", \
     "VRMN.LRNC $C_{V}=0.081$", \
     ]
     black_line_flag_for_plot=[False,False,False,False,False,False,False]
@@ -689,7 +688,7 @@ if(True):
     "sgs_model_GL_flux_nodes/viscous_TGV_LES_SI.SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16",\
     "sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16",\
     "sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SI.SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16",\
-    "sgs_model_GL_flux_nodes/viscous_TGV_LES_DYNAMIC.SMAG.LRNC_CLIPMC-0.01-pL3_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_DYNAMIC.SMAG.LRNC_CLIPMC-0.01-pL3_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16_corrected",\
     ]
     # labels
     labels_for_plot=[\
@@ -727,7 +726,8 @@ if(True):
     "sgs_model_GL_flux_nodes/viscous_TGV_LES_SI.SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\
     # "sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SS.VMS_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\
     "sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SI.SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\
-    "sgs_model_GL_flux_nodes/viscous_TGV_LES_DYNAMIC.SMAG-pL3_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\
+    # "sgs_model_GL_flux_nodes/viscous_TGV_LES_DYNAMIC.SMAG-pL3_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\# old result -- remove
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_DYNAMIC.SMAG_CLIPMC-0.01-pL3_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16_corrected",\
     "sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\
     ]
     # labels
