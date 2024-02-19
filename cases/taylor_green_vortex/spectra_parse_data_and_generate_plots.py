@@ -315,21 +315,26 @@ if(True):
 # =====================================================
 if(True):
     batch_paths = [ \
+    "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512/",\
     "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
     "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512/", \
     "NarvalFiles/2023_JCP/over_integration/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-3_dofs096_p5_procs512/",\
     "NarvalFiles/2023_JCP/over_integration/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-3_dofs096_p5_procs512/",\
     ]
     batch_labels = [ \
+    "Strong DG-Roe-GL-OI", \
     "GL", \
     "GLL", \
     "GL-OI-3", \
     "GLL-OI-3", \
     ]
+    lnstl_input=['solid','solid','solid','solid','solid','dashed']
     batch_plot_spectra(96,"p5_flux_nodes",batch_paths,batch_labels,
         solid_and_dashed_lines=False,title_off=title_off_input,
-        figure_directory=fig_dir_input,plot_PHiLiP_DNS_result_as_reference=True,
+        figure_directory=fig_dir_input,lnstl_input_store=lnstl_input,
+        plot_PHiLiP_DNS_result_as_reference=True,
         plot_zoomed_section=True)
+exit()
 
 #=====================================================
 # DOFs: 96^3 | Correction Parameter Time-Step

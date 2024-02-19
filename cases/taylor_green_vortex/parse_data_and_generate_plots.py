@@ -329,6 +329,7 @@ if(True):
     legend_inside_input=True
     #-----------------------------------------------------
     subdirectories_for_plot=[\
+    "flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512",\
     "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
     "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512",\
     "over_integration/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-3_dofs096_p5_procs512",\
@@ -336,14 +337,15 @@ if(True):
     ]
     # labels
     labels_for_plot=[\
+    "Strong DG-Roe-GL-OI", \
     "GL", \
     "GLL", \
     "GL-OI-3", \
     "GLL-OI-3", \
     ]
-    black_line_flag_for_plot=[False,False,False,False]
-    dashed_line_flag_for_plot=[False,False,False,True]
-    smoothing_input = [False,False,False,False]
+    black_line_flag_for_plot=[False,False,False,False,False]
+    dashed_line_flag_for_plot=[False,False,False,False,True]
+    smoothing_input = [False,False,False,False,False]
     plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
         final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12,
         plot_zoomed_section_dissipation_rate=True,
