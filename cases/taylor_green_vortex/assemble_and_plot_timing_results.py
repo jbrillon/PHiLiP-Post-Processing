@@ -95,6 +95,12 @@ for i,base_dir in enumerate(base_directories):
         NSFR_cpu_time_per_step = np.loadtxt(filesystem+base_dir+NSFR_job_name+"/timer_values.txt",usecols=(2),skiprows=1)
         NSFR_store_cpu_time_per_step[i,j] = NSFR_cpu_time_per_step
 
+# if(strong_DG_vs_NSFR):
+#     for i,base_dir in enumerate(base_directories):
+#         for j,p in enumerate(std_sDG_poly_degree):
+#             if(p==15):
+#                 print("Run %i, CPU Time %1.5e" % (i+1,std_sDG_store_cpu_time_per_step[i,j])) 
+
 # average the values for all sets of runs
 avg_NSFR_store_cpu_time_per_step = np.zeros(NSFR_n_poly_degree)
 avg_std_sDG_store_cpu_time_per_step = np.zeros(std_sDG_n_poly_degree)
@@ -194,6 +200,7 @@ qp.plotfxn(xdata=x_store,ydata=y_store,xlabel="Polynomial Degree, P",ylabel="CPU
             # which_lines_black=[0],
             which_lines_markers=[0,1],
             which_lines_dashed=[2],
+            which_lines_black=[2],
             transparent_legend=True,legend_border_on=False,grid_lines_on=False,#lnstl_input=['solid','dashed','dotted'],
             legend_fontSize=14,
             # legend_location="upper left",
