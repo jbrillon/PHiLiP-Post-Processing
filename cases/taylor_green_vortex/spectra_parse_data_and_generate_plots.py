@@ -52,7 +52,9 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
     plot_reference_result=True,
     title_postfix_input="",
     plot_zoomed_section=False,
-    which_lines_dashed=[]):
+    which_lines_dashed=[],
+    x_limits_zoom=[25, 55],
+    y_limits_zoom=[6.0e-5, 2.0e-4]):
     # TO DO: Move this function to its own file
     global x,y,labels
     x=[];y=[];labels=[];
@@ -112,9 +114,6 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
 
     # add reference curve
     append_to_plot(x_ref_curve,y_ref_curve,ref_curve_label)
-
-    x_limits_zoom=[25, 55]
-    y_limits_zoom=[6.0e-5, 2.0e-4]
     # if(nDOF_==256):
     #     x_limits_zoom=[30, 60]
     #     y_limits_zoom=[1.0e-4, 3.0e-4]
@@ -219,6 +218,53 @@ fig_dir_input="./figures/2023_JCP"
 # =====================================================
 # =====================================================
 # =====================================================
+# =====================================================
+if(True):
+    batch_paths = [ \
+    "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
+    # "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
+    "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512/",\
+    "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_SI.SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16/",\
+    "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16/",\
+    "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SI.SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16/",\
+    "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_DYNAMIC.SMAG.LRNC_CLIPMC-0.01-pL3_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16_corrected/",\
+    ]
+    batch_labels = [ \
+    "No Model", \
+    # "Smag. $C_{S}=0.10$", \
+    "SM", \
+    "SI.SM", \
+    "HPF.SM", \
+    "HPF.SI.SM", \
+    "DSM", \
+    ]
+    batch_plot_spectra(96,"p5_selected_sgs_models_gl",batch_paths,batch_labels,
+        solid_and_dashed_lines=False,title_off=title_off_input,figure_directory=fig_dir_input,
+        plot_PHiLiP_DNS_result_as_reference=True,plot_zoomed_section=True)
+
+#======================================================
+# DOFs: 96^3 | Strong DG GLL without OI, SGS model stabilization
+#-----------------------------------------------------
+if(True):
+    batch_paths = [ \
+    "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GLL_OI-6_dofs096_p5_procs512/", \
+    # "NarvalFiles/2023_JCP/filter_width_stabilization/viscous_TGV_ILES_std_strong_DG_Roe_GLL_OI-0_dofs096_p5_procs512/", \
+    # "NarvalFiles/2023_JCP/filter_width_stabilization/viscous_TGV_LES_SMAG_MC-0.18_std_strong_DG_Roe_GLL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SI.SMAG.LRNC_MC-0.10_strong_DG_Roe_GLL_OI-0_dofs096_p5_CFL-0.1_procs512/", \
+    ]
+    batch_labels = [ \
+    "sDG-GLL-OI", \
+    # "Strong DG-Roe-GLL", \
+    # "Strong DG-Roe-GLL-Smag. $C_{S}=0.18$", \
+    "sDG-GLL-HPF.SI.SM", \
+    ]
+    black_line_flag_for_plot=[False,False,False,False,False,False]
+    dashed_line_flag_for_plot=[False,True,False,False,False]
+    batch_plot_spectra(96,"sDG_gll_sgs_model_stabilization",batch_paths,batch_labels,
+        solid_and_dashed_lines=False,title_off=title_off_input,figure_directory=fig_dir_input,
+        plot_PHiLiP_DNS_result_as_reference=True,plot_zoomed_section=False)
+
+exit()
 # =====================================================
 if(True):
     batch_paths = [ \
@@ -357,26 +403,6 @@ if(True):
     "sDG: CFL=$0.14$",\
     ]
     batch_plot_spectra(96,"p5_correction_parameter_cfl_advantage",batch_paths,batch_labels,solid_and_dashed_lines=False,dashed_and_solid_lines=True,title_off=title_off_input,figure_directory=fig_dir_input,plot_PHiLiP_DNS_result_as_reference=True)
-
-#======================================================
-# DOFs: 96^3 | Strong DG GLL without OI, SGS model stabilization
-#-----------------------------------------------------
-if(True):
-    batch_paths = [ \
-    "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GLL_OI-6_dofs096_p5_procs512/", \
-    # "NarvalFiles/2023_JCP/filter_width_stabilization/viscous_TGV_ILES_std_strong_DG_Roe_GLL_OI-0_dofs096_p5_procs512/", \
-    # "NarvalFiles/2023_JCP/filter_width_stabilization/viscous_TGV_LES_SMAG_MC-0.18_std_strong_DG_Roe_GLL_OI-0_dofs096_p5_procs512/", \
-    "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SI.SMAG.LRNC_MC-0.10_strong_DG_Roe_GLL_OI-0_dofs096_p5_CFL-0.1_procs512/", \
-    ]
-    batch_labels = [ \
-    "Strong DG-Roe-GLL-OI", \
-    # "Strong DG-Roe-GLL", \
-    # "Strong DG-Roe-GLL-Smag. $C_{S}=0.18$", \
-    "Strong DG-Roe-GLL-HPF.SI.Smag.LRNC $C_{S}=0.10$ $P_{L}=3$", \
-    ]
-    black_line_flag_for_plot=[False,False,False,False,False,False]
-    dashed_line_flag_for_plot=[False,True,False,False,False]
-    batch_plot_spectra(96,"sDG_gll_sgs_model_stabilization",batch_paths,batch_labels,solid_and_dashed_lines=False,title_off=title_off_input,figure_directory=fig_dir_input,plot_PHiLiP_DNS_result_as_reference=True)
 
 # =====================================================
 if(True):
