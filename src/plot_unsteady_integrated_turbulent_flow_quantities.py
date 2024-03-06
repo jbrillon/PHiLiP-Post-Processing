@@ -128,8 +128,8 @@ def plot_periodic_turbulence(
             kinetic_energy_store.append(kinetic_energy)
             dissipation_store.append(dissipation)
             enstrophy_store.append(enstrophy)
-            numerical_viscosity_store.append(dissipation/(2.0*enstrophy))
             vorticity_based_dissipation_store.append((2.0/1600.0)*enstrophy)
+            numerical_viscosity_store.append(1600.0*dissipation/(2.0*enstrophy))
         else:
             print("ERROR: Invalid value passed for reference_result_author. Aborting...")
             exit()
@@ -167,7 +167,7 @@ def plot_periodic_turbulence(
         eps_S_plus_eps_p_store.append(strain_rate_based_dissipation + pressure_dilatation_based_dissipation)
         eps_p_store.append(pressure_dilatation_based_dissipation)
         eps_S_store.append(strain_rate_based_dissipation)
-        numerical_viscosity_store.append(dissipation/(2.0*enstrophy))
+        numerical_viscosity_store.append(dissipation/vorticity_based_dissipation)
         which_lines_black_input.append(i_curve)
         # which_lines_dashed_input.append(i_curve) # uncomment for dashed DNS result
         i_curve += 1
@@ -196,7 +196,7 @@ def plot_periodic_turbulence(
         eps_S_plus_eps_p_store.append(strain_rate_based_dissipation + pressure_dilatation_based_dissipation)
         eps_p_store.append(pressure_dilatation_based_dissipation)
         eps_S_store.append(strain_rate_based_dissipation)
-        numerical_viscosity_store.append(dissipation/(2.0*enstrophy))
+        numerical_viscosity_store.append(dissipation/vorticity_based_dissipation)
         which_lines_black_input.append(i_curve)
         which_lines_dashed_input.append(i_curve) # for dashed filtered DNS result
         i_curve += 1
@@ -244,7 +244,7 @@ def plot_periodic_turbulence(
         eps_S_plus_eps_p_store.append(strain_rate_based_dissipation + pressure_dilatation_based_dissipation)
         eps_p_store.append(pressure_dilatation_based_dissipation)
         eps_S_store.append(strain_rate_based_dissipation)
-        numerical_viscosity_store.append(dissipation/(2.0*enstrophy))
+        numerical_viscosity_store.append(dissipation/vorticity_based_dissipation)
         # store inputted line color, markers, and linestyles
         if(clr_input!=[]):
             clr_input_store.append(clr_input[i])
@@ -530,7 +530,7 @@ def plot_periodic_turbulence(
         qp.plotfxn(xdata=time_store,
                 ydata=numerical_viscosity_store,
                 # ylabel='$\\varepsilon=-\\frac{\\mathrm{d} K^{*}}{\\mathrm{d}t^{*}}$',
-                ylabel='Nondimensional Numerical Viscosity, $\\frac{\\varepsilon^{*}}{2\\zeta^{*}}$',
+                ylabel='Nondimensional Numerical Viscosity, $\\frac{\\mathrm{Re}_{\\infty}\\varepsilon^{*}}{2\\zeta^{*}}$',
                 xlabel='Nondimensional Time, $t^{*}$',
                 figure_filename=figure_subdirectory+'numerical_viscosity_vs_time'+figure_filename_postfix,
                 title_label=figure_title,
