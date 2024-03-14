@@ -14,8 +14,35 @@ import numpy as np
 import pandas as pd
 import matplotlib.tri as tri
 
+from struct import unpack # for loading the reference data
+
+def get_reference_result():
+    ''' 
+    Reference: W. M. van Rees W. M., A. Leonard, D. I. Pullin and P. Koumoutsakos, A comparison of vortex and pseudo-spectral methods for the simulation of periodic vortical flows at high Reynolds numbers, J. Comput. Phys., 230(2011), 2794-2805.
+    Source: (1) http://www.as.dlr.de/hiocfd/case_c3.5.pdf 
+            (2) http://www.as.dlr.de/hiocfd/
+    '''
+    Pi = np.arccos(-1)
+    x = np.arange(-Pi,Pi-2.*Pi/512.,2.*Pi/512.)
+    y = np.arange(-Pi,Pi-2.*Pi/512.,2.*Pi/512.)
+
+    size = (len(x),len(y))
+
+    w = np.zeros(size)
+
+    file = open('./data/van_rees/wn_slice_x0_08000.out', 'rb')
+    data = file.read()
+
+    n = 0
+    for i in range(len(x)):
+      for j in range(len(y)):
+        a = unpack('d', data[n:n+8])
+        w[j][i] = a[0]
+        n = n+8
+    return [x,y,w]
+
 def plot_vorticity_plane(path,filename_without_extension,file_extension,fig_directory,fig_prepre_fix,
-    subdivide=False,title_label=" ",fill_contour=False):
+    subdivide=False,title_label=" ",fill_contour=False,plot_reference_result=False):
     # TO DO: move this somewhere else eventually
     figure_filename = fig_prepre_fix+filename_without_extension
     if(subdivide):
@@ -26,6 +53,9 @@ def plot_vorticity_plane(path,filename_without_extension,file_extension,fig_dire
         figure_filename += "_filled"
     else:
         figure_filename += "_no_fill"
+
+    if(plot_reference_result):
+        figure_filename += "_comparison_to_reference"
     # load data
     filename = path+filename_without_extension+"."+file_extension
     y,z,scalar = np.loadtxt(filename,unpack=True,dtype=np.float64)
@@ -56,6 +86,8 @@ def plot_vorticity_plane(path,filename_without_extension,file_extension,fig_dire
 
     # contour_levels = [1, 3, 5, 10, 15, 20, 30]
     if(fill_contour):
+        contour_levels = [1, 5, 10, 20, 30]
+    elif(plot_reference_result):
         contour_levels = [1, 5, 10, 20, 30]
     else:
         contour_levels = np.linspace(1,30,20)
@@ -94,7 +126,11 @@ def plot_vorticity_plane(path,filename_without_extension,file_extension,fig_dire
     if(subdivide):
         if(fill_contour):
             cs = plt.tricontourf(tri_refi, z_test_refi, np.linspace(np.amin(Z),np.amax(Z),100),cmap='rainbow',extend="both")
-        cs_lines = plt.tricontour(tri_refi,z_test_refi,levels=contour_levels,colors=('k',),linewidths=(1,))
+        if(plot_reference_result):
+            contour_line_clr_for_result = 'r'
+        else:
+            contour_line_clr_for_result = 'k'
+        cs_lines = plt.tricontour(tri_refi,z_test_refi,levels=contour_levels,colors=(contour_line_clr_for_result,),linewidths=(1,))
     else:
         if(fill_contour):
             cs = plt.tricontourf(X, Y, Z, np.linspace(np.amin(Z),np.amax(Z),100),cmap='rainbow')
@@ -123,6 +159,10 @@ def plot_vorticity_plane(path,filename_without_extension,file_extension,fig_dire
         # Fix for the white lines between contour levels
         for c in cs.collections:
             c.set_edgecolor("face")
+
+    if(plot_reference_result):
+        [x,y,w] = get_reference_result()
+        plt.contour(x,y,w, levels = contour_levels, colors=('k',),linewidths=(1,))
 
     plt.tight_layout()
     print('\t ... Saving figure ...')
@@ -182,8 +222,13 @@ for i in range(0,n_paths):
 # for i in range(0,1):
     for j in range(0,files_per_path[i]):
     # for j in range(3,4):
-        filename_without_extension = prefix+str(j)+"_quadrant"
+        '''filename_without_extension = prefix+str(j)+"_quadrant"
         plot_title = labels_for_plot[i]+", $t^{*}=%i$" % output_solution_fixed_times_string[j]
         plot_vorticity_plane(paths[i],filename_without_extension,file_extension,fig_directory,fig_prepre_fix[i],
-            subdivide=True,title_label=plot_title,fill_contour=False)
+            subdivide=True,title_label=plot_title,fill_contour=False)'''
+        if(output_solution_fixed_times_string[j]==8.0):
+            filename_without_extension = prefix+str(j)+"_quadrant"
+            plot_title = labels_for_plot[i]+", $t^{*}=%i$" % output_solution_fixed_times_string[j]
+            plot_vorticity_plane(paths[i],filename_without_extension,file_extension,fig_directory,fig_prepre_fix[i],
+                subdivide=True,title_label=plot_title,fill_contour=False,plot_reference_result=True)
 
