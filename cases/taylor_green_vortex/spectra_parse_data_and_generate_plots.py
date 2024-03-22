@@ -250,7 +250,7 @@ if(True):
     ]
     batch_plot_spectra(24,"tke_fix_check",batch_paths,batch_labels,
         solid_and_dashed_lines=False,title_off=False,figure_directory=fig_dir_input,
-        plot_PHiLiP_DNS_result_as_reference=True,plot_zoomed_section=False,which_lines_dashed=[1])
+        plot_PHiLiP_DNS_result_as_reference=True,plot_zoomed_section=False,which_lines_dashed=[1],plot_cutoff_wavenumber_asymptote=True)
 exit()
 
 if(True):
