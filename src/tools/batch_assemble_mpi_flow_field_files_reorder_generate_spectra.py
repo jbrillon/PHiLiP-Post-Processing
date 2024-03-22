@@ -90,3 +90,112 @@ def batch_assemble_mpi_flow_field_files_reorder_generate_spectra_from_txt(input_
         file_extension="dat")
     return
 #-----------------------------------------------------
+from get_DOF_vars import get_DOF_vars
+
+import sys; sys.path.append(CURRENT_PATH+"../../../DHIT-Flow-Setup/v2");
+from convert_equidistant_to_gauss_lobatto_nodes import convert_equidistant_to_gauss_lobatto_nodes
+#-----------------------------------------------------
+def batch_convert_velocity_field_at_equidistant_nodes_to_gLL_nodes_from_txt(input_file):
+    global file_path_store, file_prefix_store, n_different_files_in_path_store, \
+    poly_degree_store, nElements_per_direction_store, nValues_per_row_store, \
+    num_procs_store
+    # # =========================================================
+    # #                   PATHS FOR BATCH ASSEMBLY
+    # # =========================================================
+    # file1 = open(input_file, 'r')
+    # paths = file1.readlines()
+    # paths = ["NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs048_p5_procs64/"] # for testing
+    paths = ["NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs024_p5_procs16/"]
+    file_prefix_store = []
+    for path in paths:
+        # add_to_batch(file_path=filesystem+path.rstrip('\n'))
+        add_to_batch(file_path=filesystem+path) # for testing
+    # file1.close()
+
+    # =========================================================
+    # CALL THE BATCH FUNCTION
+    # =========================================================
+    batch_convert_velocity_field_at_equidistant_nodes_to_gLL_nodes(
+        file_path=file_path_store,
+        n_different_files_in_path=n_different_files_in_path_store,
+        file_prefix=file_prefix_store,
+        poly_degree=poly_degree_store,
+        nElements_per_direction=nElements_per_direction_store,
+        nValues_per_row=nValues_per_row_store,
+        num_procs=num_procs_store,
+        file_extension="dat")
+
+#-----------------------------------------------------
+def batch_convert_velocity_field_at_equidistant_nodes_to_gLL_nodes(
+    file_path=[],
+    n_different_files_in_path=[],
+    file_prefix=[],
+    poly_degree=[],
+    nElements_per_direction=[],
+    nValues_per_row=[],
+    num_procs=[],# not needed but could overwrite to be fixed as 8
+    file_extension="dat"):
+    #-----------------------------------------------------
+    # Safeguard for when empty args are passed
+    #-----------------------------------------------------
+    if(file_path==[] or file_prefix==[] or poly_degree==[] or nElements_per_direction==[] or num_procs==[]):
+        print("batch_convert_velocity_field_at_equidistant_nodes_to_gLL_nodes: an empty essential argument was passed")
+        print("aborting...")
+        return
+    else:
+        n_file_paths = int(len(file_path))
+    #-----------------------------------------------------
+    # If n_different_files_in_path is empty, assume only
+    # one file to assemble per path
+    #-----------------------------------------------------
+    if(n_different_files_in_path==[]):
+        # if empty, assume only one file to assemble per path
+        n_files_to_assemble = int(len(file_path))
+        for i in range(0,n_files_to_assemble):
+            n_different_files_in_path.append(1)
+    #-----------------------------------------------------
+    # Assemble the files
+    #-----------------------------------------------------
+    for i in range(0,n_file_paths):
+        # loop for multiple prefixes per path
+        n_prefixes = n_different_files_in_path[i]
+        for j in range(0,n_prefixes):
+            # get prefix
+            prefix = file_prefix[i][j]
+            
+            # get file path and prefix
+            file_path_and_prefix = file_path[i] + prefix
+            
+            # # assemble
+            # assemble_mpi_flow_field_files_and_reorder(
+            #     file_path_and_prefix,
+            #     file_extension,
+            #     num_procs[i],
+            #     nValues_per_row[i],
+            #     nElements_per_direction[i],
+            #     poly_degree[i])
+            
+            # generate the spectra file
+            velocity_file_for_spectra_without_extension = file_path_and_prefix+"_reordered"
+            velocity_file_for_spectra_with_extension = velocity_file_for_spectra_without_extension+"."+file_extension
+            converted_velocity_file_for_spectra_with_extension = velocity_file_for_spectra_without_extension+"_gll_nodes"+"."+file_extension
+            #-----------------------------------------------------
+            # Get DOF variables
+            #-----------------------------------------------------
+            nElements,nQuadPoints_per_element,nQuadPoints,nDOF,reduced_nQuadPoints,reduced_nDOF = get_DOF_vars(nElements_per_direction[i],poly_degree[i])
+            
+            #-----------------------------------------------------
+            # Convert from equisdistant to Gauss Lobatto nodes
+            #-----------------------------------------------------
+            convert_equidistant_to_gauss_lobatto_nodes(
+                velocity_file_for_spectra_without_extension+"."+file_extension,
+                nElements_per_direction[i],
+                nQuadPoints_per_element,
+                nValues_per_row[i],
+                poly_degree[i],
+                nDOF,
+                output_filename=converted_velocity_file_for_spectra_with_extension,
+                test_reading=False)
+            
+    return
+#-----------------------------------------------------

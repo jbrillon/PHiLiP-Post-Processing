@@ -54,7 +54,8 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
     plot_zoomed_section=False,
     which_lines_dashed=[],
     x_limits_zoom=[25, 55],
-    y_limits_zoom=[6.0e-5, 2.0e-4]):
+    y_limits_zoom=[6.0e-5, 2.0e-4],
+    plot_cutoff_wavenumber_asymptote=False):
     # TO DO: Move this function to its own file
     global x,y,labels
     x=[];y=[];labels=[];
@@ -71,6 +72,10 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
         mrkr_input_store = []
         # lnstl_input_store = []
 
+    vertical_lines_input = []
+    if(plot_cutoff_wavenumber_asymptote):
+        if(nDOF_!="all"):
+            vertical_lines_input.append(0.5*nDOF_)
 
     if(nDOF_=="all"):
         title_label = "TKE Spectra at $t^{*}=8.0$"
@@ -133,7 +138,7 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
                 lnstl_input_store[i+1] = "dashed"
             else:
                 lnstl_input_store[i] = "dashed"
-    
+
     qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $k^{*}$",ylabel="Nondimensional TKE Spectra, $E^{*}(k^{*},t^{*})$",
         title_label=title_label,
         fig_directory=figure_directory,figure_filename=figure_filename,log_axes="both",figure_filetype="pdf",
@@ -152,7 +157,8 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
         which_lines_dashed=which_lines_dashed,
         plot_zoomed_section=plot_zoomed_section,
         x_limits_zoom=x_limits_zoom,y_limits_zoom=y_limits_zoom,
-        zoom_box_origin_and_extent=[0.65, 0.65, 0.32, 0.32]
+        zoom_box_origin_and_extent=[0.65, 0.65, 0.32, 0.32],
+        vertical_lines=vertical_lines_input
         )
 
     if(nDOF_=="all"):
@@ -201,7 +207,8 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
         which_lines_dashed=which_lines_dashed,
         plot_zoomed_section=plot_zoomed_section,
         x_limits_zoom=x_limits_zoom,y_limits_zoom=y_limits_zoom,
-        zoom_box_origin_and_extent=[0.65, 0.65, 0.32, 0.32]
+        zoom_box_origin_and_extent=[0.65, 0.65, 0.32, 0.32],
+        vertical_lines=vertical_lines_input
         )
     
     return
@@ -219,6 +226,33 @@ fig_dir_input="./figures/2023_JCP"
 # =====================================================
 # =====================================================
 # =====================================================
+if(True):
+    batch_paths = [ \
+    # "dummy_test_tke_fix_original/",\
+    # "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
+    "NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs024_p5_procs16/",\
+    # "NarvalFiles/2023_JCP/robustness_tke_fix_check/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs024_p5_procs16/",\
+    "dummy_test_tke_fix_1subdiv/",\
+    "dummy_test_tke_fix/",\
+    "dummy_test_tke_fix_3subdiv/",\
+    "dummy_test_tke_fix_4subdiv/",\
+    "dummy_test_tke_fix_5subdiv/",\
+    ]
+    batch_labels = [ \
+    # "P+1", \
+    "Original ($n_{quad}=P+1$)", \
+    # "New (2P+1)", \
+    "$n_{quad}=1(P+1)$", \
+    "$n_{quad}=2(P+1)$", \
+    "$n_{quad}=3(P+1)$", \
+    "$n_{quad}=4(P+1)$", \
+    "$n_{quad}=5(P+1)$", \
+    ]
+    batch_plot_spectra(24,"tke_fix_check",batch_paths,batch_labels,
+        solid_and_dashed_lines=False,title_off=False,figure_directory=fig_dir_input,
+        plot_PHiLiP_DNS_result_as_reference=True,plot_zoomed_section=False,which_lines_dashed=[1])
+exit()
+
 if(True):
     batch_paths = [ \
     "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
