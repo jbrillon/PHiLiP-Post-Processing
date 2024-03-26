@@ -90,9 +90,9 @@ def batch_assemble_mpi_flow_field_files_reorder_generate_spectra_from_txt(input_
         file_extension="dat")
     return
 #-----------------------------------------------------
+# Converting velocity field to different nodes
+#-----------------------------------------------------
 from get_DOF_vars import get_DOF_vars
-
-import sys; sys.path.append(CURRENT_PATH+"../../../DHIT-Flow-Setup/v2");
 from convert_equidistant_to_gauss_lobatto_nodes import convert_equidistant_to_gauss_lobatto_nodes
 #-----------------------------------------------------
 def batch_convert_velocity_field_at_equidistant_nodes_to_gLL_nodes_from_txt(input_file):
@@ -105,7 +105,8 @@ def batch_convert_velocity_field_at_equidistant_nodes_to_gLL_nodes_from_txt(inpu
     # file1 = open(input_file, 'r')
     # paths = file1.readlines()
     # paths = ["NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs048_p5_procs64/"] # for testing
-    paths = ["NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs024_p5_procs16/"]
+    # paths = ["NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs024_p5_procs16/"]
+    paths = ["NarvalFiles/2023_JCP/filtered_dns_viscous_tgv/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024/"]
     file_prefix_store = []
     for path in paths:
         # add_to_batch(file_path=filesystem+path.rstrip('\n'))
