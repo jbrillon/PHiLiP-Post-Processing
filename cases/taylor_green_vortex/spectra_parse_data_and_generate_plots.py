@@ -78,9 +78,9 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
         if(nDOF_!="all"):
             # vertical_lines_input.append(0.5*nDOF_)
             number_of_elements_per_direction = nDOF_ - effective_nDOF
-            vertical_lines_input.append(0.5*number_of_elements_per_direction)
+            # vertical_lines_input.append(0.5*number_of_elements_per_direction)
             vertical_lines_input.append(0.5*effective_nDOF)
-            vertical_lines_input.append(0.5*nDOF_)
+            # vertical_lines_input.append(0.5*nDOF_)
 
     if(nDOF_=="all"):
         title_label = "TKE Spectra at $t^{*}=8.0$"
@@ -149,7 +149,7 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
         fig_directory=figure_directory,figure_filename=figure_filename,log_axes="both",figure_filetype="pdf",
         nlegendcols=1,
         # xlimits=[2e0,5.5e1],ylimits=[1.0e-5,3e-2],
-        xlimits=[2.0e0,2.0e2],ylimits=[1.0e-6,5e-2],
+        xlimits=[2.0e0,2.0e2],ylimits=[1.0e-8,5e-2],
         markers=False,legend_on=True,legend_labels_tex=labels,
         which_lines_black=which_lines_black,
         # which_lines_markers=[0],
@@ -230,6 +230,26 @@ fig_dir_input="./figures/2023_JCP"
 # =====================================================
 # =====================================================
 # =====================================================
+# =====================================================
+if(True):
+    batch_paths = [ \
+    "NarvalFiles/2023_JCP/filtered_dns_viscous_tgv/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024/",\
+    "NarvalFiles/2023_JCP/verification_tke_fix/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024_2refinements/",\
+    ]
+    batch_labels = [ \
+    "Original ($n_{quad}=P+1$)", \
+    # "New (2P+1)", \
+    # "$n_{quad}=1(P+1)$", \
+    "$n_{quad}=2(P+1)$", \
+    # "$n_{quad}=3(P+1)$", \
+    # "$n_{quad}=4(P+1)$", \
+    # "$n_{quad}=5(P+1)$", \
+    ]
+    batch_plot_spectra(256,"p7_tke_fix_check",batch_paths,batch_labels,
+        solid_and_dashed_lines=False,title_off=False,figure_directory=fig_dir_input,
+        plot_PHiLiP_DNS_result_as_reference=False,plot_zoomed_section=False,which_lines_dashed=[1],plot_cutoff_wavenumber_asymptote=True,
+        effective_nDOF=224)
+exit()
 # =====================================================
 if(True):
     batch_paths = [ \
