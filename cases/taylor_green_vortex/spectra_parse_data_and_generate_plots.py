@@ -55,7 +55,8 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
     which_lines_dashed=[],
     x_limits_zoom=[25, 55],
     y_limits_zoom=[6.0e-5, 2.0e-4],
-    plot_cutoff_wavenumber_asymptote=False):
+    plot_cutoff_wavenumber_asymptote=False,
+    effective_nDOF=0):
     # TO DO: Move this function to its own file
     global x,y,labels
     x=[];y=[];labels=[];
@@ -75,6 +76,10 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
     vertical_lines_input = []
     if(plot_cutoff_wavenumber_asymptote):
         if(nDOF_!="all"):
+            # vertical_lines_input.append(0.5*nDOF_)
+            number_of_elements_per_direction = nDOF_ - effective_nDOF
+            vertical_lines_input.append(0.5*number_of_elements_per_direction)
+            vertical_lines_input.append(0.5*effective_nDOF)
             vertical_lines_input.append(0.5*nDOF_)
 
     if(nDOF_=="all"):
@@ -250,7 +255,8 @@ if(True):
     ]
     batch_plot_spectra(24,"tke_fix_check",batch_paths,batch_labels,
         solid_and_dashed_lines=False,title_off=False,figure_directory=fig_dir_input,
-        plot_PHiLiP_DNS_result_as_reference=True,plot_zoomed_section=False,which_lines_dashed=[1],plot_cutoff_wavenumber_asymptote=True)
+        plot_PHiLiP_DNS_result_as_reference=True,plot_zoomed_section=False,which_lines_dashed=[1],plot_cutoff_wavenumber_asymptote=True,
+        effective_nDOF=20)
 exit()
 
 if(True):
