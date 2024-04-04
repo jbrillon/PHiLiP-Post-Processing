@@ -74,7 +74,8 @@ def batch_assemble_mpi_flow_field_files_reorder_generate_spectra_from_txt(input_
     file1 = open(input_file, 'r')
     paths = file1.readlines()
     for path in paths:
-        add_to_batch(file_path=filesystem+path.rstrip('\n'))
+        # add_to_batch(file_path=filesystem+path.rstrip('\n'))
+        add_to_batch(file_path=path.rstrip('\n')) # for narval
     file1.close()
     # =========================================================
     # CALL THE BATCH FUNCTION
