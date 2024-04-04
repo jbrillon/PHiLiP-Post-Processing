@@ -95,7 +95,7 @@ def assemble_mpi_flow_field_files_and_reorder(
     # First line: Number of DOFs
     nDOF_expected = int(fin.readline())
     if(nDOF!=nDOF_expected):
-        print("Error: nDOF does not match expected nDOF from file %s, check function inputs.",velocity_file_from_philip)
+        print("Error: nDOF does not match expected nDOF from file %s, check function inputs." % velocity_file_from_philip)
         print("Aborting...")
         exit()
 
