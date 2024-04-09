@@ -78,7 +78,8 @@ def generate_philip_input_files(
     print(" - Nondimensionalized pressure: %f" % nondimensionalized_pressure)
 
     # (1) Pre-process file to generate the setup.dat file -- same way the deprecated MATLAB script did
-    input_vel_field_file = output_dir+"/"+input_vel_field_filename
+    # input_vel_field_file = output_dir+"/"+input_vel_field_filename
+    input_vel_field_file = input_vel_field_filename # for Narval
     input_data = np.loadtxt(input_vel_field_file,skiprows=1,dtype=np.float64)
     nDOF_input = np.loadtxt(input_vel_field_file,max_rows=1,dtype='int')
     file = open(output_dir+"/"+"setup.dat","w")
