@@ -234,14 +234,16 @@ fig_dir_input="./figures/2023_JCP"
 if(True):
     batch_paths = [ \
     "NarvalFiles/2023_JCP/filtered_dns_viscous_tgv/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024/",\
+    "NarvalFiles/2023_JCP/verification_tke_fix/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024_1refinements/",\
     "NarvalFiles/2023_JCP/verification_tke_fix/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024_2refinements/",\
+    "NarvalFiles/2023_JCP/verification_tke_fix/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024_3refinements/",\
     ]
     batch_labels = [ \
     "Original ($n_{quad}=P+1$)", \
     # "New (2P+1)", \
-    # "$n_{quad}=1(P+1)$", \
+    "$n_{quad}=1(P+1)$", \
     "$n_{quad}=2(P+1)$", \
-    # "$n_{quad}=3(P+1)$", \
+    "$n_{quad}=3(P+1)$", \
     # "$n_{quad}=4(P+1)$", \
     # "$n_{quad}=5(P+1)$", \
     ]
