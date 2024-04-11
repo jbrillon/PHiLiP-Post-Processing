@@ -29,7 +29,9 @@ elif platform == "darwin":
     filesystem="/Volumes/Samsung_T5/"
 
 # testing
-batch_convert_velocity_field_at_equidistant_nodes_to_gLL_nodes_from_txt("paths.txt")
+file = sys.argv[1] # to pass file from terminal
+print("Specified input file for paths: %s" % file)
+batch_convert_velocity_field_at_equidistant_nodes_to_gLL_nodes_from_txt(file)
 exit()
 # filepath=filesystem+"NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs048_p5_procs64/flow_field_files/"
 filepath=filesystem+"NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs024_p5_procs16/flow_field_files/"
