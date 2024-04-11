@@ -99,7 +99,7 @@ filenames=[\
 # "turbulent_quantities-22916869.txt",\
 # "turbulent_quantities-22931922.txt",\
 # only below this is good to plot
-"turbulent_quantities-22892028.txt",\
+# "turbulent_quantities-22892028.txt",\
 # "turbulent_quantities-23080330.txt",\
 # "turbulent_quantities-23077970.txt",\
 # "turbulent_quantities-23117286.txt",\
@@ -113,6 +113,7 @@ filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_c
 filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cPlus_IR_2PF_GL_OI-0_Re395_p3/turbulent_quantities.txt",\
 filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_Re395_p3/turbulent_quantities.txt",\
 filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cPlus_IR_2PF-Roe_GL_OI-0_Re395_p3/turbulent_quantities.txt",\
+"turbulent_quantities.txt",\
 ]
 labels=[\
 # "running: $\\Delta t=1.75\\times10^{-4}$, $\\alpha=0.3$",\
@@ -123,7 +124,7 @@ labels=[\
 # "running: $\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.05$",\
 # "running: $\\Delta t=1.0\\times10^{-4}$, $\\alpha=0.3$",\
 # only below this is good to plot
-"$\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.3$, before fixes, Turb. IC",\
+# "$\\Delta t=3.44\\times10^{-4}$, $\\alpha=0.3$, before fixes, Turb. IC",\
 # "$\\Delta t=5\\times10^{-5}$, $\\alpha=0.3$",\
 # "$\\Delta t=5\\times10^{-5}$, $\\alpha=0.3$, $|\\tau_{w}|$",\
 # "$\\Delta t=1\\times10^{-5}$, $\\alpha=0.3$",\
@@ -138,6 +139,7 @@ labels=[\
 "$c_{+}$ NSFR.IR",\
 "$c_{DG}$ NSFR.IR.Roe",\
 "$c_{+}$ NSFR.IR.Roe",\
+"constant source term"
 ]
 which_lines_dashed=[2,3]
 plot_transient(filenames,labels,which_lines_dashed)
