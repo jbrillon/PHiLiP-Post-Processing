@@ -270,7 +270,7 @@ def batch_generate_philip_input_files(
         generate_philip_input_files(
             nElements_per_direction[i],
             nQuadPoints_per_element,
-            nValues_per_row[i],
+            6,
             nDOF,
             8,
             output_dir=file_path[i],
