@@ -202,3 +202,80 @@ def batch_convert_velocity_field_at_equidistant_nodes_to_gLL_nodes(
             
     return
 #-----------------------------------------------------
+# For generating input files
+#-----------------------------------------------------
+def batch_generate_philip_input_files_from_txt(input_file):
+    global file_path_store, file_prefix_store, n_different_files_in_path_store, \
+    poly_degree_store, nElements_per_direction_store, nValues_per_row_store, \
+    num_procs_store
+    # # =========================================================
+    # #                   PATHS FOR BATCH ASSEMBLY
+    # # =========================================================
+    file1 = open(input_file, 'r')
+    paths = file1.readlines()
+    # paths = ["NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs048_p5_procs64/"] # for testing
+    # paths = ["NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs024_p5_procs16/"]
+    # paths = ["NarvalFiles/2023_JCP/filtered_dns_viscous_tgv/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024/"]
+    filesystem = "./data_for_spectra_fix/" # FOR NARVAL
+    for path in paths:
+        # add_to_batch(file_path=filesystem+path.rstrip('\n'))
+        # add_to_batch(file_path=filesystem+path) # for testing
+        add_to_batch(file_path=filesystem+path.rstrip('\n'))
+    file1.close()
+
+    # =========================================================
+    # CALL THE BATCH FUNCTION
+    # =========================================================
+    batch_generate_philip_input_files(
+        file_path=file_path_store,
+        n_different_files_in_path=n_different_files_in_path_store,
+        file_prefix=file_prefix_store,
+        poly_degree=poly_degree_store,
+        nElements_per_direction=nElements_per_direction_store,
+        nValues_per_row=nValues_per_row_store,
+        num_procs=num_procs_store,
+        file_extension="dat")
+#-----------------------------------------------------
+from generate_philip_input_files_from_velocity_field_for_spectra_fix import generate_philip_input_files
+def batch_generate_philip_input_files(
+    file_path=[],
+    n_different_files_in_path=[],
+    file_prefix=[],
+    poly_degree=[],
+    nElements_per_direction=[],
+    nValues_per_row=[],
+    num_procs=[],# not needed but could overwrite to be fixed as 8
+    file_extension="dat"):
+    #-----------------------------------------------------
+    # Safeguard for when empty args are passed
+    #-----------------------------------------------------
+    if(file_path==[] or file_prefix==[] or poly_degree==[] or nElements_per_direction==[] or num_procs==[]):
+        print("batch_generate_philip_input_files: an empty essential argument was passed")
+        print("aborting...")
+        return
+    else:
+        n_file_paths = int(len(file_path))
+    #-----------------------------------------------------
+    # Assemble the files
+    #-----------------------------------------------------
+    for i in range(0,n_file_paths):
+        #-----------------------------------------------------
+        # Get DOF variables
+        #-----------------------------------------------------
+        nElements,nQuadPoints_per_element,nQuadPoints,nDOF,reduced_nQuadPoints,reduced_nDOF = get_DOF_vars(nElements_per_direction[i],poly_degree[i])
+
+        input_vel_field_filename_=file_path[i]+"flow_field_files/velocity_vorticity-1_reordered_gll_nodes.dat"
+        print("Generating for path: %s" % file_path[i])
+        
+        generate_philip_input_files(
+            nElements_per_direction[i],
+            nQuadPoints_per_element,
+            nValues_per_row[i],
+            nDOF,
+            8,
+            output_dir=file_path[i],
+            input_vel_field_filename=input_vel_field_filename_)
+        print("done.")
+            
+    return
+#-----------------------------------------------------

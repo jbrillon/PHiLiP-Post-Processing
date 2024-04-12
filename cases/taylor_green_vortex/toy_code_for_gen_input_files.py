@@ -6,7 +6,7 @@ import os;CURRENT_PATH = os.path.split(os.path.realpath(__file__))[0]+"/";
 import sys
 # load tools
 sys.path.append(CURRENT_PATH+"../../src/tools");
-# from batch_assemble_mpi_flow_field_files_reorder_generate_spectra import batch_convert_velocity_field_at_equidistant_nodes_to_gLL_nodes_from_txt
+from batch_assemble_mpi_flow_field_files_reorder_generate_spectra import batch_generate_philip_input_files_from_txt
 # from generate_spectra_files import generate_spectra_file_from_flow_field_file
 # load submodules
 # sys.path.append(CURRENT_PATH+"../../submodules/quickplotlib/lib"); import quickplotlib as qp
@@ -34,21 +34,25 @@ sys.path.append(CURRENT_PATH+"../../src/tools");
 # filepath=filesystem+"NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs048_p5_procs64/flow_field_files/"
 # filepath=filesystem+"NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs024_p5_procs16/flow_field_files/"
 
-filepath="setup_files/"
-input_vel_field_filename_="./flow_field_files/velocity_vorticity-1_reordered_gll_nodes.dat"
-nElements_per_direction = 32
-nQuadPoints_per_element = 8
-nValues_per_row = 6
-nDOF = 16777216
-num_procs = 8
+file = sys.argv[1] # to pass file from terminal
+print("Specified input file for paths: %s" % file)
+batch_generate_philip_input_files_from_txt(file)
 
-# import sys; sys.path.append(CURRENT_PATH+"../../../DHIT-Flow-Setup/v2");
-from generate_philip_input_files_from_velocity_field_for_spectra_fix import generate_philip_input_files
-generate_philip_input_files(
-    nElements_per_direction,
-    nQuadPoints_per_element,
-    nValues_per_row,
-    nDOF,
-    num_procs,
-    output_dir=filepath,
-    input_vel_field_filename=input_vel_field_filename_)
+# filepath="setup_files/"
+# input_vel_field_filename_="./flow_field_files/velocity_vorticity-1_reordered_gll_nodes.dat"
+# nElements_per_direction = 32
+# nQuadPoints_per_element = 8
+# nValues_per_row = 6
+# nDOF = 16777216
+# num_procs = 8
+
+# # import sys; sys.path.append(CURRENT_PATH+"../../../DHIT-Flow-Setup/v2");
+# from generate_philip_input_files_from_velocity_field_for_spectra_fix import generate_philip_input_files
+# generate_philip_input_files(
+#     nElements_per_direction,
+#     nQuadPoints_per_element,
+#     nValues_per_row,
+#     nDOF,
+#     num_procs,
+#     output_dir=filepath,
+#     input_vel_field_filename=input_vel_field_filename_)
