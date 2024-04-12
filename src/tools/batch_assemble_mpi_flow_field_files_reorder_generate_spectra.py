@@ -264,7 +264,7 @@ def batch_generate_philip_input_files(
         #-----------------------------------------------------
         nElements,nQuadPoints_per_element,nQuadPoints,nDOF,reduced_nQuadPoints,reduced_nDOF = get_DOF_vars(nElements_per_direction[i],poly_degree[i])
 
-        input_vel_field_filename_=file_path[i]+"flow_field_files/velocity_vorticity-1_reordered_gll_nodes.dat"
+        input_vel_field_filename_=file_path[i]+"velocity_vorticity-1_reordered_gll_nodes.dat"
         print("Generating for path: %s" % file_path[i])
         
         generate_philip_input_files(
