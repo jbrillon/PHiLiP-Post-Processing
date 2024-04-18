@@ -81,7 +81,8 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
             # vertical_lines_input.append(0.5*number_of_elements_per_direction)
             vertical_lines_input.append(0.5*effective_nDOF)
             # vertical_lines_input.append(0.5*nDOF_)
-
+    # vertical_lines_input.append(0.5*40)
+    # vertical_lines_input.append(0.5*80)
     if(nDOF_=="all"):
         title_label = "TKE Spectra at $t^{*}=8.0$"
     else:
@@ -105,7 +106,7 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
         clr_input_store.insert(0,"k")
         spectra = np.loadtxt(CURRENT_PATH+"data/mastellone2016_dns_spectra_t8.txt",skiprows=1,delimiter=',')
         append_to_plot(spectra[:,0],spectra[:,1],"DNS [Mastellone]")
-    batch_append_to_plot(batch_paths, batch_labels, "flow_field_files/velocity_vorticity-0_reordered_spectra_no_smoothing.dat")
+    # batch_append_to_plot(batch_paths, batch_labels, "flow_field_files/velocity_vorticity-0_reordered_spectra_no_smoothing.dat")
 
     if(plot_PHiLiP_DNS_result_as_reference or plot_reference_result):
         if(solid_and_dashed_lines or dashed_and_solid_lines):
@@ -144,27 +145,28 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
             else:
                 lnstl_input_store[i] = "dashed"
 
-    qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $k^{*}$",ylabel="Nondimensional TKE Spectra, $E^{*}(k^{*},t^{*})$",
-        title_label=title_label,
-        fig_directory=figure_directory,figure_filename=figure_filename,log_axes="both",figure_filetype="pdf",
-        nlegendcols=1,
-        # xlimits=[2e0,5.5e1],ylimits=[1.0e-5,3e-2],
-        xlimits=[2.0e0,2.0e2],ylimits=[1.0e-8,5e-2],
-        markers=False,legend_on=True,legend_labels_tex=labels,
-        which_lines_black=which_lines_black,
-        # which_lines_markers=[0],
-        transparent_legend=True,legend_border_on=False,grid_lines_on=False,
-        clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
-        legend_fontSize=legend_fontSize_input,
-        # legend_location="upper left",
-        # legend_anchor=[0.0,0.45]
-        # which_lines_only_markers=[1,2,3],
-        which_lines_dashed=which_lines_dashed,
-        plot_zoomed_section=plot_zoomed_section,
-        x_limits_zoom=x_limits_zoom,y_limits_zoom=y_limits_zoom,
-        zoom_box_origin_and_extent=[0.65, 0.65, 0.32, 0.32],
-        vertical_lines=vertical_lines_input
-        )
+    # UNCOMMENT FOR t=8
+    # qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $k^{*}$",ylabel="Nondimensional TKE Spectra, $E^{*}(k^{*},t^{*})$",
+    #     title_label=title_label,
+    #     fig_directory=figure_directory,figure_filename=figure_filename,log_axes="both",figure_filetype="pdf",
+    #     nlegendcols=1,
+    #     # xlimits=[2e0,5.5e1],ylimits=[1.0e-5,3e-2],
+    #     xlimits=[2.0e0,2.0e2],ylimits=[1.0e-8,5e-2],
+    #     markers=False,legend_on=True,legend_labels_tex=labels,
+    #     which_lines_black=which_lines_black,
+    #     # which_lines_markers=[0],
+    #     transparent_legend=True,legend_border_on=False,grid_lines_on=False,
+    #     clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
+    #     legend_fontSize=legend_fontSize_input,
+    #     # legend_location="upper left",
+    #     # legend_anchor=[0.0,0.45]
+    #     # which_lines_only_markers=[1,2,3],
+    #     which_lines_dashed=which_lines_dashed,
+    #     plot_zoomed_section=plot_zoomed_section,
+    #     x_limits_zoom=x_limits_zoom,y_limits_zoom=y_limits_zoom,
+    #     zoom_box_origin_and_extent=[0.65, 0.65, 0.32, 0.32],
+    #     vertical_lines=vertical_lines_input
+    #     )
 
     if(nDOF_=="all"):
         title_label = "TKE Spectra at $t^{*}=9.0$"
@@ -201,6 +203,7 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
         nlegendcols=1,
         # xlimits=[2e0,7e1],ylimits=[2.45e-5,3e-2],
         xlimits=[2.0e0,0.5*effective_nDOF],ylimits=[3.0e-7,5e-2],
+        # xlimits=[2.0e0,7e1],ylimits=[3.0e-7,5e-2],
         markers=False,legend_on=True,legend_labels_tex=labels,
         which_lines_black=which_lines_black,
         transparent_legend=True,legend_border_on=False,grid_lines_on=False,
@@ -223,7 +226,7 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
 #=====================================================
 global x,y,labels
 x=[];y=[];labels=[];
-title_off_input=True
+title_off_input=False
 # fig_dir_input="figures"
 # fig_dir_input="/Users/Julien/julien_phd/presentations/slides/wip_paper/20221205-AIAA/figures"
 fig_dir_input="./figures/2023_JCP"
@@ -231,6 +234,7 @@ fig_dir_input="./figures/2023_JCP"
 # =====================================================
 # =====================================================
 # =====================================================
+
 if(True):
     batch_paths = [ \
     "NarvalFiles/2023_JCP/filtered_dns_viscous_tgv/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024/",\
@@ -253,38 +257,38 @@ if(True):
         effective_nDOF=224)
 exit()
 # =====================================================
-if(True):
+if(False):
     batch_paths = [ \
-    # "dummy_test_tke_fix_original/",\
-    # "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
-    "NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs024_p5_procs16/",\
-    # "NarvalFiles/2023_JCP/robustness_tke_fix_check/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs024_p5_procs16/",\
-    "dummy_test_tke_fix_1subdiv/",\
-    "dummy_test_tke_fix/",\
-    "dummy_test_tke_fix_3subdiv/",\
-    "dummy_test_tke_fix_4subdiv/",\
-    "dummy_test_tke_fix_5subdiv/",\
+    "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
+    "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512/",\
+    "NarvalFiles/2023_JCP/high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs064_p7_procs512/",\
+    "NarvalFiles/2023_JCP/high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-8_dofs064_p7_procs512/",\
+    "NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs048_p5_procs64/",\
+    "NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs048_p5_procs64/",\
+    # "NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs024_p5_procs16/",\
+    # "NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs024_p5_procs16/",\
+    # "NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs012_p5_procs16/",\
+    # "NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs012_p5_procs16/",\
     ]
     batch_labels = [ \
-    # "P+1", \
-    "Original ($n_{quad}=P+1$)", \
-    # "New (2P+1)", \
-    "$n_{quad}=1(P+1)$", \
-    "$n_{quad}=2(P+1)$", \
-    "$n_{quad}=3(P+1)$", \
-    "$n_{quad}=4(P+1)$", \
-    "$n_{quad}=5(P+1)$", \
+    "$96^{3}$, P$5$, $c_{DG}$", \
+    "$96^{3}$, P$5$, sDG", \
+    "$64^{3}$, P$7$, $c_{DG}$", \
+    "$64^{3}$, P$7$, sDG", \
+    "$48^{3}$, P$5$, $c_{DG}$",\
+    "$48^{3}$, P$5$, sDG",\
+    # "$24^{3}$, P$5$",\
+    # "$24^{3}$, P$5$",\
+    # "$12^{3}$, P$5$",\
+    # "$12^{3}$, P$5$",\
     ]
-    batch_plot_spectra(24,"tke_fix_check",batch_paths,batch_labels,
-        solid_and_dashed_lines=False,title_off=False,figure_directory=fig_dir_input,
-        plot_PHiLiP_DNS_result_as_reference=True,plot_zoomed_section=False,which_lines_dashed=[1],plot_cutoff_wavenumber_asymptote=True,
-        effective_nDOF=20)
-exit()
+    batch_plot_spectra("all","convergence_comparison",batch_paths,batch_labels,solid_and_dashed_lines=True,title_off=title_off_input,figure_directory=fig_dir_input,plot_PHiLiP_DNS_result_as_reference=True)
+
 
 if(True):
     batch_paths = [ \
     "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
-    # "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
+    # "NarvalFiles/2023_JCP/spectra_fix/sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
     "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512/",\
     "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_SI.SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16/",\
     "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16/",\
@@ -300,18 +304,19 @@ if(True):
     "HPF.SI.SM", \
     "DSM", \
     ]
-    batch_plot_spectra(96,"p5_selected_sgs_models_gl",batch_paths,batch_labels,
+    batch_plot_spectra(96,"p5_selected_sgs_models_gl_original",batch_paths,batch_labels,
         solid_and_dashed_lines=False,title_off=title_off_input,figure_directory=fig_dir_input,
-        plot_PHiLiP_DNS_result_as_reference=True,plot_zoomed_section=True)
+        plot_PHiLiP_DNS_result_as_reference=True,plot_zoomed_section=True,plot_cutoff_wavenumber_asymptote=True,
+        effective_nDOF=80)
 
 #======================================================
 # DOFs: 96^3 | Strong DG GLL without OI, SGS model stabilization
 #-----------------------------------------------------
-if(True):
+if(False):
     batch_paths = [ \
     "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GLL_OI-6_dofs096_p5_procs512/", \
-    # "NarvalFiles/2023_JCP/filter_width_stabilization/viscous_TGV_ILES_std_strong_DG_Roe_GLL_OI-0_dofs096_p5_procs512/", \
-    # "NarvalFiles/2023_JCP/filter_width_stabilization/viscous_TGV_LES_SMAG_MC-0.18_std_strong_DG_Roe_GLL_OI-0_dofs096_p5_procs512/", \
+    # "NarvalFiles/2023_JCP/spectra_fix/filter_width_stabilization/viscous_TGV_ILES_std_strong_DG_Roe_GLL_OI-0_dofs096_p5_procs512/", \
+    # "NarvalFiles/2023_JCP/spectra_fix/filter_width_stabilization/viscous_TGV_LES_SMAG_MC-0.18_std_strong_DG_Roe_GLL_OI-0_dofs096_p5_procs512/", \
     "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SI.SMAG.LRNC_MC-0.10_strong_DG_Roe_GLL_OI-0_dofs096_p5_CFL-0.1_procs512/", \
     ]
     batch_labels = [ \
@@ -322,11 +327,11 @@ if(True):
     ]
     black_line_flag_for_plot=[False,False,False,False,False,False]
     dashed_line_flag_for_plot=[False,True,False,False,False]
-    batch_plot_spectra(96,"sDG_gll_sgs_model_stabilization",batch_paths,batch_labels,
+    batch_plot_spectra(96,"sDG_gll_sgs_model_stabilization_original",batch_paths,batch_labels,
         solid_and_dashed_lines=False,title_off=title_off_input,figure_directory=fig_dir_input,
-        plot_PHiLiP_DNS_result_as_reference=True,plot_zoomed_section=False)
+        plot_PHiLiP_DNS_result_as_reference=True,plot_zoomed_section=False,plot_cutoff_wavenumber_asymptote=True,
+        effective_nDOF=80)
 
-exit()
 # =====================================================
 if(True):
     batch_paths = [ \
@@ -343,10 +348,11 @@ if(True):
     ]
     # batch_plot_spectra(96,"upwind_gl",batch_paths,batch_labels,title_off=title_off_input,figure_directory=fig_dir_input)
     for i in range(3,len(batch_paths)):
-        figure_filename_postfix_input="p5_upwind_gl_%i"%i
+        figure_filename_postfix_input="p5_upwind_gl_%i_original"%i
         batch_plot_spectra(96,figure_filename_postfix_input,batch_paths[:(i+1)],batch_labels[:(i+1)]
             ,solid_and_dashed_lines=False,title_off=title_off_input,figure_directory=fig_dir_input,
-            plot_PHiLiP_DNS_result_as_reference=True,plot_zoomed_section=True)
+            plot_PHiLiP_DNS_result_as_reference=True,plot_zoomed_section=True,plot_cutoff_wavenumber_asymptote=True,
+            effective_nDOF=80)
 # =====================================================
 if(True):
     batch_paths = [ \
@@ -362,19 +368,19 @@ if(True):
     "$c_{+}$", \
     ]
     for i in range(3,len(batch_paths)):
-        figure_filename_postfix_input="p5_correction_parameter_%i"%i
+        figure_filename_postfix_input="p5_correction_parameter_%i_original"%i
         batch_plot_spectra(96,figure_filename_postfix_input,batch_paths[:(i+1)],batch_labels[:(i+1)],
             solid_and_dashed_lines=False,title_off=title_off_input,figure_directory=fig_dir_input,
             plot_PHiLiP_DNS_result_as_reference=True,plot_zoomed_section=True,
-            which_lines_dashed=[])
+            which_lines_dashed=[],plot_cutoff_wavenumber_asymptote=True,effective_nDOF=80)
 # =====================================================
 if(True):
     batch_paths = [ \
-    # "NarvalFiles/2023_JCP/upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs096_p5_procs512/",\
+    # "NarvalFiles/2023_JCP/spectra_fix/upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs096_p5_procs512/",\
     "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
     "NarvalFiles/2023_JCP/over_integration/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-3_dofs096_p5_procs512/",\
     "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512/",\
-    # "NarvalFiles/2023_JCP/over_integration_accuracy_strong_DG/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-4_dofs096_p5_CFL-0.10_procs512/",\
+    # "NarvalFiles/2023_JCP/spectra_fix/over_integration_accuracy_strong_DG/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-4_dofs096_p5_CFL-0.10_procs512/",\
     "NarvalFiles/2023_JCP/over_integration_accuracy_strong_DG/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-2_dofs096_p5_CFL-0.10_procs512/",\
     "NarvalFiles/2023_JCP/filter_width_stabilization/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-0_dofs096_p5_procs512/",\
     ]
@@ -387,10 +393,10 @@ if(True):
     "sDG-OI-2",\
     "sDG-OI-0",\
     ]
-    batch_plot_spectra(96,"OI_stability_GL",batch_paths,batch_labels,
+    batch_plot_spectra(96,"OI_stability_GL_original",batch_paths,batch_labels,
         solid_and_dashed_lines=False,title_off=title_off_input,figure_directory=fig_dir_input,
         plot_PHiLiP_DNS_result_as_reference=True,plot_zoomed_section=True,
-        which_lines_dashed=[3])
+        which_lines_dashed=[3],plot_cutoff_wavenumber_asymptote=True,effective_nDOF=80)
 
 # =====================================================
 if(True):
@@ -418,7 +424,7 @@ if(True):
     # "$12^{3}$, P$5$",\
     # "$12^{3}$, P$5$",\
     ]
-    batch_plot_spectra("all","convergence_comparison",batch_paths,batch_labels,solid_and_dashed_lines=True,title_off=title_off_input,figure_directory=fig_dir_input,plot_PHiLiP_DNS_result_as_reference=True)
+    batch_plot_spectra("all","convergence_comparison_original",batch_paths,batch_labels,solid_and_dashed_lines=True,title_off=title_off_input,figure_directory=fig_dir_input,plot_PHiLiP_DNS_result_as_reference=True)
 
 # =====================================================
 if(True):
@@ -437,11 +443,274 @@ if(True):
     "GLL-OI-3", \
     ]
     lnstl_input=['solid','solid','solid','solid','solid','dashed']
+    batch_plot_spectra(96,"p5_flux_nodes_original",batch_paths,batch_labels,
+        solid_and_dashed_lines=False,title_off=title_off_input,
+        figure_directory=fig_dir_input,lnstl_input_store=lnstl_input,
+        plot_PHiLiP_DNS_result_as_reference=True,
+        plot_zoomed_section=True,plot_cutoff_wavenumber_asymptote=True,effective_nDOF=80)
+# =====================================================
+# =====================================================
+if(False):
+    batch_paths = [ \
+    "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
+    "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512/",\
+    "NarvalFiles/2023_JCP/spectra_fix/high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs064_p7_procs512/",\
+    "NarvalFiles/2023_JCP/spectra_fix/high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-8_dofs064_p7_procs512/",\
+    "NarvalFiles/2023_JCP/spectra_fix/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs048_p5_procs64/",\
+    "NarvalFiles/2023_JCP/spectra_fix/robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs048_p5_procs64/",\
+    # "NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs024_p5_procs16/",\
+    # "NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs024_p5_procs16/",\
+    # "NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs012_p5_procs16/",\
+    # "NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs012_p5_procs16/",\
+    ]
+    batch_labels = [ \
+    "$96^{3}$, P$5$, $c_{DG}$", \
+    "$96^{3}$, P$5$, sDG", \
+    "$64^{3}$, P$7$, $c_{DG}$", \
+    "$64^{3}$, P$7$, sDG", \
+    "$48^{3}$, P$5$, $c_{DG}$",\
+    "$48^{3}$, P$5$, sDG",\
+    # "$24^{3}$, P$5$",\
+    # "$24^{3}$, P$5$",\
+    # "$12^{3}$, P$5$",\
+    # "$12^{3}$, P$5$",\
+    ]
+    batch_plot_spectra("all","convergence_comparison_tke_fix",batch_paths,batch_labels,solid_and_dashed_lines=True,title_off=title_off_input,figure_directory=fig_dir_input,plot_PHiLiP_DNS_result_as_reference=True)
+
+# =====================================================
+if(True):
+    batch_paths = [ \
+    # "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
+    "NarvalFiles/2023_JCP/spectra_fix/high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs064_p7_procs512/",\
+    "NarvalFiles/2023_JCP/spectra_fix/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs048_p5_procs64/",\
+    "NarvalFiles/2023_JCP/spectra_fix/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs024_p5_procs16/",\
+    # "NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs012_p5_procs16/",\
+    ]
+    batch_labels = [ \
+    # "$96^{3}$ DOFs, P$5$", \
+    "$64^{3}$ DOFs, P$7$", \
+    "$48^{3}$ DOFs, P$5$",\
+    "$24^{3}$ DOFs, P$5$",\
+    # "$12^{3}$ DOFs, P$5$",\
+    ]
+    # title_postfix_input=" using $c_{DG}$ NSFR.IR-GL"
+    # batch_plot_spectra("all","cDG_NSFR_convergence",batch_paths,batch_labels,title_off=title_off_input,figure_directory=fig_dir_input)
+    for i in range(2,len(batch_paths)):
+        figure_filename_postfix_input="cDG_NSFR_convergence_%i_tke_fix"%i
+        batch_plot_spectra("all",figure_filename_postfix_input,batch_paths[:(i+1)],batch_labels[:(i+1)],solid_and_dashed_lines=False,title_off=title_off_input,figure_directory=fig_dir_input,plot_PHiLiP_DNS_result_as_reference=True)
+    
+    # before:
+    batch_paths = [ \
+    # "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
+    "NarvalFiles/2023_JCP/high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs064_p7_procs512/",\
+    "NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs048_p5_procs64/",\
+    "NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs024_p5_procs16/",\
+    # "NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs012_p5_procs16/",\
+    ]
+    batch_labels = [ \
+    # "$96^{3}$ DOFs, P$5$", \
+    "$64^{3}$ DOFs, P$7$", \
+    "$48^{3}$ DOFs, P$5$",\
+    "$24^{3}$ DOFs, P$5$",\
+    # "$12^{3}$ DOFs, P$5$",\
+    ]
+    # title_postfix_input=" using $c_{DG}$ NSFR.IR-GL"
+    # batch_plot_spectra("all","cDG_NSFR_convergence",batch_paths,batch_labels,title_off=title_off_input,figure_directory=fig_dir_input)
+    for i in range(2,len(batch_paths)):
+        figure_filename_postfix_input="cDG_NSFR_convergence_%i"%i
+        batch_plot_spectra("all",figure_filename_postfix_input,batch_paths[:(i+1)],batch_labels[:(i+1)],solid_and_dashed_lines=False,title_off=title_off_input,figure_directory=fig_dir_input,plot_PHiLiP_DNS_result_as_reference=True)
+
+# =====================================================
+if(False):
+    batch_paths = [ \
+    # "dummy_test_tke_fix_original/",\
+    # "NarvalFiles/2023_JCP/sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
+    "NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs024_p5_procs16/",\
+    # "NarvalFiles/2023_JCP/robustness_tke_fix_check/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs024_p5_procs16/",\
+    "dummy_test_tke_fix_1subdiv/",\
+    "dummy_test_tke_fix/",\
+    "dummy_test_tke_fix_3subdiv/",\
+    "dummy_test_tke_fix_4subdiv/",\
+    "dummy_test_tke_fix_5subdiv/",\
+    ]
+    batch_labels = [ \
+    # "P+1", \
+    "Original ($n_{quad}=P+1$)", \
+    # "New (2P+1)", \
+    "$n_{quad}=1(P+1)$", \
+    "$n_{quad}=2(P+1)$", \
+    "$n_{quad}=3(P+1)$", \
+    "$n_{quad}=4(P+1)$", \
+    "$n_{quad}=5(P+1)$", \
+    ]
+    batch_plot_spectra(24,"tke_fix_check",batch_paths,batch_labels,
+        solid_and_dashed_lines=False,title_off=False,figure_directory=fig_dir_input,
+        plot_PHiLiP_DNS_result_as_reference=True,plot_zoomed_section=False,which_lines_dashed=[1],plot_cutoff_wavenumber_asymptote=True,
+        effective_nDOF=20)
+
+if(True):
+    batch_paths = [ \
+    "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
+    # "NarvalFiles/2023_JCP/spectra_fix/sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
+    "NarvalFiles/2023_JCP/spectra_fix/sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512/",\
+    "NarvalFiles/2023_JCP/spectra_fix/sgs_model_GL_flux_nodes/viscous_TGV_LES_SI.SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16/",\
+    "NarvalFiles/2023_JCP/spectra_fix/sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16/",\
+    "NarvalFiles/2023_JCP/spectra_fix/sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SI.SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16/",\
+    "NarvalFiles/2023_JCP/spectra_fix/sgs_model_GL_flux_nodes/viscous_TGV_LES_DYNAMIC.SMAG.LRNC_CLIPMC-0.01-pL3_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16_corrected/",\
+    ]
+    batch_labels = [ \
+    "No Model", \
+    # "Smag. $C_{S}=0.10$", \
+    "SM", \
+    "SI.SM", \
+    "HPF.SM", \
+    "HPF.SI.SM", \
+    "DSM", \
+    ]
+    batch_plot_spectra(96,"p5_selected_sgs_models_gl",batch_paths,batch_labels,
+        solid_and_dashed_lines=False,title_off=title_off_input,figure_directory=fig_dir_input,
+        plot_PHiLiP_DNS_result_as_reference=True,plot_zoomed_section=True,plot_cutoff_wavenumber_asymptote=True,
+        effective_nDOF=80)
+
+#======================================================
+# DOFs: 96^3 | Strong DG GLL without OI, SGS model stabilization
+#-----------------------------------------------------
+if(False):
+    batch_paths = [ \
+    "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GLL_OI-6_dofs096_p5_procs512/", \
+    # "NarvalFiles/2023_JCP/spectra_fix/filter_width_stabilization/viscous_TGV_ILES_std_strong_DG_Roe_GLL_OI-0_dofs096_p5_procs512/", \
+    # "NarvalFiles/2023_JCP/spectra_fix/filter_width_stabilization/viscous_TGV_LES_SMAG_MC-0.18_std_strong_DG_Roe_GLL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/spectra_fix/sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SI.SMAG.LRNC_MC-0.10_strong_DG_Roe_GLL_OI-0_dofs096_p5_CFL-0.1_procs512/", \
+    ]
+    batch_labels = [ \
+    "sDG-GLL-OI", \
+    # "Strong DG-Roe-GLL", \
+    # "Strong DG-Roe-GLL-Smag. $C_{S}=0.18$", \
+    "sDG-GLL-HPF.SI.SM", \
+    ]
+    black_line_flag_for_plot=[False,False,False,False,False,False]
+    dashed_line_flag_for_plot=[False,True,False,False,False]
+    batch_plot_spectra(96,"sDG_gll_sgs_model_stabilization",batch_paths,batch_labels,
+        solid_and_dashed_lines=False,title_off=title_off_input,figure_directory=fig_dir_input,
+        plot_PHiLiP_DNS_result_as_reference=True,plot_zoomed_section=False,plot_cutoff_wavenumber_asymptote=True,
+        effective_nDOF=80)
+
+# =====================================================
+if(True):
+    batch_paths = [ \
+    "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/spectra_fix/upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-LxF_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/spectra_fix/upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/spectra_fix/upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-L2R_GL_OI-0_dofs096_p5_procs512/", \
+    ]
+    batch_labels = [ \
+    "$c_{DG}$ NSFR.IR-GL", \
+    "LxF", \
+    "Roe", \
+    "L$^2$Roe", \
+    ]
+    # batch_plot_spectra(96,"upwind_gl",batch_paths,batch_labels,title_off=title_off_input,figure_directory=fig_dir_input)
+    for i in range(3,len(batch_paths)):
+        figure_filename_postfix_input="p5_upwind_gl_%i"%i
+        batch_plot_spectra(96,figure_filename_postfix_input,batch_paths[:(i+1)],batch_labels[:(i+1)]
+            ,solid_and_dashed_lines=False,title_off=title_off_input,figure_directory=fig_dir_input,
+            plot_PHiLiP_DNS_result_as_reference=True,plot_zoomed_section=True,plot_cutoff_wavenumber_asymptote=True,
+            effective_nDOF=80)
+# =====================================================
+if(True):
+    batch_paths = [ \
+    "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/spectra_fix/correction_parameter/viscous_TGV_ILES_NSFR_cSD_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/spectra_fix/correction_parameter/viscous_TGV_ILES_NSFR_cHU_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/spectra_fix/correction_parameter/viscous_TGV_ILES_NSFR_cPlus_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+    ]
+    batch_labels = [ \
+    "$c_{DG}$", \
+    "$c_{SD}$", \
+    "$c_{HU}$", \
+    "$c_{+}$", \
+    ]
+    for i in range(3,len(batch_paths)):
+        figure_filename_postfix_input="p5_correction_parameter_%i"%i
+        batch_plot_spectra(96,figure_filename_postfix_input,batch_paths[:(i+1)],batch_labels[:(i+1)],
+            solid_and_dashed_lines=False,title_off=title_off_input,figure_directory=fig_dir_input,
+            plot_PHiLiP_DNS_result_as_reference=True,plot_zoomed_section=True,
+            which_lines_dashed=[],plot_cutoff_wavenumber_asymptote=True,effective_nDOF=80)
+# =====================================================
+if(True):
+    batch_paths = [ \
+    # "NarvalFiles/2023_JCP/spectra_fix/upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs096_p5_procs512/",\
+    "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
+    "NarvalFiles/2023_JCP/spectra_fix/over_integration/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-3_dofs096_p5_procs512/",\
+    "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512/",\
+    # "NarvalFiles/2023_JCP/spectra_fix/over_integration_accuracy_strong_DG/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-4_dofs096_p5_CFL-0.10_procs512/",\
+    "NarvalFiles/2023_JCP/spectra_fix/over_integration_accuracy_strong_DG/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-2_dofs096_p5_CFL-0.10_procs512/",\
+    "NarvalFiles/2023_JCP/spectra_fix/filter_width_stabilization/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-0_dofs096_p5_procs512/",\
+    ]
+    batch_labels = [ \
+    # "$c_{DG}$ NSFR.IR-GL-Roe",\
+    "$c_{DG}$ NSFR.IR-GL",\
+    "$c_{DG}$ NSFR.IR-GL-OI-3",\
+    "sDG-OI-6", \
+    # "sDG-OI-4", \
+    "sDG-OI-2",\
+    "sDG-OI-0",\
+    ]
+    batch_plot_spectra(96,"OI_stability_GL",batch_paths,batch_labels,
+        solid_and_dashed_lines=False,title_off=title_off_input,figure_directory=fig_dir_input,
+        plot_PHiLiP_DNS_result_as_reference=True,plot_zoomed_section=True,
+        which_lines_dashed=[3],plot_cutoff_wavenumber_asymptote=True,effective_nDOF=80)
+
+# =====================================================
+if(True):
+    batch_paths = [ \
+    "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
+    "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512/",\
+    "NarvalFiles/2023_JCP/spectra_fix/high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs064_p7_procs512/",\
+    "NarvalFiles/2023_JCP/spectra_fix/high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-8_dofs064_p7_procs512/",\
+    "NarvalFiles/2023_JCP/spectra_fix/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs048_p5_procs64/",\
+    "NarvalFiles/2023_JCP/spectra_fix/robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs048_p5_procs64/",\
+    # "NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs024_p5_procs16/",\
+    # "NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs024_p5_procs16/",\
+    # "NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs012_p5_procs16/",\
+    # "NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs012_p5_procs16/",\
+    ]
+    batch_labels = [ \
+    "$96^{3}$, P$5$, $c_{DG}$", \
+    "$96^{3}$, P$5$, sDG", \
+    "$64^{3}$, P$7$, $c_{DG}$", \
+    "$64^{3}$, P$7$, sDG", \
+    "$48^{3}$, P$5$, $c_{DG}$",\
+    "$48^{3}$, P$5$, sDG",\
+    # "$24^{3}$, P$5$",\
+    # "$24^{3}$, P$5$",\
+    # "$12^{3}$, P$5$",\
+    # "$12^{3}$, P$5$",\
+    ]
+    batch_plot_spectra("all","convergence_comparison",batch_paths,batch_labels,solid_and_dashed_lines=True,title_off=title_off_input,figure_directory=fig_dir_input,plot_PHiLiP_DNS_result_as_reference=True)
+
+# =====================================================
+if(True):
+    batch_paths = [ \
+    "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512/",\
+    "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/spectra_fix/over_integration/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-3_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/spectra_fix/over_integration/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-3_dofs096_p5_procs512/", \
+    ]
+    batch_labels = [ \
+    "Strong DG-Roe-GL-OI", \
+    "GL", \
+    "GLL", \
+    "GL-OI-3", \
+    "GLL-OI-3", \
+    ]
+    lnstl_input=['solid','solid','solid','solid','solid','dashed']
     batch_plot_spectra(96,"p5_flux_nodes",batch_paths,batch_labels,
         solid_and_dashed_lines=False,title_off=title_off_input,
         figure_directory=fig_dir_input,lnstl_input_store=lnstl_input,
         plot_PHiLiP_DNS_result_as_reference=True,
-        plot_zoomed_section=True)
+        plot_zoomed_section=True,plot_cutoff_wavenumber_asymptote=True,effective_nDOF=80)
 exit()
 
 #=====================================================
