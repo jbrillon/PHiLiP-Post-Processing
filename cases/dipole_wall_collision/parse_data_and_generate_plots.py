@@ -131,11 +131,11 @@ def reinit_inputs():
 #=====================================================
 # DOFs: 256^3 | All results
 #-----------------------------------------------------
-if(True):
+if(False):
     #-----------------------------------------------------
     # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
     reinit_inputs()
-    data_directory_base=filesystem+"NarvalFiles/2024_CSME/"
+    data_directory_base=filesystem+"NarvalFiles/2024_CSME/dipole_wall_collision/"
     date_for_runs="."
     figure_subdirectory="2024_CSME"
     # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
@@ -145,16 +145,110 @@ if(True):
     plot_PHiLiP_DNS_result_as_reference_input=False
     #-----------------------------------------------------
     subdirectories_for_plot=[\
-    "dipole_wall_collision/viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0192_p2",\
-    "dipole_wall_collision/viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0384_p5",\
+    "viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0192_p2",\
+    "viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0384_p5",\
+    "viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0512_p7",\
+    "viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0512_p7_small_dt",\
+    "viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs1024_p7",\
+    "viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0192_p2_small_dt",\
+    "viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0192_p2_stretched_mesh",\
     ]
     # labels
     labels_for_plot=[\
-    "$c_{DG}$ NSFR.IR-GL 64p$2$ ($192^2$ DOF)",\
-    "$c_{DG}$ NSFR.IR-GL 64p$5$ ($384^2$ DOF)",\
+    # "$c_{DG}$ NSFR.IR-GL 64p$2$ ($192^2$ DOF)",\
+    # "$c_{DG}$ NSFR.IR-GL 64p$5$ ($384^2$ DOF)",\
+    # "$c_{DG}$ NSFR.IR-GL 64p$7$ ($512^2$ DOF)",\
+    # "$c_{DG}$ NSFR.IR-GL 64p$2$ ($192^2$ DOF) $\\Delta t/2$",\
+    "$c_{DG}$ NSFR 64p$2$ ($192^2$ DOF)\n $\\Delta t=10e^{-6}$",\
+    "$c_{DG}$ NSFR 64p$5$ ($384^2$ DOF)\n $\\Delta t=10e^{-6}$",\
+    "$c_{DG}$ NSFR 64p$7$ ($512^2$ DOF)\n $\\Delta t=5e^{-6}$",\
+    "$c_{DG}$ NSFR 64p$7$ ($512^2$ DOF)\n $\\Delta t=2.5e^{-6}$",\
+    "$c_{DG}$ NSFR 128p$7$ ($1024^2$ DOF)\n $\\Delta t=2.5e^{-6}$",\
+    "$c_{DG}$ NSFR 64p$2$ ($192^2$ DOF)\n $\\Delta t=5e^{-6}$",\
+    "$c_{DG}$ NSFR 64p$2$ ($192^2$ DOF)\n $\\Delta t=2.5e^{-6}$, Stretched mesh",\
+
     ]
-    black_line_flag_for_plot=[False,False,False,False,False]
-    dashed_line_flag_for_plot=[False,False,False,True,True]
+    black_line_flag_for_plot=[False,False,False,False,False,False,False,False]
+    dashed_line_flag_for_plot=[False,False,False,True,False,True,True]
     plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
         final_time_for_plot=1.0,legend_fontSize_input=12)
+
+#=====================================================
+# DOFs: 256^3 | All results
+#-----------------------------------------------------
+if(True):
+    #-----------------------------------------------------
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2024_CSME/dipole_wall_collision/"
+    date_for_runs="."
+    figure_subdirectory="2024_CSME"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
+    figure_filename_postfix = "first_result"
+    legend_inside_input=True
+    plot_reference_result=True
+    plot_PHiLiP_DNS_result_as_reference_input=False
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0192_p2",\
+    "viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0384_p5",\
+    "viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0512_p7",\
+    "viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0192_p2_stretched_mesh",\
+    "viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs1024_p7",\
+    ]
+    # labels
+    labels_for_plot=[\
+    # "$c_{DG}$ NSFR.IR-GL 64p$2$ ($192^2$ DOF)",\
+    # "$c_{DG}$ NSFR.IR-GL 64p$5$ ($384^2$ DOF)",\
+    # "$c_{DG}$ NSFR.IR-GL 64p$7$ ($512^2$ DOF)",\
+    # "$c_{DG}$ NSFR.IR-GL 64p$2$ ($192^2$ DOF) $\\Delta t/2$",\
+    "$c_{DG}$ NSFR 64p$2$ ($192^2$ DOF)\n $\\Delta t=10e^{-6}$",\
+    "$c_{DG}$ NSFR 64p$5$ ($384^2$ DOF)\n $\\Delta t=10e^{-6}$",\
+    "$c_{DG}$ NSFR 64p$7$ ($512^2$ DOF)\n $\\Delta t=5e^{-6}$",\
+    "$c_{DG}$ NSFR 64p$2$ ($192^2$ DOF)\n $\\Delta t=2.5e^{-6}$, Stretched mesh",\
+    "$c_{DG}$ NSFR 128p$7$ ($1024^2$ DOF)\n $\\Delta t=2.5e^{-6}$",\
+    ]
+    black_line_flag_for_plot=[False,False,False,False,False,False,False,False]
+    dashed_line_flag_for_plot=[False,False,False,False,False,True,True]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
+        final_time_for_plot=1.0,legend_fontSize_input=12)
+
+#=====================================================
+# DOFs: 256^3 | All results
+#-----------------------------------------------------
+if(True):
+    #-----------------------------------------------------
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2024_CSME/dipole_wall_collision/"
+    date_for_runs="."
+    figure_subdirectory="2024_CSME"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
+    figure_filename_postfix = "time_steps"
+    legend_inside_input=True
+    plot_reference_result=True
+    plot_PHiLiP_DNS_result_as_reference_input=False
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0192_p2",\
+    "viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0192_p2_small_dt",\
+    "viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0512_p7",\
+    "viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0512_p7_small_dt",\
+    ]
+    # labels
+    labels_for_plot=[\
+    # "$c_{DG}$ NSFR.IR-GL 64p$2$ ($192^2$ DOF)",\
+    # "$c_{DG}$ NSFR.IR-GL 64p$5$ ($384^2$ DOF)",\
+    # "$c_{DG}$ NSFR.IR-GL 64p$7$ ($512^2$ DOF)",\
+    # "$c_{DG}$ NSFR.IR-GL 64p$2$ ($192^2$ DOF) $\\Delta t/2$",\
+    "$c_{DG}$ NSFR 64p$2$ ($192^2$ DOF)\n $\\Delta t=10e^{-6}$",\
+    "$c_{DG}$ NSFR 64p$2$ ($192^2$ DOF)\n $\\Delta t=5e^{-6}$",\
+    "$c_{DG}$ NSFR 64p$7$ ($512^2$ DOF)\n $\\Delta t=5e^{-6}$",\
+    "$c_{DG}$ NSFR 64p$7$ ($512^2$ DOF)\n $\\Delta t=2.5e^{-6}$",\
+    ]
+    black_line_flag_for_plot=[False,False,False,False,False,False,False,False]
+    dashed_line_flag_for_plot=[False,False,False,False,False,True,True]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
+        final_time_for_plot=1.0,legend_fontSize_input=12)
+
 exit()

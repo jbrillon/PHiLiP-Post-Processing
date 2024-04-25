@@ -212,7 +212,7 @@ def plot_periodic_turbulence(
                 legend_labels_tex=labels_store,
                 black_lines=False,
                 xlimits=[0,tmax],
-                ylimits=[0.0,2.0],
+                ylimits=[0.6,2.0],
                 log_axes=None,
                 which_lines_black=which_lines_black_input,
                 which_lines_dashed=which_lines_dashed_input,
@@ -263,7 +263,7 @@ def plot_periodic_turbulence(
                 fig_directory=figure_directory_base,
                 clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
                 legend_fontSize=legend_fontSize_input,
-                legend_location="lower left",
+                legend_location="upper right",
                 marker_size=3)
     
     if(plot_reference_result and reference_result_author=="Keetels et al."):
@@ -299,5 +299,5 @@ def plot_periodic_turbulence(
                 fig_directory=figure_directory_base,
                 clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
                 legend_fontSize=legend_fontSize_input,
-                legend_location="lower left",
+                legend_location="upper right",
                 marker_size=3)
