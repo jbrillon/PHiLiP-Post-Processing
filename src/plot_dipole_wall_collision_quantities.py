@@ -8,6 +8,7 @@
 # Import public libraries
 import numpy as np # NumPy: contains basic numerical routines
 import scipy # SciPy: contains additional numerical routines to numpy
+import scipy.fftpack as fftpack # SciPy: contains additional numerical routines to numpy
 #-----------------------------------------------------
 # Import personal libraries
 # from finite_difference_library import first_derivative, fd_non_uniform_grid
@@ -23,6 +24,67 @@ sys.path.append(CURRENT_PATH+"../submodules/quickplotlib/lib"); import quickplot
 #     sys.path.append("/Users/Julien/Python/quickplotlib/lib"); import quickplotlib as qp # uncomment if testing quickplotlib changes
 
 import matplotlib;from matplotlib.lines import Line2D
+from scipy.interpolate import splrep, splev
+#=====================================================
+# Source for all smooth_ functions: https://stackoverflow.com/a/63458548/10438920
+#-----------------------------------------------------
+def smooth_data_convolve_my_average(arr, span):
+    re = np.convolve(arr, np.ones(span * 2 + 1) / (span * 2 + 1), mode="same")
+
+    # The "my_average" part: shrinks the averaging window on the side that 
+    # reaches beyond the data, keeps the other side the same size as given 
+    # by "span"
+    re[0] = np.average(arr[:span])
+    for i in range(1, span + 1):
+        re[i] = np.average(arr[:i + span])
+        re[-i] = np.average(arr[-i - span:])
+    return re
+
+def smooth_data_np_average(arr, span):  # my original, naive approach
+    return [np.average(arr[val - span:val + span + 1]) for val in range(len(arr))]
+
+def smooth_data_np_convolve(arr, span):
+    return np.convolve(arr, np.ones(span * 2 + 1) / (span * 2 + 1), mode="same")
+
+def smooth_data_np_cumsum_my_average(arr, span):
+    cumsum_vec = np.cumsum(arr)
+    moving_average = (cumsum_vec[2 * span:] - cumsum_vec[:-2 * span]) / (2 * span)
+
+    # The "my_average" part again. Slightly different to before, because the
+    # moving average from cumsum is shorter than the input and needs to be padded
+    front, back = [np.average(arr[:span])], []
+    for i in range(1, span):
+        front.append(np.average(arr[:i + span]))
+        back.insert(0, np.average(arr[-i - span:]))
+    back.insert(0, np.average(arr[-2 * span:]))
+    return np.concatenate((front, moving_average, back))
+
+def smooth_data_lowess(arr, span):
+    x = np.linspace(0, 1, len(arr))
+    return sm.nonparametric.lowess(arr, x, frac=(5*span / len(arr)), return_sorted=False)
+
+def smooth_data_kernel_regression(arr, span):
+    # "span" smoothing parameter is ignored. If you know how to 
+    # incorporate that with kernel regression, please comment below.
+    kr = KernelReg(arr, np.linspace(0, 1, len(arr)), 'c')
+    return kr.fit()[0]
+
+def smooth_data_savgol_0(arr, span):  
+    return savgol_filter(arr, span * 2 + 1, 0)
+
+def smooth_data_savgol_1(arr, span):  
+    return savgol_filter(arr, span * 2 + 1, 1)
+
+def smooth_data_savgol_2(arr, span):  
+    return savgol_filter(arr, span * 2 + 1, 2)
+
+def smooth_data_fft(arr, span):  # the scaling of "span" is open to suggestions
+    w = fftpack.rfft(arr)
+    spectrum = w ** 2
+    cutoff_idx = spectrum < (spectrum.max() * (1 - np.exp(-span / 2000)))
+    w[cutoff_idx] = 0
+    return fftpack.irfft(w)
+#=====================================================
 #-----------------------------------------------------
 def plot_periodic_turbulence(
     figure_subdirectory,
@@ -51,12 +113,14 @@ def plot_periodic_turbulence(
     dashed_and_solid_lines=False,
     reference_result_author="Keetels et al.",
     plot_PHiLiP_DNS_result_as_reference=False,
-    dissipation_rate_smoothing=[],
+    palinstrophy_smoothing=[],
     plot_filtered_dns=False,
     plot_zoomed_section_dissipation_rate=False,
     plot_zoomed_section_numerical_dissipation_components=False,
     plot_zoomed_section_enstrophy=False,
     dofs_for_zoomed_section=256,
+    check_smoothing_parameters=False,
+    smoothing_parameters=[]
     ):
     # plotting parameters store
     labels_store = []
@@ -68,6 +132,7 @@ def plot_periodic_turbulence(
     kinetic_energy_store = []
     enstrophy_store = []
     palinstrophy_store = []
+    smoothed_palinstrophy_store = []
     clr_input_store=[]
     mrkr_input_store=[]
     lnstl_input_store=[]
@@ -93,6 +158,7 @@ def plot_periodic_turbulence(
             filename=path_to_reference_result+"/"+"palinstrophy"+".txt"
             time, palinstrophy = np.loadtxt(filename,skiprows=1,delimiter=",",dtype=np.float64,unpack=True)
             palinstrophy_store.append(palinstrophy)
+            smoothed_palinstrophy_store.append(palinstrophy)
         else:
             print("ERROR: Invalid value passed for reference_result_author. Aborting...")
             exit()
@@ -163,13 +229,16 @@ def plot_periodic_turbulence(
         domain_area = 4.0
         kinetic_energy_store.append(domain_area*incompressible_kinetic_energy)
         # -- store other quantities
-        if(dissipation_rate_smoothing!=[]):
+        if(palinstrophy_smoothing!=[]):
             # smooth this too for the numerical dissipation plots
-            enstrophy = splrep(time,incompressible_enstrophy,k=5,s=0.0000001)
-            enstrophy = splev(time,enstrophy)
-            vorticity_based_dissipation = splrep(time,vorticity_based_dissipation,k=5,s=0.0000001)
-            vorticity_based_dissipation = splev(time,vorticity_based_dissipation)
-            incompressible_enstrophy = 1.0*enstrophy
+            print("smoothing palinstrophy for " + subdirectories[i] + " ...")
+            # incompressible_palinstrophy = splrep(time,incompressible_palinstrophy,k=5,s=0.0000001)
+            # incompressible_palinstrophy = splrep(time,incompressible_palinstrophy,k=5,s=0.1)
+            # incompressible_palinstrophy = splev(time,incompressible_palinstrophy)
+            smoothed_incompressible_palinstrophy = smooth_data_np_cumsum_my_average(incompressible_palinstrophy,smoothing_parameters[i])
+            smoothed_palinstrophy_store.append(domain_area*smoothed_incompressible_palinstrophy)
+            # 1000 is good for the p5 and p7, 500 is good for the p2
+            print("done.")
         enstrophy_store.append(domain_area*incompressible_enstrophy)
         palinstrophy_store.append(domain_area*incompressible_palinstrophy)
         # store inputted line color, markers, and linestyles
@@ -274,8 +343,12 @@ def plot_periodic_turbulence(
         time_store[0] = time # replace it -- this is a hack
     
     if(plot_palinstrophy):
+        if(palinstrophy_smoothing):
+            ydata_to_plot = smoothed_palinstrophy_store
+        else:
+            ydata_to_plot = palinstrophy_store
         qp.plotfxn(xdata=time_store,
-                ydata=palinstrophy_store,
+                ydata=ydata_to_plot,
                 ylabel='Nondimensional Palinstrophy',
                 xlabel='Nondimensional Time, $t^{*}$',
                 figure_filename=figure_subdirectory+'palinstrophy_vs_time'+figure_filename_postfix,
@@ -301,3 +374,57 @@ def plot_periodic_turbulence(
                 legend_fontSize=legend_fontSize_input,
                 legend_location="upper right",
                 marker_size=3)
+        if(check_smoothing_parameters):
+            labels_input_store=[]
+            xdata_input_store=[]
+            ydata_input_store=[]
+            which_lines_black_input=[]
+            which_lines_dotted_input=[]
+            labels_input_store.append(labels_store[0])
+            xdata_input_store.append(time_store[0])
+            ydata_input_store.append(palinstrophy_store[0])
+            which_lines_black_input.append(0)
+            i_curve = 0
+            i_curve_total = 0
+            for i in range(0,number_of_result_curves):
+                i_curve += 1
+                i_curve_total += 1
+                # original smoothed data
+                xdata_input_store.append(time_store[i_curve])
+                ydata_input_store.append(palinstrophy_store[i_curve])
+                labels_input_store.append(labels_store[i_curve])
+                # smoothed data
+                i_curve_total += 1
+                xdata_input_store.append(time_store[i_curve])
+                ydata_input_store.append(smoothed_palinstrophy_store[i_curve])
+                labels_input_store.append(labels_store[i_curve]+" smoothed")
+                which_lines_dotted_input.append(i_curve_total)
+
+            qp.plotfxn(xdata=xdata_input_store,
+                ydata=ydata_input_store,
+                ylabel='Nondimensional Palinstrophy',
+                xlabel='Nondimensional Time, $t^{*}$',
+                figure_filename=figure_subdirectory+'smoothed_palinstrophy_vs_time'+figure_filename_postfix,
+                title_label=figure_title,
+                markers=False,
+                legend_labels_tex=labels_input_store,
+                black_lines=False,
+                ylimits=[1e5,1e8],
+                xlimits=[0,tmax],
+                log_axes="y",
+                which_lines_black=which_lines_black_input,
+                which_lines_thin=which_lines_dotted_input,
+                # which_lines_only_markers=which_lines_only_markers_input,
+                legend_on=legend_on_input,
+                legend_inside=legend_inside_input,
+                nlegendcols=nlegendcols_input,
+                figure_size=(6,6),
+                transparent_legend=transparent_legend_input,
+                legend_border_on=False,
+                grid_lines_on=False,
+                fig_directory=figure_directory_base,
+                # clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
+                legend_fontSize=legend_fontSize_input,
+                legend_location="upper right",
+                marker_size=3)
+
