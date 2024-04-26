@@ -256,6 +256,15 @@ def batch_generate_philip_input_files(
     else:
         n_file_paths = int(len(file_path))
     #-----------------------------------------------------
+    # If n_different_files_in_path is empty, assume only
+    # one file to assemble per path
+    #-----------------------------------------------------
+    if(n_different_files_in_path==[]):
+        # if empty, assume only one file to assemble per path
+        n_files_to_assemble = int(len(file_path))
+        for i in range(0,n_files_to_assemble):
+            n_different_files_in_path.append(1)
+    #-----------------------------------------------------
     # Assemble the files
     #-----------------------------------------------------
     for i in range(0,n_file_paths):
