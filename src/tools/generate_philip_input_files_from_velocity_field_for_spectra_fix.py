@@ -34,7 +34,8 @@ def generate_philip_input_files(
     nDOF,
     num_procs,
     output_dir="./",
-    input_vel_field_filename="velocity_gl_nodes.fld"):
+    input_vel_field_filename="velocity_gl_nodes.fld",
+    prefix_string=""):
     #-----------------------------------------------------
     # Fixed variable
     #-----------------------------------------------------
@@ -161,7 +162,8 @@ def generate_philip_input_files(
     if(os.path.isdir(output_dir+"/"+"setup_files")==False):
         os.mkdir(output_dir+"/"+"setup_files")
     philip_prefix=output_dir+"/"+"setup_files/setup" # TO DO: create the directory within this python script !! -- bash command
-
+    if(prefix_string!=""):
+        philip_prefix+="-"+prefix_string
     # TO DO: <-- add this
     # if(nDOF % nDOFs_per_proc != 0):
     #     print("ERROR: Must use a number of processors that evenly divides the domain ")

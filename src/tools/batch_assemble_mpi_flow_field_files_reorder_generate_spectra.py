@@ -259,22 +259,28 @@ def batch_generate_philip_input_files(
     # Assemble the files
     #-----------------------------------------------------
     for i in range(0,n_file_paths):
-        #-----------------------------------------------------
-        # Get DOF variables
-        #-----------------------------------------------------
-        nElements,nQuadPoints_per_element,nQuadPoints,nDOF,reduced_nQuadPoints,reduced_nDOF = get_DOF_vars(nElements_per_direction[i],poly_degree[i])
-
-        input_vel_field_filename_=file_path[i]+"velocity_vorticity-1_reordered_gll_nodes.dat"
+        # loop for multiple prefixes per path
+        n_prefixes = n_different_files_in_path[i]
         print("Generating for path: %s" % file_path[i])
-        
-        generate_philip_input_files(
-            nElements_per_direction[i],
-            nQuadPoints_per_element,
-            6,
-            nDOF,
-            8,
-            output_dir=file_path[i],
-            input_vel_field_filename=input_vel_field_filename_)
+        for j in range(0,n_prefixes):
+            #-----------------------------------------------------
+            # Get DOF variables
+            #-----------------------------------------------------
+            nElements,nQuadPoints_per_element,nQuadPoints,nDOF,reduced_nQuadPoints,reduced_nDOF = get_DOF_vars(nElements_per_direction[i],poly_degree[i])
+
+            input_vel_field_filename_=file_path[i]+"velocity_vorticity-"+str(j)+"_reordered_gll_nodes.dat"
+            print(" - Generating for prefix: %s" % j)
+            
+            generate_philip_input_files(
+                nElements_per_direction[i],
+                nQuadPoints_per_element,
+                6,# nValues_per_row
+                nDOF,
+                8,# number of processors to output to
+                output_dir=file_path[i],
+                input_vel_field_filename=input_vel_field_filename_,
+                prefix_string=str(j))
+            print(" - done.")
         print("done.")
             
     return
