@@ -81,6 +81,7 @@ vermeire_spectra_p2_96dofs = np.loadtxt("./data/vermeire2016_ref_data/P2.dat",dt
 vermeire_spectra_p3_84dofs = np.loadtxt("./data/vermeire2016_ref_data/P3.dat",dtype=np.float64)
 vermeire_spectra_p4_80dofs = np.loadtxt("./data/vermeire2016_ref_data/P4.dat",dtype=np.float64)
 vermeire_spectra_p5_78dofs = np.loadtxt("./data/vermeire2016_ref_data/P5.dat",dtype=np.float64)
+fds_spectra = np.loadtxt("./data/jefferson-loveday_tucker_2010_ref_data/fds_t2_spectra.dat",dtype=np.float64)
 
 # # =====================================================
 # # 24 DOF
