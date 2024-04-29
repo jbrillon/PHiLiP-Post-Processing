@@ -83,6 +83,7 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
             vertical_lines_input.append(0.5*16)
             vertical_lines_input.append(0.5*32)
             vertical_lines_input.append(0.5*32*2)
+            vertical_lines_input.append(0.5*32*7)
             # vertical_lines_input.append(0.5*nDOF_)
     # vertical_lines_input.append(0.5*40)
     # vertical_lines_input.append(0.5*80)
@@ -206,13 +207,13 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
         nlegendcols=1,
         # xlimits=[2e0,7e1],ylimits=[2.45e-5,3e-2],
         # xlimits=[2.0e0,0.5*effective_nDOF],ylimits=[3.0e-7,5e-2],
-        xlimits=[2.0e0,7e1],ylimits=[3.0e-7,5e-2],
+        xlimits=[2.0e0,112],ylimits=[4.0e-7,5e-2],
         markers=False,legend_on=True,legend_labels_tex=labels,
         which_lines_black=which_lines_black,
         transparent_legend=True,legend_border_on=False,grid_lines_on=False,
         clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
         legend_fontSize=legend_fontSize_input,
-        # legend_location="upper left",
+        legend_location="lower left",
         # legend_anchor=[0.0,0.45]
         # which_lines_only_markers=[1,2,3],
         which_lines_dashed=which_lines_dashed,
@@ -247,22 +248,30 @@ if(True):
     "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
     "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
     "NarvalFiles/2023_JCP/filtered_dns_viscous_tgv/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_filtered_dns_dofs096_p2_procs1024/", \
+    "NarvalFiles/2023_JCP/filtered_dns_viscous_tgv/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_filtered_dns_dofs096_p2_procs1024_oversampled_nquad6/", \
+    "NarvalFiles/2023_JCP/filtered_dns_viscous_tgv/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_filtered_dns_dofs096_p2_procs1024_oversampled_nquad9/", \
+    "NarvalFiles/2023_JCP/filtered_dns_viscous_tgv/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_filtered_dns_dofs096_p2_procs1024_oversampled_nquad12/", \
+    # "NarvalFiles/2023_JCP/verification_tke_fix/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024_3refinements/",\
     # "NarvalFiles/2023_JCP/upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-LxF_GL_OI-0_dofs096_p5_procs512/", \
     # "NarvalFiles/2023_JCP/spectra_fix/upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-LxF_GL_OI-0_dofs096_p5_procs512/", \
     ]
     batch_labels = [ \
     "DNS oversampled",\
     "$c_{DG}$ NSFR.IR-GL",\
-    "$c_{DG}$ NSFR.IR-GL oversampled",\
+    "$c_{DG}$ NSFR.IR-GL oversampled $n_{quad}=2(P+1)$",\
     "filtered DNS",\
+    "filtered DNS oversampled $n_{quad}=2(P+1)$",\
+    "filtered DNS oversampled $n_{quad}=3(P+1)$",\
+    "filtered DNS oversampled $n_{quad}=4(P+1)$",\
+    # "DNS 3 times oversampled",\
     # "LxF",\
     # "LxF oversampled",\
     ]
-    lnstl_input=['solid','solid','solid','solid','solid','solid','solid','dashed']
+    lnstl_input=['solid','solid','solid','solid','solid','solid','solid','solid','solid','dashed']
     batch_plot_spectra(96,"p5_flux_nodes_original",batch_paths,batch_labels,
         solid_and_dashed_lines=False,title_off=title_off_input,
         figure_directory=fig_dir_input,lnstl_input_store=lnstl_input,
-        plot_PHiLiP_DNS_result_as_reference=True,
+        plot_PHiLiP_DNS_result_as_reference=False,
         plot_zoomed_section=False,plot_cutoff_wavenumber_asymptote=True,effective_nDOF=80)
 
     exit()
