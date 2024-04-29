@@ -8,3 +8,4 @@ __pycache__/
 *.txt
 *.dat
 *.pdf
+*.out
