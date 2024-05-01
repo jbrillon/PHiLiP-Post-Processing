@@ -38,7 +38,68 @@ def append_to_plot(x_,y_,label_):
     global x,y,labels
     labels.append(label_);x.append(x_);y.append(y_)
 #-----------------------------------------------------
+def get_dissipation_discrete(time,kinetic_energy,smoothing=False):
+    if(smoothing):
+        # smoothing if noisy
+        dissipation_rate_val = splrep(time,kinetic_energy,k=5,s=0.0000001)
+        dissipation_rate_val = -splev(time,dissipation_rate_val,der=1)
+        return dissipation_rate_val
+    else:
+        dissipation_rate_val = -np.gradient(kinetic_energy,time)
+        return dissipation_rate_val
 #=====================================================
+
+'''
+filename=filesystem+"NarvalFiles/2023_JCP/DHIT/viscous_DHIT_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs128_p3_CFL-0.2_procs512/turbulent_quantities.txt"
+time, kinetic_energy, enstrophy, vorticity_based_dissipation, pressure_dilatation_based_dissipation, strain_rate_based_dissipation, deviatoric_strain_rate_based_dissipation = np.loadtxt(filename,skiprows=1,dtype=np.float64,unpack=True)
+
+# normalized_kinetic_energy = kinetic_energy/kinetic_energy[0]
+normalized_kinetic_energy=get_dissipation_discrete(time,kinetic_energy,smoothing=False)
+labels=[]
+xdata=[]
+ydata=[]
+xdata.append(time)
+ydata.append(normalized_kinetic_energy)
+# ydata.append(kinetic_energy)
+labels.append("NSFR")
+
+# compute reference curve 1
+index_of_reference_curve = 1
+x_ref_curve = np.linspace(time[0],time[-1],100)
+order_for_ref_curve = -1.2
+ref_curve_label = "$\\left(t^{*}\\right)^{-1.2}$"
+shift = 1.0
+y_ref_curve = (x_ref_curve**(order_for_ref_curve))/np.exp(shift)
+# clr_input_store.insert(index_of_reference_curve,"k")#"tab:gray"
+# lnstl_input_store.insert(index_of_reference_curve,"dotted")
+
+# xdata.append(x_ref_curve)
+# ydata.append(y_ref_curve)
+# labels.append(ref_curve_label)
+
+title_label = "DHIT, $128^{3}$ DOF, P3, $c_{DG}$ NSFR.IR-GLL, CFL$=0.2$"
+qp.plotfxn(xdata=xdata,ydata=ydata,
+    xlabel='Nondimensional Time, $t^{*}$',
+    ylabel='Nondimensional Kinetic Energy, $K^{*}$',
+    title_label=title_label,
+    fig_directory="figures",
+    figure_filename='kinetic_energy_vs_time',log_axes="both",figure_filetype="pdf",
+    # xlimits=[8e-1,3e2],ylimits=[1e-6,6e-1],
+    # xlimits=[0.0,2.0],
+    # xlimits=[np.amin(time),np.amax(time)],
+    # ylimits=[np.amin(normalized_kinetic_energy),np.amax(normalized_kinetic_energy)],
+    markers=False,
+    legend_on=True,legend_labels_tex=labels,
+    # which_lines_only_markers=[0],
+    which_lines_dashed=[1],
+    # nlegendcols=2,
+    transparent_legend=True,
+    legend_border_on=False,
+    grid_lines_on=False)
+
+exit()
+'''
+
 
 #=====================================================
 # Store reference spectras
@@ -81,7 +142,7 @@ vermeire_spectra_p2_96dofs = np.loadtxt("./data/vermeire2016_ref_data/P2.dat",dt
 vermeire_spectra_p3_84dofs = np.loadtxt("./data/vermeire2016_ref_data/P3.dat",dtype=np.float64)
 vermeire_spectra_p4_80dofs = np.loadtxt("./data/vermeire2016_ref_data/P4.dat",dtype=np.float64)
 vermeire_spectra_p5_78dofs = np.loadtxt("./data/vermeire2016_ref_data/P5.dat",dtype=np.float64)
-fds_spectra = np.loadtxt("./data/jefferson-loveday_tucker_2010_ref_data/fds_t2_spectra.dat",dtype=np.float64)
+fds_spectra = np.loadtxt("./data/jefferson-loveday_tucker_2010_ref_data/fds_t2_spectra.dat",skiprows=1,delimiter=",",dtype=np.float64)
 
 # # =====================================================
 # # 24 DOF
@@ -191,7 +252,7 @@ qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $k^{*}$",ylabel="N
 # =====================================================
 reinit_inputs()
 title_label = "DHIT, $128^{3}$ DOF, P3, $c_{DG}$ NSFR.IR-GLL, CFL$=0.2$"
-figure_filename = "spectra_128_no_smoothing"
+figure_filename = "spectra_128_no_smoothing_oversampled"
 
 # append_to_plot(input_spectra_to_f77_code[:,0],input_spectra_to_f77_code[:,1],"Input to f77 code")
 append_to_plot(cbc_spectra_t0[:,0],cbc_spectra_t0[:,1],"CBC $t^{*}=0$")
@@ -199,12 +260,21 @@ append_to_plot(cbc_spectra_t1[:,0],cbc_spectra_t1[:,1],"CBC $t^{*}=1$")
 append_to_plot(cbc_spectra_t2[:,0],cbc_spectra_t2[:,1],"CBC $t^{*}=2$")
 
 spectra = np.loadtxt(filesystem+"NarvalFiles/2023_JCP/DHIT/viscous_DHIT_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs128_p3_CFL-0.2_procs512/flow_field_files/velocity_vorticity-0_reordered_spectra.dat",skiprows=0,dtype=np.float64)
+append_to_plot(spectra[:,0],spectra[:,1],"$t^{*}=0$ before")
+
+spectra = np.loadtxt(filesystem+"NarvalFiles/2023_JCP/DHIT/viscous_DHIT_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs128_p3_CFL-0.2_procs512_oversampled_nquad8/flow_field_files/velocity_vorticity-0_reordered_spectra_no_smoothing.dat",skiprows=0,dtype=np.float64)
 append_to_plot(spectra[:,0],spectra[:,1],"$t^{*}=0$")
 
 spectra = np.loadtxt(filesystem+"NarvalFiles/2023_JCP/DHIT/viscous_DHIT_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs128_p3_CFL-0.2_procs512/flow_field_files/velocity_vorticity-2_reordered_spectra.dat",skiprows=0,dtype=np.float64)
+append_to_plot(spectra[:,0],spectra[:,1],"$t^{*}=1$ before")
+
+spectra = np.loadtxt(filesystem+"NarvalFiles/2023_JCP/DHIT/viscous_DHIT_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs128_p3_CFL-0.2_procs512_oversampled_nquad8/flow_field_files/velocity_vorticity-2_reordered_spectra_no_smoothing.dat",skiprows=0,dtype=np.float64)
 append_to_plot(spectra[:,0],spectra[:,1],"$t^{*}=1$")
 
 spectra = np.loadtxt(filesystem+"NarvalFiles/2023_JCP/DHIT/viscous_DHIT_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs128_p3_CFL-0.2_procs512/flow_field_files/velocity_vorticity-4_reordered_spectra.dat",skiprows=0,dtype=np.float64)
+append_to_plot(spectra[:,0],spectra[:,1],"$t^{*}=2$ before")
+
+spectra = np.loadtxt(filesystem+"NarvalFiles/2023_JCP/DHIT/viscous_DHIT_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs128_p3_CFL-0.2_procs512_oversampled_nquad8/flow_field_files/velocity_vorticity-4_reordered_spectra_no_smoothing.dat",skiprows=0,dtype=np.float64)
 append_to_plot(spectra[:,0],spectra[:,1],"$t^{*}=2$")
 
 qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $k^{*}$",ylabel="Nondimensional TKE Spectra, $E^{*}(k^{*},t^{*})$",
@@ -225,6 +295,8 @@ qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $k^{*}$",ylabel="N
     which_lines_only_markers=[0,1,2],
     which_lines_dashed=[0,1,2],
     nlegendcols=2)
+
+exit()
 
 # =====================================================
 # Comparison to Vermeire et al. 2016 at t=2
@@ -273,6 +345,31 @@ qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $k^{*}$",ylabel="N
     nlegendcols=2,
     transparent_legend=True,
     legend_border_on=False,grid_lines_on=False)
+
+# qp.plotfxn(xdata=time_store,#[time,time],
+#             ydata=kinetic_energy_store,#[kinetic_energy,kolmogorov_slope],
+#                 ylabel='Nondimensional Kinetic Energy, $K^{*}$',#=\\frac{1}{\\rho_{\\infty}V_{\\infty}^{2}|\\Omega|}\\int_{\\Omega}\\rho(u\\cdot\\u)d\\Omega$',
+#                 xlabel='Nondimensional Time, $t^{*}$',
+#                 figure_filename=,
+#                 title_label=figure_title,
+#                 markers=False,
+#                 legend_labels_tex=labels_store,
+#                 black_lines=False,
+#                 xlimits=[0,tmax],
+#                 ylimits=[0.0,0.14],
+#                 log_axes=log_axes_input,
+#                 which_lines_black=which_lines_black_input,
+#                 which_lines_dashed=which_lines_dashed_input,
+#                 legend_on=legend_on_input,
+#                 legend_inside=legend_inside_input,
+#                 nlegendcols=nlegendcols_input,
+#                 figure_size=(6,6),
+#                 transparent_legend=True,#transparent_legend_input,
+#                 legend_border_on=False,
+#                 grid_lines_on=False,
+#                 clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
+#                 legend_fontSize=legend_fontSize_input,
+#                 legend_location="lower left")#,
 
 exit()
 # =====================================================
