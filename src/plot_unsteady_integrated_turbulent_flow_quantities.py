@@ -178,7 +178,7 @@ def plot_periodic_turbulence(
         if(lnstl_input!=[]):
             lnstl_input_store.append('solid') # supported values are '-', '--', '-.', ':', 'None', ' ', '', 'solid', 'dashed', 'dashdot', 'dotted'
     if(plot_filtered_dns):
-        labels_store.append("Filtered DNS, $96^3$ P$2$")
+        labels_store.append("Projected DNS ($96^3$ DOFs, P$2$)")
         path_to_reference_result=CURRENT_PATH+"../cases/taylor_green_vortex/data/brillon/filtered_dns"
         filename=path_to_reference_result+"/"+"turbulent_quantities_96dofs_p2"+".txt"
         time, kinetic_energy, enstrophy, vorticity_based_dissipation, pressure_dilatation_based_dissipation, strain_rate_based_dissipation, deviatoric_strain_rate_based_dissipation = np.loadtxt(filename,skiprows=1,dtype=np.float64,unpack=True)
