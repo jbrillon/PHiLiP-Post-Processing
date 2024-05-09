@@ -31,18 +31,24 @@ elif platform == "darwin":
 # Helper functions
 #=====================================================
 #-----------------------------------------------------
-def get_cutoff_wavenumber(poly_degree,number_of_elements_per_direction):
+def get_grid_cutoff_wavenumber(number_of_elements_per_direction):
+    grid_cutoff_wavenumber = 0.5*number_of_elements_per_direction
+    return grid_cutoff_wavenumber
+#-----------------------------------------------------
+def get_cutoff_wavenumber(poly_degree,number_of_elements_per_direction,truncate_spectra_at_effective_DOFs):
     nDOF = (poly_degree+1)*number_of_elements_per_direction
     effective_nDOF = (poly_degree)*number_of_elements_per_direction
     cutoff_wavenumber = 0.5*effective_nDOF
+    if(truncate_spectra_at_effective_DOFs==False):
+        cutoff_wavenumber = 0.5*nDOF
     return cutoff_wavenumber
 #-----------------------------------------------------
 def get_truncated_spectra_from_cutoff_wavenumber_and_spectra(spectra, cutoff_wavenumber):
     idx = (np.abs(spectra[:,0] - cutoff_wavenumber)).argmin()
     return spectra[:(idx+1),:]
 #-----------------------------------------------------
-def get_truncated_spectra_from_DOFs_information(spectra, poly_degree, number_of_elements_per_direction):
-    cutoff_wavenumber = get_cutoff_wavenumber(poly_degree,number_of_elements_per_direction)
+def get_truncated_spectra_from_DOFs_information(spectra, poly_degree, number_of_elements_per_direction,truncate_spectra_at_effective_DOFs):
+    cutoff_wavenumber = get_cutoff_wavenumber(poly_degree,number_of_elements_per_direction,truncate_spectra_at_effective_DOFs)
     idx = (np.abs(spectra[:,0] - cutoff_wavenumber)).argmin()
     return spectra[:(idx+1),:]
 #-----------------------------------------------------
@@ -50,13 +56,13 @@ def append_to_plot(x_,y_,label_):
     global x,y,labels
     labels.append(label_);x.append(x_);y.append(y_)
 #-----------------------------------------------------
-def batch_append_to_plot(paths_,labels_,filename,list_of_poly_degree_,list_of_number_of_elements_per_direction_):
+def batch_append_to_plot(paths_,labels_,filename,list_of_poly_degree_,list_of_number_of_elements_per_direction_,truncate_spectra_at_effective_DOFs):
     global x,y,labels
     for i,path in enumerate(paths_):
         spectra_ = np.loadtxt(filesystem+path+filename)
         poly_degree = list_of_poly_degree_[i]
         number_of_elements_per_direction = list_of_number_of_elements_per_direction_[i]
-        spectra = get_truncated_spectra_from_DOFs_information(spectra_, poly_degree, number_of_elements_per_direction)
+        spectra = get_truncated_spectra_from_DOFs_information(spectra_, poly_degree, number_of_elements_per_direction,truncate_spectra_at_effective_DOFs)
         # spectra = 1.0*spectra_ # uncomment for no truncation
         append_to_plot(spectra[:,0],spectra[:,1],labels_[i])
 #-----------------------------------------------------
@@ -66,7 +72,6 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
     title_off=False,
     figure_directory="figures",
     legend_fontSize_input=14,
-    lnstl_input_store=['solid','solid','solid','solid','solid','solid','solid','solid','solid','solid'],
     plot_PHiLiP_DNS_result_as_reference=False,
     plot_reference_result=True,
     plot_filtered_dns=False,
@@ -76,9 +81,9 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
     x_limits_zoom=[25, 55],
     y_limits_zoom=[6.0e-5, 2.0e-4],
     plot_cutoff_wavenumber_asymptote=False,
-    effective_nDOF=0,
     list_of_poly_degree_input=[],
-    list_of_number_of_elements_per_direction_input=[]):
+    list_of_number_of_elements_per_direction_input=[],
+    truncate_spectra_at_effective_DOFs=True): # Modify this here
     # TO DO: Move this function to its own file
     global x,y,labels
     x=[];y=[];labels=[];
@@ -93,22 +98,26 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
     else:
         clr_input_store = ['tab:blue','tab:red','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
         mrkr_input_store = []
-        # lnstl_input_store = []
+        lnstl_input_store = ['solid','solid','solid','solid','solid','solid','solid','solid','solid','solid']
 
-    vertical_lines_input = []
+    cutoff_wavenumber_store = []
+    grid_cutoff_wavenumber_store = []
     if(plot_cutoff_wavenumber_asymptote):
-        if(nDOF_!="all"):
-            # vertical_lines_input.append(0.5*nDOF_)
-            number_of_elements_per_direction = nDOF_ - effective_nDOF
-            # vertical_lines_input.append(0.5*number_of_elements_per_direction)
-            vertical_lines_input.append(0.5*effective_nDOF)
-            vertical_lines_input.append(0.5*16)
-            vertical_lines_input.append(0.5*32)
-            vertical_lines_input.append(0.5*32*2)
-            vertical_lines_input.append(0.5*32*7)
-            # vertical_lines_input.append(0.5*nDOF_)
-    # vertical_lines_input.append(0.5*40)
-    # vertical_lines_input.append(0.5*80)
+        cutoff_wavenumber_store = []
+        grid_cutoff_wavenumber_store = []
+        if(list_of_poly_degree_input==[] or list_of_number_of_elements_per_direction_input==[]):
+            print("ERROR: list_of_poly_degree_input or list_of_number_of_elements_per_direction_input is empty with plot_cutoff_wavenumber_asymptote==True.")
+            print("Aborting...")
+            exit()
+        for i,poly_degree in enumerate(list_of_poly_degree_input):
+            number_of_elements_per_direction = list_of_number_of_elements_per_direction_input[i]
+            cutoff_wavenumber = get_cutoff_wavenumber(poly_degree,number_of_elements_per_direction,True) # True for effective DOFs
+            grid_cutoff_wavenumber = get_grid_cutoff_wavenumber(number_of_elements_per_direction)
+            if((cutoff_wavenumber in cutoff_wavenumber_store)==False):
+                cutoff_wavenumber_store.append(cutoff_wavenumber)
+            if((grid_cutoff_wavenumber in grid_cutoff_wavenumber_store)==False):
+                grid_cutoff_wavenumber_store.append(grid_cutoff_wavenumber)
+
     if(nDOF_=="all"):
         title_label = "TKE Spectra at $t^{*}=8.0$"
     else:
@@ -206,7 +215,8 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
     #     plot_zoomed_section=plot_zoomed_section,
     #     x_limits_zoom=x_limits_zoom,y_limits_zoom=y_limits_zoom,
     #     zoom_box_origin_and_extent=[0.65, 0.65, 0.32, 0.32],
-    #     vertical_lines=vertical_lines_input
+    #     vertical_lines=cutoff_wavenumber_store,
+    #     secondary_vertical_lines=grid_cutoff_wavenumber_store
     #     )
 
     if(nDOF_=="all"):
@@ -234,7 +244,7 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
         filepath_to_reference_result=CURRENT_PATH+"data/brillon/flow_field_files/velocity_vorticity_p7_dofs256_projected_to_p2_dofs096-1_reordered_spectra_oversampled_nquad12.dat"
         spectra_ = np.loadtxt(filepath_to_reference_result)
         # spectra = get_truncated_spectra_from_DOFs_information(spectra_, 2, 32)
-        spectra = get_truncated_spectra_from_DOFs_information(spectra_, 5, 16) # to match cut-off for 96P5
+        spectra = get_truncated_spectra_from_DOFs_information(spectra_, 5, 16, truncate_spectra_at_effective_DOFs) # to match cut-off for 96P5
         append_to_plot(spectra[:,0],spectra[:,1],"Projected DNS ($96^3$ DOFs, P$2$)")
         # clr_input_store.insert(i_curve,"k")
         # which_lines_black.append(i_curve)
@@ -247,7 +257,7 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
     # same as above
     batch_append_to_plot(batch_paths, batch_labels, 
         "flow_field_files/velocity_vorticity-1_reordered_spectra_no_smoothing.dat",
-        list_of_poly_degree_input, list_of_number_of_elements_per_direction_input)
+        list_of_poly_degree_input, list_of_number_of_elements_per_direction_input,truncate_spectra_at_effective_DOFs)
     # adjust the reference curve shift
     shift = 2.2
     y_ref_curve = (x_ref_curve**(order_for_ref_curve))/np.exp(shift)
@@ -261,7 +271,6 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
         fig_directory=figure_directory,figure_filename=figure_filename,log_axes="both",figure_filetype="pdf",
         nlegendcols=1,
         # xlimits=[2e0,7e1],ylimits=[2.45e-5,3e-2],
-        # xlimits=[2.0e0,0.5*effective_nDOF],ylimits=[3.0e-7,5e-2],
         xlimits=[2.0e0,112],ylimits=[4.0e-7,5e-2],
         markers=False,legend_on=True,legend_labels_tex=labels,
         which_lines_black=which_lines_black,
@@ -271,11 +280,12 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
         legend_location="lower left",
         # legend_anchor=[0.0,0.45]
         # which_lines_only_markers=[1,2,3],
-        which_lines_dashed=which_lines_dashed,
+        # which_lines_dashed=which_lines_dashed,
         plot_zoomed_section=plot_zoomed_section,
         x_limits_zoom=x_limits_zoom,y_limits_zoom=y_limits_zoom,
         zoom_box_origin_and_extent=[0.65, 0.65, 0.32, 0.32],
-        vertical_lines=vertical_lines_input
+        vertical_lines=cutoff_wavenumber_store,
+        secondary_vertical_lines=grid_cutoff_wavenumber_store
         )
     
     return
@@ -285,6 +295,7 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
 #=====================================================
 global x,y,labels
 x=[];y=[];labels=[];
+regenerate_all_plots=True
 title_off_input=True
 # fig_dir_input="figures"
 # fig_dir_input="/Users/Julien/julien_phd/presentations/slides/wip_paper/20221205-AIAA/figures"
@@ -299,7 +310,7 @@ fig_dir_input="./figures/2023_JCP/oversampled_spectra"
 # =====================================================
 
 # =====================================================
-if(False):
+if(False or regenerate_all_plots):
     batch_paths = [ \
     "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
     "NarvalFiles/2023_JCP/spectra_fix/high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs064_p7_procs512/",\
@@ -318,14 +329,14 @@ if(False):
     batch_plot_spectra("all","cDG_NSFR_convergence",batch_paths,batch_labels,
         solid_and_dashed_lines=False,
         title_off=title_off_input,figure_directory=fig_dir_input,
-        plot_cutoff_wavenumber_asymptote=False,
+        plot_cutoff_wavenumber_asymptote=True,
         plot_PHiLiP_DNS_result_as_reference=True,
         plot_filtered_dns=True,
         list_of_poly_degree_input=list_of_poly_degree,
         list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
 
 # =====================================================
-if(False):
+if(False or regenerate_all_plots):
     batch_paths = [ \
     "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
     "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512/",\
@@ -348,14 +359,14 @@ if(False):
     batch_plot_spectra("all","convergence_comparison",batch_paths,batch_labels,
         solid_and_dashed_lines=True,
         title_off=title_off_input,figure_directory=fig_dir_input,
-        plot_cutoff_wavenumber_asymptote=False,
+        plot_cutoff_wavenumber_asymptote=True,
         plot_PHiLiP_DNS_result_as_reference=True,
         plot_filtered_dns=True,
         list_of_poly_degree_input=list_of_poly_degree,
         list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
 
 # =====================================================
-if(False):
+if(False or regenerate_all_plots):
     batch_paths = [ \
     "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
     "NarvalFiles/2023_JCP/spectra_fix/over_integration/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-3_dofs096_p5_procs512/",\
@@ -376,7 +387,7 @@ if(False):
     batch_plot_spectra(96,"OI_stability_GL",batch_paths,batch_labels,
         solid_and_dashed_lines=False,
         title_off=title_off_input,figure_directory=fig_dir_input,
-        plot_cutoff_wavenumber_asymptote=False,
+        plot_cutoff_wavenumber_asymptote=True,
         plot_PHiLiP_DNS_result_as_reference=True,
         plot_filtered_dns=True,
         which_lines_dashed=[4],
@@ -384,7 +395,7 @@ if(False):
         list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
 
 # =====================================================
-if(False):
+if(False or regenerate_all_plots):
     batch_paths = [ \
     "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512/",\
     "NarvalFiles/2023_JCP/spectra_fix/filter_width_stabilization/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-0_dofs096_p5_procs512/",\
@@ -403,7 +414,7 @@ if(False):
     batch_plot_spectra(96,"sDG_with_and_without_OI_vs_NSFR",batch_paths,batch_labels,
         solid_and_dashed_lines=False,
         title_off=title_off_input,figure_directory=fig_dir_input,
-        plot_cutoff_wavenumber_asymptote=False,
+        plot_cutoff_wavenumber_asymptote=True,
         plot_PHiLiP_DNS_result_as_reference=True,
         plot_filtered_dns=True,
         which_lines_dashed=[],
@@ -411,7 +422,7 @@ if(False):
         list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
 
 # =====================================================
-if(False):
+if(False or regenerate_all_plots):
     batch_paths = [ \
     "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
     "NarvalFiles/2023_JCP/spectra_fix/correction_parameter/viscous_TGV_ILES_NSFR_cSD_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
@@ -430,7 +441,7 @@ if(False):
     batch_plot_spectra(96,"p5_correction_parameter",batch_paths,batch_labels,
         solid_and_dashed_lines=False,
         title_off=title_off_input,figure_directory=fig_dir_input,
-        plot_cutoff_wavenumber_asymptote=False,
+        plot_cutoff_wavenumber_asymptote=True,
         plot_PHiLiP_DNS_result_as_reference=True,
         plot_filtered_dns=True,
         which_lines_dashed=[],
@@ -438,9 +449,38 @@ if(False):
         list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
 
 # =====================================================
-# MISSING FIG 11
+if(False or regenerate_all_plots):
+    batch_paths = [ \
+    "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
+    "NarvalFiles/2023_JCP/spectra_fix/time_step_advantage_with_physical_check/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.26_procs512/",\
+    "NarvalFiles/2023_JCP/spectra_fix/correction_parameter/viscous_TGV_ILES_NSFR_cPlus_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
+    "NarvalFiles/2023_JCP/spectra_fix/time_step_advantage_with_physical_check/viscous_TGV_ILES_NSFR_cPlus_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.36_procs512/",\
+    "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512/",\
+    "NarvalFiles/2023_JCP/spectra_fix/time_step_advantage_strong_DG/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_CFL-0.14_procs512/",\
+    ] 
+    batch_labels = [ \
+    "$c_{DG}$: CFL=$0.10$",\
+    "$c_{DG}$: CFL=$0.26$",\
+    "$c_{+}$: CFL=$0.10$",\
+    "$c_{+}$: CFL=$0.36$",\
+    "sDG: CFL=$0.10$",\
+    "sDG: CFL=$0.14$",\
+    ]
+    list_of_poly_degree=[5,5,5,5,5,5]
+    list_of_number_of_elements_per_direction=[16,16,16,16,16,16]
+    
+    batch_plot_spectra(96,"p5_correction_parameter_cfl_advantage",batch_paths,batch_labels,
+        solid_and_dashed_lines=True,
+        title_off=title_off_input,figure_directory=fig_dir_input,
+        plot_cutoff_wavenumber_asymptote=True,
+        plot_PHiLiP_DNS_result_as_reference=True,
+        plot_filtered_dns=True,
+        which_lines_dashed=[],
+        list_of_poly_degree_input=list_of_poly_degree,
+        list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
+
 # =====================================================
-if(False):
+if(False or regenerate_all_plots):
     batch_paths = [ \
     "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512/",\
     "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
@@ -461,16 +501,41 @@ if(False):
     batch_plot_spectra(96,"p5_flux_nodes",batch_paths,batch_labels,
         solid_and_dashed_lines=False,
         title_off=title_off_input,figure_directory=fig_dir_input,
-        plot_cutoff_wavenumber_asymptote=False,
+        plot_cutoff_wavenumber_asymptote=True,
         plot_PHiLiP_DNS_result_as_reference=True,
         plot_filtered_dns=True,
         which_lines_dashed=[5],
         list_of_poly_degree_input=list_of_poly_degree,
         list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
+
 # =====================================================
-# MISSING FIG 14
+if(False or regenerate_all_plots):
+    batch_paths = [ \
+    "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/spectra_fix/two_point_flux/viscous_TGV_ILES_NSFR_cDG_KG_2PF_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/spectra_fix/two_point_flux/viscous_TGV_ILES_NSFR_cDG_CH_2PF_GL_OI-0_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/spectra_fix/two_point_flux/viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GL_OI-0_dofs096_p5_procs512/", \
+    ]
+    batch_labels = [ \
+    "$c_{DG}$ NSFR.IR-GL", \
+    "$c_{DG}$ NSFR.KG-GL", \
+    "$c_{DG}$ NSFR.CH-GL", \
+    "$c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$-GL", \
+    ]
+    list_of_poly_degree=[5,5,5,5]
+    list_of_number_of_elements_per_direction=[16,16,16,16]
+    
+    batch_plot_spectra(96,"p5_two_point_flux",batch_paths,batch_labels,
+        solid_and_dashed_lines=False,
+        title_off=title_off_input,figure_directory=fig_dir_input,
+        plot_cutoff_wavenumber_asymptote=True,
+        plot_PHiLiP_DNS_result_as_reference=True,
+        plot_filtered_dns=True,
+        which_lines_dashed=[],
+        list_of_poly_degree_input=list_of_poly_degree,
+        list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
 # =====================================================
-if(False):
+if(False or regenerate_all_plots):
     batch_paths = [ \
     "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
     "NarvalFiles/2023_JCP/spectra_fix/upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-LxF_GL_OI-0_dofs096_p5_procs512/", \
@@ -489,7 +554,7 @@ if(False):
     batch_plot_spectra(96,"p5_upwind_gl",batch_paths,batch_labels,
         solid_and_dashed_lines=False,
         title_off=title_off_input,figure_directory=fig_dir_input,
-        plot_cutoff_wavenumber_asymptote=False,
+        plot_cutoff_wavenumber_asymptote=True,
         plot_PHiLiP_DNS_result_as_reference=True,
         plot_filtered_dns=True,
         which_lines_dashed=[],
@@ -497,7 +562,7 @@ if(False):
         list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
 
 # =====================================================
-if(False):
+if(False or regenerate_all_plots):
     batch_paths = [ \
     "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
     "NarvalFiles/2023_JCP/spectra_fix/sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512/",\
@@ -520,7 +585,7 @@ if(False):
     batch_plot_spectra(96,"p5_selected_sgs_models_gl",batch_paths,batch_labels,
         solid_and_dashed_lines=False,
         title_off=title_off_input,figure_directory=fig_dir_input,
-        plot_cutoff_wavenumber_asymptote=False,
+        plot_cutoff_wavenumber_asymptote=True,
         plot_PHiLiP_DNS_result_as_reference=True,
         plot_filtered_dns=True,
         which_lines_dashed=[],
@@ -528,13 +593,13 @@ if(False):
         list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
 
 # =====================================================
-if(True):
+if(True or regenerate_all_plots):
     batch_paths = [ \
-    "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GLL_OI-6_dofs096_p5_procs512/", \
+    # "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GLL_OI-6_dofs096_p5_procs512/", \
     "NarvalFiles/2023_JCP/spectra_fix/sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SI.SMAG.LRNC_MC-0.10_strong_DG_Roe_GLL_OI-0_dofs096_p5_CFL-0.1_procs512/", \
     ]
     batch_labels = [ \
-    "sDG-GLL-OI", \
+    # "sDG-GLL-OI", \
     "sDG-GLL-HPF.SI.SM", \
     ]
     list_of_poly_degree=[5,5]
@@ -543,7 +608,7 @@ if(True):
     batch_plot_spectra(96,"sDG_gll_sgs_model_stabilization",batch_paths,batch_labels,
         solid_and_dashed_lines=False,
         title_off=title_off_input,figure_directory=fig_dir_input,
-        plot_cutoff_wavenumber_asymptote=False,
+        plot_cutoff_wavenumber_asymptote=True,
         plot_PHiLiP_DNS_result_as_reference=True,
         plot_filtered_dns=True,
         which_lines_dashed=[],
