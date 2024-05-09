@@ -78,8 +78,8 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
     title_postfix_input="",
     plot_zoomed_section=False,
     which_lines_dashed=[],
-    x_limits_zoom=[25, 55],
-    y_limits_zoom=[6.0e-5, 2.0e-4],
+    x_limits_zoom_input=[],
+    y_limits_zoom_input=[],
     plot_cutoff_wavenumber_asymptote=False,
     list_of_poly_degree_input=[],
     list_of_number_of_elements_per_direction_input=[],
@@ -175,15 +175,20 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
 
     # add reference curve
     # append_to_plot(x_ref_curve,y_ref_curve,ref_curve_label)
-    # if(nDOF_==256):
-    #     x_limits_zoom=[30, 60]
-    #     y_limits_zoom=[1.0e-4, 3.0e-4]
-    # elif(nDOF_==96):
-    #     x_limits_zoom=[25, 50]
-    #     y_limits_zoom=[6.0e-5, 2.0e-4]
-    # elif(nDOF_=="all"):
-    #     x_limits_zoom=[30, 60]
-    #     y_limits_zoom=[1.0e-4, 3.0e-4]
+    if(nDOF_==256):
+        x_limits_zoom=[30, 60]
+        y_limits_zoom=[1.0e-4, 3.0e-4]
+    elif(nDOF_==96):
+        x_limits_zoom=[20, 40]
+        y_limits_zoom=[3.5e-5, 5.0e-4]
+    elif(nDOF_=="all"):
+        x_limits_zoom=[30, 60]
+        y_limits_zoom=[1.0e-4, 3.0e-4]
+    # set manually if desired
+    if(x_limits_zoom_input!=[]):
+       x_limits_zoom=x_limits_zoom_input
+    if(y_limits_zoom_input!=[]):
+       y_limits_zoom=y_limits_zoom_input
 
     if(title_off):
         title_label = " "
@@ -234,7 +239,7 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
     if(plot_PHiLiP_DNS_result_as_reference):
         filepath_to_reference_result=CURRENT_PATH+"data/brillon/flow_field_files/velocity_vorticity_p7_dofs256-1_reordered_spectra_oversampled_nquad16.dat"
         spectra = np.loadtxt(filepath_to_reference_result)
-        append_to_plot(spectra[:,0],spectra[:,1],"DNS ($256^3$ DOFs, P$7$)")
+        append_to_plot(spectra[:,0],spectra[:,1],"DNS ($256^{3}$p$7$)")
         i_curve += 1
     elif(plot_reference_result):
         spectra = np.loadtxt(CURRENT_PATH+"data/carton2014_dns_spectra_t9.txt",skiprows=1,delimiter=',')
@@ -245,7 +250,7 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
         spectra_ = np.loadtxt(filepath_to_reference_result)
         # spectra = get_truncated_spectra_from_DOFs_information(spectra_, 2, 32)
         spectra = get_truncated_spectra_from_DOFs_information(spectra_, 5, 16, truncate_spectra_at_effective_DOFs) # to match cut-off for 96P5
-        append_to_plot(spectra[:,0],spectra[:,1],"Projected DNS ($96^3$ DOFs, P$2$)")
+        append_to_plot(spectra[:,0],spectra[:,1],"Projected DNS ($96^{3}$p$2$)")
         # clr_input_store.insert(i_curve,"k")
         # which_lines_black.append(i_curve)
         # mrkr_input_store.insert(i_curve,'None')
@@ -274,7 +279,7 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
         xlimits=[2.0e0,112],ylimits=[4.0e-7,5e-2],
         markers=False,legend_on=True,legend_labels_tex=labels,
         which_lines_black=which_lines_black,
-        transparent_legend=True,legend_border_on=False,grid_lines_on=False,
+        transparent_legend=False,legend_border_on=False,grid_lines_on=False,
         clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
         legend_fontSize=legend_fontSize_input,
         legend_location="lower left",
@@ -295,7 +300,7 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
 #=====================================================
 global x,y,labels
 x=[];y=[];labels=[];
-regenerate_all_plots=True
+regenerate_all_plots=False
 title_off_input=True
 # fig_dir_input="figures"
 # fig_dir_input="/Users/Julien/julien_phd/presentations/slides/wip_paper/20221205-AIAA/figures"
@@ -318,10 +323,14 @@ if(False or regenerate_all_plots):
     "NarvalFiles/2023_JCP/spectra_fix/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs024_p5_procs16/",\
     ]
     batch_labels = [ \
-    "$96^{3}$ DOFs, P$5$", \
-    "$64^{3}$ DOFs, P$7$", \
-    "$48^{3}$ DOFs, P$5$",\
-    "$24^{3}$ DOFs, P$5$",\
+    # "$96^{3}$ DOFs, P$5$", \
+    # "$64^{3}$ DOFs, P$7$", \
+    # "$48^{3}$ DOFs, P$5$",\
+    # "$24^{3}$ DOFs, P$5$",\
+    "$96^{3}$p$5$", \
+    "$64^{3}$p$7$", \
+    "$48^{3}$p$5$",\
+    "$24^{3}$p$5$",\
     ]
     list_of_poly_degree=[5,7,5,5]
     list_of_number_of_elements_per_direction=[16,8,8,4]
@@ -346,12 +355,12 @@ if(False or regenerate_all_plots):
     "NarvalFiles/2023_JCP/spectra_fix/robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs048_p5_procs64/",\
     ]
     batch_labels = [ \
-    "$96^{3}$, P$5$, $c_{DG}$", \
-    "$96^{3}$, P$5$, sDG", \
-    "$64^{3}$, P$7$, $c_{DG}$", \
-    "$64^{3}$, P$7$, sDG", \
-    "$48^{3}$, P$5$, $c_{DG}$",\
-    "$48^{3}$, P$5$, sDG",\
+    "$96^{3}$p$5$, $c_{DG}$", \
+    "$96^{3}$p$5$, sDG", \
+    "$64^{3}$p$7$, $c_{DG}$", \
+    "$64^{3}$p$7$, sDG", \
+    "$48^{3}$p$5$, $c_{DG}$",\
+    "$48^{3}$p$5$, sDG",\
     ]
     list_of_poly_degree=[5,5,7,7,5,5]
     list_of_number_of_elements_per_direction=[16,16,8,8,8,8]
@@ -390,6 +399,7 @@ if(False or regenerate_all_plots):
         plot_cutoff_wavenumber_asymptote=True,
         plot_PHiLiP_DNS_result_as_reference=True,
         plot_filtered_dns=True,
+        plot_zoomed_section=True,
         which_lines_dashed=[4],
         list_of_poly_degree_input=list_of_poly_degree,
         list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
@@ -417,6 +427,7 @@ if(False or regenerate_all_plots):
         plot_cutoff_wavenumber_asymptote=True,
         plot_PHiLiP_DNS_result_as_reference=True,
         plot_filtered_dns=True,
+        plot_zoomed_section=True,
         which_lines_dashed=[],
         list_of_poly_degree_input=list_of_poly_degree,
         list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
@@ -444,6 +455,7 @@ if(False or regenerate_all_plots):
         plot_cutoff_wavenumber_asymptote=True,
         plot_PHiLiP_DNS_result_as_reference=True,
         plot_filtered_dns=True,
+        plot_zoomed_section=True,
         which_lines_dashed=[],
         list_of_poly_degree_input=list_of_poly_degree,
         list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
@@ -475,6 +487,7 @@ if(False or regenerate_all_plots):
         plot_cutoff_wavenumber_asymptote=True,
         plot_PHiLiP_DNS_result_as_reference=True,
         plot_filtered_dns=True,
+        plot_zoomed_section=True,
         which_lines_dashed=[],
         list_of_poly_degree_input=list_of_poly_degree,
         list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
@@ -504,6 +517,7 @@ if(False or regenerate_all_plots):
         plot_cutoff_wavenumber_asymptote=True,
         plot_PHiLiP_DNS_result_as_reference=True,
         plot_filtered_dns=True,
+        plot_zoomed_section=True,
         which_lines_dashed=[5],
         list_of_poly_degree_input=list_of_poly_degree,
         list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
@@ -535,7 +549,7 @@ if(False or regenerate_all_plots):
         list_of_poly_degree_input=list_of_poly_degree,
         list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
 # =====================================================
-if(False or regenerate_all_plots):
+if(True or regenerate_all_plots):
     batch_paths = [ \
     "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
     "NarvalFiles/2023_JCP/spectra_fix/upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-LxF_GL_OI-0_dofs096_p5_procs512/", \
@@ -543,7 +557,7 @@ if(False or regenerate_all_plots):
     "NarvalFiles/2023_JCP/spectra_fix/upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-L2R_GL_OI-0_dofs096_p5_procs512/", \
     ]
     batch_labels = [ \
-    "$c_{DG}$ NSFR.IR-GL", \
+    "No Upwinding", \
     "LxF", \
     "Roe", \
     "L$^2$Roe", \
@@ -557,6 +571,7 @@ if(False or regenerate_all_plots):
         plot_cutoff_wavenumber_asymptote=True,
         plot_PHiLiP_DNS_result_as_reference=True,
         plot_filtered_dns=True,
+        plot_zoomed_section=True,
         which_lines_dashed=[],
         list_of_poly_degree_input=list_of_poly_degree,
         list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
@@ -588,6 +603,8 @@ if(False or regenerate_all_plots):
         plot_cutoff_wavenumber_asymptote=True,
         plot_PHiLiP_DNS_result_as_reference=True,
         plot_filtered_dns=True,
+        plot_zoomed_section=True,
+        y_limits_zoom_input=[2.7e-5, 5.0e-4],
         which_lines_dashed=[],
         list_of_poly_degree_input=list_of_poly_degree,
         list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
@@ -595,11 +612,11 @@ if(False or regenerate_all_plots):
 # =====================================================
 if(True or regenerate_all_plots):
     batch_paths = [ \
-    # "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GLL_OI-6_dofs096_p5_procs512/", \
+    "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GLL_OI-6_dofs096_p5_procs512/", \
     "NarvalFiles/2023_JCP/spectra_fix/sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SI.SMAG.LRNC_MC-0.10_strong_DG_Roe_GLL_OI-0_dofs096_p5_CFL-0.1_procs512/", \
     ]
     batch_labels = [ \
-    # "sDG-GLL-OI", \
+    "sDG-GLL-OI", \
     "sDG-GLL-HPF.SI.SM", \
     ]
     list_of_poly_degree=[5,5]
@@ -611,6 +628,8 @@ if(True or regenerate_all_plots):
         plot_cutoff_wavenumber_asymptote=True,
         plot_PHiLiP_DNS_result_as_reference=True,
         plot_filtered_dns=True,
+        plot_zoomed_section=True,
+        y_limits_zoom_input=[4e-5, 5.0e-4],
         which_lines_dashed=[],
         list_of_poly_degree_input=list_of_poly_degree,
         list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
