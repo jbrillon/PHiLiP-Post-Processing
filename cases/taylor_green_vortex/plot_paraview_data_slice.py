@@ -42,7 +42,8 @@ def get_reference_result():
     return [x,y,w]
 
 def plot_vorticity_plane(path,filename_without_extension,file_extension,fig_directory,fig_prepre_fix,
-    subdivide=False,title_label=" ",fill_contour=False,plot_reference_result=False):
+    subdivide=False,title_label=" ",fill_contour=False,plot_reference_result=False,
+    shift_domain_by_minus_pi=False,plot_single_element_domain=False,nElements_per_direction=16):
     # TO DO: move this somewhere else eventually
     figure_filename = fig_prepre_fix+filename_without_extension
     if(subdivide):
@@ -59,6 +60,10 @@ def plot_vorticity_plane(path,filename_without_extension,file_extension,fig_dire
     # load data
     filename = path+filename_without_extension+"."+file_extension
     y,z,scalar = np.loadtxt(filename,unpack=True,dtype=np.float64)
+
+    if(shift_domain_by_minus_pi):
+        y = y-np.pi
+        z = z-np.pi
 
     X = y
     Y = z
@@ -115,8 +120,16 @@ def plot_vorticity_plane(path,filename_without_extension,file_extension,fig_dire
     # fig = plt.figure(figsize=(6,6))
     # plt.xlim([np.amin(X),np.amax(X)]) # if not provided
     # plt.ylim([np.amin(Y),np.amax(Y)]) # if not provided
-    plt.xlim([0.0,np.pi])
-    plt.ylim([-np.pi,0.0])
+    if(plot_single_element_domain):
+        element_edges = np.linspace(-np.pi,np.pi,nElements_per_direction)
+        x_edge_index = int(0.33*nElements_per_direction)
+        y_edge_index = int(0.75*nElements_per_direction)
+        plt.xlim([element_edges[x_edge_index],element_edges[x_edge_index+1]])
+        plt.ylim([element_edges[y_edge_index],element_edges[y_edge_index+1]])
+    else:
+        plt.xlim([0.0,np.pi])
+        plt.ylim([-np.pi,0.0])
+
     ax.set_xlabel(x_label,fontsize=axisTitle_FontSize)
     ax.set_ylabel(y_label,rotation=90,fontsize=axisTitle_FontSize)
     if(title_label!=" "):
@@ -172,7 +185,37 @@ def plot_vorticity_plane(path,filename_without_extension,file_extension,fig_dire
     print("---------------------------------------------")
     return
 
+# lets check the 96^3 DOFs P5 results
+paths=(
+filesystem+"NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/flow_field_files/",\
+filesystem+"NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/flow_field_files/",\
+)
+files_per_path=[2,2]
 
+file_extension="dat"
+n_paths=len(paths)
+
+fig_directory = "./figures/2023_JCP"
+labels_for_plot=[\
+    "$96^3$ P$5$ $c_{DG}$ NSFR.IR-GL",\
+    "Oversampled $96^3$ P$5$ $c_{DG}$ NSFR.IR-GL",\
+]
+fig_prepre_fix = [\
+    "new_96_p5_NSFR_cDG_IR_GL_",\
+    "new_96_p5_NSFR_cDG_IR_GL_oversampled_",\
+]
+shift_domain_by_minus_pi_store=[False,True]
+
+for i in range(0,n_paths):
+    for j in range(1,files_per_path[i]):
+            filename_without_extension = "velocity_vorticity-%i_reordered_slice_interface_averaged" % j
+            plot_title = labels_for_plot[i]
+            plot_vorticity_plane(paths[i],filename_without_extension,file_extension,fig_directory,fig_prepre_fix[i],
+                subdivide=False,title_label=plot_title,fill_contour=True,plot_reference_result=False,
+                shift_domain_by_minus_pi=shift_domain_by_minus_pi_store[i],
+                plot_single_element_domain=True)
+exit()
+# DNS STUFF FROM PAPER BELOW
 # output_solution_fixed_times_string = [0.0,4.0,5.0,8.0,9.0,10.0,12.0,15.0,16.0,20.0]
 
 # filename="/home/julien/NarvalFiles/2023_JCP/filtered_dns_viscous_tgv/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024/solution_files/vorticity_mag_slice_x0_plane_t_3_quadrant.txt"
