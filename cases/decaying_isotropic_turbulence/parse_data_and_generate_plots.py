@@ -49,12 +49,12 @@ def get_dissipation_discrete(time,kinetic_energy,smoothing=False):
         return dissipation_rate_val
 #=====================================================
 
-'''
+
 filename=filesystem+"NarvalFiles/2023_JCP/DHIT/viscous_DHIT_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs128_p3_CFL-0.2_procs512/turbulent_quantities.txt"
 time, kinetic_energy, enstrophy, vorticity_based_dissipation, pressure_dilatation_based_dissipation, strain_rate_based_dissipation, deviatoric_strain_rate_based_dissipation = np.loadtxt(filename,skiprows=1,dtype=np.float64,unpack=True)
 
-# normalized_kinetic_energy = kinetic_energy/kinetic_energy[0]
-normalized_kinetic_energy=get_dissipation_discrete(time,kinetic_energy,smoothing=False)
+normalized_kinetic_energy = kinetic_energy/kinetic_energy[0]
+# normalized_kinetic_energy=get_dissipation_discrete(time,kinetic_energy,smoothing=False)
 labels=[]
 xdata=[]
 ydata=[]
@@ -98,7 +98,62 @@ qp.plotfxn(xdata=xdata,ydata=ydata,
     grid_lines_on=False)
 
 exit()
-'''
+
+labels=[]
+xdata=[]
+ydata=[]
+xdata.append(time)
+ydata.append(enstrophy)
+# ydata.append(kinetic_energy)
+labels.append("NSFR")
+
+qp.plotfxn(xdata=xdata,ydata=ydata,
+    xlabel='Nondimensional Time, $t^{*}$',
+    ylabel='Nondimensional Enstrophy, $\\zeta^{*}$',
+    title_label=title_label,
+    fig_directory="figures",
+    figure_filename='enstrophy_vs_time',log_axes="both",figure_filetype="pdf",
+    # xlimits=[8e-1,3e2],ylimits=[1e-6,6e-1],
+    # xlimits=[0.0,2.0],
+    # xlimits=[np.amin(time),np.amax(time)],
+    # ylimits=[np.amin(normalized_kinetic_energy),np.amax(normalized_kinetic_energy)],
+    markers=False,
+    legend_on=True,legend_labels_tex=labels,
+    # which_lines_only_markers=[0],
+    which_lines_dashed=[1],
+    # nlegendcols=2,
+    transparent_legend=True,
+    legend_border_on=False,
+    grid_lines_on=False)
+
+labels=[]
+xdata=[]
+ydata=[]
+xdata.append(time)
+ydata.append(pressure_dilatation_based_dissipation)
+# ydata.append(kinetic_energy)
+labels.append("NSFR")
+
+qp.plotfxn(xdata=xdata,ydata=ydata,
+    xlabel='Nondimensional Time, $t^{*}$',
+    ylabel='Nondimensional Pressure Dilatation',
+    title_label=title_label,
+    fig_directory="figures",
+    figure_filename='pressure_dilatation_vs_time',log_axes="both",figure_filetype="pdf",
+    # xlimits=[8e-1,3e2],ylimits=[1e-6,6e-1],
+    # xlimits=[0.0,2.0],
+    # xlimits=[np.amin(time),np.amax(time)],
+    # ylimits=[np.amin(normalized_kinetic_energy),np.amax(normalized_kinetic_energy)],
+    markers=False,
+    legend_on=True,legend_labels_tex=labels,
+    # which_lines_only_markers=[0],
+    which_lines_dashed=[1],
+    # nlegendcols=2,
+    transparent_legend=True,
+    legend_border_on=False,
+    grid_lines_on=False)
+
+exit()
 
 
 #=====================================================
