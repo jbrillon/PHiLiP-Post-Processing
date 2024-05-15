@@ -24,6 +24,65 @@ def get_conservative_from_primitive(primitive_soln):
     conservative_soln[4] = pressure/(gamma_gas_minus_one) + 0.5*density*np.dot(velocity,velocity)
     return conservative_soln
 
+def write_element_coord_data(
+    ez_L,ez_R,ey_L,ey_R,ex_L,ex_R,
+    file,
+    nValues_per_row,
+    nQuadPoints_per_element,
+    nDOF,
+    nDOF_per_proc,
+    philip_prefix):
+    # description: writes element coordinate data for current L/R elements
+    global stored_data,nondimensionalized_conservative_solution
+    global iproc,iDOF_per_proc,start_new_file
+    global file_for_philip
+
+    for ez in range(ez_L,ez_R+1):
+        for ey in range(ey_L,ey_R+1):
+            for ex in range(ex_L,ex_R+1):
+                for qz in range(0,nQuadPoints_per_element):
+                    for qy in range(0,nQuadPoints_per_element):
+                        for qx in range(0,nQuadPoints_per_element):
+                            # wstr = "%i %i %i \n" % (ex,ey,ez)
+                            # wstr = "%18.16e %18.16e %18.16e %18.16e %18.16e %18.16e\n" % \
+                            #         (stored_data[ez,ey,ex,qz,qy,qx,0,0],stored_data[ez,ey,ex,qz,qy,qx,0,1],\
+                            #             stored_data[ez,ey,ex,qz,qy,qx,0,2],stored_data[ez,ey,ex,qz,qy,qx,0,3],\
+                            #             stored_data[ez,ey,ex,qz,qy,qx,0,4],stored_data[ez,ey,ex,qz,qy,qx,0,5])
+                            wstr = "%18.16e %18.16e %18.16e \n" % \
+                                    (stored_data[ez,ey,ex,qz,qy,qx,0,0],stored_data[ez,ey,ex,qz,qy,qx,0,1],\
+                                        stored_data[ez,ey,ex,qz,qy,qx,0,2])
+                            file.write(wstr)
+
+                for state in range(0,5):
+                    for qz in range(0,nQuadPoints_per_element):
+                        for qy in range(0,nQuadPoints_per_element):
+                            for qx in range(0,nQuadPoints_per_element):
+                                if(state==0 and start_new_file):
+                                    padded_mpi_rank_string = get_padded_mpi_rank_string(iproc)
+                                    filename_for_philip="%s-%s.dat" % (philip_prefix,padded_mpi_rank_string)
+                                    file_for_philip = open(filename_for_philip,"w")
+                                    wstr = "%i\n" % nDOF
+                                    file_for_philip.write(wstr)
+                                    start_new_file=False
+
+                                wstr2 = "%18.16e %18.16e %18.16e %i %18.16e\n" % \
+                                        (stored_data[ez,ey,ex,qz,qy,qx,0,0],\
+                                            stored_data[ez,ey,ex,qz,qy,qx,0,1],\
+                                            stored_data[ez,ey,ex,qz,qy,qx,0,2],\
+                                            state,\
+                                            nondimensionalized_conservative_solution[ez,ey,ex,qz,qy,qx,0,state])
+                                file_for_philip.write(wstr2)
+
+                                if(state==4):
+                                    iDOF_per_proc += 1
+
+                                if(state==4 and (iDOF_per_proc == nDOF_per_proc)):
+                                    file_for_philip.close()
+                                    iDOF_per_proc = 0
+                                    iproc += 1
+                                    start_new_file=True
+    return
+
 # Global constants
 global gamma_gas, gamma_gas_minus_one
 
@@ -36,6 +95,8 @@ def generate_philip_input_files(
     output_dir="./",
     input_vel_field_filename="velocity_gl_nodes.fld",
     prefix_string=""):
+    
+    global stored_data,nondimensionalized_conservative_solution
     #-----------------------------------------------------
     # Fixed variable
     #-----------------------------------------------------
@@ -177,101 +238,77 @@ def generate_philip_input_files(
         currently can handle up to 32 (i.e. 2,4,8,16,32)
     '''
 
-    if(nElements_per_direction>32): # TO DO: Add more nested loops for at least 64 el per direction
-        print("ERROR: Currently can only handle up to 32 elements per direction. ")
+    if(nElements_per_direction>128): # TO DO: Add more nested loops for at least 64 el per direction
+        print("ERROR: Currently can only handle up to 128 elements per direction. ")
         print("Must add more nested for loops for higher number of elements per direction. ")
         print("Aborting...")
         exit()
 
+    global iproc,iDOF_per_proc,start_new_file
+    global file_for_philip
     iproc = 0
     iDOF_per_proc = 0
     start_new_file=True
 
-    ez_L_base_base_base = 0
-    for z_base_base_base in range(0,loop_bounds[3]):
-        ey_L_base_base_base = 0
-        for y_base_base_base in range(0,loop_bounds[3]):
-            ex_L_base_base_base = 0
-            for x_base_base_base in range(0,loop_bounds[3]):
-                ez_L_base_base = ez_L_base_base_base
-                for z_base_base in range(0,loop_bounds[2]):
-                    ey_L_base_base = ey_L_base_base_base
-                    for y_base_base in range(0,loop_bounds[2]):
-                        ex_L_base_base = ex_L_base_base_base
-                        for x_base_base in range(0,loop_bounds[2]):
-                            ez_L_base = ez_L_base_base
-                            for z_base in range(0,loop_bounds[1]):
-                                ey_L_base = ey_L_base_base
-                                for y_base in range(0,loop_bounds[1]):
-                                    ex_L_base = ex_L_base_base
-                                    for x_base in range(0,loop_bounds[1]):
-                                        # algorithm for a cube with 64 (4^3) elements:
-                                        ez_L = ez_L_base
-                                        for cz in range(0,loop_bounds[0]):
-                                            ez_R = ez_L + 1
-                                            ey_L = ey_L_base
-                                            for cy in range(0,loop_bounds[0]):
-                                                ey_R = ey_L + 1
-                                                ex_L = ex_L_base
-                                                for cx in range(0,loop_bounds[0]):
-                                                    ex_R = ex_L + 1
-                                                    for ez in range(ez_L,ez_R+1):
-                                                        for ey in range(ey_L,ey_R+1):
-                                                            for ex in range(ex_L,ex_R+1):
-                                                                for qz in range(0,nQuadPoints_per_element):
-                                                                    for qy in range(0,nQuadPoints_per_element):
-                                                                        for qx in range(0,nQuadPoints_per_element):
-                                                                            # wstr = "%i %i %i \n" % (ex,ey,ez)
-                                                                            # wstr = "%18.16e %18.16e %18.16e %18.16e %18.16e %18.16e\n" % \
-                                                                            #         (stored_data[ez,ey,ex,qz,qy,qx,0,0],stored_data[ez,ey,ex,qz,qy,qx,0,1],\
-                                                                            #             stored_data[ez,ey,ex,qz,qy,qx,0,2],stored_data[ez,ey,ex,qz,qy,qx,0,3],\
-                                                                            #             stored_data[ez,ey,ex,qz,qy,qx,0,4],stored_data[ez,ey,ex,qz,qy,qx,0,5])
-                                                                            wstr = "%18.16e %18.16e %18.16e \n" % \
-                                                                                    (stored_data[ez,ey,ex,qz,qy,qx,0,0],stored_data[ez,ey,ex,qz,qy,qx,0,1],\
-                                                                                        stored_data[ez,ey,ex,qz,qy,qx,0,2])
-                                                                            file.write(wstr)
-
-                                                                for state in range(0,5):
-                                                                    for qz in range(0,nQuadPoints_per_element):
-                                                                        for qy in range(0,nQuadPoints_per_element):
-                                                                            for qx in range(0,nQuadPoints_per_element):
-                                                                                if(state==0 and start_new_file):
-                                                                                    padded_mpi_rank_string = get_padded_mpi_rank_string(iproc)
-                                                                                    filename_for_philip="%s-%s.dat" % (philip_prefix,padded_mpi_rank_string)
-                                                                                    file_for_philip = open(filename_for_philip,"w")
-                                                                                    wstr = "%i\n" % nDOF
-                                                                                    file_for_philip.write(wstr)
-                                                                                    start_new_file=False
-
-                                                                                wstr2 = "%18.16e %18.16e %18.16e %i %18.16e\n" % \
-                                                                                        (stored_data[ez,ey,ex,qz,qy,qx,0,0],\
-                                                                                            stored_data[ez,ey,ex,qz,qy,qx,0,1],\
-                                                                                            stored_data[ez,ey,ex,qz,qy,qx,0,2],\
-                                                                                            state,\
-                                                                                            nondimensionalized_conservative_solution[ez,ey,ex,qz,qy,qx,0,state])
-                                                                                file_for_philip.write(wstr2)
-
-                                                                                if(state==4):
-                                                                                    iDOF_per_proc += 1
-
-                                                                                if(state==4 and (iDOF_per_proc == nDOF_per_proc)):
-                                                                                    file_for_philip.close()
-                                                                                    iDOF_per_proc = 0
-                                                                                    iproc += 1
-                                                                                    start_new_file=True
-
-                                                    ex_L += 2
-                                                ey_L += 2
-                                            ez_L += 2
-                                        ex_L_base = ex_L
-                                    ey_L_base = ey_L
-                                ez_L_base = ez_L
-                            ex_L_base_base = ex_L_base
-                        ey_L_base_base = ey_L_base
-                    ez_L_base_base = ez_L_base
-                ex_L_base_base_base = ex_L_base_base
-            ey_L_base_base_base = ey_L_base_base
-        ez_L_base_base_base = ez_L_base_base
+    ez_L_base_base_base_base_base = 0
+    for z_base_base_base_base_base in range(0,loop_bounds[5]):
+        ey_L_base_base_base_base_base = 0
+        for y_base_base_base_base_base in range(0,loop_bounds[5]):
+            ex_L_base_base_base_base_base = 0
+            for x_base_base_base_base_base in range(0,loop_bounds[5]):
+                ez_L_base_base_base_base = ez_L_base_base_base_base_base
+                for z_base_base_base_base in range(0,loop_bounds[4]):
+                    ey_L_base_base_base_base = ey_L_base_base_base_base_base
+                    for y_base_base_base_base in range(0,loop_bounds[4]):
+                        ex_L_base_base_base_base = ex_L_base_base_base_base_base
+                        for x_base_base_base_base in range(0,loop_bounds[4]):
+                            ez_L_base_base_base = ez_L_base_base_base_base
+                            for z_base_base_base in range(0,loop_bounds[3]):
+                                ey_L_base_base_base = ey_L_base_base_base_base
+                                for y_base_base_base in range(0,loop_bounds[3]):
+                                    ex_L_base_base_base = ex_L_base_base_base_base
+                                    for x_base_base_base in range(0,loop_bounds[3]):
+                                        ez_L_base_base = ez_L_base_base_base
+                                        for z_base_base in range(0,loop_bounds[2]):
+                                            ey_L_base_base = ey_L_base_base_base
+                                            for y_base_base in range(0,loop_bounds[2]):
+                                                ex_L_base_base = ex_L_base_base_base
+                                                for x_base_base in range(0,loop_bounds[2]):
+                                                    ez_L_base = ez_L_base_base
+                                                    for z_base in range(0,loop_bounds[1]):
+                                                        ey_L_base = ey_L_base_base
+                                                        for y_base in range(0,loop_bounds[1]):
+                                                            ex_L_base = ex_L_base_base
+                                                            for x_base in range(0,loop_bounds[1]):
+                                                                # algorithm for a cube with 64 (4^3) elements:
+                                                                ez_L = ez_L_base
+                                                                for cz in range(0,loop_bounds[0]):
+                                                                    ez_R = ez_L + 1
+                                                                    ey_L = ey_L_base
+                                                                    for cy in range(0,loop_bounds[0]):
+                                                                        ey_R = ey_L + 1
+                                                                        ex_L = ex_L_base
+                                                                        for cx in range(0,loop_bounds[0]):
+                                                                            ex_R = ex_L + 1
+                                                                            write_element_coord_data(ez_L,ez_R,ey_L,ey_R,ex_L,ex_R,file,nValues_per_row,nQuadPoints_per_element,nDOF,nDOF_per_proc,philip_prefix)
+                                                                            ex_L += 2
+                                                                        ey_L += 2
+                                                                    ez_L += 2
+                                                                ex_L_base = ex_L
+                                                            ey_L_base = ey_L
+                                                        ez_L_base = ez_L
+                                                    ex_L_base_base = ex_L_base
+                                                ey_L_base_base = ey_L_base
+                                            ez_L_base_base = ez_L_base
+                                        ex_L_base_base_base = ex_L_base_base
+                                    ey_L_base_base_base = ey_L_base_base
+                                ez_L_base_base_base = ez_L_base_base
+                            ex_L_base_base_base_base = ex_L_base_base_base
+                        ey_L_base_base_base_base = ey_L_base_base_base
+                    ez_L_base_base_base_base = ez_L_base_base_base
+                ex_L_base_base_base_base_base = ex_L_base_base_base_base
+            ey_L_base_base_base_base_base = ey_L_base_base_base_base
+        ez_L_base_base_base_base_base = ez_L_base_base_base_base
 
     file.close()
     # exit()
