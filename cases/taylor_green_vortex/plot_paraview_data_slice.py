@@ -64,6 +64,11 @@ def plot_vorticity_plane(path,filename_without_extension,file_extension,fig_dire
     if(shift_domain_by_minus_pi):
         y = y-np.pi
         z = z-np.pi
+        for i in range(0,len(z)):
+            if(z[i]>=0.0000000000000000e+00):
+                z[i] -= 3.1415926535897931e+00
+            else:
+                z[i] += 3.1415926535897931e+00
 
     X = y
     Y = z
@@ -146,8 +151,10 @@ def plot_vorticity_plane(path,filename_without_extension,file_extension,fig_dire
         cs_lines = plt.tricontour(tri_refi,z_test_refi,levels=contour_levels,colors=(contour_line_clr_for_result,),linewidths=(1,))
     else:
         if(fill_contour):
-            cs = plt.tricontourf(X, Y, Z, np.linspace(np.amin(Z),np.amax(Z),100),cmap='rainbow')
-        cs_lines = plt.tricontour(X,Y,Z,levels=contour_levels,colors=('k',),linewidths=(1,))
+            # cs = plt.tricontourf(X, Y, Z, np.linspace(np.amin(Z),np.amax(Z),100),cmap='rainbow')
+            # cs = plt.tricontourf(X, Y, Z, np.linspace(np.amin(contour_levels),np.amax(contour_levels),100),cmap='rainbow')
+            cs = plt.tricontourf(X, Y, Z, np.linspace(0.0,32,100),cmap='rainbow')
+        cs_lines = plt.tricontour(X,Y,Z,levels=contour_levels,colors=('k',),linewidths=(0.5,))
 
     for level in cs_lines.collections:
         for kp,lpath in reversed(list(enumerate(level.get_paths()))):
@@ -213,7 +220,7 @@ for i in range(0,n_paths):
             plot_vorticity_plane(paths[i],filename_without_extension,file_extension,fig_directory,fig_prepre_fix[i],
                 subdivide=False,title_label=plot_title,fill_contour=True,plot_reference_result=False,
                 shift_domain_by_minus_pi=shift_domain_by_minus_pi_store[i],
-                plot_single_element_domain=True)
+                plot_single_element_domain=False)
 exit()
 # DNS STUFF FROM PAPER BELOW
 # output_solution_fixed_times_string = [0.0,4.0,5.0,8.0,9.0,10.0,12.0,15.0,16.0,20.0]
