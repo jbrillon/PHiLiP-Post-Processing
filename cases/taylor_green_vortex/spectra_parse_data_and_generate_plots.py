@@ -176,8 +176,10 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
     # add reference curve
     # append_to_plot(x_ref_curve,y_ref_curve,ref_curve_label)
     if(nDOF_==256):
-        x_limits_zoom=[30, 60]
-        y_limits_zoom=[1.0e-4, 3.0e-4]
+        # x_limits_zoom=[35, 70]
+        # y_limits_zoom=[1.0e-5, 1.2e-4]
+        x_limits_zoom=[80, 112]
+        y_limits_zoom=[4.5e-7, 7.0e-6]
     elif(nDOF_==96):
         x_limits_zoom=[20, 40]
         y_limits_zoom=[3.5e-5, 5.0e-4]
@@ -313,6 +315,53 @@ fig_dir_input="./figures/2023_JCP/oversampled_spectra"
 # =====================================================
 # MISSING FIG 3
 # =====================================================
+
+# =====================================================
+if(True or regenerate_all_plots):
+    batch_paths = [ \
+    "NarvalFiles/2023_JCP/filtered_dns_viscous_tgv/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024/",\
+    "NarvalFiles/2023_JCP/verification_tke_fix/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024_2refinements/",\
+    # "NarvalFiles/2023_JCP/verification_tke_fix/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024_3refinements/",\
+    ]
+    batch_labels = [ \
+    "$256^{3}$p$7$, $c_{DG}$", \
+    "$256^{3}$p$7$, $c_{DG}$, oversampled", \
+    ]
+    list_of_poly_degree=[7,7]
+    list_of_number_of_elements_per_direction=[32,32]
+    
+    batch_plot_spectra(256,"csme_oversampling_256",batch_paths,batch_labels,
+        solid_and_dashed_lines=False,
+        title_off=title_off_input,figure_directory=fig_dir_input,
+        plot_cutoff_wavenumber_asymptote=True,
+        plot_PHiLiP_DNS_result_as_reference=False,
+        plot_filtered_dns=False,
+        plot_zoomed_section=True,
+        list_of_poly_degree_input=list_of_poly_degree,
+        list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
+
+# =====================================================
+if(False or regenerate_all_plots):
+    batch_paths = [ \
+    "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
+    "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
+    ]
+    batch_labels = [ \
+    "$96^{3}$p$5$, $c_{DG}$", \
+    "$96^{3}$p$5$, $c_{DG}$, oversampled", \
+    ]
+    list_of_poly_degree=[5,5,7,7,5,5]
+    list_of_number_of_elements_per_direction=[16,16,8,8,8,8]
+    
+    batch_plot_spectra(96,"csme_oversampling_96",batch_paths,batch_labels,
+        solid_and_dashed_lines=False,
+        title_off=title_off_input,figure_directory=fig_dir_input,
+        plot_cutoff_wavenumber_asymptote=True,
+        plot_PHiLiP_DNS_result_as_reference=True,
+        plot_filtered_dns=True,
+        plot_zoomed_section=True,
+        list_of_poly_degree_input=list_of_poly_degree,
+        list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
 
 # =====================================================
 if(False or regenerate_all_plots):
@@ -549,7 +598,7 @@ if(False or regenerate_all_plots):
         list_of_poly_degree_input=list_of_poly_degree,
         list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
 # =====================================================
-if(True or regenerate_all_plots):
+if(False or regenerate_all_plots):
     batch_paths = [ \
     "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
     "NarvalFiles/2023_JCP/spectra_fix/upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-LxF_GL_OI-0_dofs096_p5_procs512/", \
@@ -610,7 +659,7 @@ if(False or regenerate_all_plots):
         list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
 
 # =====================================================
-if(True or regenerate_all_plots):
+if(False or regenerate_all_plots):
     batch_paths = [ \
     "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GLL_OI-6_dofs096_p5_procs512/", \
     "NarvalFiles/2023_JCP/spectra_fix/sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SI.SMAG.LRNC_MC-0.10_strong_DG_Roe_GLL_OI-0_dofs096_p5_CFL-0.1_procs512/", \
