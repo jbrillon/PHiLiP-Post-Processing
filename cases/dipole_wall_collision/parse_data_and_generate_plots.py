@@ -221,25 +221,30 @@ if(True):
     plot_PHiLiP_DNS_result_as_reference_input=False
     #-----------------------------------------------------
     subdirectories_for_plot=[\
-    "viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0192_p2",\
-    "viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0384_p5",\
+    # "viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0192_p2",\
+    # "viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0384_p5",\
     "viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0512_p7",\
     "viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0192_p2_stretched_mesh",\
     "viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs1024_p7",\
     ]
     # labels
     labels_for_plot=[\
-    "$c_{DG}$ NSFR 64p$2$ ($192^2$ DOF)\n $\\Delta t=10e^{-6}$",\
-    "$c_{DG}$ NSFR 64p$5$ ($384^2$ DOF)\n $\\Delta t=10e^{-6}$",\
-    "$c_{DG}$ NSFR 64p$7$ ($512^2$ DOF)\n $\\Delta t=5e^{-6}$",\
-    "$c_{DG}$ NSFR 64p$2$ ($192^2$ DOF)\n $\\Delta t=2.5e^{-6}$, Stretched mesh",\
-    "$c_{DG}$ NSFR 128p$7$ ($1024^2$ DOF)\n $\\Delta t=2.5e^{-6}$",\
+    # "$c_{DG}$ NSFR 64p$2$ ($192^2$ DOF)",\
+    # "$c_{DG}$ NSFR 64p$5$ ($384^2$ DOF)\n $\\Delta t=10e^{-6}$",\
+    "$c_{DG}$ NSFR 64p$7$ ($512^2$ DOF)",\
+    "$c_{DG}$ NSFR 64p$2$ ($192^2$ DOF),\n Stretched mesh",\
+    "$c_{DG}$ NSFR 128p$7$ ($1024^2$ DOF)",\
     ]
     black_line_flag_for_plot=[False,False,False,False,False,False,False,False]
     dashed_line_flag_for_plot=[False,False,False,False,False,True,True]
     plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
         final_time_for_plot=1.0,legend_fontSize_input=12,
         smoothing_parameters_input=get_smoothing_parameters_from_subdirectories(subdirectories_for_plot))#smoothing_parameters_input=[400,750,1000]
+
+# "$c_{DG}$ NSFR 64p$2$ ($192^2$ DOF) \n $\\Delta t=10e^{-6}$",\
+# "$c_{DG}$ NSFR 64p$7$ ($512^2$ DOF)\n $\\Delta t=5e^{-6}$",\
+# "$c_{DG}$ NSFR 64p$2$ ($192^2$ DOF)\n $\\Delta t=2.5e^{-6}$, Stretched mesh",\
+# "$c_{DG}$ NSFR 128p$7$ ($1024^2$ DOF)\n $\\Delta t=2.5e^{-6}$",\
 
 #=====================================================
 # DOFs: 256^3 | All results
