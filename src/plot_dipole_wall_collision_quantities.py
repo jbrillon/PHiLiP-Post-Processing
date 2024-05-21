@@ -102,7 +102,7 @@ def plot_periodic_turbulence(
     legend_on_input,
     legend_inside_input,
     nlegendcols_input,
-    transparent_legend_input=True,
+    transparent_legend_input=False,
     plot_kinetic_energy=True,
     plot_enstrophy=True,
     plot_palinstrophy=True,
@@ -116,11 +116,12 @@ def plot_periodic_turbulence(
     palinstrophy_smoothing=[],
     plot_filtered_dns=False,
     plot_zoomed_section_dissipation_rate=False,
-    plot_zoomed_section_numerical_dissipation_components=False,
+    plot_zoomed_section_palinstrophy=False,
     plot_zoomed_section_enstrophy=False,
     dofs_for_zoomed_section=256,
     check_smoothing_parameters=False,
-    smoothing_parameters=[]
+    smoothing_parameters=[],
+    xlimits=[]
     ):
     # plotting parameters store
     labels_store = []
@@ -266,6 +267,9 @@ def plot_periodic_turbulence(
             clr_input_store.insert(1,'k')
             mrkr_input_store.insert(1,'None')
             lnstl_input_store.insert(1,'solid')
+    xlimits_input=[0,tmax]
+    if(xlimits!=[]):
+        xlimits_input=xlimits
     #-----------------------------------------------------
     # evolution of kinetic energy:
     #-----------------------------------------------------
@@ -280,7 +284,7 @@ def plot_periodic_turbulence(
                 markers=False,
                 legend_labels_tex=labels_store,
                 black_lines=False,
-                xlimits=[0,tmax],
+                xlimits=xlimits_input,
                 ylimits=[0.6,2.0],
                 log_axes=None,
                 which_lines_black=which_lines_black_input,
@@ -306,6 +310,12 @@ def plot_periodic_turbulence(
         time, enstrophy = np.loadtxt(filename,skiprows=1,delimiter=",",dtype=np.float64,unpack=True)
         time_store[0] = time # replace it -- this is a hack
 
+    x_limits_zoom=[]
+    y_limits_zoom=[]
+    if(plot_zoomed_section_enstrophy):
+        y_limits_zoom=[1400, 1625]
+        x_limits_zoom=[0.33, 0.37]
+
     if(plot_enstrophy):
         qp.plotfxn(xdata=time_store,
                 ydata=enstrophy_store,
@@ -317,7 +327,7 @@ def plot_periodic_turbulence(
                 legend_labels_tex=labels_store,
                 black_lines=False,
                 ylimits=[200,1800],
-                xlimits=[0,tmax],
+                xlimits=xlimits_input,
                 log_axes=None,
                 which_lines_black=which_lines_black_input,
                 which_lines_dashed=which_lines_dashed_input,
@@ -333,7 +343,10 @@ def plot_periodic_turbulence(
                 clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
                 legend_fontSize=legend_fontSize_input,
                 legend_location="upper right",
-                marker_size=3)
+                marker_size=3,
+                plot_zoomed_section=plot_zoomed_section_enstrophy,
+                x_limits_zoom=x_limits_zoom,y_limits_zoom=y_limits_zoom,
+                zoom_box_origin_and_extent=[0.65, 0.30, 0.32, 0.32])
     
     if(plot_reference_result and reference_result_author=="Keetels et al."):
         # palinstrophy
@@ -347,6 +360,15 @@ def plot_periodic_turbulence(
             ydata_to_plot = smoothed_palinstrophy_store
         else:
             ydata_to_plot = palinstrophy_store
+
+        x_limits_zoom=[]
+        y_limits_zoom=[]
+        ylimits_input = [1e5,1e8]
+        if(plot_zoomed_section_palinstrophy):
+            y_limits_zoom=[4e7, 7e7]
+            x_limits_zoom=[0.32, 0.37]
+            ylimits_input = [4e5,1e8]
+
         qp.plotfxn(xdata=time_store,
                 ydata=ydata_to_plot,
                 ylabel='Nondimensional Palinstrophy',
@@ -356,8 +378,8 @@ def plot_periodic_turbulence(
                 markers=False,
                 legend_labels_tex=labels_store,
                 black_lines=False,
-                ylimits=[1e5,1e8],
-                xlimits=[0,tmax],
+                ylimits=ylimits_input,
+                xlimits=xlimits_input,
                 log_axes="y",
                 which_lines_black=which_lines_black_input,
                 which_lines_dashed=which_lines_dashed_input,
@@ -373,7 +395,10 @@ def plot_periodic_turbulence(
                 clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
                 legend_fontSize=legend_fontSize_input,
                 legend_location="upper right",
-                marker_size=3)
+                marker_size=3,
+                plot_zoomed_section=plot_zoomed_section_palinstrophy,
+                x_limits_zoom=x_limits_zoom,y_limits_zoom=y_limits_zoom,
+                zoom_box_origin_and_extent=[0.65, 0.45, 0.32, 0.16])
         if(check_smoothing_parameters):
             labels_input_store=[]
             xdata_input_store=[]
@@ -410,7 +435,7 @@ def plot_periodic_turbulence(
                 legend_labels_tex=labels_input_store,
                 black_lines=False,
                 ylimits=[1e5,1e8],
-                xlimits=[0,tmax],
+                xlimits=xlimits_input,
                 log_axes="y",
                 which_lines_black=which_lines_black_input,
                 which_lines_thin=which_lines_dotted_input,
