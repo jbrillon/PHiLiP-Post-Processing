@@ -270,6 +270,12 @@ def plot_periodic_turbulence(
             clr_input_store.insert(1,'k')
             mrkr_input_store.insert(1,'None')
             lnstl_input_store.insert(1,'solid')
+
+    # zoom box location
+    zoom_box_origin_and_extent_input=[0.65, 0.65, 0.32, 0.32]
+    if(tmax<20.0):
+        zoom_box_origin_and_extent_input=[0.60, 0.01, 0.32, 0.32]
+
     #-----------------------------------------------------
     # evolution of kinetic energy:
     #-----------------------------------------------------
@@ -340,7 +346,7 @@ def plot_periodic_turbulence(
                 legend_location="upper left",
                 plot_zoomed_section=plot_zoomed_section_dissipation_rate,
                 x_limits_zoom=[8.0, 10.5],y_limits_zoom=[0.010, 0.0135],
-                zoom_box_origin_and_extent=[0.65, 0.65, 0.32, 0.32])
+                zoom_box_origin_and_extent=zoom_box_origin_and_extent_input)
 
     # numerical dissipation plot - can do a max of 4 different results (3 curves per result) -- need a custom legend for this -- can hack the indexing
     if(plot_numerical_dissipation):
@@ -455,7 +461,7 @@ def plot_periodic_turbulence(
                     second_leg_anchor=second_leg_anchor_input,
                     plot_zoomed_section=plot_zoomed_section_numerical_dissipation_components,
                     x_limits_zoom=x_limits_zoom,y_limits_zoom=y_limits_zoom,
-                    zoom_box_origin_and_extent=[0.65, 0.65, 0.32, 0.32])
+                    zoom_box_origin_and_extent=zoom_box_origin_and_extent_input)
 
     if(plot_reference_result and reference_result_author=="Vermeire"):
         # DNS - enstrophy
@@ -500,7 +506,7 @@ def plot_periodic_turbulence(
                 legend_location="upper left",
                 plot_zoomed_section=plot_zoomed_section_enstrophy,
                 x_limits_zoom=x_limits_zoom,y_limits_zoom=y_limits_zoom,
-                zoom_box_origin_and_extent=[0.65, 0.65, 0.32, 0.32])
+                zoom_box_origin_and_extent=zoom_box_origin_and_extent_input)
 
     # Remove the reference result for the lists
     if(plot_reference_result and reference_result_author!="Dairay et al."):
@@ -635,9 +641,35 @@ def plot_periodic_turbulence(
         # strain rate component
         qp.plotfxn(xdata=time_store,
                 ydata=eps_S_store,
-                ylabel='$\\varepsilon\\left(\\mathbf{S}^{d}\\right)$',
+                ylabel='$\\varepsilon\\left(\\mathbf{S}\\right)$',
                 xlabel='$t^{*}$',
                 figure_filename=figure_subdirectory+'strain_rate_dissipation_vs_time'+figure_filename_postfix,
+                title_label=figure_title,
+                markers=False,
+                legend_labels_tex=labels_store,
+                black_lines=False,
+                xlimits=[0,tmax],
+                # ylimits=[0,0.014],
+                log_axes=log_axes_input,
+                which_lines_black=which_lines_black_input,
+                which_lines_dashed=which_lines_dashed_input,
+                legend_on=legend_on_input,
+                legend_inside=legend_inside_input,
+                nlegendcols=nlegendcols_input,
+                figure_size=(6,6),
+                transparent_legend=transparent_legend_input,
+                legend_border_on=False,
+                grid_lines_on=False,
+                fig_directory=figure_directory_base,
+                clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
+                legend_fontSize=legend_fontSize_input)
+
+        # deviatoric strain rate component
+        qp.plotfxn(xdata=time_store,
+                ydata=eps_S_store,
+                ylabel='$\\varepsilon\\left(\\mathbf{S}^{d}\\right)$',
+                xlabel='$t^{*}$',
+                figure_filename=figure_subdirectory+'deviatoric_strain_rate_dissipation_vs_time'+figure_filename_postfix,
                 title_label=figure_title,
                 markers=False,
                 legend_labels_tex=labels_store,
@@ -664,6 +696,31 @@ def plot_periodic_turbulence(
                 ylabel='$\\varepsilon\\left(p\\right)$',
                 xlabel='$t^{*}$',
                 figure_filename=figure_subdirectory+'pressure_dilatation_dissipation_vs_time'+figure_filename_postfix,
+                title_label=figure_title,
+                markers=False,
+                legend_labels_tex=labels_store,
+                black_lines=False,
+                xlimits=[0,tmax],
+                # ylimits=[-1e-1,1e-1],
+                log_axes=log_axes_input,
+                which_lines_black=which_lines_black_input,
+                which_lines_dashed=which_lines_dashed_input,
+                legend_on=legend_on_input,
+                legend_inside=legend_inside_input,
+                nlegendcols=nlegendcols_input,
+                figure_size=(6,6),
+                transparent_legend=transparent_legend_input,
+                legend_border_on=False,
+                grid_lines_on=False,
+                fig_directory=figure_directory_base,
+                clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
+                legend_fontSize=legend_fontSize_input)
+
+        qp.plotfxn(xdata=time_store,
+                ydata=eps_K_minus_eps_S_minus_eps_p_store,
+                ylabel='$\\varepsilon^{*}-\\left[-\\varepsilon\\left(p\\right)+\\varepsilon\\left(\\mathbf{S}^{d}\\right)\\right]$',
+                xlabel='$t^{*}$',
+                figure_filename=figure_subdirectory+'error_in_KE_budget_vs_time'+figure_filename_postfix,
                 title_label=figure_title,
                 markers=False,
                 legend_labels_tex=labels_store,

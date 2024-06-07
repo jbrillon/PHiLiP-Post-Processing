@@ -184,6 +184,8 @@ def plot_vorticity_plane(path,filename_without_extension,file_extension,fig_dire
         [x,y,w] = get_reference_result()
         plt.contour(x,y,w, levels = contour_levels, colors=('k',),linewidths=(1,))
 
+    cbar.remove()
+
     plt.tight_layout()
     print('\t ... Saving figure ...')
     plt.savefig(fig_directory+"/"+figure_filename+'.'+figure_filetype,format=figure_filetype,dpi=500)#,rasterized=True
