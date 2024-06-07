@@ -34,9 +34,40 @@ def reinit_inputs():
     x=[];y=[];labels=[];
     return
 #-----------------------------------------------------
+def get_grid_cutoff_wavenumber(number_of_elements_per_direction):
+    grid_cutoff_wavenumber = 0.5*number_of_elements_per_direction
+    return grid_cutoff_wavenumber
+#-----------------------------------------------------
+def get_cutoff_wavenumber(poly_degree,number_of_elements_per_direction,truncate_spectra_at_effective_DOFs):
+    nDOF = (poly_degree+1)*number_of_elements_per_direction
+    effective_nDOF = (poly_degree)*number_of_elements_per_direction
+    cutoff_wavenumber = 0.5*effective_nDOF
+    if(truncate_spectra_at_effective_DOFs==False):
+        cutoff_wavenumber = 0.5*nDOF
+    return cutoff_wavenumber
+#-----------------------------------------------------
+def get_truncated_spectra_from_cutoff_wavenumber_and_spectra(spectra, cutoff_wavenumber):
+    idx = (np.abs(spectra[:,0] - cutoff_wavenumber)).argmin()
+    return spectra[:(idx+1),:]
+#-----------------------------------------------------
+def get_truncated_spectra_from_DOFs_information(spectra, poly_degree, number_of_elements_per_direction,truncate_spectra_at_effective_DOFs):
+    cutoff_wavenumber = get_cutoff_wavenumber(poly_degree,number_of_elements_per_direction,truncate_spectra_at_effective_DOFs)
+    idx = (np.abs(spectra[:,0] - cutoff_wavenumber)).argmin()
+    return spectra[:(idx+1),:]
+#-----------------------------------------------------
 def append_to_plot(x_,y_,label_):
     global x,y,labels
     labels.append(label_);x.append(x_);y.append(y_)
+#-----------------------------------------------------
+def batch_append_to_plot(paths_,labels_,filename,list_of_poly_degree_,list_of_number_of_elements_per_direction_,truncate_spectra_at_effective_DOFs):
+    global x,y,labels
+    for i,path in enumerate(paths_):
+        spectra_ = np.loadtxt(filesystem+path+filename)
+        poly_degree = list_of_poly_degree_[i]
+        number_of_elements_per_direction = list_of_number_of_elements_per_direction_[i]
+        spectra = get_truncated_spectra_from_DOFs_information(spectra_, poly_degree, number_of_elements_per_direction,truncate_spectra_at_effective_DOFs)
+        # spectra = 1.0*spectra_ # uncomment for no truncation
+        append_to_plot(spectra[:,0],spectra[:,1],labels_[i])
 #-----------------------------------------------------
 def get_dissipation_discrete(time,kinetic_energy,smoothing=False):
     if(smoothing):
@@ -49,7 +80,7 @@ def get_dissipation_discrete(time,kinetic_energy,smoothing=False):
         return dissipation_rate_val
 #=====================================================
 
-
+'''
 filename=filesystem+"NarvalFiles/2023_JCP/DHIT/viscous_DHIT_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs128_p3_CFL-0.2_procs512/turbulent_quantities.txt"
 time, kinetic_energy, enstrophy, vorticity_based_dissipation, pressure_dilatation_based_dissipation, strain_rate_based_dissipation, deviatoric_strain_rate_based_dissipation = np.loadtxt(filename,skiprows=1,dtype=np.float64,unpack=True)
 
@@ -96,8 +127,6 @@ qp.plotfxn(xdata=xdata,ydata=ydata,
     transparent_legend=True,
     legend_border_on=False,
     grid_lines_on=False)
-
-exit()
 
 labels=[]
 xdata=[]
@@ -154,7 +183,7 @@ qp.plotfxn(xdata=xdata,ydata=ydata,
     grid_lines_on=False)
 
 exit()
-
+'''
 
 #=====================================================
 # Store reference spectras
@@ -230,7 +259,7 @@ fds_spectra = np.loadtxt("./data/jefferson-loveday_tucker_2010_ref_data/fds_t2_s
 #     which_lines_only_markers=[1,2,3],
 #     which_lines_dashed=[0])
 
-
+'''
 # =====================================================
 # 128 DOF check
 # =====================================================
@@ -359,6 +388,96 @@ qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $k^{*}$",ylabel="N
     which_lines_only_markers=[0,1,2],
     which_lines_dashed=[0,1,2],
     nlegendcols=2)
+'''
+# =====================================================
+# 128 DOF check | t=0
+# =====================================================
+reinit_inputs()
+title_label = "DHIT, $128^{3}$ DOF, P3, $c_{DG}$ NSFR.IR-GLL, CFL$=0.2$"
+figure_filename = "spectra_128_no_smoothing_oversampled_t0"
+
+append_to_plot(cbc_spectra_t0[:,0],cbc_spectra_t0[:,1],"CBC Experiment")
+
+spectra = np.loadtxt(filesystem+"NarvalFiles/2023_JCP/DHIT/viscous_DHIT_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs128_p3_CFL-0.2_procs512_oversampled_nquad12/flow_field_files/velocity_vorticity-0_reordered_spectra_no_smoothing.dat",skiprows=0,dtype=np.float64)
+# spectra_truncated = get_truncated_spectra_from_DOFs_information(spectra, 3, 32,True)
+spectra_truncated = get_truncated_spectra_from_cutoff_wavenumber_and_spectra(spectra, 30)
+append_to_plot(spectra_truncated[:,0],spectra_truncated[:,1],"NSFR Initialization")
+qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $k^{*}$",ylabel="Nondimensional TKE Spectra, $E^{*}(k^{*},t^{*})$",
+    title_label=title_label,
+    fig_directory="figures",figure_filename=figure_filename,log_axes="both",figure_filetype="pdf",
+    # xlimits=[8e-1,3e2],ylimits=[1e-6,6e-1],
+    # xlimits=[2.0,3e2],ylimits=[1e-5,1e-1],
+    # xlimits=[1e0,0.5*96],ylimits=[1e-5,1e-1],
+    # xlimits=[2e0,3.0e1],ylimits=[1e-3,1e-1],
+    xlimits=[1e0,3.0e1],ylimits=[1e-3,1e-1],
+    # xlimits=[1e0,1.0e2],ylimits=[1e-5,1e-1],
+    markers=False,legend_on=True,legend_labels_tex=labels,
+    which_lines_only_markers=[0],
+    which_lines_black=[0,1],
+    which_lines_dashed=[],
+    transparent_legend=True,
+    legend_border_on=False,grid_lines_on=False)
+
+# =====================================================
+# 128 DOF check | t=2
+# =====================================================
+reinit_inputs()
+title_label = "DHIT, $128^{3}$ DOF, P3, $c_{DG}$ NSFR.IR-GLL, CFL$=0.2$"
+figure_filename = "spectra_128_no_smoothing_oversampled_t2"
+
+append_to_plot(cbc_spectra_t2[:,0],cbc_spectra_t2[:,1],"CBC Experiment")
+append_to_plot(fds_spectra[:,0],fds_spectra[:,1],"FDS [Jefferson-Loveday and Tucker]")
+# append_to_plot(vermeire_spectra_p1_126dofs[:,0],vermeire_spectra_p1_126dofs[:,1],"CPR $126^3p1$ [Vermeire et al.]")
+
+spectra = np.loadtxt(filesystem+"NarvalFiles/2023_JCP/DHIT/viscous_DHIT_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs128_p3_CFL-0.2_procs512_oversampled_nquad12/flow_field_files/velocity_vorticity-4_reordered_spectra_no_smoothing.dat",skiprows=0,dtype=np.float64)
+# spectra_truncated = get_truncated_spectra_from_DOFs_information(spectra, 3, 32,True)
+spectra_truncated = get_truncated_spectra_from_cutoff_wavenumber_and_spectra(spectra, 30)
+append_to_plot(spectra_truncated[:,0],spectra_truncated[:,1],"NSFR")
+qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $k^{*}$",ylabel="Nondimensional TKE Spectra, $E^{*}(k^{*},t^{*})$",
+    title_label=title_label,
+    fig_directory="figures",figure_filename=figure_filename,log_axes="both",figure_filetype="pdf",
+    # xlimits=[8e-1,3e2],ylimits=[1e-6,6e-1],
+    # xlimits=[2.0,3e2],ylimits=[1e-5,1e-1],
+    # xlimits=[1e0,0.5*96],ylimits=[1e-5,1e-1],
+    # xlimits=[2e0,3.0e1],ylimits=[1e-3,3e-2],
+    xlimits=[1e0,3.0e1],ylimits=[1e-3,3e-2],
+    # xlimits=[1e0,1.0e2],ylimits=[1e-5,1e-1],
+    markers=False,legend_on=True,legend_labels_tex=labels,
+    which_lines_only_markers=[0],
+    which_lines_black=[0,1,2],
+    which_lines_dashed=[1],
+    transparent_legend=True,
+    legend_border_on=False,grid_lines_on=False)
+
+# =====================================================
+# 128 DOF check | Transient
+# =====================================================
+reinit_inputs()
+title_label = "DHIT, $128^{3}$ DOF, P3, $c_{DG}$ NSFR.IR-GLL, CFL$=0.2$"
+figure_filename = "spectra_128_no_smoothing_oversampled_transient"
+
+labels = ["$t^{*}=0$","$t^{*}=0.5$","$t^{*}=1$","$t^{*}=1.5$","$t^{*}=2$"]
+
+for i in range(0,len(labels)):
+    filename="NarvalFiles/2023_JCP/DHIT/viscous_DHIT_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs128_p3_CFL-0.2_procs512_oversampled_nquad12/flow_field_files/velocity_vorticity-%i_reordered_spectra_no_smoothing.dat" % i
+    spectra = np.loadtxt(filesystem+filename,skiprows=0,dtype=np.float64)
+    # spectra_truncated = get_truncated_spectra_from_DOFs_information(spectra, 3, 32,True)
+    spectra_truncated = get_truncated_spectra_from_cutoff_wavenumber_and_spectra(spectra, 30)
+    append_to_plot(spectra_truncated[:,0],spectra_truncated[:,1],labels[i])
+qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $k^{*}$",ylabel="Nondimensional TKE Spectra, $E^{*}(k^{*},t^{*})$",
+    title_label=title_label,
+    fig_directory="figures",figure_filename=figure_filename,log_axes="both",figure_filetype="pdf",
+    # xlimits=[8e-1,3e2],ylimits=[1e-6,6e-1],
+    # xlimits=[2.0,3e2],ylimits=[1e-5,1e-1],
+    # xlimits=[1e0,0.5*96],ylimits=[1e-5,1e-1],
+    # xlimits=[1e0,3.0e1],ylimits=[1e-3,1e-1],
+    xlimits=[1e0,3.0e1],ylimits=[1e-3,1e-1],
+    markers=False,legend_on=True,legend_labels_tex=labels,
+    which_lines_only_markers=[],
+    which_lines_black=[],
+    which_lines_dashed=[],
+    transparent_legend=True,
+    legend_border_on=False,grid_lines_on=False)
 
 exit()
 
