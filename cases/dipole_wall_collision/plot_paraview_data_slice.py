@@ -29,7 +29,7 @@ def get_paraview_file_data(
 def plot_vorticity_plane(path,filename_without_extension,file_extension,fig_directory,fig_prepre_fix,
     subdivide=False,title_label=" ",fill_contour=False,plot_reference_result=False,
     shift_domain_by_minus_pi=False,plot_single_element_domain=False,nElements_per_direction=16,
-    plot_at_wall=False,color_bar_off=False):
+    plot_at_wall=False,color_bar_off=False,plot_wall_element_edge=True,wall_element_size_dx=0.1):
     # TO DO: move this somewhere else eventually
     figure_filename = fig_prepre_fix+filename_without_extension
     if(subdivide):
@@ -182,7 +182,8 @@ def plot_vorticity_plane(path,filename_without_extension,file_extension,fig_dire
 
     if(plot_at_wall or color_bar_off):
         cbar.remove()
-
+    if(plot_wall_element_edge):
+        ax.axvline(x=(1.0-wall_element_size_dx),linestyle="dashed",color="k",alpha=0.5)
     plt.tight_layout()
     print('\t ... Saving figure ...')
     plt.savefig(fig_directory+"/"+figure_filename+'.'+figure_filetype,format=figure_filetype,dpi=500)#,rasterized=True
@@ -191,37 +192,6 @@ def plot_vorticity_plane(path,filename_without_extension,file_extension,fig_dire
     print("---------------------------------------------")
     return
 
-# lets check the 96^3 DOFs P5 results
-paths=(
-# filesystem+"NarvalFiles/2024_CSME/dipole_wall_collision/viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0384_p5/solution_files/",\
-filesystem+"NarvalFiles/2024_CSME/dipole_wall_collision/viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0512_p7/solution_files/",\
-)
-files_per_path=[9,9]
-
-file_extension="csv"
-n_paths=len(paths)
-
-fig_directory = "./figures/2024_CSME"
-labels_for_plot=[\
-    # "$384^2$ P$5$ $c_{DG}$ NSFR.IR-GL",\
-    "$512^2$ P$7$ $c_{DG}$ NSFR.IR-GL",\
-]
-fig_prepre_fix = [\
-    # "384_p5_NSFR_cDG_IR_GL_",\
-    "512_p7_NSFR_cDG_IR_GL_",\
-]
-shift_domain_by_minus_pi_store=[False,False]
-time = [0.0,0.1,0.2,0.3,0.35,0.5,0.6,0.8,1.0]
-for i in range(0,n_paths):
-    for j in range(0,files_per_path[i]):
-            filename_without_extension = "vorticity_%i" % j
-            plot_title = "$t=%1.2f$" % time[j]
-            plot_vorticity_plane(paths[i],filename_without_extension,file_extension,fig_directory,fig_prepre_fix[i],
-                subdivide=False,title_label=plot_title,fill_contour=True,plot_reference_result=False,
-                shift_domain_by_minus_pi=shift_domain_by_minus_pi_store[i],
-                plot_single_element_domain=False,
-                color_bar_off=True)
-exit()
 # compare solution at wall
 paths=(
 filesystem+"NarvalFiles/2024_CSME/dipole_wall_collision/viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0192_p2/solution_files/",\
@@ -250,6 +220,13 @@ fig_prepre_fix = [\
 subdivide_input=[True,False,False,False,True]
 # subdivide_input=[True,True,True,False,True]
 time = [0.0,0.1,0.2,0.3,0.35,0.5,0.6,0.8,1.0]
+wall_element_size_dx_store=[\
+    (2.0/64.0),\
+    (2.0/64.0),\
+    (2.0/64.0),\
+    (2.0/128.0),\
+    (1.0-9.9879544973373413e-01),\
+]
 for i in range(0,n_paths):
     filename_without_extension = "vorticity"
     plot_title = labels_for_plot[i] #"$t=%1.2f$" % time[4]
@@ -257,4 +234,37 @@ for i in range(0,n_paths):
         subdivide=subdivide_input[i],title_label=plot_title,fill_contour=True,plot_reference_result=False,
         shift_domain_by_minus_pi=False,
         plot_at_wall=True,
-        plot_single_element_domain=False)
+        plot_single_element_domain=False,
+        plot_wall_element_edge=True,wall_element_size_dx=wall_element_size_dx_store[i])
+exit()
+# simulation overview
+paths=(
+# filesystem+"NarvalFiles/2024_CSME/dipole_wall_collision/viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0384_p5/solution_files/",\
+filesystem+"NarvalFiles/2024_CSME/dipole_wall_collision/viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0512_p7/solution_files/",\
+)
+files_per_path=[9,9]
+
+file_extension="csv"
+n_paths=len(paths)
+
+fig_directory = "./figures/2024_CSME"
+labels_for_plot=[\
+    # "$384^2$ P$5$ $c_{DG}$ NSFR.IR-GL",\
+    "$512^2$ P$7$ $c_{DG}$ NSFR.IR-GL",\
+]
+fig_prepre_fix = [\
+    # "384_p5_NSFR_cDG_IR_GL_",\
+    "512_p7_NSFR_cDG_IR_GL_",\
+]
+shift_domain_by_minus_pi_store=[False,False]
+time = [0.0,0.1,0.2,0.3,0.35,0.5,0.6,0.8,1.0]
+
+for i in range(0,n_paths):
+    for j in range(0,files_per_path[i]):
+            filename_without_extension = "vorticity_%i" % j
+            plot_title = "$t=%1.2f$" % time[j]
+            plot_vorticity_plane(paths[i],filename_without_extension,file_extension,fig_directory,fig_prepre_fix[i],
+                subdivide=False,title_label=plot_title,fill_contour=True,plot_reference_result=False,
+                shift_domain_by_minus_pi=shift_domain_by_minus_pi_store[i],
+                plot_single_element_domain=False,
+                color_bar_off=True)
