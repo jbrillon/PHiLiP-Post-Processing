@@ -18,7 +18,7 @@ sys.path.append(CURRENT_PATH+"../../submodules/quickplotlib/lib"); import quickp
 # elif platform == "darwin":
 #     # OS X
 #     sys.path.append("/Users/Julien/Python/quickplotlib/lib"); import quickplotlib as qp # uncomment if testing quickplotlib changes
-
+from scipy import integrate
 #-----------------------------------------------------
 from sys import platform
 if platform == "linux" or platform == "linux2":
@@ -49,8 +49,7 @@ def get_truncated_spectra_from_cutoff_wavenumber_and_spectra(spectra, cutoff_wav
 #-----------------------------------------------------
 def get_truncated_spectra_from_DOFs_information(spectra, poly_degree, number_of_elements_per_direction,truncate_spectra_at_effective_DOFs):
     cutoff_wavenumber = get_cutoff_wavenumber(poly_degree,number_of_elements_per_direction,truncate_spectra_at_effective_DOFs)
-    idx = (np.abs(spectra[:,0] - cutoff_wavenumber)).argmin()
-    return spectra[:(idx+1),:]
+    return get_truncated_spectra_from_cutoff_wavenumber_and_spectra(spectra,cutoff_wavenumber)
 #-----------------------------------------------------
 def append_to_plot(x_,y_,label_):
     global x,y,labels
@@ -103,8 +102,6 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
     cutoff_wavenumber_store = []
     grid_cutoff_wavenumber_store = []
     if(plot_cutoff_wavenumber_asymptote):
-        cutoff_wavenumber_store = []
-        grid_cutoff_wavenumber_store = []
         if(list_of_poly_degree_input==[] or list_of_number_of_elements_per_direction_input==[]):
             print("ERROR: list_of_poly_degree_input or list_of_number_of_elements_per_direction_input is empty with plot_cutoff_wavenumber_asymptote==True.")
             print("Aborting...")
@@ -245,7 +242,7 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
         i_curve += 1
     elif(plot_reference_result):
         spectra = np.loadtxt(CURRENT_PATH+"data/carton2014_dns_spectra_t9.txt",skiprows=1,delimiter=',')
-        append_to_plot(spectra[:,0],spectra[:,1],"DNS [Carton et al.]")
+        append_to_plot(spectra[:,0],spectra[:,1],"DNS [Carton de Wiart et al.]")
         i_curve += 1
     if(plot_filtered_dns):
         filepath_to_reference_result=CURRENT_PATH+"data/brillon/flow_field_files/velocity_vorticity_p7_dofs256_projected_to_p2_dofs096-1_reordered_spectra_oversampled_nquad12.dat"
@@ -296,6 +293,50 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
         )
     
     return
+#-----------------------------------------------------
+def get_total_turbulent_kinetic_energy_from_spectra(spectra):
+    wavenumbers = spectra[:,0]
+    turbulent_kinetic_energy = spectra[:,1] 
+    total_turbulent_kinetic_energy = integrate.trapezoid(turbulent_kinetic_energy,x=wavenumbers)
+    return total_turbulent_kinetic_energy
+#-----------------------------------------------------
+def batch_compute_resolved_turbulent_kinetic_energy(
+    paths_,
+    labels_,
+    list_of_poly_degree_,
+    list_of_number_of_elements_per_direction_):
+    
+    #----------------------------------------------------------------
+    # Reference result
+    #----------------------------------------------------------------
+    # "DNS ($256^{3}$p$7$)"
+    filepath_to_reference_result=CURRENT_PATH+"data/brillon/flow_field_files/velocity_vorticity_p7_dofs256-1_reordered_spectra_oversampled_nquad16.dat"
+    reference_spectra = np.loadtxt(filepath_to_reference_result)
+    
+    # Parameters:
+    truncate_spectra_at_effective_DOFs=True
+    filename="flow_field_files/velocity_vorticity-1_reordered_spectra_no_smoothing.dat"
+    
+    print("Label \t\t\t\t| P, Nel, Total DOFs, Effective-DOFs\t | Total TKE\t| Ref. Total TKE\t| Rel. Percentage")
+    print("---------------------------------------------------------------------------------")
+    # Loop through all the paths
+    for i,path in enumerate(paths_):
+        spectra_ = np.loadtxt(filesystem+path+filename)
+        poly_degree = list_of_poly_degree_[i]
+        number_of_elements_per_direction = list_of_number_of_elements_per_direction_[i]
+        cutoff_wavenumber = get_cutoff_wavenumber(poly_degree,number_of_elements_per_direction,truncate_spectra_at_effective_DOFs) # True for effective DOFs
+        spectra = get_truncated_spectra_from_cutoff_wavenumber_and_spectra(spectra_, cutoff_wavenumber)
+        total_tke = get_total_turbulent_kinetic_energy_from_spectra(spectra)
+        # spectra = 1.0*spectra_ # uncomment for no truncation
+        truncated_reference_spectra = get_truncated_spectra_from_cutoff_wavenumber_and_spectra(reference_spectra, cutoff_wavenumber)
+        reference_total_tke = get_total_turbulent_kinetic_energy_from_spectra(reference_spectra)
+        percentage_of_tke_captured = 100.0*total_tke/reference_total_tke
+        total_nDOFs_per_dim = (poly_degree+1)*number_of_elements_per_direction
+        effective_nDOFs_per_dim = (poly_degree)*number_of_elements_per_direction
+        print("%s \t| %i, %i, %i^3, %i^3 \t\t| %.6e\t| %.6e\t\t| %3.6f %%" % (labels_[i], poly_degree, number_of_elements_per_direction, total_nDOFs_per_dim, effective_nDOFs_per_dim, total_tke, reference_total_tke, percentage_of_tke_captured))
+        # labels_[i]
+    print("---------------------------------------------------------------------------------")
+    return
 
 #=====================================================
 # Global variables
@@ -316,6 +357,46 @@ fig_dir_input="./figures/2023_JCP/oversampled_spectra"
 # MISSING FIG 3
 # =====================================================
 
+batch_paths = [ \
+"NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+"NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512/", \
+"NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512/",\
+"NarvalFiles/2023_JCP/spectra_fix/high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs064_p7_procs512/",\
+"NarvalFiles/2023_JCP/spectra_fix/high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-8_dofs064_p7_procs512/",\
+"NarvalFiles/2023_JCP/spectra_fix/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs048_p5_procs64/",\
+"NarvalFiles/2023_JCP/spectra_fix/robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs048_p5_procs64/",\
+"NarvalFiles/2023_JCP/spectra_fix/over_integration/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-3_dofs096_p5_procs512/",\
+"NarvalFiles/2023_JCP/spectra_fix/over_integration_accuracy_strong_DG/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-2_dofs096_p5_CFL-0.10_procs512/",\
+"NarvalFiles/2023_JCP/spectra_fix/filter_width_stabilization/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-0_dofs096_p5_procs512/",\
+"NarvalFiles/2023_JCP/spectra_fix/upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs096_p5_procs512/",\
+"NarvalFiles/2023_JCP/spectra_fix/correction_parameter/viscous_TGV_ILES_NSFR_cSD_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+"NarvalFiles/2023_JCP/spectra_fix/correction_parameter/viscous_TGV_ILES_NSFR_cHU_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+"NarvalFiles/2023_JCP/spectra_fix/correction_parameter/viscous_TGV_ILES_NSFR_cPlus_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
+"NarvalFiles/2023_JCP/spectra_fix/upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-L2R_GL_OI-0_dofs096_p5_procs512/", \
+"NarvalFiles/2023_JCP/spectra_fix/upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-LxF_GL_OI-0_dofs096_p5_procs512/", \
+]
+batch_labels = [ \
+"$c_{DG}$ NSFR.IR-GL",\
+"$c_{DG}$ NSFR.IR-GLL",\
+"sDG-GL-Roe-OI", \
+"$c_{DG}$ NSFR.IR-GL", \
+"sDG-GL-Roe-OI", \
+"$c_{DG}$ NSFR.IR-GL",\
+"sDG-GL-Roe-OI",\
+"$c_{DG}$ NSFR.IR-GL-OI-3",\
+"sDG-GL-Roe-OI-2",\
+"sDG-GL-Roe-OI-0",\
+"$c_{DG}$ NSFR.IR-GL-Roe",\
+"$c_{SD}$ NSFR.IR-GL",\
+"$c_{HU}$ NSFR.IR-GL",\
+"$c_{+}$ NSFR.IR-GL",\
+"$c_{DG}$ NSFR.IR-GL-L$^2$Roe",\
+"$c_{DG}$ NSFR.IR-GL-LxF",\
+]
+list_of_poly_degree=[5,5,5,7,7,5,5,5,5,5,5,5,5,5,5,5]
+list_of_number_of_elements_per_direction=[16,16,16,8,8,8,8,16,16,16,16,16,16,16,16,16]
+batch_compute_resolved_turbulent_kinetic_energy(batch_paths,batch_labels,list_of_poly_degree,list_of_number_of_elements_per_direction)
+exit()
 # =====================================================
 if(True or regenerate_all_plots):
     batch_paths = [ \
