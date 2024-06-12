@@ -51,7 +51,7 @@ def plot_for_presentation(
     black_line_flag.append(True)
     dashed_line_flag.append(False)
     #-----------------------------------------------------
-    clr_input_store = ['k','tab:blue','tab:blue','tab:red','tab:red','tab:green','tab:green','tab:orange','tab:orange']#,'tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    clr_input_store = ['k','tab:blue','tab:red','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
     mrkr_input_store = ['o','None','None','None','None','None','None','None']
     lnstl_input_store = ['None','solid','solid','dashed','solid','dashed','solid','dashed','solid']
     #-----------------------------------------------------
@@ -201,21 +201,19 @@ if(True):
     date_for_runs="."
     figure_subdirectory="./"
     # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
-    figure_filename_postfix = "_16p7"
+    figure_filename_postfix = "_128"
     legend_inside_input=True
     plot_reference_result=True
     plot_PHiLiP_DNS_result_as_reference_input=False
     #-----------------------------------------------------
     subdirectories_for_plot=[\
     "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p7_procs512",\
-    "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p7_procs512_CFL_1e-1",\
-    # "supersonic_viscous_TGV_ILES_NSFR_cPlus_Ra_2PF_GLL_OI-0_dofs0128_p3_procs512",\
+    "supersonic_viscous_TGV_ILES_NSFR_cPlus_Ra_2PF_GLL_OI-0_dofs0128_p3_procs512",\
     ]
     # labels
     labels_for_plot=[\
-    "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL $16$p$7$\n ($128^2$ DOF) CFL=0.025",\
     "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL $16$p$7$\n ($128^2$ DOF) CFL=0.1",\
-    # "$c_{+}$ NSFR.CH$_{RA}$+Roe+PPL $32$p$3$\n ($128^2$ DOF) CFL=0.1",\
+    "$c_{+}$ NSFR.CH$_{RA}$+Roe+PPL $32$p$3$\n ($128^2$ DOF) CFL=0.1",\
     ]
     black_line_flag_for_plot=[False,False,False,False,False,False,False,False]
     dashed_line_flag_for_plot=[False,False,False,False,False,True,True]
