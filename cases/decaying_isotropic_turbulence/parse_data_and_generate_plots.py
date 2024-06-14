@@ -401,15 +401,15 @@ append_to_plot(cbc_spectra_t0[:,0],cbc_spectra_t0[:,1],"CBC Experiment")
 spectra = np.loadtxt(filesystem+"NarvalFiles/2023_JCP/DHIT/viscous_DHIT_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs128_p3_CFL-0.2_procs512_oversampled_nquad12/flow_field_files/velocity_vorticity-0_reordered_spectra_no_smoothing.dat",skiprows=0,dtype=np.float64)
 # spectra_truncated = get_truncated_spectra_from_DOFs_information(spectra, 3, 32,True)
 spectra_truncated = get_truncated_spectra_from_cutoff_wavenumber_and_spectra(spectra, 30)
-append_to_plot(spectra_truncated[:,0],spectra_truncated[:,1],"NSFR Initialization")
+append_to_plot(spectra_truncated[:,0],spectra_truncated[:,1],"NSFR")
 qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $k^{*}$",ylabel="Nondimensional TKE Spectra, $E^{*}(k^{*},t^{*})$",
-    title_label=title_label,
+    # title_label=title_label,
     fig_directory="figures",figure_filename=figure_filename,log_axes="both",figure_filetype="pdf",
     # xlimits=[8e-1,3e2],ylimits=[1e-6,6e-1],
     # xlimits=[2.0,3e2],ylimits=[1e-5,1e-1],
     # xlimits=[1e0,0.5*96],ylimits=[1e-5,1e-1],
     # xlimits=[2e0,3.0e1],ylimits=[1e-3,1e-1],
-    xlimits=[1e0,3.0e1],ylimits=[1e-3,1e-1],
+    xlimits=[1e0,3.0e1],ylimits=[4e-3,1e-1],
     # xlimits=[1e0,1.0e2],ylimits=[1e-5,1e-1],
     markers=False,legend_on=True,legend_labels_tex=labels,
     which_lines_only_markers=[0],
@@ -425,27 +425,39 @@ reinit_inputs()
 title_label = "DHIT, $128^{3}$ DOF, P3, $c_{DG}$ NSFR.IR-GLL, CFL$=0.2$"
 figure_filename = "spectra_128_no_smoothing_oversampled_t2"
 
+# compute reference curve 1
+x_ref_curve = np.linspace(1.0e0,3.2e1,100)
+order_for_ref_curve = -5.0/3.0
+ref_curve_label = "$\\left(k^{*}\\right)^{-5/3}$"
+shift = 0.9
+y_ref_curve = (x_ref_curve**(order_for_ref_curve))/np.exp(shift)
+append_to_plot(x_ref_curve,y_ref_curve,ref_curve_label)
+
 append_to_plot(cbc_spectra_t2[:,0],cbc_spectra_t2[:,1],"CBC Experiment")
 append_to_plot(fds_spectra[:,0],fds_spectra[:,1],"FDS [Jefferson-Loveday and Tucker]")
 # append_to_plot(vermeire_spectra_p1_126dofs[:,0],vermeire_spectra_p1_126dofs[:,1],"CPR $126^3p1$ [Vermeire et al.]")
+append_to_plot(vermeire_spectra_p5_78dofs[:,0],vermeire_spectra_p5_78dofs[:,1],"CPR [Vermeire et al.]")
 
 spectra = np.loadtxt(filesystem+"NarvalFiles/2023_JCP/DHIT/viscous_DHIT_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs128_p3_CFL-0.2_procs512_oversampled_nquad12/flow_field_files/velocity_vorticity-4_reordered_spectra_no_smoothing.dat",skiprows=0,dtype=np.float64)
 # spectra_truncated = get_truncated_spectra_from_DOFs_information(spectra, 3, 32,True)
-spectra_truncated = get_truncated_spectra_from_cutoff_wavenumber_and_spectra(spectra, 30)
+spectra_truncated = get_truncated_spectra_from_cutoff_wavenumber_and_spectra(spectra, 32)
 append_to_plot(spectra_truncated[:,0],spectra_truncated[:,1],"NSFR")
+
+clr_input_store = ['k','k','k','k','k']
+mrkr_input_store = ['None','o','None','None','None','None','None']
+lnstl_input_store = ['dotted','None','dashed','dashdot','solid']
+
 qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $k^{*}$",ylabel="Nondimensional TKE Spectra, $E^{*}(k^{*},t^{*})$",
-    title_label=title_label,
+    # title_label=title_label,
     fig_directory="figures",figure_filename=figure_filename,log_axes="both",figure_filetype="pdf",
     # xlimits=[8e-1,3e2],ylimits=[1e-6,6e-1],
     # xlimits=[2.0,3e2],ylimits=[1e-5,1e-1],
     # xlimits=[1e0,0.5*96],ylimits=[1e-5,1e-1],
     # xlimits=[2e0,3.0e1],ylimits=[1e-3,3e-2],
-    xlimits=[1e0,3.0e1],ylimits=[1e-3,3e-2],
+    xlimits=[1e0,3.2e1],ylimits=[1e-3,2.0e-2],
     # xlimits=[1e0,1.0e2],ylimits=[1e-5,1e-1],
     markers=False,legend_on=True,legend_labels_tex=labels,
-    which_lines_only_markers=[0],
-    which_lines_black=[0,1,2],
-    which_lines_dashed=[1],
+    clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
     transparent_legend=True,
     legend_border_on=False,grid_lines_on=False)
 
@@ -465,7 +477,7 @@ for i in range(0,len(labels)):
     spectra_truncated = get_truncated_spectra_from_cutoff_wavenumber_and_spectra(spectra, 30)
     append_to_plot(spectra_truncated[:,0],spectra_truncated[:,1],labels[i])
 qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $k^{*}$",ylabel="Nondimensional TKE Spectra, $E^{*}(k^{*},t^{*})$",
-    title_label=title_label,
+    # title_label=title_label,
     fig_directory="figures",figure_filename=figure_filename,log_axes="both",figure_filetype="pdf",
     # xlimits=[8e-1,3e2],ylimits=[1e-6,6e-1],
     # xlimits=[2.0,3e2],ylimits=[1e-5,1e-1],
