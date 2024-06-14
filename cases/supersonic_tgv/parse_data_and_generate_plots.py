@@ -209,12 +209,53 @@ if(True):
     subdirectories_for_plot=[\
     "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p7_procs512",\
     "supersonic_viscous_TGV_ILES_NSFR_cPlus_Ra_2PF_GLL_OI-0_dofs0128_p3_procs512",\
+    # "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p15_procs128",\
+    # "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs512",\
     ]
     # labels
     labels_for_plot=[\
-    "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL $16$p$7$\n ($128^2$ DOF) CFL=0.1",\
-    "$c_{+}$ NSFR.CH$_{RA}$+Roe+PPL $32$p$3$\n ($128^2$ DOF) CFL=0.1",\
+    "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL $16$p$7$\n ($128^3$ DOF) CFL=0.1",\
+    "$c_{+}$ NSFR.CH$_{RA}$+Roe+PPL $32$p$3$\n ($128^3$ DOF) CFL=0.1",\
+    # "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL $8$p$15$\n ($128^3$ DOF) CFL=0.01",\
+    # "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL $32$p$7$\n ($256^3$ DOF) CFL=0.1",\
     ]
     black_line_flag_for_plot=[False,False,False,False,False,False,False,False]
     dashed_line_flag_for_plot=[False,False,False,False,False,True,True]
     plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot)
+
+exit()
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+
+filename = filesystem+"NarvalFiles/2024_JCP/"+"supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p7_procs512/turbulent_quantities.txt"
+time, kinetic_energy, enstrophy, vorticity_based_dissipation, pressure_dilatation_based_dissipation, strain_rate_based_dissipation, deviatoric_strain_rate_based_dissipation, solenoidal_dissipation, dilatational_dissipation = np.loadtxt(filename,skiprows=1,dtype=np.float64,unpack=True)
+ax.semilogx(time, solenoidal_dissipation)
+
+filename = filesystem+"NarvalFiles/2024_JCP/"+"supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p15_procs128/turbulent_quantities.txt"
+time, kinetic_energy, enstrophy, vorticity_based_dissipation, pressure_dilatation_based_dissipation, strain_rate_based_dissipation, deviatoric_strain_rate_based_dissipation, solenoidal_dissipation, dilatational_dissipation = np.loadtxt(filename,skiprows=1,dtype=np.float64,unpack=True)
+
+ax.semilogx(time, solenoidal_dissipation)
+# ax.plot(time, kinetic_energy)
+
+filename = filesystem+"NarvalFiles/2024_JCP/"+"supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p15_procs128_cfl_1e-2/turbulent_quantities.txt"
+time, kinetic_energy, enstrophy, vorticity_based_dissipation, pressure_dilatation_based_dissipation, strain_rate_based_dissipation, deviatoric_strain_rate_based_dissipation, solenoidal_dissipation, dilatational_dissipation = np.loadtxt(filename,skiprows=1,dtype=np.float64,unpack=True)
+
+ax.semilogx(time, solenoidal_dissipation)
+
+filename = filesystem+"NarvalFiles/2024_JCP/"+"supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p15_procs128_cfl_5e-2/turbulent_quantities.txt"
+time, kinetic_energy, enstrophy, vorticity_based_dissipation, pressure_dilatation_based_dissipation, strain_rate_based_dissipation, deviatoric_strain_rate_based_dissipation, solenoidal_dissipation, dilatational_dissipation = np.loadtxt(filename,skiprows=1,dtype=np.float64,unpack=True)
+
+ax.semilogx(time, solenoidal_dissipation)
+
+filename = filesystem+"NarvalFiles/2024_JCP/"+"supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p15_procs128_cfl_25e-3/turbulent_quantities.txt"
+time, kinetic_energy, enstrophy, vorticity_based_dissipation, pressure_dilatation_based_dissipation, strain_rate_based_dissipation, deviatoric_strain_rate_based_dissipation, solenoidal_dissipation, dilatational_dissipation = np.loadtxt(filename,skiprows=1,dtype=np.float64,unpack=True)
+
+ax.semilogx(time, solenoidal_dissipation)
+# ax.plot(time, kinetic_energy)
+
+ax.set(xlabel='t', ylabel='$\\varepsilon_{s}$',
+       title='check')
+# ax.grid()
+
+# fig.savefig("test.png")
+plt.show()
