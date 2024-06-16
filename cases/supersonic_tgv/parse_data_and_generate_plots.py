@@ -25,7 +25,8 @@ def plot_for_presentation(
     subdirectories_for_plot,
     labels_for_plot,
     black_line_flag_for_plot,
-    dashed_line_flag_for_plot):
+    dashed_line_flag_for_plot,
+    plotting_subsonic_result=False):
     
     global subdirectories, filenames, labels, black_line_flag, \
     dashed_line_flag, figure_filename_postfix, figure_title, \
@@ -40,12 +41,21 @@ def plot_for_presentation(
     solenoidal_dissipation_store = []
     dilatational_dissipation_store = []
     #-----------------------------------------------------
-    time, kinetic_energy = np.loadtxt("./data/chapelier2024/kinetic_energy.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+    if(plotting_subsonic_result):
+        time, kinetic_energy = np.loadtxt("./data/chapelier2024/subsonic/kinetic_energy.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+    else:
+        time, kinetic_energy = np.loadtxt("./data/chapelier2024/kinetic_energy.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
     time_store.append(time)
     kinetic_energy_store.append(kinetic_energy)
-    time, solenoidal_dissipation = np.loadtxt("./data/chapelier2024/solenoidal_dissipation.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+    if(plotting_subsonic_result):
+        time, solenoidal_dissipation = np.loadtxt("./data/chapelier2024/subsonic/solenoidal_dissipation.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+    else:
+        time, solenoidal_dissipation = np.loadtxt("./data/chapelier2024/solenoidal_dissipation.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
     solenoidal_dissipation_store.append(solenoidal_dissipation)
-    time, dilatational_dissipation = np.loadtxt("./data/chapelier2024/dilatational_dissipation.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+    if(plotting_subsonic_result):
+        time, dilatational_dissipation = np.loadtxt("./data/chapelier2024/subsonic/dilatational_dissipation.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+    else:
+        time, dilatational_dissipation = np.loadtxt("./data/chapelier2024/dilatational_dissipation.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
     dilatational_dissipation_store.append(dilatational_dissipation)
     labels.append("Chapelier et al. ($2048^3$ DOFs)")
     black_line_flag.append(True)
@@ -72,6 +82,15 @@ def plot_for_presentation(
         kinetic_energy_store.append(kinetic_energy)
         solenoidal_dissipation_store.append(solenoidal_dissipation)
         dilatational_dissipation_store.append(dilatational_dissipation)
+        # dilatational_dissipation_store.append(pressure_dilatation_based_dissipation)
+
+    final_time_for_plot = 20.0
+    if(plotting_subsonic_result):
+        final_time_for_plot = 10.0
+
+    ylimits_for_plot = [0.0,0.14]
+    if(plotting_subsonic_result):
+        ylimits_for_plot = [0.04,0.13]
 
     qp.plotfxn(xdata=time_store,#[time,time],
             ydata=kinetic_energy_store,#[kinetic_energy,kolmogorov_slope],
@@ -82,8 +101,8 @@ def plot_for_presentation(
             markers=False,
             legend_labels_tex=labels,
             black_lines=False,
-            xlimits=[0,20.0],
-            ylimits=[0.0,0.14],
+            xlimits=[0,final_time_for_plot],
+            ylimits=ylimits_for_plot,
             log_axes=log_axes_input,
             which_lines_black=black_line_flag,
             which_lines_dashed=dashed_line_flag,
@@ -100,7 +119,12 @@ def plot_for_presentation(
             legend_location="lower left")
 
     #-----------------------------------------------------
+    ylimits_for_plot = [0.0,0.014]
+    if(plotting_subsonic_result):
+        ylimits_for_plot = [0.0,0.012]
     time, solenoidal_dissipation = np.loadtxt("./data/chapelier2024/solenoidal_dissipation.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+    if(plotting_subsonic_result):
+        time, solenoidal_dissipation = np.loadtxt("./data/chapelier2024/subsonic/solenoidal_dissipation.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
     time_store[0] = time # replace it -- this is a hack
     qp.plotfxn(xdata=time_store,
             ydata=solenoidal_dissipation_store,
@@ -111,8 +135,8 @@ def plot_for_presentation(
             markers=False,
             legend_labels_tex=labels,
             black_lines=False,
-            xlimits=[0,20.0],
-            ylimits=[0.0,0.014],
+            xlimits=[0,final_time_for_plot],
+            ylimits=ylimits_for_plot,
             log_axes=log_axes_input,
             which_lines_black=black_line_flag,
             which_lines_dashed=dashed_line_flag,
@@ -129,7 +153,12 @@ def plot_for_presentation(
             legend_location="upper left")
 
     #-----------------------------------------------------
+    ylimits_for_plot = [0.0,0.0016]
+    if(plotting_subsonic_result):
+        ylimits_for_plot = [0.0,5.0e-6]
     time, dilatational_dissipation = np.loadtxt("./data/chapelier2024/dilatational_dissipation.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+    if(plotting_subsonic_result):
+        time, dilatational_dissipation = np.loadtxt("./data/chapelier2024/subsonic/dilatational_dissipation.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")    
     time_store[0] = time # replace it -- this is a hack
     qp.plotfxn(xdata=time_store,
             ydata=dilatational_dissipation_store,
@@ -140,8 +169,8 @@ def plot_for_presentation(
             markers=False,
             legend_labels_tex=labels,
             black_lines=False,
-            xlimits=[0,20.0],
-            ylimits=[0.0,0.0016],
+            xlimits=[0,final_time_for_plot],
+            # ylimits=ylimits_for_plot,
             log_axes=log_axes_input,
             which_lines_black=black_line_flag,
             which_lines_dashed=dashed_line_flag,
@@ -193,7 +222,7 @@ def reinit_inputs():
 #=====================================================
 # DOFs: 256^3 | All results
 #-----------------------------------------------------
-if(True):
+if(False):
     #-----------------------------------------------------
     # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
     reinit_inputs()
@@ -222,6 +251,36 @@ if(True):
     black_line_flag_for_plot=[False,False,False,False,False,False,False,False]
     dashed_line_flag_for_plot=[False,False,False,False,False,True,True]
     plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot)
+
+#=====================================================
+# DOFs: 256^3 | Subsonic case
+#-----------------------------------------------------
+if(True):
+    #-----------------------------------------------------
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2024_JCP/"
+    date_for_runs="."
+    figure_subdirectory="./"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
+    figure_filename_postfix = "_subsonic"
+    legend_inside_input=True
+    plot_reference_result=True
+    plot_PHiLiP_DNS_result_as_reference_input=False
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "subsonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs512",\
+    ]
+    # labels
+    labels_for_plot=[\
+    "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL $32$p$7$\n ($256^3$ DOF) CFL=0.1",\
+    # "$c_{+}$ NSFR.CH$_{RA}$+Roe+PPL $32$p$3$\n ($128^3$ DOF) CFL=0.1",\
+    # "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL $8$p$15$\n ($128^3$ DOF) CFL=0.01",\
+    # "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL $32$p$7$\n ($256^3$ DOF) CFL=0.1",\
+    ]
+    black_line_flag_for_plot=[False,False,False,False,False,False,False,False]
+    dashed_line_flag_for_plot=[False,False,False,False,False,True,True]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,plotting_subsonic_result=True)
 
 exit()
 import matplotlib.pyplot as plt
@@ -259,3 +318,61 @@ ax.set(xlabel='t', ylabel='$\\varepsilon_{s}$',
 
 # fig.savefig("test.png")
 plt.show()
+
+#=====================================================
+# DOFs: 256^3 | All results
+#-----------------------------------------------------
+if(False):
+    #-----------------------------------------------------
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2024_JCP/"
+    date_for_runs="."
+    figure_subdirectory="./"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
+    figure_filename_postfix = "_128_overint10"
+    legend_inside_input=True
+    plot_reference_result=True
+    plot_PHiLiP_DNS_result_as_reference_input=False
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p7_procs512_overint-10-for-unsteady-quantities",\
+    "supersonic_viscous_TGV_ILES_NSFR_cPlus_Ra_2PF_GLL_OI-0_dofs0128_p3_procs512_overint-10-for-unsteady-quantities",\
+    ]
+    # labels
+    labels_for_plot=[\
+    "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL $16$p$7$\n ($128^2$ DOF) CFL=0.1",\
+    "$c_{+}$ NSFR.CH$_{RA}$+Roe+PPL $32$p$3$\n ($128^2$ DOF) CFL=0.1",\
+    ]
+    black_line_flag_for_plot=[False,False,False,False,False,False,False,False]
+    dashed_line_flag_for_plot=[False,False,False,False,False,True,True]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot)
+
+#=====================================================
+# DOFs: 256^3 | All results
+#-----------------------------------------------------
+if(False):
+    #-----------------------------------------------------
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2024_JCP/"
+    date_for_runs="."
+    figure_subdirectory="./"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
+    figure_filename_postfix = "_128_check"
+    legend_inside_input=True
+    plot_reference_result=True
+    plot_PHiLiP_DNS_result_as_reference_input=False
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p7_procs512",\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p7_procs512_overint-10-for-unsteady-quantities",\
+    ]
+    # labels
+    labels_for_plot=[\
+    "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL $16$p$7$\n ($128^2$ DOF) CFL=0.1",\
+    "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL $16$p$7$\n ($128^2$ DOF) CFL=0.1, OI-10",\
+    ]
+    black_line_flag_for_plot=[False,False,False,False,False,False,False,False]
+    dashed_line_flag_for_plot=[False,True,False,False,False,True,True]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot)
