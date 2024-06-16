@@ -63,7 +63,7 @@ def plot_for_presentation(
     #-----------------------------------------------------
     clr_input_store = ['k','tab:blue','tab:red','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
     mrkr_input_store = ['o','None','None','None','None','None','None','None']
-    lnstl_input_store = ['None','solid','solid','dashed','solid','dashed','solid','dashed','solid']
+    lnstl_input_store = ['None','solid','solid','solid','solid','dashed','solid','dashed','solid']
     #-----------------------------------------------------
     number_of_result_curves=len(subdirectories_for_plot)
     for i in range(0,number_of_result_curves):
@@ -153,7 +153,7 @@ def plot_for_presentation(
             legend_location="upper left")
 
     #-----------------------------------------------------
-    ylimits_for_plot = [0.0,0.0016]
+    ylimits_for_plot = [0.0,0.002]
     if(plotting_subsonic_result):
         ylimits_for_plot = [0.0,5.0e-6]
     time, dilatational_dissipation = np.loadtxt("./data/chapelier2024/dilatational_dissipation.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
@@ -170,7 +170,7 @@ def plot_for_presentation(
             legend_labels_tex=labels,
             black_lines=False,
             xlimits=[0,final_time_for_plot],
-            # ylimits=ylimits_for_plot,
+            ylimits=ylimits_for_plot,
             log_axes=log_axes_input,
             which_lines_black=black_line_flag,
             which_lines_dashed=dashed_line_flag,
@@ -222,7 +222,7 @@ def reinit_inputs():
 #=====================================================
 # DOFs: 256^3 | All results
 #-----------------------------------------------------
-if(False):
+if(True):
     #-----------------------------------------------------
     # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
     reinit_inputs()
@@ -238,15 +238,15 @@ if(False):
     subdirectories_for_plot=[\
     "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p7_procs512",\
     "supersonic_viscous_TGV_ILES_NSFR_cPlus_Ra_2PF_GLL_OI-0_dofs0128_p3_procs512",\
-    # "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p15_procs128",\
-    # "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs512",\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs512",\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p15_procs128",\
     ]
     # labels
     labels_for_plot=[\
     "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL $16$p$7$\n ($128^3$ DOF) CFL=0.1",\
     "$c_{+}$ NSFR.CH$_{RA}$+Roe+PPL $32$p$3$\n ($128^3$ DOF) CFL=0.1",\
-    # "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL $8$p$15$\n ($128^3$ DOF) CFL=0.01",\
-    # "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL $32$p$7$\n ($256^3$ DOF) CFL=0.1",\
+    "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL $32$p$7$\n ($256^3$ DOF) CFL=0.1",\
+    "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL $8$p$15$\n ($128^3$ DOF) CFL=0.01",\
     ]
     black_line_flag_for_plot=[False,False,False,False,False,False,False,False]
     dashed_line_flag_for_plot=[False,False,False,False,False,True,True]
@@ -255,7 +255,7 @@ if(False):
 #=====================================================
 # DOFs: 256^3 | Subsonic case
 #-----------------------------------------------------
-if(True):
+if(False):
     #-----------------------------------------------------
     # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
     reinit_inputs()
