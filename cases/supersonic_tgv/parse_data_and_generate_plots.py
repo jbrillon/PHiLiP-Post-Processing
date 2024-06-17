@@ -270,10 +270,12 @@ if(False):
     #-----------------------------------------------------
     subdirectories_for_plot=[\
     "subsonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs512",\
+    "subsonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs512_no_limiter",\
     ]
     # labels
     labels_for_plot=[\
     "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL $32$p$7$\n ($256^3$ DOF) CFL=0.1",\
+    "$c_{DG}$ NSFR.CH$_{RA}$+Roe $32$p$7$\n ($256^3$ DOF) CFL=0.1",\
     # "$c_{+}$ NSFR.CH$_{RA}$+Roe+PPL $32$p$3$\n ($128^3$ DOF) CFL=0.1",\
     # "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL $8$p$15$\n ($128^3$ DOF) CFL=0.01",\
     # "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL $32$p$7$\n ($256^3$ DOF) CFL=0.1",\
