@@ -40,6 +40,7 @@ def plot_for_presentation(
     kinetic_energy_store = []
     solenoidal_dissipation_store = []
     dilatational_dissipation_store = []
+    pressure_dissipation_store = []
     #-----------------------------------------------------
     if(plotting_subsonic_result):
         time, kinetic_energy = np.loadtxt("./data/chapelier2024/subsonic/kinetic_energy.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
@@ -57,6 +58,7 @@ def plot_for_presentation(
     else:
         time, dilatational_dissipation = np.loadtxt("./data/chapelier2024/dilatational_dissipation.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
     dilatational_dissipation_store.append(dilatational_dissipation)
+    pressure_dissipation_store.append(np.nan*dilatational_dissipation)
     labels.append("Chapelier et al. ($2048^3$ DOFs)")
     black_line_flag.append(True)
     dashed_line_flag.append(False)
@@ -79,7 +81,12 @@ def plot_for_presentation(
         #-----------------------------------------------------
         # load file
         filename = data_directory_base+"/"+subdirectories[i]+"/"+filenames[i]
-        time, kinetic_energy, enstrophy, vorticity_based_dissipation, pressure_dilatation_based_dissipation, strain_rate_based_dissipation, deviatoric_strain_rate_based_dissipation, solenoidal_dissipation, dilatational_dissipation = np.loadtxt(filename,skiprows=1,dtype=np.float64,unpack=True)
+        if(i==2):
+            time, kinetic_energy, enstrophy, vorticity_based_dissipation, pressure_dilatation_based_dissipation, strain_rate_based_dissipation, deviatoric_strain_rate_based_dissipation, solenoidal_dissipation, dilatational_dissipation, corrected_pressure_dilatation_based_dissipation, corrected_dilatational_dissipation, uncorrected_pressure_dilatation_based_dissipation, uncorrected_dilatational_dissipation = np.loadtxt(filename,skiprows=1,dtype=np.float64,unpack=True)
+            pressure_dissipation_store.append(corrected_pressure_dilatation_based_dissipation)
+        else:
+            time, kinetic_energy, enstrophy, vorticity_based_dissipation, pressure_dilatation_based_dissipation, strain_rate_based_dissipation, deviatoric_strain_rate_based_dissipation, solenoidal_dissipation, dilatational_dissipation = np.loadtxt(filename,skiprows=1,dtype=np.float64,unpack=True)
+            pressure_dissipation_store.append(pressure_dilatation_based_dissipation)
         time_store.append(time)
         kinetic_energy_store.append(kinetic_energy)
         solenoidal_dissipation_store.append(solenoidal_dissipation)
@@ -87,6 +94,7 @@ def plot_for_presentation(
         print(np.linalg.norm(dilatational_dissipation_calc-dilatational_dissipation))
         dilatational_dissipation_store.append(dilatational_dissipation_calc)
         # dilatational_dissipation_store.append(pressure_dilatation_based_dissipation)
+        
 
     final_time_for_plot = 20.0
     if(plotting_subsonic_result):
@@ -120,7 +128,7 @@ def plot_for_presentation(
             grid_lines_on=False,
             clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
             legend_fontSize=12,#14
-            legend_location="lower left")
+            legend_location="best")
 
     #-----------------------------------------------------
     ylimits_for_plot = [0.0,0.016]
@@ -154,7 +162,7 @@ def plot_for_presentation(
             grid_lines_on=False,
             clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
             legend_fontSize=12,#14
-            legend_location="upper left")
+            legend_location="best")
 
     #-----------------------------------------------------
     ylimits_for_plot = [0.0,0.002]
@@ -188,8 +196,37 @@ def plot_for_presentation(
             grid_lines_on=False,
             clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
             legend_fontSize=12,#14
-            legend_location="upper right")
+            legend_location="best")
 
+    #-----------------------------------------------------
+    ylimits_for_plot = [0.0,0.002]
+    
+    # time_store.pop(0);
+    qp.plotfxn(xdata=time_store,
+            ydata=pressure_dissipation_store,
+            ylabel='Nondimensional Pressure Dissipation, $\\varepsilon_{p}^{*}$',#=\\frac{1}{\\rho_{\\infty}V_{\\infty}^{2}|\\Omega|}\\int_{\\Omega}\\rho(u\\cdot\\u)d\\Omega$',
+            xlabel='Nondimensional Time, $t^{*}$',
+            figure_filename=figure_subdirectory+'pressure_dissipation_vs_time'+figure_filename_postfix,
+            title_label=figure_title,
+            markers=False,
+            legend_labels_tex=labels,
+            black_lines=False,
+            xlimits=[0,final_time_for_plot],
+            # ylimits=ylimits_for_plot,
+            log_axes=log_axes_input,
+            which_lines_black=black_line_flag,
+            which_lines_dashed=dashed_line_flag,
+            which_lines_only_markers=[0],
+            legend_on=legend_on_input,
+            legend_inside=legend_inside_input,
+            nlegendcols=nlegendcols_input,
+            figure_size=(6,6),
+            transparent_legend=True,#transparent_legend_input,
+            legend_border_on=True,
+            grid_lines_on=False,
+            clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
+            legend_fontSize=12,#14
+            legend_location="upper right")
 #-----------------------------------------------------
 #=====================================================
 def reinit_inputs():
@@ -275,11 +312,13 @@ if(True):
     subdirectories_for_plot=[\
     "subsonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs512",\
     "subsonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs512_no_limiter",\
+    "subsonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs512_corrected_quantities",\
     ]
     # labels
     labels_for_plot=[\
     "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL $32$p$7$\n ($256^3$ DOF) CFL=0.1",\
     "$c_{DG}$ NSFR.CH$_{RA}$+Roe $32$p$7$\n ($256^3$ DOF) CFL=0.1",\
+    "with correction",\
     # "$c_{+}$ NSFR.CH$_{RA}$+Roe+PPL $32$p$3$\n ($128^3$ DOF) CFL=0.1",\
     # "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL $8$p$15$\n ($128^3$ DOF) CFL=0.01",\
     # "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL $32$p$7$\n ($256^3$ DOF) CFL=0.1",\
