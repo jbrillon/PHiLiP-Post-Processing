@@ -757,6 +757,18 @@ def plot_periodic_turbulence(
                 clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
                 legend_fontSize=legend_fontSize_input)
 
+        path_to_reference_result=CURRENT_PATH+"../cases/taylor_green_vortex/data/"
+        filename=path_to_reference_result+"/"+"debonis_et_al_pressure_dilatation_kedr_rough"+".txt"
+        time, pressure_dilatation_based_dissipation = np.loadtxt(filename,skiprows=1,delimiter=",",dtype=np.float64,unpack=True)
+        # time_store.insert(0,time)
+        # eps_K_minus_eps_Sd_store.insert(0,pressure_dilatation_based_dissipation)
+        # labels_store.insert(0,"DRP $512^2$")
+        time_store.append(time)
+        eps_K_minus_eps_Sd_store.append(pressure_dilatation_based_dissipation)
+        labels_store.append("DRP $512^2$")
+        which_lines_black_input = [number_of_result_curves]
+        which_lines_dashed_input = [number_of_result_curves]
+
         qp.plotfxn(xdata=time_store,
                 ydata=eps_K_minus_eps_Sd_store,
                 ylabel='$\\varepsilon^{*}-\\left[\\varepsilon\\left(\\mathbf{S}^{d}\\right)\\right]$',
