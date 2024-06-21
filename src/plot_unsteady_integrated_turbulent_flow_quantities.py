@@ -87,7 +87,11 @@ def plot_periodic_turbulence(
     strain_rate_based_dissipation_store = []
     deviatoric_strain_rate_based_dissipation_store = []
     pressure_dilatation_based_dissipation_store = []
-    eps_K_minus_eps_S_minus_eps_p_store = []
+    eps_K_minus_eps_S_plus_eps_p_store = []
+    eps_K_minus_eps_Sd_plus_eps_p_store = []
+    eps_K_minus_eps_S_store = []
+    eps_K_minus_eps_Sd_store = []
+    eps_S_minus_eps_Sd_store = []
     eps_S_plus_eps_p_store = []
     eps_p_store = []
     eps_S_store = []
@@ -163,7 +167,11 @@ def plot_periodic_turbulence(
         pressure_dilatation_based_dissipation_store.append(pressure_dilatation_based_dissipation)
         strain_rate_based_dissipation_store.append(strain_rate_based_dissipation)
         deviatoric_strain_rate_based_dissipation_store.append(deviatoric_strain_rate_based_dissipation)
-        eps_K_minus_eps_S_minus_eps_p_store.append(dissipation - strain_rate_based_dissipation - pressure_dilatation_based_dissipation)
+        eps_K_minus_eps_S_plus_eps_p_store.append(dissipation - strain_rate_based_dissipation + pressure_dilatation_based_dissipation)
+        eps_K_minus_eps_Sd_plus_eps_p_store.append(dissipation - deviatoric_strain_rate_based_dissipation + pressure_dilatation_based_dissipation)
+        eps_K_minus_eps_Sd_store.append(dissipation - deviatoric_strain_rate_based_dissipation)
+        eps_K_minus_eps_S_store.append(dissipation - strain_rate_based_dissipation)
+        eps_S_minus_eps_Sd_store.append(strain_rate_based_dissipation - deviatoric_strain_rate_based_dissipation)
         eps_S_plus_eps_p_store.append(strain_rate_based_dissipation + pressure_dilatation_based_dissipation)
         eps_p_store.append(pressure_dilatation_based_dissipation)
         eps_S_store.append(strain_rate_based_dissipation)
@@ -192,7 +200,11 @@ def plot_periodic_turbulence(
         pressure_dilatation_based_dissipation_store.append(pressure_dilatation_based_dissipation)
         strain_rate_based_dissipation_store.append(strain_rate_based_dissipation)
         deviatoric_strain_rate_based_dissipation_store.append(deviatoric_strain_rate_based_dissipation)
-        eps_K_minus_eps_S_minus_eps_p_store.append(dissipation - strain_rate_based_dissipation - pressure_dilatation_based_dissipation)
+        eps_K_minus_eps_S_plus_eps_p_store.append(dissipation - strain_rate_based_dissipation + pressure_dilatation_based_dissipation)
+        eps_K_minus_eps_Sd_plus_eps_p_store.append(dissipation - deviatoric_strain_rate_based_dissipation + pressure_dilatation_based_dissipation)
+        eps_K_minus_eps_Sd_store.append(dissipation - deviatoric_strain_rate_based_dissipation)
+        eps_K_minus_eps_S_store.append(dissipation - strain_rate_based_dissipation)
+        eps_S_minus_eps_Sd_store.append(strain_rate_based_dissipation - deviatoric_strain_rate_based_dissipation)
         eps_S_plus_eps_p_store.append(strain_rate_based_dissipation + pressure_dilatation_based_dissipation)
         eps_p_store.append(pressure_dilatation_based_dissipation)
         eps_S_store.append(strain_rate_based_dissipation)
@@ -240,7 +252,11 @@ def plot_periodic_turbulence(
         pressure_dilatation_based_dissipation_store.append(pressure_dilatation_based_dissipation)
         strain_rate_based_dissipation_store.append(strain_rate_based_dissipation)
         deviatoric_strain_rate_based_dissipation_store.append(deviatoric_strain_rate_based_dissipation)
-        eps_K_minus_eps_S_minus_eps_p_store.append(dissipation - strain_rate_based_dissipation - pressure_dilatation_based_dissipation)
+        eps_K_minus_eps_S_plus_eps_p_store.append(dissipation - strain_rate_based_dissipation + pressure_dilatation_based_dissipation)
+        eps_K_minus_eps_Sd_plus_eps_p_store.append(dissipation - deviatoric_strain_rate_based_dissipation + pressure_dilatation_based_dissipation)
+        eps_K_minus_eps_Sd_store.append(dissipation - deviatoric_strain_rate_based_dissipation)
+        eps_K_minus_eps_S_store.append(dissipation - strain_rate_based_dissipation)
+        eps_S_minus_eps_Sd_store.append(strain_rate_based_dissipation - deviatoric_strain_rate_based_dissipation)
         eps_S_plus_eps_p_store.append(strain_rate_based_dissipation + pressure_dilatation_based_dissipation)
         eps_p_store.append(pressure_dilatation_based_dissipation)
         eps_S_store.append(strain_rate_based_dissipation)
@@ -717,10 +733,35 @@ def plot_periodic_turbulence(
                 legend_fontSize=legend_fontSize_input)
 
         qp.plotfxn(xdata=time_store,
-                ydata=eps_K_minus_eps_S_minus_eps_p_store,
+                ydata=eps_K_minus_eps_Sd_plus_eps_p_store,
                 ylabel='$\\varepsilon^{*}-\\left[-\\varepsilon\\left(p\\right)+\\varepsilon\\left(\\mathbf{S}^{d}\\right)\\right]$',
                 xlabel='$t^{*}$',
                 figure_filename=figure_subdirectory+'error_in_KE_budget_vs_time'+figure_filename_postfix,
+                title_label=figure_title,
+                markers=False,
+                legend_labels_tex=labels_store,
+                black_lines=False,
+                xlimits=[0,tmax],
+                # ylimits=[-1e-1,1e-1],
+                log_axes=log_axes_input,
+                which_lines_black=which_lines_black_input,
+                which_lines_dashed=which_lines_dashed_input,
+                legend_on=legend_on_input,
+                legend_inside=legend_inside_input,
+                nlegendcols=nlegendcols_input,
+                figure_size=(6,6),
+                transparent_legend=transparent_legend_input,
+                legend_border_on=False,
+                grid_lines_on=False,
+                fig_directory=figure_directory_base,
+                clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
+                legend_fontSize=legend_fontSize_input)
+
+        qp.plotfxn(xdata=time_store,
+                ydata=eps_K_minus_eps_Sd_store,
+                ylabel='$\\varepsilon^{*}-\\left[\\varepsilon\\left(\\mathbf{S}^{d}\\right)\\right]$',
+                xlabel='$t^{*}$',
+                figure_filename=figure_subdirectory+'observed_pressure_dissipation_rate_vs_time'+figure_filename_postfix,
                 title_label=figure_title,
                 markers=False,
                 legend_labels_tex=labels_store,
