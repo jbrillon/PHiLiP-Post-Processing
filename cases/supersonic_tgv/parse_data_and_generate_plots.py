@@ -84,16 +84,20 @@ def plot_for_presentation(
         if(i==2):
             time, kinetic_energy, enstrophy, vorticity_based_dissipation, pressure_dilatation_based_dissipation, strain_rate_based_dissipation, deviatoric_strain_rate_based_dissipation, solenoidal_dissipation, dilatational_dissipation, corrected_pressure_dilatation_based_dissipation, corrected_dilatational_dissipation, uncorrected_pressure_dilatation_based_dissipation, uncorrected_dilatational_dissipation = np.loadtxt(filename,skiprows=1,dtype=np.float64,unpack=True)
             pressure_dissipation_store.append(corrected_pressure_dilatation_based_dissipation)
+            dilatational_dissipation_store.append(uncorrected_dilatational_dissipation)
+            print(dilatational_dissipation[-1])
+            print(uncorrected_dilatational_dissipation[-1])
+            print(corrected_dilatational_dissipation[-1])
         else:
             time, kinetic_energy, enstrophy, vorticity_based_dissipation, pressure_dilatation_based_dissipation, strain_rate_based_dissipation, deviatoric_strain_rate_based_dissipation, solenoidal_dissipation, dilatational_dissipation = np.loadtxt(filename,skiprows=1,dtype=np.float64,unpack=True)
             pressure_dissipation_store.append(pressure_dilatation_based_dissipation)
+            dilatational_dissipation_store.append(dilatational_dissipation)
         time_store.append(time)
         kinetic_energy_store.append(kinetic_energy)
         solenoidal_dissipation_store.append(solenoidal_dissipation)
-        dilatational_dissipation_calc = 2.0*(strain_rate_based_dissipation - deviatoric_strain_rate_based_dissipation)
-        print(np.linalg.norm(dilatational_dissipation_calc-dilatational_dissipation))
-        dilatational_dissipation_store.append(dilatational_dissipation_calc)
-        # dilatational_dissipation_store.append(pressure_dilatation_based_dissipation)
+        # dilatational_dissipation_calc = 2.0*(strain_rate_based_dissipation - deviatoric_strain_rate_based_dissipation)
+        # print(np.linalg.norm(dilatational_dissipation_calc-dilatational_dissipation))
+        
         
 
     final_time_for_plot = 20.0
@@ -103,7 +107,7 @@ def plot_for_presentation(
     ylimits_for_plot = [0.0,0.14]
     if(plotting_subsonic_result):
         ylimits_for_plot = [0.04,0.13]
-
+    '''
     qp.plotfxn(xdata=time_store,#[time,time],
             ydata=kinetic_energy_store,#[kinetic_energy,kolmogorov_slope],
             ylabel='Nondimensional Kinetic Energy, $K^{*}$',#=\\frac{1}{\\rho_{\\infty}V_{\\infty}^{2}|\\Omega|}\\int_{\\Omega}\\rho(u\\cdot\\u)d\\Omega$',
@@ -129,7 +133,7 @@ def plot_for_presentation(
             clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
             legend_fontSize=12,#14
             legend_location="best")
-
+    
     #-----------------------------------------------------
     ylimits_for_plot = [0.0,0.016]
     if(plotting_subsonic_result):
@@ -163,11 +167,12 @@ def plot_for_presentation(
             clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
             legend_fontSize=12,#14
             legend_location="best")
-
+    '''
     #-----------------------------------------------------
     ylimits_for_plot = [0.0,0.002]
     if(plotting_subsonic_result):
-        ylimits_for_plot = [] #[0.0,5.0e-6]
+        # ylimits_for_plot = []
+        ylimits_for_plot = [0.0,5.0e-6]
     time, dilatational_dissipation = np.loadtxt("./data/chapelier2024/dilatational_dissipation.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
     if(plotting_subsonic_result):
         time, dilatational_dissipation = np.loadtxt("./data/chapelier2024/subsonic/dilatational_dissipation.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")    
