@@ -155,9 +155,9 @@ if(True):
     ]
     # labels
     labels_for_plot=[\
-    "P$7$ $c_{DG}$ NSFR.IR-GL",\
-    "P$7$ $c_{DG}$ NSFR.IR-GLL",\
-    # "P$3$ $c_{DG}$ NSFR.IR-GL",\
+    "$c_{DG}$ NSFR.IR-GL\n $256^3$ DOFs ($32$p$7$)",\
+    "$c_{DG}$ NSFR.IR-GLL\n $256^3$ DOFs ($32$p$7$)",\
+    # "$c_{DG}$ NSFR.IR-GL\n $256^3$ DOFs ($64$p$3$)",\
     # "P$3$ $c_{DG}$ NSFR.IR-GL-Roe",\
     # "P$3$ Strong DG-Roe-GL-OI",\
     ]

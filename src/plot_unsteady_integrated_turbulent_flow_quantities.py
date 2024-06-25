@@ -758,16 +758,28 @@ def plot_periodic_turbulence(
                 legend_fontSize=legend_fontSize_input)
 
         path_to_reference_result=CURRENT_PATH+"../cases/taylor_green_vortex/data/"
-        filename=path_to_reference_result+"/"+"debonis_et_al_pressure_dilatation_kedr_rough"+".txt"
+        filename=path_to_reference_result+"/"+"debonis_et_al_pressure_dilatation_kedr"+".txt"
         time, pressure_dilatation_based_dissipation = np.loadtxt(filename,skiprows=1,delimiter=",",dtype=np.float64,unpack=True)
         # time_store.insert(0,time)
         # eps_K_minus_eps_Sd_store.insert(0,pressure_dilatation_based_dissipation)
         # labels_store.insert(0,"DRP $512^2$")
         time_store.append(time)
         eps_K_minus_eps_Sd_store.append(pressure_dilatation_based_dissipation)
-        labels_store.append("DRP $512^2$")
+        labels_store.append("DRP [DeBonis]\n $512^3$ DOFs")
         which_lines_black_input = [number_of_result_curves]
         which_lines_dashed_input = [number_of_result_curves]
+
+        path_to_reference_result=CURRENT_PATH+"../cases/taylor_green_vortex/data/"
+        filename=path_to_reference_result+"/"+"chapelier_2012_64p3_pressure_dilatation_kedr"+".txt"
+        time, pressure_dilatation_based_dissipation = np.loadtxt(filename,skiprows=1,delimiter=",",dtype=np.float64,unpack=True)
+        # time_store.insert(0,time)
+        # eps_K_minus_eps_Sd_store.insert(0,pressure_dilatation_based_dissipation)
+        # labels_store.insert(0,"DRP $512^2$")
+        time_store.append(time)
+        eps_K_minus_eps_Sd_store.append(pressure_dilatation_based_dissipation)
+        labels_store.append("DG [Chapelier et al.]\n $256^3$ DOFs ($64$p$3$)")
+        which_lines_black_input = [number_of_result_curves,number_of_result_curves+1]
+        which_lines_dotted_input = [number_of_result_curves+1]
 
         qp.plotfxn(xdata=time_store,
                 ydata=eps_K_minus_eps_Sd_store,
@@ -783,6 +795,7 @@ def plot_periodic_turbulence(
                 log_axes=log_axes_input,
                 which_lines_black=which_lines_black_input,
                 which_lines_dashed=which_lines_dashed_input,
+                which_lines_dotted=which_lines_dotted_input,
                 legend_on=legend_on_input,
                 legend_inside=legend_inside_input,
                 nlegendcols=nlegendcols_input,
