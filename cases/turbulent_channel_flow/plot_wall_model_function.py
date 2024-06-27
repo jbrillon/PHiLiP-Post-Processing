@@ -51,6 +51,10 @@ for i in range(np.size(y_plus_sample_points)):
     print("%1.13e, " % u_plus_y_plus_sample[i],end="")
 print(" ")
 
+# val_from_philip = np.interp(0.23912515804954856,y_plus_sample_points,u_plus_y_plus_sample)
+# print(val_from_philip)
+# exit()
+
 x_store.append(y_plus_sample_points)
 y_store.append(np.interp(y_plus_sample_points,y_plus_sample_points,u_plus_y_plus_sample))
 labels_store.append("Linear interp")
