@@ -26,7 +26,8 @@ def plot_for_presentation(
     labels_for_plot,
     black_line_flag_for_plot,
     dashed_line_flag_for_plot,
-    plotting_subsonic_result=False):
+    plotting_subsonic_result=False,
+    which_was_ran_with_corrected_quantites=[]):
     
     global subdirectories, filenames, labels, black_line_flag, \
     dashed_line_flag, figure_filename_postfix, figure_title, \
@@ -81,13 +82,15 @@ def plot_for_presentation(
         #-----------------------------------------------------
         # load file
         filename = data_directory_base+"/"+subdirectories[i]+"/"+filenames[i]
-        if(i==2 and plotting_subsonic_result):
+        if(which_was_ran_with_corrected_quantites!=[] and i in which_was_ran_with_corrected_quantites):
             time, kinetic_energy, enstrophy, vorticity_based_dissipation, pressure_dilatation_based_dissipation, strain_rate_based_dissipation, deviatoric_strain_rate_based_dissipation, solenoidal_dissipation, dilatational_dissipation, corrected_pressure_dilatation_based_dissipation, corrected_dilatational_dissipation, uncorrected_pressure_dilatation_based_dissipation, uncorrected_dilatational_dissipation = np.loadtxt(filename,skiprows=1,dtype=np.float64,unpack=True)
-            pressure_dissipation_store.append(corrected_pressure_dilatation_based_dissipation)
-            dilatational_dissipation_store.append(uncorrected_dilatational_dissipation)
-            print(dilatational_dissipation[-1])
-            print(uncorrected_dilatational_dissipation[-1])
-            print(corrected_dilatational_dissipation[-1])
+            pressure_dissipation_store.append(pressure_dilatation_based_dissipation)
+            dilatational_dissipation_store.append(dilatational_dissipation)
+            # pressure_dissipation_store.append(corrected_pressure_dilatation_based_dissipation)
+            # dilatational_dissipation_store.append(uncorrected_dilatational_dissipation)
+            # print(dilatational_dissipation[-1])
+            # print(uncorrected_dilatational_dissipation[-1])
+            # print(corrected_dilatational_dissipation[-1])            
         else:
             time, kinetic_energy, enstrophy, vorticity_based_dissipation, pressure_dilatation_based_dissipation, strain_rate_based_dissipation, deviatoric_strain_rate_based_dissipation, solenoidal_dissipation, dilatational_dissipation = np.loadtxt(filename,skiprows=1,dtype=np.float64,unpack=True)
             pressure_dissipation_store.append(pressure_dilatation_based_dissipation)
@@ -134,7 +137,7 @@ def plot_for_presentation(
             legend_location="best")
     
     #-----------------------------------------------------
-    ylimits_for_plot = [0.0,0.016]
+    ylimits_for_plot = [0.0,0.018]
     if(plotting_subsonic_result):
         ylimits_for_plot = [0.0,0.012]
     time, solenoidal_dissipation = np.loadtxt("./data/chapelier2024/solenoidal_dissipation.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
@@ -282,19 +285,20 @@ if(True):
     subdirectories_for_plot=[\
     "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p7_procs512",\
     "supersonic_viscous_TGV_ILES_NSFR_cPlus_Ra_2PF_GLL_OI-0_dofs0128_p3_procs512",\
-    # "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs512",\
     "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p15_procs128",\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs512",\
     ]
     # labels
     labels_for_plot=[\
-    "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL $16$p$7$\n ($128^3$ DOF) CFL=0.1",\
-    "$c_{+}$ NSFR.CH$_{RA}$+Roe+PPL $32$p$3$\n ($128^3$ DOF) CFL=0.1",\
-    # "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL $32$p$7$\n ($256^3$ DOF) CFL=0.1",\
-    "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL $8$p$15$\n ($128^3$ DOF) CFL=0.01",\
+    "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL\n $16$p$7$ ($128^3$ DOF) CFL=0.1",\
+    "$c_{+}$ NSFR.CH$_{RA}$+Roe+PPL\n $32$p$3$ ($128^3$ DOF) CFL=0.1",\
+    "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL\n $8$p$15$ ($128^3$ DOF) CFL=0.01",\
+    "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL\n $32$p$7$ ($256^3$ DOF) CFL=0.1",\
     ]
     black_line_flag_for_plot=[False,False,False,False,False,False,False,False]
     dashed_line_flag_for_plot=[False,False,False,False,False,True,True]
-    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot)
+    which_was_ran_with_corrected_quantites=[3]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,which_was_ran_with_corrected_quantites=which_was_ran_with_corrected_quantites)
 
 #=====================================================
 # DOFs: 256^3 | Subsonic case
@@ -328,7 +332,8 @@ if(False):
     ]
     black_line_flag_for_plot=[False,False,False,False,False,False,False,False]
     dashed_line_flag_for_plot=[False,True,False,False,False,True,True]
-    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,plotting_subsonic_result=True)
+    which_was_ran_with_corrected_quantites=[2]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,plotting_subsonic_result=True,which_was_ran_with_corrected_quantites=which_was_ran_with_corrected_quantites)
 
 exit()
 import matplotlib.pyplot as plt
