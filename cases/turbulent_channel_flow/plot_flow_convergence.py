@@ -28,7 +28,8 @@ def plotfxn(x_store,y_store,x_label,y_label,
         figure_size=(8,6),
         legend_labels_tex=labels_store,
         figure_filetype="pdf",
-        title_label="Turbulent Channel Flow $Re_{\\tau}\\approx395$, $CFL\\approx0.2$, $\\alpha=0.0$",
+        # title_label="Turbulent Channel Flow $Re_{\\tau}\\approx395$, $CFL\\approx0.2$, $\\alpha=0.0$",
+        title_label="WMLES: Turbulent Channel Flow $Re_{\\tau}\\approx5200$, $CFL\\approx0.2$",
         xlabel=x_label,
         ylabel=y_label,
         which_lines_dashed=which_lines_dashed_store,
@@ -39,14 +40,14 @@ def plotfxn(x_store,y_store,x_label,y_label,
         legend_location="best")
     return
 #-----------------------------------------------------
-def plot_transient(filenames_,labels_,which_lines_dashed_,
+def plot_transient(filenames_,labels_,which_lines_dashed_=[],
     plot_skin_friction_coefficient=True,
     plot_wall_shear_stress=True,
     plot_bulk_mass_flow=True,
     starting_data_index_for_plot=8
     ):
     expected_mean_value_for_skin_friction_coefficient = 6.25e-3 # from Lodato's source term paper
-
+    # update above using Dean's expression
     # data store
     time_store=[]
     skin_friction_coefficient_store=[]
@@ -72,18 +73,18 @@ def plot_transient(filenames_,labels_,which_lines_dashed_,
     # plot the quantities
     if(plot_skin_friction_coefficient):
         plotfxn(time_store,skin_friction_coefficient_store,\
-            "$t$","Skin Friction Coefficient, $C_{f}$","skin_friction_coefficient",\
+            "$t^{*}$","Skin Friction Coefficient, $C_{f}$","skin_friction_coefficient",\
             labels_store,which_lines_dashed_)
         # plotfxn(time_store,skin_friction_coefficient_store/expected_mean_value_for_skin_friction_coefficient,\
         #     "$t$","$C_{f}(t)$/$C_{f}^{expected}$","skin_friction_coefficient",\
         #     labels_store,which_lines_dashed_)
     if(plot_wall_shear_stress):
         plotfxn(time_store,wall_shear_stress_store,\
-            "$t$","Nondimensional Wall Shear Stress, $\\tau_{w}$","wall_shear_stress",\
+            "$t^{*}$","Nondimensional Wall Shear Stress, $\\tau_{w}$","wall_shear_stress",\
             labels_store,which_lines_dashed_)
     if(plot_bulk_mass_flow):
         plotfxn(time_store,bulk_mass_flow_store,\
-            "$t$","Nondimensional Bulk Mass Flow Rate, $\\rho_{b}U_{b}$","bulk_mass_flow",\
+            "$t^{*}$","Nondimensional Bulk Mass Flow Rate, $\\rho_{b}U_{b}$","bulk_mass_flow",\
             labels_store,which_lines_dashed_,log_axes="y")
     return
 #-----------------------------------------------------
@@ -141,5 +142,14 @@ labels=[\
 "$c_{+}$ NSFR.IR.Roe",\
 "constant source term"
 ]
-which_lines_dashed=[2,3]
-plot_transient(filenames,labels,which_lines_dashed)
+# uncomment for the old results
+# plot_transient(filenames,labels,which_lines_dashed=[2,3])
+
+filenames=[\
+filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/turbulent_quantities.txt",\
+]
+labels=[\
+"$c_{DG}$ NSFR.IR.GLL 20x10x10 p4",\
+]
+which_lines_dashed=[]
+plot_transient(filenames,labels,starting_data_index_for_plot=0)

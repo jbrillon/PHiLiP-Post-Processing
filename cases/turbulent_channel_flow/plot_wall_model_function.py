@@ -31,7 +31,7 @@ def func(x, a, b):
     # return a * np.exp(-b * x) + c
     return a *x + b
 #-----------------------------------------------------
-y_plus_store = np.linspace(0,1000,2500)
+y_plus_store = np.linspace(0,5000,2500)
 u_plus_y_plus_store = u_plus_y_plus(y_plus_store)
 x_store=[]
 y_store=[]
@@ -54,6 +54,9 @@ print(" ")
 # val_from_philip = np.interp(0.23912515804954856,y_plus_sample_points,u_plus_y_plus_sample)
 # print(val_from_philip)
 # exit()
+val = u_plus_y_plus(1300)
+print("%1.12e" % val)
+exit()
 
 x_store.append(y_plus_sample_points)
 y_store.append(np.interp(y_plus_sample_points,y_plus_sample_points,u_plus_y_plus_sample))
