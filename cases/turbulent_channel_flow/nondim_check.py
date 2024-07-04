@@ -34,7 +34,19 @@ print(dx_plus_calc)
 y_plus_calc = y_distance*frere_u_friction*density/mu_ref
 print(y_plus_calc)
 
+tau_wall_from_Re_tau = pow(mu_ref*Re_tau/delta,2.0)/density
+
 Re_bulk = np.power(0.073, -4.0/7.0)*np.power(2.0, 5.0/7.0)*np.power(Re_tau, 8.0/7.0)
+print("Re bulk:")
+print(Re_bulk)
+velocity_bulk = mu_ref*Re_bulk/(density*delta)
+latest_tau_w_value_from_simulation = 2.6483112826572973e-04#1.4602213022727240e-04
+tau_wall_from_code = latest_tau_w_value_from_simulation*(density*velocity_bulk*velocity_bulk)
+print("tau_wall_from_Re_tau: ")
+print(tau_wall_from_Re_tau)
+print("tau_wall_from_code: ")
+print(tau_wall_from_code)
+exit()
 Cf = 0.073*np.power(2.0*Re_bulk, -1.0/4.0)
 print("Re bulk:")
 print(Re_bulk)

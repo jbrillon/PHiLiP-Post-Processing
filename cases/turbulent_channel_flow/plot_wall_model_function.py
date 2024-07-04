@@ -38,7 +38,7 @@ y_store=[]
 labels_store=[]
 x_store.append(y_plus_store)
 y_store.append(u_plus_y_plus_store)
-labels_store.append("$u^{+}y^{+}$")
+labels_store.append("$u^{+}_{||}y^{+}$")
 
 y_plus_sample_points = np.array([0.0,3.0,5.0,8.0,10.0,20.0,35.0,50.0,75.0,100.0,125.0,150.0,200.0,250.0,300.0,350.0,400.0,500.0,575.0,650.0,725.0,800.0,900.0,1000.0])
 u_plus_y_plus_sample = u_plus_y_plus(y_plus_sample_points)
@@ -51,8 +51,9 @@ for i in range(np.size(y_plus_sample_points)):
     print("%1.13e, " % u_plus_y_plus_sample[i],end="")
 print(" ")
 
-# val_from_philip = np.interp(0.23912515804954856,y_plus_sample_points,u_plus_y_plus_sample)
-# print(val_from_philip)
+re_inf = 129245.0
+val_from_philip = np.interp(68156.297044523541,y_plus_sample_points,u_plus_y_plus_sample)
+print(val_from_philip)
 # exit()
 val = u_plus_y_plus(1300)
 print("%1.12e" % val)
@@ -92,7 +93,7 @@ qp.plotfxn(x_store,y_store,
         figure_filetype="pdf",
         title_label="Reichardt's Law of the Wall Multiplied by $y^{+}$",
         xlabel="$y^{+}$",
-        ylabel="$u^{+}y^{+}$",
+        ylabel="$u^{+}_{||}y^{+}$",
         which_lines_dashed=[1],
         transparent_legend=False,
         legend_border_on=True,
