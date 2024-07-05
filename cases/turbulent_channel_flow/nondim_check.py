@@ -5,8 +5,9 @@ import numpy as np # NumPy: contains basic numerical routines
 ny = 8
 nx = 16
 poly_degree = 5
-Re_tau = 5200.0
-# Re_tau = 395#5186.0
+# Re_tau = 5200.0
+# Re_tau = 395.0
+Re_tau = 5186.0
 # ========================================
 delta = 1.0
 L_inf = delta
@@ -46,7 +47,7 @@ print("tau_wall_from_Re_tau: ")
 print(tau_wall_from_Re_tau)
 print("tau_wall_from_code: ")
 print(tau_wall_from_code)
-exit()
+
 Cf = 0.073*np.power(2.0*Re_bulk, -1.0/4.0)
 print("Re bulk:")
 print(Re_bulk)
