@@ -22,7 +22,7 @@ elif platform == "darwin":
 #-----------------------------------------------------
 def plotfxn(x_store,y_store,x_label,y_label,
     figure_filename,labels_store,which_lines_dashed_store,
-    log_axes=None):
+    log_axes=None,xlimits=[],ylimits=[]):
     qp.plotfxn(x_store,y_store,
         figure_filename=figure_filename,
         figure_size=(8,6),
@@ -32,6 +32,8 @@ def plotfxn(x_store,y_store,x_label,y_label,
         title_label="WMLES: Turbulent Channel Flow $Re_{\\tau}\\approx5200$, $CFL\\approx0.2$",
         xlabel=x_label,
         ylabel=y_label,
+        xlimits=xlimits,
+        ylimits=ylimits,
         which_lines_dashed=which_lines_dashed_store,
         transparent_legend=False,
         legend_border_on=True,
@@ -75,6 +77,7 @@ def plot_transient(filenames_,labels_,which_lines_dashed_=[],
         plotfxn(time_store,skin_friction_coefficient_store,\
             "$t^{*}$","Skin Friction Coefficient, $C_{f}$","skin_friction_coefficient",\
             labels_store,which_lines_dashed_)
+            #,xlimits=[30,70],ylimits=[3e-4,4e-4])
         # plotfxn(time_store,skin_friction_coefficient_store/expected_mean_value_for_skin_friction_coefficient,\
         #     "$t$","$C_{f}(t)$/$C_{f}^{expected}$","skin_friction_coefficient",\
         #     labels_store,which_lines_dashed_)
