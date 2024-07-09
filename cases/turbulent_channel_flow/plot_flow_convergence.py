@@ -48,7 +48,9 @@ def plot_transient(filenames_,labels_,which_lines_dashed_=[],
     plot_bulk_mass_flow=True,
     starting_data_index_for_plot=8
     ):
-    expected_mean_value_for_skin_friction_coefficient = 6.25e-3 # from Lodato's source term paper
+    # expected_mean_value_for_skin_friction_coefficient = 6.25e-3 # from Lodato's source term paper
+    expected_mean_value_for_skin_friction_coefficient = 0.00347754 # for Re=5200
+    expected_mean_value_for_wall_shear_stress = 0.00161876 # for Re=5200
     # update above using Dean's expression
     # data store
     time_store=[]
@@ -68,14 +70,14 @@ def plot_transient(filenames_,labels_,which_lines_dashed_=[],
         # store the data
         time_store.append(time[starting_data_index_for_plot:])
         labels_store.append(labels_[i])
-        wall_shear_stress_store.append(wall_shear_stress[starting_data_index_for_plot:])
-        skin_friction_coefficient_store.append(skin_friction_coefficient[starting_data_index_for_plot:])
-        bulk_mass_flow_store.append(bulk_mass_flow[starting_data_index_for_plot:])
+        wall_shear_stress_store.append(wall_shear_stress[starting_data_index_for_plot:]/expected_mean_value_for_wall_shear_stress)
+        skin_friction_coefficient_store.append(skin_friction_coefficient[starting_data_index_for_plot:]/expected_mean_value_for_skin_friction_coefficient)
+        bulk_mass_flow_store.append(bulk_mass_flow[starting_data_index_for_plot:]/bulk_mass_flow[0])
 
     # plot the quantities
     if(plot_skin_friction_coefficient):
         plotfxn(time_store,skin_friction_coefficient_store,\
-            "$t^{*}$","Skin Friction Coefficient, $C_{f}$","skin_friction_coefficient",\
+            "$t^{*}$","Normalized Skin Friction Coefficient, $C_{f}/C^{expected}_{f}$","skin_friction_coefficient",\
             labels_store,which_lines_dashed_)
             #,xlimits=[30,70],ylimits=[3e-4,4e-4])
         # plotfxn(time_store,skin_friction_coefficient_store/expected_mean_value_for_skin_friction_coefficient,\
@@ -83,11 +85,11 @@ def plot_transient(filenames_,labels_,which_lines_dashed_=[],
         #     labels_store,which_lines_dashed_)
     if(plot_wall_shear_stress):
         plotfxn(time_store,wall_shear_stress_store,\
-            "$t^{*}$","Nondimensional Wall Shear Stress, $\\tau_{w}$","wall_shear_stress",\
+            "$t^{*}$","Normalized Nondim. Wall Shear Stress, $\\tau_{w}/\\tau^{expected}_{w}$","wall_shear_stress",\
             labels_store,which_lines_dashed_)
     if(plot_bulk_mass_flow):
         plotfxn(time_store,bulk_mass_flow_store,\
-            "$t^{*}$","Nondimensional Bulk Mass Flow Rate, $\\rho_{b}U_{b}$","bulk_mass_flow",\
+            "$t^{*}$","Normalized Nondim. Bulk Mass Flow Rate, $\\rho_{b}U_{b}/(\\rho_{b}U_{b})_{initial}$","bulk_mass_flow",\
             labels_store,which_lines_dashed_,log_axes="y")
     return
 #-----------------------------------------------------
