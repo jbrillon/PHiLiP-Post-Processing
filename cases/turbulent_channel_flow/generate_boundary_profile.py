@@ -30,7 +30,7 @@ def generate_boundary_layer_profile_file_from_flow_field_file(
     poly_degree,
     n_skiprows=1):
 
-    print("Generating spectra file from flow field file...")
+    print("Generating boundary layer profile file from flow field file...")
     file = file_without_extension+"."+file_extension
     print(" - Loading file: %s" % file)
     data = np.loadtxt(file,skiprows=n_skiprows,usecols=(1,3),dtype=np.float64)
@@ -46,6 +46,7 @@ def generate_boundary_layer_profile_file_from_flow_field_file(
     unique_y_stations = np.linspace(-1.0,1.0,number_of_unique_points_per_direction)
     number_of_y_stations = np.size(unique_y_stations) # same as number_of_unique_points_per_direction
 
+    print(" - Averaging the x-velocity at each y-station...")
     # (2) sum all x-velocities at each y-station
     summation_of_xvelocity_at_each_y_station = np.zeros(number_of_y_stations)
     number_of_summations_of_xvelocity_at_each_y_station = np.zeros(number_of_y_stations)
@@ -59,10 +60,12 @@ def generate_boundary_layer_profile_file_from_flow_field_file(
     # (3) compute the average
     for i in range(0,number_of_y_stations):
         average_xvelocity_at_each_y_station[i] = summation_of_xvelocity_at_each_y_station[i]/number_of_summations_of_xvelocity_at_each_y_station[i]
-
+    print(" - done.")
     # (4) output file for the boundary layer profile    
     file_out = file_out_without_extension+"."+file_extension
+    print(" - Writing file: %s" % file_out)
     np.savetxt(file_out,np.transpose(np.array([unique_y_stations, average_xvelocity_at_each_y_station])))
+    print(" - done.")
 
     print("done.")
     return
@@ -78,7 +81,6 @@ def batch_assemble_mpi_flow_field_files_generate_boundary_layer_profile(
     nValues_per_row=[],
     num_procs=[],
     file_extension="dat"):
-    print(file_prefix)
     
     #-----------------------------------------------------
     # Safeguard for when empty args are passed

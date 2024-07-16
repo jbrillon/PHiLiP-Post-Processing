@@ -22,7 +22,7 @@ elif platform == "darwin":
 #-----------------------------------------------------
 def plotfxn(x_store,y_store,x_label,y_label,
     figure_filename,labels_store,which_lines_dashed_store,
-    log_axes=None,xlimits=[],ylimits=[]):
+    log_axes=None,xlimits=[],ylimits=[],which_lines_black=[]):
     qp.plotfxn(x_store,y_store,
         figure_filename=figure_filename,
         figure_size=(8,6),
@@ -34,6 +34,7 @@ def plotfxn(x_store,y_store,x_label,y_label,
         ylabel=y_label,
         xlimits=xlimits,
         ylimits=ylimits,
+        which_lines_black=which_lines_black,
         which_lines_dashed=which_lines_dashed_store,
         transparent_legend=False,
         legend_border_on=True,
@@ -107,32 +108,95 @@ def plot_transient(filenames_,labels_,which_lines_dashed_=[],
     return
 #-----------------------------------------------------
 #-----------------------------------------------------
-def plot_boundary_layer_profile(filenames_,labels_,which_lines_dashed_=[],
-    ):
+def plot_boundary_layer_profile(filenames_,labels_,which_lines_dashed_=[]):
     # expected_mean_value_for_skin_friction_coefficient = 6.25e-3 # from Lodato's source term paper
     # expected_mean_value_for_skin_friction_coefficient = 0.00347754 # for Re=5200
     # expected_mean_value_for_wall_shear_stress = 0.00161876 # for Re=5200
     # update above using Dean's expression
     # data store
-    y_coordinate_store=[]
-    average_x_velocity_store=[]
+    average_y_plus_store=[]
+    average_u_plus_store=[]
     # plot function inputs
     labels_store=[]
+
+    # load reference data
+    y_plus_reference, average_u_plus_reference = np.loadtxt("./data/reference/lee_moser_2015_dns.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+    average_y_plus_store.append(y_plus_reference)
+    average_u_plus_store.append(average_u_plus_reference)
+    labels_store.append("DNS [Lee \\& Moser, 2015]")
 
     for i,filename in enumerate(filenames_):
         # load data
         y_coordinate, average_x_velocity = np.loadtxt(filename,dtype=np.float64,unpack=True)
 
-        # store the data
-        y_coordinate_store.append(y_coordinate)
-        labels_store.append(labels_[i])
-        average_x_velocity_store.append(average_x_velocity)
-        print(average_x_velocity)
+        number_of_points = np.size(y_coordinate)
+        y_plus = []
+        u_plus = []
+        for j in range(0,number_of_points):
+            y_value = y_coordinate[j] # nondimensional
+            distance_from_wall = 0.0 # nondimensional
+            if(y_value < 0.0):
+                distance_from_wall = 1.0 + y_value
+            else:
+                distance_from_wall = 1.0 - y_value
+            Re_tau = 5200.0
+            Re_inf = 129245.0
+            nondimensional_density = 1.0 # should be computed in the code... -- TO DO: ADD THIS CALCULATION FOR y+ and u+ inside the code!
+            nondimensional_viscosity = 1.0
+            nondimensional_friction_velocity = Re_tau/Re_inf
+            y_plus_local = Re_inf*distance_from_wall*nondimensional_friction_velocity*nondimensional_density/nondimensional_viscosity
+            y_plus.append(y_plus_local)
+            u_plus_local = average_x_velocity[j]/nondimensional_friction_velocity
+            u_plus.append(u_plus_local)
 
-    # swap the x and y data here
-    plotfxn(y_coordinate_store,average_x_velocity_store,\
-        "$y^{*}$","Average x-velocity, $u_{avg.}$","boundary_layer_profile",\
-        labels_store,which_lines_dashed_,log_axes=None)
+        y_plus = np.array(y_plus)
+        u_plus = np.array(u_plus)
+
+        # marker for the input
+        y_plus_wall_model_input = 0.2*Re_tau # 0.2 is the uniform delta y from the grid
+        u_plus_wall_model_input = np.average(u_plus[np.where(np.abs(y_plus - y_plus_wall_model_input)<1e-4)])
+
+        # store the data
+        average_y_plus_store.append(y_plus[np.where(y_plus >= (y_plus_wall_model_input-1e-4))])
+        labels_store.append(labels_[i])
+        average_u_plus_store.append(u_plus[np.where(y_plus >= (y_plus_wall_model_input-1e-4))])
+
+        # add the marker to the plot
+        average_y_plus_store.append(np.array(y_plus_wall_model_input))
+        labels_store.append("Wall Model Input")
+        average_u_plus_store.append(np.array(u_plus_wall_model_input))
+
+    # load reference data
+    y_plus_reference, average_u_plus_reference = np.loadtxt("./data/reference/frere_p3_fig7a.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+    average_y_plus_store.append(y_plus_reference)
+    average_u_plus_store.append(average_u_plus_reference)
+    labels_store.append("p3 DG-WMLES [Fr\\`ere, 2017]")
+
+    # load reference data
+    y_plus_reference, average_u_plus_reference = np.loadtxt("./data/reference/frere_p4_fig7a.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+    average_y_plus_store.append(y_plus_reference)
+    average_u_plus_store.append(average_u_plus_reference)
+    labels_store.append("p4 DG-WMLES [Fr\\`ere, 2017]")
+
+    qp.plotfxn(average_y_plus_store,average_u_plus_store,
+        figure_filename="boundary_layer_profile",
+        figure_size=(7,6),
+        legend_labels_tex=labels_store,
+        figure_filetype="pdf",
+        # title_label="Turbulent Channel Flow $Re_{\\tau}\\approx395$, $CFL\\approx0.2$, $\\alpha=0.0$",
+        title_label="WMLES Approach to Turbulent Channel Flow at $Re_{\\tau}\\approx5200$",
+        xlabel="$\\left\\langle y^{+}\\right\\rangle$",
+        ylabel="$\\left\\langle u^{+}\\right\\rangle$",
+        xlimits=[1.0e0,5200.0],
+        ylimits=[0,30],
+        which_lines_black=[0],
+        which_lines_only_markers=[2,3,4],
+        transparent_legend=False,
+        legend_border_on=True,
+        grid_lines_on=True,
+        log_axes="x",
+        legend_location="best",
+        vertical_lines=[y_plus_wall_model_input])
     return
 #-----------------------------------------------------
 #=====================================================
@@ -192,26 +256,25 @@ labels=[\
 # uncomment for the old results
 # plot_transient(filenames,labels,which_lines_dashed=[2,3])
 
-'''
+
 filenames=[\
 filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/turbulent_quantities.txt",\
-filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization/turbulent_quantities.txt",\
+# filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization/turbulent_quantities.txt",\
 ]
 labels=[\
 "$Re_{\\tau}\\approx5200$",\
-"$Re_{\\tau}\\approx395$",\
+# "$Re_{\\tau}\\approx395$",\
 ]
 which_lines_dashed=[]
-friction_velocity_based_reynolds_number=[5200,395]
+friction_velocity_based_reynolds_number=[5200]#,395]
 plot_transient(filenames,labels,starting_data_index_for_plot=0,friction_velocity_based_reynolds_number=friction_velocity_based_reynolds_number)
-'''
 
 # plot boundary layer profile
 filenames=[\
 "/Users/Julien/NarvalFiles/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile.dat",\
 ]
 labels=[\
-"$Re_{\\tau}\\approx5200$",\
+"$c_{DG}$ NSFR.IR.GLL 20x10x10 p4"\
 ]
 which_lines_dashed=[]
 plot_boundary_layer_profile(filenames,labels)
