@@ -5,8 +5,8 @@ import numpy as np # NumPy: contains basic numerical routines
 ny = 8
 nx = 16
 poly_degree = 5
-Re_tau = 5200.0
-# Re_tau = 395.0
+# Re_tau = 5200.0
+Re_tau = 395.0
 # Re_tau = 5186.0
 # ========================================
 delta = 1.0
@@ -43,6 +43,10 @@ print(Re_bulk)
 velocity_bulk = mu_ref*Re_bulk/(density*delta)
 
 nondim_tau_wall_from_Re_tau = tau_wall_from_Re_tau/(density*velocity_bulk*velocity_bulk)
+Cf_from_Re_tau = nondim_tau_wall_from_Re_tau*2.0
+Cf_from_Re_tau = 2.0*((Re_tau/Re_bulk)**2.0)
+print("Cf_from_Re_tau: ")
+print(Cf_from_Re_tau)
 
 latest_tau_w_value_from_simulation = 2.6483112826572973e-04#1.4602213022727240e-04
 tau_wall_from_code = latest_tau_w_value_from_simulation*(density*velocity_bulk*velocity_bulk)

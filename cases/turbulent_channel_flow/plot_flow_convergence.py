@@ -29,7 +29,7 @@ def plotfxn(x_store,y_store,x_label,y_label,
         legend_labels_tex=labels_store,
         figure_filetype="pdf",
         # title_label="Turbulent Channel Flow $Re_{\\tau}\\approx395$, $CFL\\approx0.2$, $\\alpha=0.0$",
-        title_label="WMLES: Turbulent Channel Flow $Re_{\\tau}\\approx5200$, $CFL\\approx0.2$",
+        title_label="WMLES: TCF $c_{DG}$ NSFR.IR.GLL 20x10x10 p4, $CFL\\approx0.2$",
         xlabel=x_label,
         ylabel=y_label,
         xlimits=xlimits,
@@ -46,11 +46,12 @@ def plot_transient(filenames_,labels_,which_lines_dashed_=[],
     plot_skin_friction_coefficient=True,
     plot_wall_shear_stress=True,
     plot_bulk_mass_flow=True,
-    starting_data_index_for_plot=8
+    starting_data_index_for_plot=0,
+    friction_velocity_based_reynolds_number=[]
     ):
     # expected_mean_value_for_skin_friction_coefficient = 6.25e-3 # from Lodato's source term paper
-    expected_mean_value_for_skin_friction_coefficient = 0.00347754 # for Re=5200
-    expected_mean_value_for_wall_shear_stress = 0.00161876 # for Re=5200
+    # expected_mean_value_for_skin_friction_coefficient = 0.00347754 # for Re=5200
+    # expected_mean_value_for_wall_shear_stress = 0.00161876 # for Re=5200
     # update above using Dean's expression
     # data store
     time_store=[]
@@ -66,6 +67,18 @@ def plot_transient(filenames_,labels_,which_lines_dashed_=[],
         time,wall_shear_stress,skin_friction_coefficient,bulk_density,bulk_velocity = np.loadtxt(filename,skiprows=1,dtype=np.float64,unpack=True)
         # compute the bulk mass flow
         bulk_mass_flow = bulk_density*bulk_velocity
+
+        expected_mean_value_for_wall_shear_stress = 0.00161876 # for Re=5200
+        expected_mean_value_for_skin_friction_coefficient = 0.00347754 # for Re=5200
+        if(friction_velocity_based_reynolds_number[i]==5200):
+            print("here")
+            expected_mean_value_for_wall_shear_stress = 0.00161876 # for Re=5200
+            # expected_mean_value_for_skin_friction_coefficient = 0.00347754 # for Re=5200
+            expected_mean_value_for_skin_friction_coefficient = 2.0*expected_mean_value_for_wall_shear_stress
+        elif(friction_velocity_based_reynolds_number[i]==395):
+            print("here2")
+            expected_mean_value_for_wall_shear_stress = 0.003380747 # for Re=395
+            expected_mean_value_for_skin_friction_coefficient = 2.0*expected_mean_value_for_wall_shear_stress
 
         # store the data
         time_store.append(time[starting_data_index_for_plot:])
@@ -91,6 +104,35 @@ def plot_transient(filenames_,labels_,which_lines_dashed_=[],
         plotfxn(time_store,bulk_mass_flow_store,\
             "$t^{*}$","Normalized Nondim. Bulk Mass Flow Rate, $\\rho_{b}U_{b}/(\\rho_{b}U_{b})_{initial}$","bulk_mass_flow",\
             labels_store,which_lines_dashed_,log_axes="y")
+    return
+#-----------------------------------------------------
+#-----------------------------------------------------
+def plot_boundary_layer_profile(filenames_,labels_,which_lines_dashed_=[],
+    ):
+    # expected_mean_value_for_skin_friction_coefficient = 6.25e-3 # from Lodato's source term paper
+    # expected_mean_value_for_skin_friction_coefficient = 0.00347754 # for Re=5200
+    # expected_mean_value_for_wall_shear_stress = 0.00161876 # for Re=5200
+    # update above using Dean's expression
+    # data store
+    y_coordinate_store=[]
+    average_x_velocity_store=[]
+    # plot function inputs
+    labels_store=[]
+
+    for i,filename in enumerate(filenames_):
+        # load data
+        y_coordinate, average_x_velocity = np.loadtxt(filename,dtype=np.float64,unpack=True)
+
+        # store the data
+        y_coordinate_store.append(y_coordinate)
+        labels_store.append(labels_[i])
+        average_x_velocity_store.append(average_x_velocity)
+        print(average_x_velocity)
+
+    # swap the x and y data here
+    plotfxn(y_coordinate_store,average_x_velocity_store,\
+        "$y^{*}$","Average x-velocity, $u_{avg.}$","boundary_layer_profile",\
+        labels_store,which_lines_dashed_,log_axes=None)
     return
 #-----------------------------------------------------
 #=====================================================
@@ -150,11 +192,26 @@ labels=[\
 # uncomment for the old results
 # plot_transient(filenames,labels,which_lines_dashed=[2,3])
 
+'''
 filenames=[\
 filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/turbulent_quantities.txt",\
+filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization/turbulent_quantities.txt",\
 ]
 labels=[\
-"$c_{DG}$ NSFR.IR.GLL 20x10x10 p4",\
+"$Re_{\\tau}\\approx5200$",\
+"$Re_{\\tau}\\approx395$",\
 ]
 which_lines_dashed=[]
-plot_transient(filenames,labels,starting_data_index_for_plot=0)
+friction_velocity_based_reynolds_number=[5200,395]
+plot_transient(filenames,labels,starting_data_index_for_plot=0,friction_velocity_based_reynolds_number=friction_velocity_based_reynolds_number)
+'''
+
+# plot boundary layer profile
+filenames=[\
+"/Users/Julien/NarvalFiles/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile.dat",\
+]
+labels=[\
+"$Re_{\\tau}\\approx5200$",\
+]
+which_lines_dashed=[]
+plot_boundary_layer_profile(filenames,labels)
