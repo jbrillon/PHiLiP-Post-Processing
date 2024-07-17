@@ -36,8 +36,8 @@ def plotfxn(x_store,y_store,x_label,y_label,
         ylimits=ylimits,
         which_lines_black=which_lines_black,
         which_lines_dashed=which_lines_dashed_store,
-        transparent_legend=False,
-        legend_border_on=True,
+        transparent_legend=True,
+        legend_border_on=False,
         grid_lines_on=True,
         log_axes=log_axes,
         legend_location="best")
@@ -72,12 +72,10 @@ def plot_transient(filenames_,labels_,which_lines_dashed_=[],
         expected_mean_value_for_wall_shear_stress = 0.00161876 # for Re=5200
         expected_mean_value_for_skin_friction_coefficient = 0.00347754 # for Re=5200
         if(friction_velocity_based_reynolds_number[i]==5200):
-            print("here")
             expected_mean_value_for_wall_shear_stress = 0.00161876 # for Re=5200
             # expected_mean_value_for_skin_friction_coefficient = 0.00347754 # for Re=5200
             expected_mean_value_for_skin_friction_coefficient = 2.0*expected_mean_value_for_wall_shear_stress
         elif(friction_velocity_based_reynolds_number[i]==395):
-            print("here2")
             expected_mean_value_for_wall_shear_stress = 0.003380747 # for Re=395
             expected_mean_value_for_skin_friction_coefficient = 2.0*expected_mean_value_for_wall_shear_stress
 
@@ -259,19 +257,20 @@ labels=[\
 
 filenames=[\
 filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/turbulent_quantities.txt",\
-# filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization/turbulent_quantities.txt",\
+filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization/turbulent_quantities.txt",\
 ]
 labels=[\
 "$Re_{\\tau}\\approx5200$",\
-# "$Re_{\\tau}\\approx395$",\
+"$Re_{\\tau}\\approx395$",\
 ]
 which_lines_dashed=[]
-friction_velocity_based_reynolds_number=[5200]#,395]
+friction_velocity_based_reynolds_number=[5200,395]
 plot_transient(filenames,labels,starting_data_index_for_plot=0,friction_velocity_based_reynolds_number=friction_velocity_based_reynolds_number)
 
 # plot boundary layer profile
 filenames=[\
-"/Users/Julien/NarvalFiles/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile.dat",\
+# filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t0200.dat",\
+filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t0240.dat",\
 ]
 labels=[\
 "$c_{DG}$ NSFR.IR.GLL 20x10x10 p4"\
