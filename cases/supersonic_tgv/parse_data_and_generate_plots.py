@@ -40,7 +40,9 @@ def plot_for_presentation(
     black_line_flag_for_plot,
     dashed_line_flag_for_plot,
     plotting_subsonic_result=False,
-    which_was_ran_with_corrected_quantites=[]):
+    which_was_ran_with_corrected_quantites=[],
+    number_of_degrees_of_freedom=[],
+    compare_with_reference_result_at_same_degrees_of_freedom=False):
     
     global subdirectories, filenames, labels, black_line_flag, \
     dashed_line_flag, figure_filename_postfix, figure_title, \
@@ -76,7 +78,7 @@ def plot_for_presentation(
         time, dilatational_dissipation = np.loadtxt("./data/chapelier2024/dilatational_dissipation.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
     dilatational_dissipation_store.append(dilatational_dissipation)
     pressure_dissipation_store.append(np.nan*dilatational_dissipation)
-    labels.append("Chapelier et al. ($2048^3$ DOFs)")
+    labels.append("$2048^3$ DOFs [Chapelier et al.]")
     black_line_flag.append(True)
     dashed_line_flag.append(False)
     #-----------------------------------------------------
@@ -118,8 +120,6 @@ def plot_for_presentation(
         solenoidal_dissipation_store.append(solenoidal_dissipation)
         # dilatational_dissipation_calc = 2.0*(strain_rate_based_dissipation - deviatoric_strain_rate_based_dissipation)
         # print(np.linalg.norm(dilatational_dissipation_calc-dilatational_dissipation))
-        
-        
 
     final_time_for_plot = 20.0
     if(plotting_subsonic_result):
@@ -190,6 +190,18 @@ def plot_for_presentation(
     if(plotting_subsonic_result):
         time, solenoidal_dissipation = np.loadtxt("./data/chapelier2024/subsonic/solenoidal_dissipation.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
     time_store[0] = time # replace it -- this is a hack
+    if(256 in number_of_degrees_of_freedom):
+        time, solenoidal_dissipation = np.loadtxt("./data/chapelier2024/solenoidal_dissipation_256_best_result.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+        time_store.append(time)
+        solenoidal_dissipation_store.append(solenoidal_dissipation)
+        labels.append("NS3D $256^3$\n($6^{th}$-order FD with HO Filter)\n[Chapelier et al.]")
+        dashed_line_flag.append(False)
+    if(128 in number_of_degrees_of_freedom):
+        time, dilatational_dissipation = np.loadtxt("./data/chapelier2024/solenoidal_dissipation_128_best_result.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+        time_store.append(time)
+        solenoidal_dissipation_store.append(solenoidal_dissipation)
+        labels.append("NS3D $128^3$\n($6^{th}$-order FD with HO Filter)\n[Chapelier et al.]")
+        dashed_line_flag.append(False)
     qp.plotfxn(xdata=time_store,
             ydata=solenoidal_dissipation_store,
             ylabel='Nondimensional Solenoidal Dissipation, $\\varepsilon_{s}^{*}$',#=\\frac{1}{\\rho_{\\infty}V_{\\infty}^{2}|\\Omega|}\\int_{\\Omega}\\rho(u\\cdot\\u)d\\Omega$',
@@ -216,7 +228,7 @@ def plot_for_presentation(
             legend_fontSize=12,#14
             legend_location="best")
     #-----------------------------------------------------
-    ylimits_for_plot = [0.0,0.002]
+    ylimits_for_plot = [0.0,0.0014]
     if(plotting_subsonic_result):
         # ylimits_for_plot = []
         ylimits_for_plot = [0.0,5.0e-6]
@@ -224,6 +236,22 @@ def plot_for_presentation(
     if(plotting_subsonic_result):
         time, dilatational_dissipation = np.loadtxt("./data/chapelier2024/subsonic/dilatational_dissipation.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")    
     time_store[0] = time # replace it -- this is a hack
+
+    if(256 in number_of_degrees_of_freedom):
+        time, dilatational_dissipation = np.loadtxt("./data/chapelier2024/dilational_dissipation_256_best_result.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+        time_store[-1] = time
+        dilatational_dissipation_store.append(dilatational_dissipation)
+        pressure_dissipation_store.append(np.nan*dilatational_dissipation)
+        labels.append("NS3D $256^3$\n($6^{th}$-order FD with HO Filter)\n[Chapelier et al.]")
+        dashed_line_flag.append(False)
+    if(128 in number_of_degrees_of_freedom):
+        time, dilatational_dissipation = np.loadtxt("./data/chapelier2024/dilational_dissipation_128_best_result.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+        time_store[-1] = time # TO DO: FIX IF 256 also being plotted
+        dilatational_dissipation_store.append(dilatational_dissipation)
+        pressure_dissipation_store.append(np.nan*dilatational_dissipation)
+        labels.append("NS3D $128^3$\n($6^{th}$-order FD with HO Filter)\n[Chapelier et al.]")
+        dashed_line_flag.append(False)
+
     qp.plotfxn(xdata=time_store,
             ydata=dilatational_dissipation_store,
             ylabel='Nondimensional Dilational Dissipation, $\\varepsilon_{d}^{*}$',#=\\frac{1}{\\rho_{\\infty}V_{\\infty}^{2}|\\Omega|}\\int_{\\Omega}\\rho(u\\cdot\\u)d\\Omega$',
@@ -244,7 +272,7 @@ def plot_for_presentation(
             nlegendcols=nlegendcols_input,
             figure_size=(6,6),
             transparent_legend=True,#transparent_legend_input,
-            legend_border_on=True,
+            legend_border_on=False,
             grid_lines_on=False,
             clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
             legend_fontSize=12,#14
@@ -323,29 +351,65 @@ if(True):
     date_for_runs="."
     figure_subdirectory="./"
     # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
+    figure_filename_postfix = "_256"
+    legend_inside_input=True
+    plot_reference_result=True
+    plot_PHiLiP_DNS_result_as_reference_input=False
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs512",\
+    ]
+    # labels
+    labels_for_plot=[\
+    "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL\n$256^3$ ($32^{3}$p$7$)",\
+    ]
+    black_line_flag_for_plot=[False,False,False,False,False,False,False,False]
+    dashed_line_flag_for_plot=[False,False,False,False,False,True,True]
+    which_was_ran_with_corrected_quantites=[0]
+    number_of_degrees_of_freedom_input=[256]
+    compare_with_ref_result_at_same_dof=True
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
+        which_was_ran_with_corrected_quantites=which_was_ran_with_corrected_quantites,
+        number_of_degrees_of_freedom=number_of_degrees_of_freedom_input,
+        compare_with_reference_result_at_same_degrees_of_freedom=compare_with_ref_result_at_same_dof)
+    #-----------------------------------------------------
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2024_JCP/"
+    date_for_runs="."
+    figure_subdirectory="./"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
     figure_filename_postfix = "_128"
     legend_inside_input=True
     plot_reference_result=True
     plot_PHiLiP_DNS_result_as_reference_input=False
     #-----------------------------------------------------
     subdirectories_for_plot=[\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p15_procs128",\
     "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p7_procs512",\
     "supersonic_viscous_TGV_ILES_NSFR_cPlus_Ra_2PF_GLL_OI-0_dofs0128_p3_procs512",\
-    "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p15_procs128",\
-    "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs512",\
     ]
     # labels
+    # labels_for_plot=[\
+    # "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL\n $16$p$7$ ($128^3$ DOF) CFL=0.1",\
+    # "$c_{+}$ NSFR.CH$_{RA}$+Roe+PPL\n $32$p$3$ ($128^3$ DOF) CFL=0.1",\
+    # "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL\n $8$p$15$ ($128^3$ DOF) CFL=0.01",\
+    # ]
     labels_for_plot=[\
-    "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL\n $16$p$7$ ($128^3$ DOF) CFL=0.1",\
-    "$c_{+}$ NSFR.CH$_{RA}$+Roe+PPL\n $32$p$3$ ($128^3$ DOF) CFL=0.1",\
-    "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL\n $8$p$15$ ($128^3$ DOF) CFL=0.01",\
-    "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL\n $32$p$7$ ($256^3$ DOF) CFL=0.1",\
+    "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL\n $128^3$ ($8^{3}$p$15$)",\
+    "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL\n $128^3$ ($16^{3}$p$7$)",\
+    "$c_{+}$ NSFR.CH$_{RA}$+Roe+PPL\n $128^3$ ($32^{3}$p$3$)",\
     ]
     black_line_flag_for_plot=[False,False,False,False,False,False,False,False]
     dashed_line_flag_for_plot=[False,False,False,False,False,True,True]
-    which_was_ran_with_corrected_quantites=[3]
-    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,which_was_ran_with_corrected_quantites=which_was_ran_with_corrected_quantites)
-
+    which_was_ran_with_corrected_quantites=[]
+    number_of_degrees_of_freedom_input=[128]
+    compare_with_ref_result_at_same_dof=True
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
+        which_was_ran_with_corrected_quantites=which_was_ran_with_corrected_quantites,
+        number_of_degrees_of_freedom=number_of_degrees_of_freedom_input,
+        compare_with_reference_result_at_same_degrees_of_freedom=compare_with_ref_result_at_same_dof)
+    exit()
 #=====================================================
 # DOFs: 256^3 | Subsonic case
 #-----------------------------------------------------
@@ -369,8 +433,8 @@ if(False):
     ]
     # labels
     labels_for_plot=[\
-    "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL $32$p$7$\n ($256^3$ DOF) CFL=0.1",\
-    "$c_{DG}$ NSFR.CH$_{RA}$+Roe $32$p$7$\n ($256^3$ DOF) CFL=0.1",\
+    "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL $32^{3}$p$7$\n ($256^3$ DOF) CFL=0.1",\
+    "$c_{DG}$ NSFR.CH$_{RA}$+Roe $32^{3}$p$7$\n ($256^3$ DOF) CFL=0.1",\
     "with correction",\
     # "$c_{+}$ NSFR.CH$_{RA}$+Roe+PPL $32$p$3$\n ($128^3$ DOF) CFL=0.1",\
     # "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL $8$p$15$\n ($128^3$ DOF) CFL=0.01",\
