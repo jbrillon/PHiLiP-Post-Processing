@@ -197,7 +197,7 @@ def plot_for_presentation(
         labels.append("NS3D $256^3$\n($6^{th}$-order FD with HO Filter)\n[Chapelier et al.]")
         dashed_line_flag.append(False)
     if(128 in number_of_degrees_of_freedom):
-        time, dilatational_dissipation = np.loadtxt("./data/chapelier2024/solenoidal_dissipation_128_best_result.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+        time, solenoidal_dissipation = np.loadtxt("./data/chapelier2024/solenoidal_dissipation_128_best_result.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
         time_store.append(time)
         solenoidal_dissipation_store.append(solenoidal_dissipation)
         labels.append("NS3D $128^3$\n($6^{th}$-order FD with HO Filter)\n[Chapelier et al.]")
