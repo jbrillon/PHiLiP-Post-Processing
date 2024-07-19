@@ -11,6 +11,19 @@ elif platform == "darwin":
     # OS X
     filesystem="/Volumes/Samsung_T5/"
 #-----------------------------------------------------
+#-----------------------------------------------------
+# define functions
+#-----------------------------------------------------
+from scipy.interpolate import splrep, splev
+def get_dissipation_discrete(time,kinetic_energy,smoothing=False):
+    if(smoothing):
+        # smoothing if noisy
+        dissipation_rate_val = splrep(time,kinetic_energy,k=5,s=0.0000001)
+        dissipation_rate_val = -splev(time,dissipation_rate_val,der=1)
+        return dissipation_rate_val
+    else:
+        dissipation_rate_val = -np.gradient(kinetic_energy,time)
+        return dissipation_rate_val
 #=====================================================
 # Input variables for plotting
 #=====================================================
@@ -42,6 +55,7 @@ def plot_for_presentation(
     solenoidal_dissipation_store = []
     dilatational_dissipation_store = []
     pressure_dissipation_store = []
+    dissipation_store = []
     #-----------------------------------------------------
     if(plotting_subsonic_result):
         time, kinetic_energy = np.loadtxt("./data/chapelier2024/subsonic/kinetic_energy.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
@@ -49,6 +63,8 @@ def plot_for_presentation(
         time, kinetic_energy = np.loadtxt("./data/chapelier2024/kinetic_energy.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
     time_store.append(time)
     kinetic_energy_store.append(kinetic_energy)
+    dissipation = get_dissipation_discrete(time,kinetic_energy)
+    dissipation_store.append(dissipation)
     if(plotting_subsonic_result):
         time, solenoidal_dissipation = np.loadtxt("./data/chapelier2024/subsonic/solenoidal_dissipation.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
     else:
@@ -97,6 +113,8 @@ def plot_for_presentation(
             dilatational_dissipation_store.append(dilatational_dissipation)
         time_store.append(time)
         kinetic_energy_store.append(kinetic_energy)
+        dissipation = get_dissipation_discrete(time,kinetic_energy)
+        dissipation_store.append(dissipation)
         solenoidal_dissipation_store.append(solenoidal_dissipation)
         # dilatational_dissipation_calc = 2.0*(strain_rate_based_dissipation - deviatoric_strain_rate_based_dissipation)
         # print(np.linalg.norm(dilatational_dissipation_calc-dilatational_dissipation))
@@ -136,6 +154,34 @@ def plot_for_presentation(
             legend_fontSize=12,#14
             legend_location="best")
     
+    #-----------------------------------------------------
+    ylimits_for_plot = []
+    qp.plotfxn(xdata=time_store,#[time,time],
+            ydata=dissipation_store,#[kinetic_energy,kolmogorov_slope],
+            ylabel='Nondimensional Dissipation Rate, $\\epsilon^{*}$',#=\\frac{1}{\\rho_{\\infty}V_{\\infty}^{2}|\\Omega|}\\int_{\\Omega}\\rho(u\\cdot\\u)d\\Omega$',
+            xlabel='Nondimensional Time, $t^{*}$',
+            figure_filename=figure_subdirectory+'dissipation_rate_vs_time'+figure_filename_postfix,
+            title_label=figure_title,
+            markers=False,
+            legend_labels_tex=labels,
+            black_lines=False,
+            xlimits=[0,final_time_for_plot],
+            ylimits=ylimits_for_plot,
+            log_axes=log_axes_input,
+            which_lines_black=black_line_flag,
+            which_lines_dashed=dashed_line_flag,
+            which_lines_only_markers=[0],
+            legend_on=legend_on_input,
+            legend_inside=legend_inside_input,
+            nlegendcols=nlegendcols_input,
+            figure_size=(6,6),
+            transparent_legend=True,#transparent_legend_input,
+            legend_border_on=False,
+            grid_lines_on=False,
+            clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
+            legend_fontSize=12,#14
+            legend_location="best")
+
     #-----------------------------------------------------
     ylimits_for_plot = [0.0,0.018]
     if(plotting_subsonic_result):

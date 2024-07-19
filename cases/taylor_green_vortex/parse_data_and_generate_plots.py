@@ -152,18 +152,18 @@ if(True):
     ]
     # labels
     labels_for_plot=[\
-    "$256^3$ DOFs ($32^{3}$p$7$)",\
-    "$96^{3}$ DOFs ($16^{3}$p$5$)", \
-    "$64^{3}$ DOFs ($8^{3}$p$7$)", \
-    "$48^{3}$ DOFs ($8^{3}$p$5$)",\
-    "$24^{3}$ DOFs ($4^{3}$p$7$)",\
+    "$256^3$ ($32^{3}$p$7$)",\
+    "$96^{3}$ ($16^{3}$p$5$)", \
+    "$64^{3}$ ($8^{3}$p$7$)", \
+    "$48^{3}$ ($8^{3}$p$5$)",\
+    "$24^{3}$ ($4^{3}$p$7$)",\
     # "$12^{3}$ DOFs, P$5$",\
     ]
     black_line_flag_for_plot=[False,False,False,False,False,False,False]
     dashed_line_flag_for_plot=[False,False,False,False,False,False,False]
     smoothing_input = [False,False,False,False,False,False,False]
     plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
-        final_time_for_plot=20.0,plot_filtered_dns_input=False,legend_fontSize_input=12,
+        final_time_for_plot=20.0,plot_filtered_dns_input=False,legend_fontSize_input=14,
         plot_zoomed_section_dissipation_rate=True,
         plot_zoomed_section_numerical_dissipation_components=False,
         plot_zoomed_section_enstrophy=False)
