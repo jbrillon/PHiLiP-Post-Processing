@@ -125,7 +125,7 @@ def plot_periodic_turbulence(
             time, enstrophy = np.loadtxt(filename,skiprows=1,delimiter=",",dtype=np.float64,unpack=True)
             enstrophy_store.append(enstrophy)
         elif(reference_result_author=="Dairay et al."):
-            labels_store.append("DNS [Dairay et al.]")
+            labels_store.append("$512^3$ DOFs [Dairay et al.]")
             filename=CURRENT_PATH+"../cases/taylor_green_vortex/data/TGV_Re1600.dat"
             time, kinetic_energy, dissipation, enstrophy = np.loadtxt(filename,skiprows=43,dtype=np.float64,unpack=True,usecols=(0,1,2,4))
             time_store.append(time)
@@ -757,7 +757,7 @@ def plot_periodic_turbulence(
                 clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
                 legend_fontSize=legend_fontSize_input)
 
-        path_to_reference_result=CURRENT_PATH+"../cases/taylor_green_vortex/data/"
+        path_to_reference_result=CURRENT_PATH+"../cases/taylor_green_vortex/data"
         filename=path_to_reference_result+"/"+"debonis_et_al_pressure_dilatation_kedr"+".txt"
         time, pressure_dilatation_based_dissipation = np.loadtxt(filename,skiprows=1,delimiter=",",dtype=np.float64,unpack=True)
         # time_store.insert(0,time)
@@ -769,7 +769,7 @@ def plot_periodic_turbulence(
         which_lines_black_input = [number_of_result_curves]
         which_lines_dashed_input = [number_of_result_curves]
 
-        path_to_reference_result=CURRENT_PATH+"../cases/taylor_green_vortex/data/"
+        path_to_reference_result=CURRENT_PATH+"../cases/taylor_green_vortex/data"
         filename=path_to_reference_result+"/"+"chapelier_2012_64p3_pressure_dilatation_kedr"+".txt"
         time, pressure_dilatation_based_dissipation = np.loadtxt(filename,skiprows=1,delimiter=",",dtype=np.float64,unpack=True)
         # time_store.insert(0,time)

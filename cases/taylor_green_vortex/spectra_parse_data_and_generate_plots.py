@@ -82,7 +82,8 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
     plot_cutoff_wavenumber_asymptote=False,
     list_of_poly_degree_input=[],
     list_of_number_of_elements_per_direction_input=[],
-    truncate_spectra_at_effective_DOFs=True): # Modify this here
+    truncate_spectra_at_effective_DOFs=True, # Modify this here
+    fix_legend_location_for_presentation=False):
     # TO DO: Move this function to its own file
     global x,y,labels
     x=[];y=[];labels=[];
@@ -241,8 +242,9 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
         append_to_plot(spectra[:,0],spectra[:,1],"DNS ($256^{3}$p$7$)")
         i_curve += 1
     elif(plot_reference_result):
+        # Note: This is the 512^3 spectral reference result in their paper
         spectra = np.loadtxt(CURRENT_PATH+"data/carton2014_dns_spectra_t9.txt",skiprows=1,delimiter=',')
-        append_to_plot(spectra[:,0],spectra[:,1],"DNS [Carton de Wiart et al.]")
+        append_to_plot(spectra[:,0],spectra[:,1],"$512^{3}$ [Carton de Wiart et al.]")
         i_curve += 1
     if(plot_filtered_dns):
         filepath_to_reference_result=CURRENT_PATH+"data/brillon/flow_field_files/velocity_vorticity_p7_dofs256_projected_to_p2_dofs096-1_reordered_spectra_oversampled_nquad12.dat"
@@ -270,6 +272,12 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
     if(title_off):
         title_label = " "
 
+    legend_anchor_input=[]
+    legend_location_input="lower left"
+    if(fix_legend_location_for_presentation):
+        legend_anchor_input=[0.0,0.45]
+        legend_location_input="upper left"
+
     qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $k^{*}$",ylabel="Nondimensional TKE Spectra, $E^{*}(k^{*},t^{*})$",
         title_label=title_label,
         fig_directory=figure_directory,figure_filename=figure_filename,log_axes="both",figure_filetype="pdf",
@@ -278,11 +286,11 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
         xlimits=[2.0e0,112],ylimits=[4.0e-7,5e-2],
         markers=False,legend_on=True,legend_labels_tex=labels,
         which_lines_black=which_lines_black,
-        transparent_legend=False,legend_border_on=False,grid_lines_on=False,
+        transparent_legend=True,legend_border_on=False,grid_lines_on=False,
         clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
         legend_fontSize=legend_fontSize_input,
-        legend_location="lower left",
-        # legend_anchor=[0.0,0.45]
+        legend_location=legend_location_input,
+        legend_anchor=legend_anchor_input,
         # which_lines_only_markers=[1,2,3],
         # which_lines_dashed=which_lines_dashed,
         plot_zoomed_section=plot_zoomed_section,
@@ -352,6 +360,43 @@ fig_dir_input="./figures/2023_JCP/oversampled_spectra"
 # =====================================================
 # =====================================================
 # =====================================================
+
+#=====================================================
+# DOFs: ALL | NSFR CONVERGENCE VERSION FOR WCCM
+#-----------------------------------------------------
+if(True or regenerate_all_plots):
+    batch_paths = [ \
+    "NarvalFiles/2023_JCP/verification_tke_fix/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024_2refinements/",\
+    "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
+    "NarvalFiles/2023_JCP/spectra_fix/high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs064_p7_procs512/",\
+    "NarvalFiles/2023_JCP/spectra_fix/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs048_p5_procs64/",\
+    "NarvalFiles/2023_JCP/spectra_fix/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs024_p5_procs16/",\
+    ]
+    batch_labels = [ \
+    "$256^{3}$ ($32^{3}$p$7$)",\
+    "$96^{3}$ ($16^{3}$p$5$)", \
+    "$64^{3}$ ($8^{3}$p$7$)", \
+    "$48^{3}$ ($8^{3}$p$5$)",\
+    "$24^{3}$ ($4^{3}$p$7$)",\
+    ]
+    list_of_poly_degree=[7,5,7,5,5]
+    list_of_number_of_elements_per_direction=[32,16,8,8,4]
+
+    for i in range(0,len(batch_paths)):
+        figure_filename_postfix_input="cDG_NSFR_overview_for_wccm_%i"%i
+        batch_plot_spectra("all",figure_filename_postfix_input,batch_paths[:(i+1)],batch_labels[:(i+1)],
+            solid_and_dashed_lines=False,
+            title_off=title_off_input,figure_directory=fig_dir_input,
+            plot_cutoff_wavenumber_asymptote=False,
+            truncate_spectra_at_effective_DOFs=True,
+            plot_PHiLiP_DNS_result_as_reference=False,
+            plot_filtered_dns=False,
+            which_lines_dashed=[],
+            plot_zoomed_section=False,
+            list_of_poly_degree_input=list_of_poly_degree,
+            list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction,
+            fix_legend_location_for_presentation=True)
+    exit()
 
 # =====================================================
 # MISSING FIG 3

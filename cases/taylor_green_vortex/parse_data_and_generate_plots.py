@@ -39,7 +39,7 @@ def plot_for_presentation(
     dofs_for_zoomed_section=256):
     
     # flag to generate only the final plot with all the curves to save plotting time
-    generate_only_final_plot_with_all_curves=True
+    generate_only_final_plot_with_all_curves=False
 
     global subdirectories, filenames, labels, black_line_flag, \
     dashed_line_flag, figure_filename_postfix, figure_title, \
@@ -119,17 +119,55 @@ def reinit_inputs():
     log_axes_input=None # default
     legend_on_input=True # default
     legend_inside_input=False # default
-    plot_reference_result=False # default
+    plot_reference_result=True # default
     nlegendcols_input=1
     figure_subdirectory="" # default
     data_directory_base = "/Users/Julien/julien_phd/post_processing/data/taylor_green_vortex"
     # figure_directory_base = "/Users/Julien/julien_phd/post_processing/figures/taylor_green_vortex"
     figure_directory_base = "figures"
     smoothing_input = []
-    plot_PHiLiP_DNS_result_as_reference_input=True # default
+    plot_PHiLiP_DNS_result_as_reference_input=False # default
 #=====================================================
 #-----------------------------------------------------
 
+#=====================================================
+# DOFs: ALL | NSFR CONVERGENCE VERSION FOR WCCM
+#-----------------------------------------------------
+if(True):
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="2023_JCP"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_filename_postfix = "cDG_NSFR_overview_for_wccm"
+    legend_inside_input=True
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "filtered_dns_viscous_tgv/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024",\
+    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs064_p7_procs512",\
+    "robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs048_p5_procs64",\
+    "robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs024_p5_procs16",\
+    # "robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs012_p5_procs16",\
+    ]
+    # labels
+    labels_for_plot=[\
+    "$256^3$ DOFs ($32^{3}$p$7$)",\
+    "$96^{3}$ DOFs ($16^{3}$p$5$)", \
+    "$64^{3}$ DOFs ($8^{3}$p$7$)", \
+    "$48^{3}$ DOFs ($8^{3}$p$5$)",\
+    "$24^{3}$ DOFs ($4^{3}$p$7$)",\
+    # "$12^{3}$ DOFs, P$5$",\
+    ]
+    black_line_flag_for_plot=[False,False,False,False,False,False,False]
+    dashed_line_flag_for_plot=[False,False,False,False,False,False,False]
+    smoothing_input = [False,False,False,False,False,False,False]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
+        final_time_for_plot=20.0,plot_filtered_dns_input=False,legend_fontSize_input=12,
+        plot_zoomed_section_dissipation_rate=True,
+        plot_zoomed_section_numerical_dissipation_components=False,
+        plot_zoomed_section_enstrophy=False)
+    exit()
 #=====================================================
 # DOFs: 256^3 | P7 cDG NSFR.IR-GL and P7 cDG NSFR.IR-GLL
 #-----------------------------------------------------
@@ -168,7 +206,6 @@ if(True):
         plot_zoomed_section_dissipation_rate=True,
         plot_zoomed_section_numerical_dissipation_components=True,
         plot_zoomed_section_enstrophy=True)
-    exit()
 #=====================================================
 # DOFs: 96^3 | P5 cDG NSFR.IR-GL and P5 cDG NSFR.IR-GLL
 #-----------------------------------------------------
@@ -206,7 +243,6 @@ if(True):
         plot_zoomed_section_numerical_dissipation_components=True,
         plot_zoomed_section_enstrophy=True,
         dofs_for_zoomed_section=96)
-    exit()
 #=====================================================
 # DOFs: 96^3 | LRNC Advanced SGS Models on GL flux nodes (no filter width modifications)
 #-----------------------------------------------------
