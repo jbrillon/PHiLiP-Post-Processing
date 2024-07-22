@@ -33,7 +33,7 @@ def generate_boundary_layer_profile_file_from_flow_field_file(
     print("Generating boundary layer profile file from flow field file...")
     file = file_without_extension+"."+file_extension
     print(" - Loading file: %s" % file)
-    data = np.loadtxt(file,skiprows=n_skiprows,usecols=(1,3),dtype=np.float64)
+    data = np.loadtxt(file,skiprows=n_skiprows,usecols=(1,3,7,8),dtype=np.float64)
     print(" - done.")
     # coordinates = [data[:,0],data[:,1],data[:,2]] # x,y,z
     # velocity_field = [data[:,3],data[:,4],data[:,5]] # u,v,w
@@ -47,24 +47,38 @@ def generate_boundary_layer_profile_file_from_flow_field_file(
     number_of_y_stations = np.size(unique_y_stations) # same as number_of_unique_points_per_direction
 
     print(" - Averaging the x-velocity at each y-station...")
-    # (2) sum all x-velocities at each y-station
+    # (2) sum all x-velocities and kinematic viscosity at each y-station
+    # - x-velocity
     summation_of_xvelocity_at_each_y_station = np.zeros(number_of_y_stations)
     number_of_summations_of_xvelocity_at_each_y_station = np.zeros(number_of_y_stations)
     average_xvelocity_at_each_y_station = np.zeros(number_of_y_stations)
+    # - kinematic viscosity
+    summation_of_kinematic_viscosity_at_each_y_station = np.zeros(number_of_y_stations)
+    number_of_summations_of_kinematic_viscosity_at_each_y_station = np.zeros(number_of_y_stations)
+    average_kinematic_viscosity_at_each_y_station = np.zeros(number_of_y_stations)
     for i in range(0,number_of_degrees_of_freedom):
+        # check which y-station
         y_value = 1.0*data[i,0]
-        velocity_x_direction_value = 1.0*data[i,1]
         index_of_y_station = np.where(np.abs(unique_y_stations-y_value)<1.0e-8)[0][0]
         number_of_summations_of_xvelocity_at_each_y_station[index_of_y_station] += 1.0
+        number_of_summations_of_kinematic_viscosity_at_each_y_station[index_of_y_station] += 1.0
+        # sum the x-velocity
+        velocity_x_direction_value = 1.0*data[i,1]
         summation_of_xvelocity_at_each_y_station[index_of_y_station] += velocity_x_direction_value
+        # sum the kinematic viscosity
+        density_value = 1.0*data[i,2]
+        dynamic_viscosity_value = 1.0*data[i,3]
+        kinematic_viscosity_value = dynamic_viscosity_value/density_value
+        summation_of_kinematic_viscosity_at_each_y_station[index_of_y_station] += kinematic_viscosity_value
     # (3) compute the average
     for i in range(0,number_of_y_stations):
         average_xvelocity_at_each_y_station[i] = summation_of_xvelocity_at_each_y_station[i]/number_of_summations_of_xvelocity_at_each_y_station[i]
+        average_kinematic_viscosity_at_each_y_station[i] = summation_of_kinematic_viscosity_at_each_y_station[i]/number_of_summations_of_kinematic_viscosity_at_each_y_station[i]
     print(" - done.")
     # (4) output file for the boundary layer profile    
     file_out = file_out_without_extension+"."+file_extension
     print(" - Writing file: %s" % file_out)
-    np.savetxt(file_out,np.transpose(np.array([unique_y_stations, average_xvelocity_at_each_y_station])))
+    np.savetxt(file_out,np.transpose(np.array([unique_y_stations, average_xvelocity_at_each_y_station, average_kinematic_viscosity_at_each_y_station])))
     print(" - done.")
 
     print("done.")
