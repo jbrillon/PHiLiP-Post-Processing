@@ -125,7 +125,7 @@ def plot_boundary_layer_profile(filenames_,labels_,which_lines_dashed_=[]):
 
     for i,filename in enumerate(filenames_):
         # load data
-        y_coordinate, average_x_velocity = np.loadtxt(filename,dtype=np.float64,unpack=True)
+        y_coordinate, average_x_velocity, average_kinematic_viscosity = np.loadtxt(filename,dtype=np.float64,unpack=True)
 
         number_of_points = np.size(y_coordinate)
         y_plus = []
@@ -142,7 +142,9 @@ def plot_boundary_layer_profile(filenames_,labels_,which_lines_dashed_=[]):
             nondimensional_density = 1.0 # should be computed in the code... -- TO DO: ADD THIS CALCULATION FOR y+ and u+ inside the code!
             nondimensional_viscosity = 1.0
             nondimensional_friction_velocity = Re_tau/Re_inf
-            y_plus_local = Re_inf*distance_from_wall*nondimensional_friction_velocity*nondimensional_density/nondimensional_viscosity
+            nondimensional_kinematic_viscosity = nondimensional_viscosity/nondimensional_density
+            y_plus_local = Re_inf*distance_from_wall*nondimensional_friction_velocity/nondimensional_kinematic_viscosity
+            # y_plus_local = Re_inf*distance_from_wall*nondimensional_friction_velocity/average_kinematic_viscosity[j]
             y_plus.append(y_plus_local)
             u_plus_local = average_x_velocity[j]/nondimensional_friction_velocity
             u_plus.append(u_plus_local)
@@ -265,12 +267,13 @@ labels=[\
 ]
 which_lines_dashed=[]
 friction_velocity_based_reynolds_number=[5200,395]
-plot_transient(filenames,labels,starting_data_index_for_plot=0,friction_velocity_based_reynolds_number=friction_velocity_based_reynolds_number)
+# plot_transient(filenames,labels,starting_data_index_for_plot=0,friction_velocity_based_reynolds_number=friction_velocity_based_reynolds_number)
 
 # plot boundary layer profile
 filenames=[\
 # filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t0200.dat",\
-filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t0240.dat",\
+# filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t0240.dat",\
+filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t0330.dat",\
 ]
 labels=[\
 "$c_{DG}$ NSFR.IR.GLL 20x10x10 p4"\
