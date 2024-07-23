@@ -152,14 +152,37 @@ def plot_boundary_layer_profile(filenames_,labels_,which_lines_dashed_=[]):
         y_plus = np.array(y_plus)
         u_plus = np.array(u_plus)
 
+        number_of_unique_BL_points = int(0.5*np.size(y_plus))+1
+        index_centerline = number_of_unique_BL_points - 1
+        unique_y_plus=np.zeros(number_of_unique_BL_points)
+        unique_u_plus=np.zeros(number_of_unique_BL_points)
+        unique_y_plus[index_centerline] = 1.0*y_plus[index_centerline]
+        unique_u_plus[index_centerline] = 1.0*u_plus[index_centerline]
+        for j in range(0,index_centerline):
+            unique_y_plus[j] = y_plus[j]
+            index_for_second_BL = -(j+1)
+            if(np.abs(y_plus[j]-y_plus[index_for_second_BL])>1.0e-4):
+                print("ERROR in boundary layer profile averaging! Aborting...")
+                print(y_plus[j])
+                print(y_plus[index_for_second_BL])
+                print(j)
+                print(index_for_second_BL)
+                exit()
+            # average the two boundary layer profiles (because channel has two walls)
+            unique_u_plus[j] = 0.5*(u_plus[j]+u_plus[index_for_second_BL])
+
         # marker for the input
         y_plus_wall_model_input = 0.2*Re_tau # 0.2 is the uniform delta y from the grid
         u_plus_wall_model_input = np.average(u_plus[np.where(np.abs(y_plus - y_plus_wall_model_input)<1e-4)])
 
         # store the data
-        average_y_plus_store.append(y_plus[np.where(y_plus >= (y_plus_wall_model_input-1e-4))])
+        y_plus_after_wall_model_input_point = unique_y_plus[np.where(unique_y_plus >= (y_plus_wall_model_input-1e-4))]
+        u_plus_after_wall_model_input_point = unique_u_plus[np.where(unique_y_plus >= (y_plus_wall_model_input-1e-4))]
+        
+        # add to plot
+        average_y_plus_store.append(y_plus_after_wall_model_input_point)
         labels_store.append(labels_[i])
-        average_u_plus_store.append(u_plus[np.where(y_plus >= (y_plus_wall_model_input-1e-4))])
+        average_u_plus_store.append(u_plus_after_wall_model_input_point)
 
         # add the marker to the plot
         average_y_plus_store.append(np.array(y_plus_wall_model_input))
@@ -178,6 +201,10 @@ def plot_boundary_layer_profile(filenames_,labels_,which_lines_dashed_=[]):
     average_u_plus_store.append(average_u_plus_reference)
     labels_store.append("p4 DG-WMLES [Fr\\`ere, 2017]")
 
+    average_y_plus_store.append(unique_y_plus)
+    labels_store.append("averaged")
+    average_u_plus_store.append(unique_u_plus)
+
     qp.plotfxn(average_y_plus_store,average_u_plus_store,
         figure_filename="boundary_layer_profile",
         figure_size=(7,6),
@@ -191,6 +218,27 @@ def plot_boundary_layer_profile(filenames_,labels_,which_lines_dashed_=[]):
         ylimits=[0,30],
         which_lines_black=[0],
         which_lines_only_markers=[2,3,4],
+        transparent_legend=False,
+        legend_border_on=True,
+        grid_lines_on=True,
+        log_axes="x",
+        legend_location="best",
+        vertical_lines=[y_plus_wall_model_input])
+
+    qp.plotfxn(average_y_plus_store,average_u_plus_store,
+        figure_filename="boundary_layer_profile_zoom",
+        figure_size=(7,6),
+        legend_labels_tex=labels_store,
+        figure_filetype="pdf",
+        # title_label="Turbulent Channel Flow $Re_{\\tau}\\approx395$, $CFL\\approx0.2$, $\\alpha=0.0$",
+        title_label="WMLES Approach to Turbulent Channel Flow at $Re_{\\tau}\\approx5200$",
+        xlabel="$\\left\\langle y^{+}\\right\\rangle$",
+        ylabel="$\\left\\langle u^{+}\\right\\rangle$",
+        xlimits=[1.0e2,5200.0],
+        ylimits=[18,28],
+        which_lines_black=[0],
+        which_lines_only_markers=[2,3,4],
+        which_lines_dashed=[5],
         transparent_legend=False,
         legend_border_on=True,
         grid_lines_on=True,
