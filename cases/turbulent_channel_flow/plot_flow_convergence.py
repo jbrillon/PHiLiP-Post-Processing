@@ -114,6 +114,7 @@ def plot_boundary_layer_profile(filenames_,labels_,which_lines_dashed_=[]):
     # data store
     average_y_plus_store=[]
     average_u_plus_store=[]
+    average_velocity_fluctuation_rms_store=[]
     # plot function inputs
     labels_store=[]
 
@@ -125,11 +126,14 @@ def plot_boundary_layer_profile(filenames_,labels_,which_lines_dashed_=[]):
 
     for i,filename in enumerate(filenames_):
         # load data
-        y_coordinate, average_x_velocity, average_kinematic_viscosity = np.loadtxt(filename,dtype=np.float64,unpack=True)
+        y_coordinate, average_x_velocity, average_kinematic_viscosity, average_x_velocity_fluctuation_rms, average_y_velocity_fluctuation_rms, average_z_velocity_fluctuation_rms = np.loadtxt(filename,dtype=np.float64,unpack=True)
 
         number_of_points = np.size(y_coordinate)
         y_plus = []
         u_plus = []
+        u_plus_fluctuation = []
+        v_plus_fluctuation = []
+        w_plus_fluctuation = []
         for j in range(0,number_of_points):
             y_value = y_coordinate[j] # nondimensional
             distance_from_wall = 0.0 # nondimensional
@@ -139,7 +143,7 @@ def plot_boundary_layer_profile(filenames_,labels_,which_lines_dashed_=[]):
                 distance_from_wall = 1.0 - y_value
             Re_tau = 5200.0
             Re_inf = 129245.0
-            nondimensional_density = 1.0 # should be computed in the code... -- TO DO: ADD THIS CALCULATION FOR y+ and u+ inside the code!
+            nondimensional_density = 1.0
             nondimensional_viscosity = 1.0
             nondimensional_friction_velocity = Re_tau/Re_inf
             nondimensional_kinematic_viscosity = nondimensional_viscosity/nondimensional_density
@@ -148,16 +152,32 @@ def plot_boundary_layer_profile(filenames_,labels_,which_lines_dashed_=[]):
             y_plus.append(y_plus_local)
             u_plus_local = average_x_velocity[j]/nondimensional_friction_velocity
             u_plus.append(u_plus_local)
+            # fluctuations
+            u_plus_fluctuation_local = average_x_velocity_fluctuation_rms[j]/nondimensional_friction_velocity
+            v_plus_fluctuation_local = average_y_velocity_fluctuation_rms[j]/nondimensional_friction_velocity
+            w_plus_fluctuation_local = average_z_velocity_fluctuation_rms[j]/nondimensional_friction_velocity
+            u_plus_fluctuation.append(u_plus_fluctuation_local)
+            v_plus_fluctuation.append(v_plus_fluctuation_local)
+            w_plus_fluctuation.append(w_plus_fluctuation_local)
 
         y_plus = np.array(y_plus)
         u_plus = np.array(u_plus)
+        u_plus_fluctuation = np.array(u_plus_fluctuation)
+        v_plus_fluctuation = np.array(v_plus_fluctuation)
+        w_plus_fluctuation = np.array(w_plus_fluctuation)
 
         number_of_unique_BL_points = int(0.5*np.size(y_plus))+1
         index_centerline = number_of_unique_BL_points - 1
         unique_y_plus=np.zeros(number_of_unique_BL_points)
         unique_u_plus=np.zeros(number_of_unique_BL_points)
+        unique_u_plus_fluctuation=np.zeros(number_of_unique_BL_points)
+        unique_v_plus_fluctuation=np.zeros(number_of_unique_BL_points)
+        unique_w_plus_fluctuation=np.zeros(number_of_unique_BL_points)
         unique_y_plus[index_centerline] = 1.0*y_plus[index_centerline]
         unique_u_plus[index_centerline] = 1.0*u_plus[index_centerline]
+        unique_u_plus_fluctuation[index_centerline] = 1.0*u_plus_fluctuation[index_centerline]
+        unique_v_plus_fluctuation[index_centerline] = 1.0*v_plus_fluctuation[index_centerline]
+        unique_w_plus_fluctuation[index_centerline] = 1.0*w_plus_fluctuation[index_centerline]
         for j in range(0,index_centerline):
             unique_y_plus[j] = y_plus[j]
             index_for_second_BL = -(j+1)
@@ -170,6 +190,9 @@ def plot_boundary_layer_profile(filenames_,labels_,which_lines_dashed_=[]):
                 exit()
             # average the two boundary layer profiles (because channel has two walls)
             unique_u_plus[j] = 0.5*(u_plus[j]+u_plus[index_for_second_BL])
+            unique_u_plus_fluctuation[j] = 0.5*(u_plus_fluctuation[j]+u_plus_fluctuation[index_for_second_BL])
+            unique_v_plus_fluctuation[j] = 0.5*(v_plus_fluctuation[j]+v_plus_fluctuation[index_for_second_BL])
+            unique_w_plus_fluctuation[j] = 0.5*(w_plus_fluctuation[j]+w_plus_fluctuation[index_for_second_BL])
 
         # marker for the input
         y_plus_wall_model_input = 0.2*Re_tau # 0.2 is the uniform delta y from the grid
@@ -178,11 +201,18 @@ def plot_boundary_layer_profile(filenames_,labels_,which_lines_dashed_=[]):
         # store the data
         y_plus_after_wall_model_input_point = unique_y_plus[np.where(unique_y_plus >= (y_plus_wall_model_input-1e-4))]
         u_plus_after_wall_model_input_point = unique_u_plus[np.where(unique_y_plus >= (y_plus_wall_model_input-1e-4))]
+        u_plus_fluctuation_after_wall_model_input_point = unique_u_plus_fluctuation[np.where(unique_y_plus >= (y_plus_wall_model_input-1e-4))]
+        v_plus_fluctuation_after_wall_model_input_point = unique_v_plus_fluctuation[np.where(unique_y_plus >= (y_plus_wall_model_input-1e-4))]
+        w_plus_fluctuation_after_wall_model_input_point = unique_w_plus_fluctuation[np.where(unique_y_plus >= (y_plus_wall_model_input-1e-4))]
         
         # add to plot
         average_y_plus_store.append(y_plus_after_wall_model_input_point)
         labels_store.append(labels_[i])
         average_u_plus_store.append(u_plus_after_wall_model_input_point)
+
+        average_velocity_fluctuation_rms_store.append(u_plus_fluctuation_after_wall_model_input_point)
+        average_velocity_fluctuation_rms_store.append(v_plus_fluctuation_after_wall_model_input_point)
+        average_velocity_fluctuation_rms_store.append(w_plus_fluctuation_after_wall_model_input_point)
 
         # add the marker to the plot
         average_y_plus_store.append(np.array(y_plus_wall_model_input))
@@ -243,6 +273,31 @@ def plot_boundary_layer_profile(filenames_,labels_,which_lines_dashed_=[]):
         legend_border_on=True,
         grid_lines_on=True,
         log_axes="x",
+        legend_location="best",
+        vertical_lines=[y_plus_wall_model_input])
+
+    # fluctuations
+    xdata_for_fluctuations=[y_plus_after_wall_model_input_point,y_plus_after_wall_model_input_point,y_plus_after_wall_model_input_point]
+    labels_store = ["$\\left\\langle u'^{+}\\right\\rangle _{rms}$",\
+                    "$\\left\\langle v'^{+}\\right\\rangle _{rms}$",\
+                    "$\\left\\langle w'^{+}\\right\\rangle _{rms}$"]
+    qp.plotfxn(xdata_for_fluctuations,average_velocity_fluctuation_rms_store,
+        figure_filename="boundary_layer_profile_of_fluctuations",
+        figure_size=(7,6),
+        legend_labels_tex=labels_store,
+        figure_filetype="pdf",
+        # title_label="Turbulent Channel Flow $Re_{\\tau}\\approx395$, $CFL\\approx0.2$, $\\alpha=0.0$",
+        title_label="WMLES Approach to Turbulent Channel Flow at $Re_{\\tau}\\approx5200$",
+        xlabel="$\\left\\langle y^{+}\\right\\rangle$",
+        ylabel="$\\left\\langle u'^{+}_{i}\\right\\rangle _{rms}$",
+        xlimits=[1.0e0,5200.0],
+        ylimits=[],
+        which_lines_black=[],
+        which_lines_only_markers=[],
+        transparent_legend=False,
+        legend_border_on=True,
+        grid_lines_on=True,
+        log_axes=None,
         legend_location="best",
         vertical_lines=[y_plus_wall_model_input])
     return
