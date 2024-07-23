@@ -92,15 +92,15 @@ def generate_boundary_layer_profile_file_from_flow_field_file(
         number_of_summations_of_kinematic_viscosity_at_each_y_station[index_of_y_station] += 1.0
         # sum the x-velocity fluctuation RMS
         velocity_x_direction_fluctuation_value = 1.0*velocity_field[0][i]
-        summation_of_xvelocity_fluctuation_rms_at_each_y_station = velocity_x_direction_fluctuation_value*velocity_x_direction_fluctuation_value
+        summation_of_xvelocity_fluctuation_rms_at_each_y_station[index_of_y_station] = velocity_x_direction_fluctuation_value*velocity_x_direction_fluctuation_value
         number_of_summations_of_xvelocity_fluctuation_rms_at_each_y_station[index_of_y_station] += 1.0
         # sum the y-velocity fluctuation RMS
         velocity_y_direction_fluctuation_value = 1.0*velocity_field[1][i]
-        summation_of_yvelocity_fluctuation_rms_at_each_y_station = velocity_y_direction_fluctuation_value*velocity_y_direction_fluctuation_value
+        summation_of_yvelocity_fluctuation_rms_at_each_y_station[index_of_y_station] = velocity_y_direction_fluctuation_value*velocity_y_direction_fluctuation_value
         number_of_summations_of_yvelocity_fluctuation_rms_at_each_y_station[index_of_y_station] += 1.0
         # sum the z-velocity fluctuation RMS
         velocity_z_direction_fluctuation_value = 1.0*velocity_field[2][i]
-        summation_of_zvelocity_fluctuation_rms_at_each_y_station = velocity_z_direction_fluctuation_value*velocity_z_direction_fluctuation_value
+        summation_of_zvelocity_fluctuation_rms_at_each_y_station[index_of_y_station] = velocity_z_direction_fluctuation_value*velocity_z_direction_fluctuation_value
         number_of_summations_of_zvelocity_fluctuation_rms_at_each_y_station[index_of_y_station] += 1.0
     # (3) compute the average
     for i in range(0,number_of_y_stations):
