@@ -32,11 +32,18 @@ def generate_boundary_layer_profile_file_from_flow_field_file(
 
     print("Generating boundary layer profile file from flow field file...")
     file = file_without_extension+"."+file_extension
-    print(" - Loading file: %s" % file)
+    print(" - Loading file for just u+ vs y+ data: %s" % file)
     data = np.loadtxt(file,skiprows=n_skiprows,usecols=(1,3,7,8),dtype=np.float64)
     print(" - done.")
     # coordinates = [data[:,0],data[:,1],data[:,2]] # x,y,z
-    # velocity_field = [data[:,3],data[:,4],data[:,5]] # u,v,w
+    print(" - Loading file for entire velocity field: %s" % file)
+    vel_data = np.loadtxt(file,skiprows=n_skiprows,usecols=(3,4,5),dtype=np.float64)
+    print(" - done.")
+    velocity_field = [vel_data[:,0],vel_data[:,1],vel_data[:,2]] # u,v,w
+    print(" - Computing the fluctuating velocity field...")
+    velocity_field = get_fluctuating_velocity_field(velocity_field)
+    print(" - done.")
+
     file_out_without_extension = file_without_extension+"_boundary_layer_profile"
 
     # NOTE FOR REYNOLDS STRESSES; call get_fluctuating_velocity_field(velocity_field)
@@ -56,29 +63,56 @@ def generate_boundary_layer_profile_file_from_flow_field_file(
     summation_of_kinematic_viscosity_at_each_y_station = np.zeros(number_of_y_stations)
     number_of_summations_of_kinematic_viscosity_at_each_y_station = np.zeros(number_of_y_stations)
     average_kinematic_viscosity_at_each_y_station = np.zeros(number_of_y_stations)
+    # - x-velocity fluctuation RMS
+    summation_of_xvelocity_fluctuation_rms_at_each_y_station = np.zeros(number_of_y_stations)
+    number_of_summations_of_xvelocity_fluctuation_rms_at_each_y_station = np.zeros(number_of_y_stations)
+    average_xvelocity_fluctuation_rms_at_each_y_station = np.zeros(number_of_y_stations)
+    # - y-velocity fluctuation RMS
+    summation_of_yvelocity_fluctuation_rms_at_each_y_station = np.zeros(number_of_y_stations)
+    number_of_summations_of_yvelocity_fluctuation_rms_at_each_y_station = np.zeros(number_of_y_stations)
+    average_yvelocity_fluctuation_rms_at_each_y_station = np.zeros(number_of_y_stations)
+    # - z-velocity fluctuation RMS
+    summation_of_zvelocity_fluctuation_rms_at_each_y_station = np.zeros(number_of_y_stations)
+    number_of_summations_of_zvelocity_fluctuation_rms_at_each_y_station = np.zeros(number_of_y_stations)
+    average_zvelocity_fluctuation_rms_at_each_y_station = np.zeros(number_of_y_stations)
     for i in range(0,number_of_degrees_of_freedom):
         # check which y-station
         y_value = 1.0*data[i,0]
         index_of_y_station = np.where(np.abs(unique_y_stations-y_value)<1.0e-8)[0][0]
-        number_of_summations_of_xvelocity_at_each_y_station[index_of_y_station] += 1.0
-        number_of_summations_of_kinematic_viscosity_at_each_y_station[index_of_y_station] += 1.0
         # sum the x-velocity
         velocity_x_direction_value = 1.0*data[i,1]
         summation_of_xvelocity_at_each_y_station[index_of_y_station] += velocity_x_direction_value
+        number_of_summations_of_xvelocity_at_each_y_station[index_of_y_station] += 1.0
         # sum the kinematic viscosity
         density_value = 1.0*data[i,2]
         dynamic_viscosity_value = 1.0*data[i,3]
         kinematic_viscosity_value = dynamic_viscosity_value/density_value
         summation_of_kinematic_viscosity_at_each_y_station[index_of_y_station] += kinematic_viscosity_value
+        number_of_summations_of_kinematic_viscosity_at_each_y_station[index_of_y_station] += 1.0
+        # sum the x-velocity fluctuation RMS
+        velocity_x_direction_fluctuation_value = 1.0*velocity_field[0][i]
+        summation_of_xvelocity_fluctuation_rms_at_each_y_station = velocity_x_direction_fluctuation_value*velocity_x_direction_fluctuation_value
+        number_of_summations_of_xvelocity_fluctuation_rms_at_each_y_station[index_of_y_station] += 1.0
+        # sum the y-velocity fluctuation RMS
+        velocity_y_direction_fluctuation_value = 1.0*velocity_field[1][i]
+        summation_of_yvelocity_fluctuation_rms_at_each_y_station = velocity_y_direction_fluctuation_value*velocity_y_direction_fluctuation_value
+        number_of_summations_of_yvelocity_fluctuation_rms_at_each_y_station[index_of_y_station] += 1.0
+        # sum the z-velocity fluctuation RMS
+        velocity_z_direction_fluctuation_value = 1.0*velocity_field[2][i]
+        summation_of_zvelocity_fluctuation_rms_at_each_y_station = velocity_z_direction_fluctuation_value*velocity_z_direction_fluctuation_value
+        number_of_summations_of_zvelocity_fluctuation_rms_at_each_y_station[index_of_y_station] += 1.0
     # (3) compute the average
     for i in range(0,number_of_y_stations):
         average_xvelocity_at_each_y_station[i] = summation_of_xvelocity_at_each_y_station[i]/number_of_summations_of_xvelocity_at_each_y_station[i]
         average_kinematic_viscosity_at_each_y_station[i] = summation_of_kinematic_viscosity_at_each_y_station[i]/number_of_summations_of_kinematic_viscosity_at_each_y_station[i]
+        average_xvelocity_fluctuation_rms_at_each_y_station[i] = np.sqrt(summation_of_xvelocity_fluctuation_rms_at_each_y_station[i]/number_of_summations_of_xvelocity_fluctuation_rms_at_each_y_station[i])
+        average_yvelocity_fluctuation_rms_at_each_y_station[i] = np.sqrt(summation_of_yvelocity_fluctuation_rms_at_each_y_station[i]/number_of_summations_of_yvelocity_fluctuation_rms_at_each_y_station[i])
+        average_zvelocity_fluctuation_rms_at_each_y_station[i] = np.sqrt(summation_of_zvelocity_fluctuation_rms_at_each_y_station[i]/number_of_summations_of_zvelocity_fluctuation_rms_at_each_y_station[i])
     print(" - done.")
     # (4) output file for the boundary layer profile    
     file_out = file_out_without_extension+"."+file_extension
     print(" - Writing file: %s" % file_out)
-    np.savetxt(file_out,np.transpose(np.array([unique_y_stations, average_xvelocity_at_each_y_station, average_kinematic_viscosity_at_each_y_station])))
+    np.savetxt(file_out,np.transpose(np.array([unique_y_stations, average_xvelocity_at_each_y_station, average_kinematic_viscosity_at_each_y_station, average_xvelocity_fluctuation_rms_at_each_y_station, average_yvelocity_fluctuation_rms_at_each_y_station, average_zvelocity_fluctuation_rms_at_each_y_station])))
     print(" - done.")
 
     print("done.")
