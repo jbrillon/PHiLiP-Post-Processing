@@ -9,6 +9,7 @@ import sys
 # load tools
 sys.path.append(CURRENT_PATH+"../../src/tools");
 from assemble_mpi_files import assemble_mpi_files
+from generate_spectra_files import get_fluctuating_velocity_field
 # load submodules
 sys.path.append(CURRENT_PATH+"../../submodules/quickplotlib/lib"); import quickplotlib as qp
 #-----------------------------------------------------
