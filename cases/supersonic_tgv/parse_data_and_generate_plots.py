@@ -87,6 +87,10 @@ def plot_for_presentation(
     lnstl_input_store = ['None','solid','solid','solid','solid','dashed','solid','dashed','solid']
     if(plotting_subsonic_result):
         lnstl_input_store = ['None','solid','dashed','solid','solid','dashed','solid','dashed','solid']
+    if(256 in number_of_degrees_of_freedom):
+        lnstl_input_store = ['None','solid','dashed','solid','solid','dashed','solid','dashed','solid']
+    if(128 in number_of_degrees_of_freedom):
+        lnstl_input_store = ['None','solid','solid','solid','dashed','dashed','solid','dashed','solid']
     #-----------------------------------------------------
     number_of_result_curves=len(subdirectories_for_plot)
     for i in range(0,number_of_result_curves):
@@ -196,14 +200,14 @@ def plot_for_presentation(
         solenoidal_dissipation_store.append(solenoidal_dissipation)
         # labels.append("FLEXI $256^3$\n($4^{th}$-order DGSEM with subgrid FV)\n[Chapelier et al.]")
         labels.append("FLEXI $256^3$\n[Chapelier et al.]")
-        dashed_line_flag.append(False)
+        dashed_line_flag.append(True)
     if(128 in number_of_degrees_of_freedom):
         time, solenoidal_dissipation = np.loadtxt("./data/chapelier2024/solenoidal_dissipation_128_best_result.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
         time_store.append(time)
         solenoidal_dissipation_store.append(solenoidal_dissipation)
         # labels.append("FLEXI $128^3$\n($4^{th}$-order DGSEM with subgrid FV)\n[Chapelier et al.]")
         labels.append("FLEXI $128^3$\n[Chapelier et al.]")
-        dashed_line_flag.append(False)
+        dashed_line_flag.append(True)
     qp.plotfxn(xdata=time_store,
             ydata=solenoidal_dissipation_store,
             ylabel='Nondimensional Solenoidal Dissipation, $\\varepsilon_{s}^{*}$',#=\\frac{1}{\\rho_{\\infty}V_{\\infty}^{2}|\\Omega|}\\int_{\\Omega}\\rho(u\\cdot\\u)d\\Omega$',
@@ -246,7 +250,7 @@ def plot_for_presentation(
         pressure_dissipation_store.append(np.nan*dilatational_dissipation)
         # labels.append("NS3D $256^3$\n($6^{th}$-order FD with HO Filter)\n[Chapelier et al.]")
         labels[-1] = "NS3D $256^3$\n[Chapelier et al.]"
-        dashed_line_flag.append(False)
+        dashed_line_flag[-1]=True
     if(128 in number_of_degrees_of_freedom):
         time, dilatational_dissipation = np.loadtxt("./data/chapelier2024/dilational_dissipation_128_best_result.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
         time_store[-1] = time # TO DO: FIX IF 256 also being plotted
@@ -254,7 +258,7 @@ def plot_for_presentation(
         pressure_dissipation_store.append(np.nan*dilatational_dissipation)
         # labels.append("NS3D $128^3$\n($6^{th}$-order FD with HO Filter)\n[Chapelier et al.]")
         labels[-1] = "NS3D $128^3$\n[Chapelier et al.]"
-        dashed_line_flag.append(False)
+        dashed_line_flag[-1]=True
 
     qp.plotfxn(xdata=time_store,
             ydata=dilatational_dissipation_store,

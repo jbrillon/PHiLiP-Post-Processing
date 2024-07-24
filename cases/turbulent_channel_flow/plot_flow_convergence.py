@@ -25,19 +25,19 @@ def plotfxn(x_store,y_store,x_label,y_label,
     log_axes=None,xlimits=[],ylimits=[],which_lines_black=[]):
     qp.plotfxn(x_store,y_store,
         figure_filename=figure_filename,
-        figure_size=(8,6),
+        figure_size=(6,6),
         legend_labels_tex=labels_store,
         figure_filetype="pdf",
         # title_label="Turbulent Channel Flow $Re_{\\tau}\\approx395$, $CFL\\approx0.2$, $\\alpha=0.0$",
-        title_label="WMLES: TCF $c_{DG}$ NSFR.IR.GLL 20x10x10 p4, $CFL\\approx0.2$",
+        # title_label="WMLES: TCF $c_{DG}$ NSFR.IR.GLL 20x10x10 p4, $CFL\\approx0.2$",
         xlabel=x_label,
         ylabel=y_label,
         xlimits=xlimits,
         ylimits=ylimits,
         which_lines_black=which_lines_black,
         which_lines_dashed=which_lines_dashed_store,
-        transparent_legend=True,
-        legend_border_on=False,
+        transparent_legend=False,
+        legend_border_on=True,
         grid_lines_on=True,
         log_axes=log_axes,
         legend_location="best")
@@ -89,9 +89,8 @@ def plot_transient(filenames_,labels_,which_lines_dashed_=[],
     # plot the quantities
     if(plot_skin_friction_coefficient):
         plotfxn(time_store,skin_friction_coefficient_store,\
-            "$t^{*}$","Normalized Skin Friction Coefficient, $C_{f}/C^{expected}_{f}$","skin_friction_coefficient",\
-            labels_store,which_lines_dashed_)
-            #,xlimits=[30,70],ylimits=[3e-4,4e-4])
+            "$t^{*}$","Normalized Skin Friction Coefficient, $C_{f}(t^{*})/C^{expected}_{f}$","skin_friction_coefficient",\
+            labels_store,which_lines_dashed_,xlimits=[0,350])
         # plotfxn(time_store,skin_friction_coefficient_store/expected_mean_value_for_skin_friction_coefficient,\
         #     "$t$","$C_{f}(t)$/$C_{f}^{expected}$","skin_friction_coefficient",\
         #     labels_store,which_lines_dashed_)
@@ -122,7 +121,7 @@ def plot_boundary_layer_profile(filenames_,labels_,which_lines_dashed_=[]):
     y_plus_reference, average_u_plus_reference = np.loadtxt("./data/reference/lee_moser_2015_dns.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
     average_y_plus_store.append(y_plus_reference)
     average_u_plus_store.append(average_u_plus_reference)
-    labels_store.append("DNS [Lee \\& Moser, 2015]")
+    labels_store.append("DNS [Lee \\& Moser, 2015]\n$(\\Delta x^{+},\\Delta y_{c}^{+},\\Delta y_{w}^{+},\\Delta z^{+})=(12.7,10.3,0.498,6.4)$")
 
     for i,filename in enumerate(filenames_):
         # load data
@@ -197,6 +196,7 @@ def plot_boundary_layer_profile(filenames_,labels_,which_lines_dashed_=[]):
         # marker for the input
         y_plus_wall_model_input = 0.2*Re_tau # 0.2 is the uniform delta y from the grid
         u_plus_wall_model_input = np.average(u_plus[np.where(np.abs(y_plus - y_plus_wall_model_input)<1e-4)])
+        index_wall_model_input = np.abs(unique_y_plus - y_plus_wall_model_input).argmin()
 
         # store the data
         y_plus_after_wall_model_input_point = unique_y_plus[np.where(unique_y_plus >= (y_plus_wall_model_input-1e-4))]
@@ -223,17 +223,13 @@ def plot_boundary_layer_profile(filenames_,labels_,which_lines_dashed_=[]):
     y_plus_reference, average_u_plus_reference = np.loadtxt("./data/reference/frere_p3_fig7a.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
     average_y_plus_store.append(y_plus_reference)
     average_u_plus_store.append(average_u_plus_reference)
-    labels_store.append("p3 DG-WMLES [Fr\\`ere, 2017]")
+    labels_store.append("p3 DG-WMLES\n [Fr\\`ere et al., 2017]")
 
     # load reference data
     y_plus_reference, average_u_plus_reference = np.loadtxt("./data/reference/frere_p4_fig7a.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
     average_y_plus_store.append(y_plus_reference)
     average_u_plus_store.append(average_u_plus_reference)
-    labels_store.append("p4 DG-WMLES [Fr\\`ere, 2017]")
-
-    average_y_plus_store.append(unique_y_plus)
-    labels_store.append("averaged")
-    average_u_plus_store.append(unique_u_plus)
+    labels_store.append("p4 DG-WMLES\n [Fr\\`ere et al., 2017]")
 
     qp.plotfxn(average_y_plus_store,average_u_plus_store,
         figure_filename="boundary_layer_profile",
@@ -241,19 +237,24 @@ def plot_boundary_layer_profile(filenames_,labels_,which_lines_dashed_=[]):
         legend_labels_tex=labels_store,
         figure_filetype="pdf",
         # title_label="Turbulent Channel Flow $Re_{\\tau}\\approx395$, $CFL\\approx0.2$, $\\alpha=0.0$",
-        title_label="WMLES Approach to Turbulent Channel Flow at $Re_{\\tau}\\approx5200$",
-        xlabel="$\\left\\langle y^{+}\\right\\rangle$",
+        # title_label="WMLES Approach to Turbulent Channel Flow at $Re_{\\tau}\\approx5200$",
+        # xlabel="$\\left\\langle y^{+}\\right\\rangle$",
+        xlabel="$y^{+}$",
         ylabel="$\\left\\langle u^{+}\\right\\rangle$",
         xlimits=[1.0e0,5200.0],
         ylimits=[0,30],
         which_lines_black=[0],
         which_lines_only_markers=[2,3,4],
-        transparent_legend=False,
-        legend_border_on=True,
-        grid_lines_on=True,
+        transparent_legend=True,
+        legend_border_on=False,
+        grid_lines_on=False,
         log_axes="x",
-        legend_location="best",
+        legend_location="upper left",
         vertical_lines=[y_plus_wall_model_input])
+
+    average_y_plus_store.append(unique_y_plus[:(index_wall_model_input+1)])
+    labels_store.append("Unresolved")
+    average_u_plus_store.append(unique_u_plus[:(index_wall_model_input+1)])
 
     qp.plotfxn(average_y_plus_store,average_u_plus_store,
         figure_filename="boundary_layer_profile_zoom",
@@ -261,19 +262,20 @@ def plot_boundary_layer_profile(filenames_,labels_,which_lines_dashed_=[]):
         legend_labels_tex=labels_store,
         figure_filetype="pdf",
         # title_label="Turbulent Channel Flow $Re_{\\tau}\\approx395$, $CFL\\approx0.2$, $\\alpha=0.0$",
-        title_label="WMLES Approach to Turbulent Channel Flow at $Re_{\\tau}\\approx5200$",
-        xlabel="$\\left\\langle y^{+}\\right\\rangle$",
+        # title_label="WMLES Approach to Turbulent Channel Flow at $Re_{\\tau}\\approx5200$",
+        # xlabel="$\\left\\langle y^{+}\\right\\rangle$",
+        xlabel="$y^{+}$",
         ylabel="$\\left\\langle u^{+}\\right\\rangle$",
         xlimits=[1.0e2,5200.0],
         ylimits=[18,28],
         which_lines_black=[0],
         which_lines_only_markers=[2,3,4],
         which_lines_dashed=[5],
-        transparent_legend=False,
-        legend_border_on=True,
-        grid_lines_on=True,
+        transparent_legend=True,
+        legend_border_on=False,
+        grid_lines_on=False,
         log_axes="x",
-        legend_location="best",
+        legend_location="upper left",
         vertical_lines=[y_plus_wall_model_input])
 
     # fluctuations
@@ -362,15 +364,16 @@ labels=[\
 
 filenames=[\
 filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/turbulent_quantities.txt",\
-filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization/turbulent_quantities.txt",\
+# filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization/turbulent_quantities.txt",\
 ]
 labels=[\
-"$Re_{\\tau}\\approx5200$",\
-"$Re_{\\tau}\\approx395$",\
+"p4 $c_{DG}$ NSFR.IR.GLL-WMLES\n $(\\Delta x^{+},\\Delta y^{+},\\Delta z^{+})=(400,250,400)$",\
+# "$Re_{\\tau}\\approx5200$",\
+# "$Re_{\\tau}\\approx395$",\
 ]
 which_lines_dashed=[]
-friction_velocity_based_reynolds_number=[5200,395]
-# plot_transient(filenames,labels,starting_data_index_for_plot=0,friction_velocity_based_reynolds_number=friction_velocity_based_reynolds_number)
+friction_velocity_based_reynolds_number=[5200]#,395]
+plot_transient(filenames,labels,starting_data_index_for_plot=0,friction_velocity_based_reynolds_number=friction_velocity_based_reynolds_number)
 
 # plot boundary layer profile
 filenames=[\
@@ -379,7 +382,7 @@ filenames=[\
 filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t0330.dat",\
 ]
 labels=[\
-"$c_{DG}$ NSFR.IR.GLL 20x10x10 p4"\
+"p4 $c_{DG}$ NSFR.IR.GLL-WMLES\n $(\\Delta x^{+},\\Delta y^{+},\\Delta z^{+})=(400,250,400)$"\
 ]
 which_lines_dashed=[]
 plot_boundary_layer_profile(filenames,labels)

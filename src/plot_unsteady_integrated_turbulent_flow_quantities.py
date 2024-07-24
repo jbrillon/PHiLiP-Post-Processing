@@ -125,7 +125,7 @@ def plot_periodic_turbulence(
             time, enstrophy = np.loadtxt(filename,skiprows=1,delimiter=",",dtype=np.float64,unpack=True)
             enstrophy_store.append(enstrophy)
         elif(reference_result_author=="Dairay et al."):
-            labels_store.append("$512^3$ DOFs [Dairay et al.]")
+            labels_store.append("$512^3$ [Dairay et al.]")
             filename=CURRENT_PATH+"../cases/taylor_green_vortex/data/TGV_Re1600.dat"
             time, kinetic_energy, dissipation, enstrophy = np.loadtxt(filename,skiprows=43,dtype=np.float64,unpack=True,usecols=(0,1,2,4))
             time_store.append(time)
