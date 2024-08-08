@@ -468,14 +468,28 @@ reinit_inputs()
 title_label = "DHIT, $128^{3}$ DOF, P3, $c_{DG}$ NSFR.IR-GLL, CFL$=0.2$"
 figure_filename = "spectra_128_no_smoothing_oversampled_transient"
 
-labels = ["$t^{*}=0$","$t^{*}=0.5$","$t^{*}=1$","$t^{*}=1.5$","$t^{*}=2$"]
+labels_=["$t^{*}=0$","$t^{*}=0.5$","$t^{*}=1$","$t^{*}=1.5$","$t^{*}=2$"]
 
-for i in range(0,len(labels)):
+
+index_for_exp_times = [0,2,4]
+for i in index_for_exp_times:
+# for i in range(0,len(labels_)):
     filename="NarvalFiles/2023_JCP/DHIT/viscous_DHIT_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs128_p3_CFL-0.2_procs512_oversampled_nquad12/flow_field_files/velocity_vorticity-%i_reordered_spectra_no_smoothing.dat" % i
     spectra = np.loadtxt(filesystem+filename,skiprows=0,dtype=np.float64)
     # spectra_truncated = get_truncated_spectra_from_DOFs_information(spectra, 3, 32,True)
     spectra_truncated = get_truncated_spectra_from_cutoff_wavenumber_and_spectra(spectra, 30)
-    append_to_plot(spectra_truncated[:,0],spectra_truncated[:,1],labels[i])
+    append_to_plot(spectra_truncated[:,0],spectra_truncated[:,1],labels_[i])
+# labels.append("CBC $t^{*}=0$")
+# labels.append("CBC $t^{*}=1$")
+# labels.append("CBC $t^{*}=2$")
+append_to_plot(cbc_spectra_t0[:,0],cbc_spectra_t0[:,1],"CBC $t^{*}=0$")
+append_to_plot(cbc_spectra_t1[:,0],cbc_spectra_t1[:,1],"CBC $t^{*}=1$")
+append_to_plot(cbc_spectra_t2[:,0],cbc_spectra_t2[:,1],"CBC $t^{*}=2$")
+
+clr_input_store = ['tab:blue','tab:red','tab:green','k','k','k']
+mrkr_input_store = ['None','None','None','o','s','^']
+lnstl_input_store = ['solid','solid','solid','None','None','None']
+
 qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $k^{*}$",ylabel="Nondimensional TKE Spectra, $E^{*}(k^{*},t^{*})$",
     # title_label=title_label,
     fig_directory="figures",figure_filename=figure_filename,log_axes="both",figure_filetype="pdf",
@@ -485,11 +499,11 @@ qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $k^{*}$",ylabel="N
     # xlimits=[1e0,3.0e1],ylimits=[1e-3,1e-1],
     xlimits=[1e0,3.0e1],ylimits=[1e-3,1e-1],
     markers=False,legend_on=True,legend_labels_tex=labels,
-    which_lines_only_markers=[],
-    which_lines_black=[],
-    which_lines_dashed=[],
+    clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
     transparent_legend=True,
-    legend_border_on=False,grid_lines_on=False)
+    legend_border_on=False,grid_lines_on=False,
+    legend_location="best",
+    nlegendcols=2)
 
 exit()
 
