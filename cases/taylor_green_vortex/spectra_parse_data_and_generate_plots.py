@@ -243,7 +243,7 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
         i_curve += 1
     elif(plot_reference_result):
         # Note: This is the 512^3 spectral reference result in their paper
-        spectra = np.loadtxt(CURRENT_PATH+"data/carton2014_dns_spectra_t9.txt",skiprows=1,delimiter=',')
+        spectra = np.loadtxt(CURRENT_PATH+"data/carton2014_spectral_512_spectra_t9.txt",skiprows=1,delimiter=',')
         append_to_plot(spectra[:,0],spectra[:,1],"$512^{3}$ [Carton de Wiart et al.]")
         i_curve += 1
     if(plot_filtered_dns):
@@ -283,7 +283,8 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
         fig_directory=figure_directory,figure_filename=figure_filename,log_axes="both",figure_filetype="pdf",
         nlegendcols=1,
         # xlimits=[2e0,7e1],ylimits=[2.45e-5,3e-2],
-        xlimits=[2.0e0,112],ylimits=[4.0e-7,5e-2],
+        xlimits=[4.0e0,112],ylimits=[4.0e-7,1e-2],
+        # xlimits=[4.0e0,240],ylimits=[1.0e-9,1e-2],
         markers=False,legend_on=True,legend_labels_tex=labels,
         which_lines_black=which_lines_black,
         transparent_legend=True,legend_border_on=False,grid_lines_on=False,
@@ -364,7 +365,7 @@ fig_dir_input="./figures/2023_JCP/oversampled_spectra"
 #=====================================================
 # DOFs: ALL | NSFR CONVERGENCE VERSION FOR WCCM
 #-----------------------------------------------------
-if(True or regenerate_all_plots):
+if(False or regenerate_all_plots):
     batch_paths = [ \
     "NarvalFiles/2023_JCP/verification_tke_fix/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024_2refinements/",\
     "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
@@ -396,8 +397,71 @@ if(True or regenerate_all_plots):
             list_of_poly_degree_input=list_of_poly_degree,
             list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction,
             fix_legend_location_for_presentation=True)
-    exit()
 
+# =====================================================
+if(True or regenerate_all_plots):
+    batch_paths = [ \
+    "NarvalFiles/2023_JCP/filtered_dns_viscous_tgv/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024/",\
+    "NarvalFiles/2023_JCP/verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p3_procs1024/",\
+    "NarvalFiles/2023_JCP/verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs0256_p3_procs1024/",\
+    "NarvalFiles/2023_JCP/verification/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-4_dofs0256_p3_CFL-0.15_procs1024/",\
+    "NarvalFiles/2023_JCP/verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs1024/",\
+    ]
+    batch_labels = [ \
+    "P$7$ $c_{DG}$ NSFR.IR-GL",\
+    "P$3$ $c_{DG}$ NSFR.IR-GL",\
+    "P$3$ $c_{DG}$ NSFR.IR-GL-Roe",\
+    "P$3$ Strong DG-Roe-GL-OI",\
+    "P$7$ $c_{DG}$ NSFR.IR-GLL",\
+    ]
+    lnstl_input=['solid','solid','solid','solid','dashed','dashed']
+    list_of_poly_degree=[7,3,3,3,7]
+    list_of_number_of_elements_per_direction=[32,64,64,64,32]
+    
+    batch_plot_spectra(256,"verification_before_oversampling",batch_paths,batch_labels,
+        solid_and_dashed_lines=False,
+        title_off=title_off_input,figure_directory=fig_dir_input,
+        plot_cutoff_wavenumber_asymptote=True,
+        truncate_spectra_at_effective_DOFs=True,
+        plot_PHiLiP_DNS_result_as_reference=False,
+        plot_filtered_dns=False,
+        which_lines_dashed=[3,4],
+        plot_zoomed_section=False,
+        list_of_poly_degree_input=list_of_poly_degree,
+        list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
+
+# =====================================================
+if(True or regenerate_all_plots):
+    batch_paths = [ \
+    "NarvalFiles/2023_JCP/verification_tke_fix/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024_2refinements/",\
+    "NarvalFiles/2023_JCP/spectra_fix/verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p3_procs1024/",\
+    "NarvalFiles/2023_JCP/spectra_fix/verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs0256_p3_procs1024/",\
+    "NarvalFiles/2023_JCP/spectra_fix/verification/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-4_dofs0256_p3_CFL-0.15_procs1024/",\
+    "NarvalFiles/2023_JCP/spectra_fix/verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs1024/",\
+    ]
+    batch_labels = [ \
+    "P$7$ $c_{DG}$ NSFR.IR-GL",\
+    "P$3$ $c_{DG}$ NSFR.IR-GL",\
+    "P$3$ $c_{DG}$ NSFR.IR-GL-Roe",\
+    "P$3$ Strong DG-Roe-GL-OI",\
+    "P$7$ $c_{DG}$ NSFR.IR-GLL",\
+    ]
+    lnstl_input=['solid','solid','solid','solid','dashed','dashed']
+    list_of_poly_degree=[7,3,3,3,7]
+    list_of_number_of_elements_per_direction=[32,64,64,64,32]
+    
+    batch_plot_spectra(256,"verification",batch_paths,batch_labels,
+        solid_and_dashed_lines=False,
+        title_off=title_off_input,figure_directory=fig_dir_input,
+        plot_cutoff_wavenumber_asymptote=True,
+        truncate_spectra_at_effective_DOFs=True,
+        plot_PHiLiP_DNS_result_as_reference=False,
+        plot_filtered_dns=False,
+        which_lines_dashed=[3,4],
+        plot_zoomed_section=True,
+        list_of_poly_degree_input=list_of_poly_degree,
+        list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
+exit()
 # =====================================================
 # MISSING FIG 3
 # =====================================================
@@ -483,70 +547,6 @@ if(True or regenerate_all_plots):
     list_of_number_of_elements_per_direction=[32,32]
     
     batch_plot_spectra(256,"p7_verification",batch_paths,batch_labels,
-        solid_and_dashed_lines=False,
-        title_off=title_off_input,figure_directory=fig_dir_input,
-        plot_cutoff_wavenumber_asymptote=True,
-        truncate_spectra_at_effective_DOFs=True,
-        plot_PHiLiP_DNS_result_as_reference=False,
-        plot_filtered_dns=False,
-        which_lines_dashed=[3,4],
-        plot_zoomed_section=True,
-        list_of_poly_degree_input=list_of_poly_degree,
-        list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
-
-# =====================================================
-if(True or regenerate_all_plots):
-    batch_paths = [ \
-    "NarvalFiles/2023_JCP/verification_tke_fix/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024_2refinements/",\
-    "NarvalFiles/2023_JCP/spectra_fix/verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p3_procs1024/",\
-    "NarvalFiles/2023_JCP/spectra_fix/verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs0256_p3_procs1024/",\
-    "NarvalFiles/2023_JCP/spectra_fix/verification/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-4_dofs0256_p3_CFL-0.15_procs1024/",\
-    "NarvalFiles/2023_JCP/spectra_fix/verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs1024/",\
-    ]
-    batch_labels = [ \
-    "P$7$ $c_{DG}$ NSFR.IR-GL",\
-    "P$3$ $c_{DG}$ NSFR.IR-GL",\
-    "P$3$ $c_{DG}$ NSFR.IR-GL-Roe",\
-    "P$3$ Strong DG-Roe-GL-OI",\
-    "P$7$ $c_{DG}$ NSFR.IR-GLL",\
-    ]
-    lnstl_input=['solid','solid','solid','solid','dashed','dashed']
-    list_of_poly_degree=[7,3,3,3,7]
-    list_of_number_of_elements_per_direction=[32,64,64,64,32]
-    
-    batch_plot_spectra(256,"verification",batch_paths,batch_labels,
-        solid_and_dashed_lines=False,
-        title_off=title_off_input,figure_directory=fig_dir_input,
-        plot_cutoff_wavenumber_asymptote=True,
-        truncate_spectra_at_effective_DOFs=True,
-        plot_PHiLiP_DNS_result_as_reference=False,
-        plot_filtered_dns=False,
-        which_lines_dashed=[3,4],
-        plot_zoomed_section=True,
-        list_of_poly_degree_input=list_of_poly_degree,
-        list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
-
-# =====================================================
-if(True or regenerate_all_plots):
-    batch_paths = [ \
-    "NarvalFiles/2023_JCP/filtered_dns_viscous_tgv/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024/",\
-    "NarvalFiles/2023_JCP/verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p3_procs1024/",\
-    "NarvalFiles/2023_JCP/verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs0256_p3_procs1024/",\
-    "NarvalFiles/2023_JCP/verification/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-4_dofs0256_p3_CFL-0.15_procs1024/",\
-    "NarvalFiles/2023_JCP/verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs1024/",\
-    ]
-    batch_labels = [ \
-    "P$7$ $c_{DG}$ NSFR.IR-GL",\
-    "P$3$ $c_{DG}$ NSFR.IR-GL",\
-    "P$3$ $c_{DG}$ NSFR.IR-GL-Roe",\
-    "P$3$ Strong DG-Roe-GL-OI",\
-    "P$7$ $c_{DG}$ NSFR.IR-GLL",\
-    ]
-    lnstl_input=['solid','solid','solid','solid','dashed','dashed']
-    list_of_poly_degree=[7,3,3,3,7]
-    list_of_number_of_elements_per_direction=[32,64,64,64,32]
-    
-    batch_plot_spectra(256,"verification_before_oversampling",batch_paths,batch_labels,
         solid_and_dashed_lines=False,
         title_off=title_off_input,figure_directory=fig_dir_input,
         plot_cutoff_wavenumber_asymptote=True,

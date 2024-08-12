@@ -133,7 +133,7 @@ def reinit_inputs():
 #=====================================================
 # DOFs: ALL | NSFR CONVERGENCE VERSION FOR WCCM
 #-----------------------------------------------------
-if(True):
+if(False):
     reinit_inputs()
     data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
     date_for_runs="."
@@ -167,7 +167,6 @@ if(True):
         plot_zoomed_section_dissipation_rate=True,
         plot_zoomed_section_numerical_dissipation_components=False,
         plot_zoomed_section_enstrophy=False)
-    exit()
 #=====================================================
 # DOFs: 256^3 | P7 cDG NSFR.IR-GL and P7 cDG NSFR.IR-GLL
 #-----------------------------------------------------
@@ -206,6 +205,7 @@ if(True):
         plot_zoomed_section_dissipation_rate=True,
         plot_zoomed_section_numerical_dissipation_components=True,
         plot_zoomed_section_enstrophy=True)
+exit()
 #=====================================================
 # DOFs: 96^3 | P5 cDG NSFR.IR-GL and P5 cDG NSFR.IR-GLL
 #-----------------------------------------------------
