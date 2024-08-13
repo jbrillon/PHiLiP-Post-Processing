@@ -783,7 +783,7 @@ def plot_periodic_turbulence(
 
         qp.plotfxn(xdata=time_store,
                 ydata=eps_K_minus_eps_Sd_store,
-                ylabel='$\\varepsilon^{*}-\\left[\\varepsilon\\left(\\mathbf{S}^{d}\\right)\\right]$',
+                ylabel='$-\\varepsilon^{*}_{p}=\\varepsilon^{*}-\\varepsilon^{*}_{v}$',
                 xlabel='$t^{*}$',
                 figure_filename=figure_subdirectory+'observed_pressure_dissipation_rate_vs_time'+figure_filename_postfix,
                 title_label=figure_title,
