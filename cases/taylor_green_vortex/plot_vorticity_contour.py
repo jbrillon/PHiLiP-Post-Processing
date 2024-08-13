@@ -7,9 +7,10 @@ x_cut=-3.14159265358979
 # path="/Users/Julien/NarvalFiles/2022-11-09_96dofs/viscous_TGV_ILES_cPlus_IR_two_point_flux_dofs096_p5_procs512/"
 path="/Users/Julien/NarvalFiles/2023_AIAA/2022-11-29_TGV_SPECTRA_48dofs/viscous_TGV_LES_smagorinsky_cPlus_IR_two_point_flux_with_l2roe_dissipation_dofs048_p5_procs64_filter36timeslarger/"
 # path="/Users/Julien/NarvalFiles/2023_AIAA/2022-11-29_TGV_SPECTRA_96dofs_cDG_cPlus/viscous_TGV_ILES_cDG_IR_two_point_flux_dofs096_p5_procs512/"
+path="/Volumes/Samsung_T5/NarvalFiles/2023_JCP/filtered_dns_viscous_tgv/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024/"
 filename=path+"flow_field_files/velocity_vorticity-0_reordered.dat"
 # date_for_runs="flow_field_files/velocity_vorticity-0_reordered.dat"
-figure_filename = "vorticity_mag"
+figure_filename = "vorticity_mag_test"
 vorticity_magnitude_field = np.loadtxt(filename,skiprows=1,usecols=(0,1,2,6),dtype=np.float64)
 # velocity_field = np.loadtxt("dofs128_p3_velocity/velocity_equidistant_nodes.fld",skiprows=0,usecols=(0,1,2,3,4,5),dtype=np.float64)
 
@@ -72,6 +73,7 @@ ax.set_ylabel(y_label,rotation=90,fontsize=axisTitle_FontSize)
 plt.setp(ax.get_xticklabels(),fontsize=axisTickLabel_FontSize); plt.setp(ax.get_yticklabels(),fontsize=axisTickLabel_FontSize);
 
 cs = plt.contourf(X,Y,np.transpose(Z), np.linspace(np.amin(Z),np.amax(Z),100),cmap='rainbow')
+cs_lines = plt.contour(X,Y,np.transpose(Z),levels=[1 ,5, 10, 20, 30],colors=('k',),linewidths=(0.5,))
 
 cbar = fig.colorbar(cs,ticks=np.arange(np.amin(Z),np.amax(Z),50.0))
 # cbar = fig.colorbar(cs,ticks=np.linspace(np.amin(Z),np.amax(Z),8))
