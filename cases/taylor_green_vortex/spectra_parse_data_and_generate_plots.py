@@ -325,8 +325,10 @@ def batch_compute_resolved_turbulent_kinetic_energy(
     # Parameters:
     truncate_spectra_at_effective_DOFs=True
     filename="flow_field_files/velocity_vorticity-1_reordered_spectra_no_smoothing.dat"
+    unsteady_filename="turbulent_quantities.txt"
+    spectra_time = 9.0
     
-    print("Label \t\t\t\t| P, Nel, Total DOFs, Effective-DOFs\t | Total TKE\t| Ref. Total TKE\t| Rel. Percentage")
+    print("Label \t\t\t\t| P, Nel, Total DOFs, Effective-DOFs\t | Total KE from Spectra\t| Inst. Total KE\t| Rel. Percentage")
     print("---------------------------------------------------------------------------------")
     # Loop through all the paths
     for i,path in enumerate(paths_):
@@ -336,10 +338,23 @@ def batch_compute_resolved_turbulent_kinetic_energy(
         cutoff_wavenumber = get_cutoff_wavenumber(poly_degree,number_of_elements_per_direction,truncate_spectra_at_effective_DOFs) # True for effective DOFs
         spectra = get_truncated_spectra_from_cutoff_wavenumber_and_spectra(spectra_, cutoff_wavenumber)
         total_tke = get_total_turbulent_kinetic_energy_from_spectra(spectra)
+        # load the KE from the unsteady quantity
+        if("spectra_fix/" in path):
+            path = path.replace("spectra_fix/","")
+        elif(path=="NarvalFiles/2023_JCP/verification_tke_fix/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024_2refinements/"):
+            print("here")
+            path="NarvalFiles/2023_JCP/filtered_dns_viscous_tgv/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024/"
+
+        time, kinetic_energy = np.loadtxt(filesystem+path+unsteady_filename,usecols=(0,1),skiprows=1,dtype=np.float64,unpack=True) # 8.5737827439557435e-02
+        # get instantaneous physical KE
+        idx_of_KE_at_spectra_time = (np.abs(time - spectra_time)).argmin()
+        inst_total_KE = kinetic_energy[idx_of_KE_at_spectra_time]
         # spectra = 1.0*spectra_ # uncomment for no truncation
         truncated_reference_spectra = get_truncated_spectra_from_cutoff_wavenumber_and_spectra(reference_spectra, cutoff_wavenumber)
-        reference_total_tke = get_total_turbulent_kinetic_energy_from_spectra(reference_spectra)
-        percentage_of_tke_captured = 100.0*total_tke/reference_total_tke
+        # reference_total_tke = get_total_turbulent_kinetic_energy_from_spectra(truncated_reference_spectra)
+        reference_total_tke = 1.0*inst_total_KE
+        # percentage_of_tke_captured = 100.0*total_tke/reference_total_tke
+        percentage_of_tke_captured = 100.0*np.abs(total_tke-reference_total_tke)/reference_total_tke
         total_nDOFs_per_dim = (poly_degree+1)*number_of_elements_per_direction
         effective_nDOFs_per_dim = (poly_degree)*number_of_elements_per_direction
         print("%s \t| %i, %i, %i^3, %i^3 \t\t| %.6e\t| %.6e\t\t| %3.6f %%" % (labels_[i], poly_degree, number_of_elements_per_direction, total_nDOFs_per_dim, effective_nDOFs_per_dim, total_tke, reference_total_tke, percentage_of_tke_captured))
@@ -362,6 +377,72 @@ fig_dir_input="./figures/2023_JCP/oversampled_spectra"
 # =====================================================
 # =====================================================
 
+# =====================================================
+if(True or regenerate_all_plots):
+    batch_paths = [ \
+    "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
+    "NarvalFiles/2023_JCP/high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs064_p7_procs512/",\
+    "NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs048_p5_procs64/",\
+    "NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs024_p5_procs16/",\
+    "NarvalFiles/2023_JCP/filtered_dns_viscous_tgv/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024/",\
+    ]
+    batch_labels = [ \
+    # "$96^{3}$ DOFs, P$5$", \
+    # "$64^{3}$ DOFs, P$7$", \
+    # "$48^{3}$ DOFs, P$5$",\
+    # "$24^{3}$ DOFs, P$5$",\
+    "$96^{3}$p$5$", \
+    "$64^{3}$p$7$", \
+    "$48^{3}$p$5$",\
+    "$24^{3}$p$5$",\
+    "$32^{3}$p$7$",\
+    ]
+    list_of_poly_degree=[5,7,5,5,7]
+    list_of_number_of_elements_per_direction=[16,8,8,4,32]
+    
+    batch_plot_spectra("all","cDG_NSFR_convergence_without_oversampling",batch_paths,batch_labels,
+        solid_and_dashed_lines=False,
+        title_off=title_off_input,figure_directory=fig_dir_input,
+        plot_cutoff_wavenumber_asymptote=True,
+        plot_PHiLiP_DNS_result_as_reference=True,
+        plot_filtered_dns=True,
+        list_of_poly_degree_input=list_of_poly_degree,
+        list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
+    batch_compute_resolved_turbulent_kinetic_energy(batch_paths,batch_labels,list_of_poly_degree,list_of_number_of_elements_per_direction)
+
+# =====================================================
+if(True or regenerate_all_plots):
+    batch_paths = [ \
+    "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
+    "NarvalFiles/2023_JCP/spectra_fix/high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs064_p7_procs512/",\
+    "NarvalFiles/2023_JCP/spectra_fix/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs048_p5_procs64/",\
+    "NarvalFiles/2023_JCP/spectra_fix/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs024_p5_procs16/",\
+    "NarvalFiles/2023_JCP/verification_tke_fix/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024_2refinements/",\
+    ]
+    batch_labels = [ \
+    # "$96^{3}$ DOFs, P$5$", \
+    # "$64^{3}$ DOFs, P$7$", \
+    # "$48^{3}$ DOFs, P$5$",\
+    # "$24^{3}$ DOFs, P$5$",\
+    "$96^{3}$p$5$", \
+    "$64^{3}$p$7$", \
+    "$48^{3}$p$5$",\
+    "$24^{3}$p$5$",\
+    "$32^{3}$p$7$",\
+    ]
+    list_of_poly_degree=[5,7,5,5,7]
+    list_of_number_of_elements_per_direction=[16,8,8,4,32]
+    
+    batch_plot_spectra("all","cDG_NSFR_convergence",batch_paths,batch_labels,
+        solid_and_dashed_lines=False,
+        title_off=title_off_input,figure_directory=fig_dir_input,
+        plot_cutoff_wavenumber_asymptote=True,
+        plot_PHiLiP_DNS_result_as_reference=True,
+        plot_filtered_dns=True,
+        list_of_poly_degree_input=list_of_poly_degree,
+        list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
+    batch_compute_resolved_turbulent_kinetic_energy(batch_paths,batch_labels,list_of_poly_degree,list_of_number_of_elements_per_direction)
+    exit()
 #=====================================================
 # DOFs: ALL | NSFR CONVERGENCE VERSION FOR WCCM
 #-----------------------------------------------------
