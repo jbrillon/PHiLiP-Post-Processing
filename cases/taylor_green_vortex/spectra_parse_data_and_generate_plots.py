@@ -83,7 +83,8 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
     list_of_poly_degree_input=[],
     list_of_number_of_elements_per_direction_input=[],
     truncate_spectra_at_effective_DOFs=True, # Modify this here
-    fix_legend_location_for_presentation=False):
+    fix_legend_location_for_presentation=False,
+    markers_on=False):
     # TO DO: Move this function to its own file
     global x,y,labels
     x=[];y=[];labels=[];
@@ -97,8 +98,11 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
         lnstl_input_store = ['dashed','solid','dashed','solid','dashed','solid','dashed','solid']
     else:
         clr_input_store = ['tab:blue','tab:red','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
-        mrkr_input_store = []
+        mrkr_input_store = ['None','None','None','None','None','None','None','None']
         lnstl_input_store = ['solid','solid','solid','solid','solid','solid','solid','solid','solid','solid']
+    if(markers_on):
+        lnstl_input_store =['solid','dashed','dashdot','dotted','dotted','dotted']
+        mrkr_input_store = ['+','d','s','o','s','^','d','v','>','<']
 
     cutoff_wavenumber_store = []
     grid_cutoff_wavenumber_store = []
@@ -145,7 +149,7 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
     # batch_append_to_plot(batch_paths, batch_labels, "flow_field_files/velocity_vorticity-0_reordered_spectra_no_smoothing.dat")
 
     if(plot_PHiLiP_DNS_result_as_reference or plot_reference_result):
-        if(solid_and_dashed_lines or dashed_and_solid_lines):
+        if(solid_and_dashed_lines or dashed_and_solid_lines or markers_on):
             mrkr_input_store.insert(i_curve-1,'None')
             lnstl_input_store.insert(i_curve-1,'solid')
 
@@ -155,7 +159,7 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
         # append_to_plot(spectra[:,0],spectra[:,1],"Projected DNS ($96^3$ DOFs, P$2$)")
         clr_input_store.insert(i_curve,"k")
         # which_lines_black.append(i_curve)
-        if(solid_and_dashed_lines or dashed_and_solid_lines):
+        if(solid_and_dashed_lines or dashed_and_solid_lines or markers_on):
             mrkr_input_store.insert(i_curve,'None')
         lnstl_input_store.insert(i_curve,'dashed') # for dashed filtered DNS result
         # which_lines_dashed.append() 
@@ -170,6 +174,7 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
     y_ref_curve = (x_ref_curve**(order_for_ref_curve))/np.exp(shift)
     clr_input_store.insert(index_of_reference_curve,"k")#"tab:gray"
     lnstl_input_store.insert(index_of_reference_curve,"dotted")
+    mrkr_input_store.insert(index_of_reference_curve,'None')
 
     # add reference curve
     # append_to_plot(x_ref_curve,y_ref_curve,ref_curve_label)
@@ -287,7 +292,7 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
         # xlimits=[4.0e0,240],ylimits=[1.0e-9,1e-2],
         markers=False,legend_on=True,legend_labels_tex=labels,
         which_lines_black=which_lines_black,
-        transparent_legend=True,legend_border_on=False,grid_lines_on=False,
+        transparent_legend=False,legend_border_on=False,grid_lines_on=False,
         clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
         legend_fontSize=legend_fontSize_input,
         legend_location=legend_location_input,
@@ -378,7 +383,7 @@ fig_dir_input="./figures/2023_JCP/oversampled_spectra"
 # =====================================================
 
 # =====================================================
-if(True or regenerate_all_plots):
+if(False or regenerate_all_plots):
     batch_paths = [ \
     "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
     "NarvalFiles/2023_JCP/high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs064_p7_procs512/",\
@@ -411,7 +416,7 @@ if(True or regenerate_all_plots):
     batch_compute_resolved_turbulent_kinetic_energy(batch_paths,batch_labels,list_of_poly_degree,list_of_number_of_elements_per_direction)
 
 # =====================================================
-if(True or regenerate_all_plots):
+if(False or regenerate_all_plots):
     batch_paths = [ \
     "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
     "NarvalFiles/2023_JCP/spectra_fix/high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs064_p7_procs512/",\
@@ -442,7 +447,7 @@ if(True or regenerate_all_plots):
         list_of_poly_degree_input=list_of_poly_degree,
         list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
     batch_compute_resolved_turbulent_kinetic_energy(batch_paths,batch_labels,list_of_poly_degree,list_of_number_of_elements_per_direction)
-    exit()
+
 #=====================================================
 # DOFs: ALL | NSFR CONVERGENCE VERSION FOR WCCM
 #-----------------------------------------------------
@@ -480,7 +485,7 @@ if(False or regenerate_all_plots):
             fix_legend_location_for_presentation=True)
 
 # =====================================================
-if(True or regenerate_all_plots):
+if(False or regenerate_all_plots):
     batch_paths = [ \
     "NarvalFiles/2023_JCP/filtered_dns_viscous_tgv/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024/",\
     "NarvalFiles/2023_JCP/verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p3_procs1024/",\
@@ -512,7 +517,7 @@ if(True or regenerate_all_plots):
         list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
 
 # =====================================================
-if(True or regenerate_all_plots):
+if(False or regenerate_all_plots):
     batch_paths = [ \
     "NarvalFiles/2023_JCP/verification_tke_fix/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024_2refinements/",\
     "NarvalFiles/2023_JCP/spectra_fix/verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p3_procs1024/",\
@@ -542,11 +547,11 @@ if(True or regenerate_all_plots):
         plot_zoomed_section=True,
         list_of_poly_degree_input=list_of_poly_degree,
         list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
-exit()
+
 # =====================================================
 # MISSING FIG 3
 # =====================================================
-
+'''
 batch_paths = [ \
 "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
 "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512/", \
@@ -586,7 +591,7 @@ batch_labels = [ \
 list_of_poly_degree=[5,5,5,7,7,5,5,5,5,5,5,5,5,5,5,5]
 list_of_number_of_elements_per_direction=[16,16,16,8,8,8,8,16,16,16,16,16,16,16,16,16]
 batch_compute_resolved_turbulent_kinetic_energy(batch_paths,batch_labels,list_of_poly_degree,list_of_number_of_elements_per_direction)
-exit()
+'''
 # =====================================================
 if(True or regenerate_all_plots):
     batch_paths = [ \
@@ -895,7 +900,7 @@ if(False or regenerate_all_plots):
         list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
 
 # =====================================================
-if(False or regenerate_all_plots):
+if(True or regenerate_all_plots):
     batch_paths = [ \
     "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
     "NarvalFiles/2023_JCP/spectra_fix/two_point_flux/viscous_TGV_ILES_NSFR_cDG_KG_2PF_GL_OI-0_dofs096_p5_procs512/", \
@@ -919,7 +924,8 @@ if(False or regenerate_all_plots):
         plot_filtered_dns=True,
         which_lines_dashed=[],
         list_of_poly_degree_input=list_of_poly_degree,
-        list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
+        list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction,
+        markers_on=True)
 # =====================================================
 if(False or regenerate_all_plots):
     batch_paths = [ \
