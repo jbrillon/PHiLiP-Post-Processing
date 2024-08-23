@@ -73,6 +73,7 @@ def plot_periodic_turbulence(
     plot_zoomed_section_numerical_dissipation_components=False,
     plot_zoomed_section_enstrophy=False,
     dofs_for_zoomed_section=256,
+    plot_zoomed_section_pressure_dilatation=False,
     ):
     # plotting parameters store
     labels_store = []
@@ -186,7 +187,7 @@ def plot_periodic_turbulence(
         if(lnstl_input!=[]):
             lnstl_input_store.append('solid') # supported values are '-', '--', '-.', ':', 'None', ' ', '', 'solid', 'dashed', 'dashdot', 'dotted'
     if(plot_filtered_dns):
-        labels_store.append("Projected DNS ($96^3$ DOFs, P$2$)")
+        labels_store.append("Projected DNS\n($96^3$ DOFs, P$2$)")
         path_to_reference_result=CURRENT_PATH+"../cases/taylor_green_vortex/data/brillon/filtered_dns"
         filename=path_to_reference_result+"/"+"turbulent_quantities_96dofs_p2"+".txt"
         time, kinetic_energy, enstrophy, vorticity_based_dissipation, pressure_dilatation_based_dissipation, strain_rate_based_dissipation, deviatoric_strain_rate_based_dissipation = np.loadtxt(filename,skiprows=1,dtype=np.float64,unpack=True)
@@ -706,6 +707,13 @@ def plot_periodic_turbulence(
                 clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
                 legend_fontSize=legend_fontSize_input)
 
+        x_limits_zoom=[7.5, 12.5]
+        y_limits_zoom=[-0.06, 0.06]
+        zoom_box_origin_and_extent_input=[0.01,0.60, 0.32, 0.32]
+        if(dofs_for_zoomed_section==96):
+            y_limits_zoom=[-0.2, 0.2]
+            x_limits_zoom=[7.0, 14.0]
+
         # pressure dilatation component
         qp.plotfxn(xdata=time_store,
                 ydata=eps_p_store,
@@ -730,7 +738,10 @@ def plot_periodic_turbulence(
                 grid_lines_on=False,
                 fig_directory=figure_directory_base,
                 clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
-                legend_fontSize=legend_fontSize_input)
+                legend_fontSize=legend_fontSize_input,
+                plot_zoomed_section=plot_zoomed_section_pressure_dilatation,
+                x_limits_zoom=x_limits_zoom,y_limits_zoom=y_limits_zoom,
+                zoom_box_origin_and_extent=zoom_box_origin_and_extent_input)
 
         qp.plotfxn(xdata=time_store,
                 ydata=eps_K_minus_eps_Sd_plus_eps_p_store,
