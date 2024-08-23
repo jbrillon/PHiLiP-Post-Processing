@@ -90,7 +90,7 @@ def plot_transient(filenames_,labels_,which_lines_dashed_=[],
     if(plot_skin_friction_coefficient):
         plotfxn(time_store,skin_friction_coefficient_store,\
             "$t^{*}$","Normalized Skin Friction Coefficient, $C_{f}(t^{*})/C^{expected}_{f}$","skin_friction_coefficient",\
-            labels_store,which_lines_dashed_,xlimits=[0,350])
+            labels_store,which_lines_dashed_,xlimits=[0,460])
         # plotfxn(time_store,skin_friction_coefficient_store/expected_mean_value_for_skin_friction_coefficient,\
         #     "$t$","$C_{f}(t)$/$C_{f}^{expected}$","skin_friction_coefficient",\
         #     labels_store,which_lines_dashed_)
@@ -100,7 +100,7 @@ def plot_transient(filenames_,labels_,which_lines_dashed_=[],
             labels_store,which_lines_dashed_)
     if(plot_bulk_mass_flow):
         plotfxn(time_store,bulk_mass_flow_store,\
-            "$t^{*}$","Normalized Nondim. Bulk Mass Flow Rate, $\\rho_{b}U_{b}/(\\rho_{b}U_{b})_{initial}$","bulk_mass_flow",\
+            "$t^{*}$","Normalized Bulk Mass Flow Rate, $\\rho_{b}U_{b}/(\\rho_{b}U_{b})_{0}$","bulk_mass_flow",\
             labels_store,which_lines_dashed_,log_axes="y")
     return
 #-----------------------------------------------------
@@ -122,6 +122,18 @@ def plot_boundary_layer_profile(filenames_,labels_,which_lines_dashed_=[]):
     average_y_plus_store.append(y_plus_reference)
     average_u_plus_store.append(average_u_plus_reference)
     labels_store.append("DNS [Lee \\& Moser, 2015]\n$(\\Delta x^{+},\\Delta y_{c}^{+},\\Delta y_{w}^{+},\\Delta z^{+})=(12.7,10.3,0.498,6.4)$")
+
+    # load reference data
+    y_plus_reference, average_u_plus_reference = np.loadtxt("./data/reference/frere_p3_fig7a.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+    average_y_plus_store.append(y_plus_reference)
+    average_u_plus_store.append(average_u_plus_reference)
+    labels_store.append("p3 DG-WMLES\n [Fr\\`ere et al., 2017]")
+
+    # load reference data
+    y_plus_reference, average_u_plus_reference = np.loadtxt("./data/reference/frere_p4_fig7a.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+    average_y_plus_store.append(y_plus_reference)
+    average_u_plus_store.append(average_u_plus_reference)
+    labels_store.append("p4 DG-WMLES\n [Fr\\`ere et al., 2017]")
 
     for i,filename in enumerate(filenames_):
         # load data
@@ -214,22 +226,10 @@ def plot_boundary_layer_profile(filenames_,labels_,which_lines_dashed_=[]):
         average_velocity_fluctuation_rms_store.append(v_plus_fluctuation_after_wall_model_input_point)
         average_velocity_fluctuation_rms_store.append(w_plus_fluctuation_after_wall_model_input_point)
 
-        # add the marker to the plot
-        average_y_plus_store.append(np.array(y_plus_wall_model_input))
-        labels_store.append("Wall Model Input")
-        average_u_plus_store.append(np.array(u_plus_wall_model_input))
-
-    # load reference data
-    y_plus_reference, average_u_plus_reference = np.loadtxt("./data/reference/frere_p3_fig7a.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
-    average_y_plus_store.append(y_plus_reference)
-    average_u_plus_store.append(average_u_plus_reference)
-    labels_store.append("p3 DG-WMLES\n [Fr\\`ere et al., 2017]")
-
-    # load reference data
-    y_plus_reference, average_u_plus_reference = np.loadtxt("./data/reference/frere_p4_fig7a.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
-    average_y_plus_store.append(y_plus_reference)
-    average_u_plus_store.append(average_u_plus_reference)
-    labels_store.append("p4 DG-WMLES\n [Fr\\`ere et al., 2017]")
+        # add the marker to the plot for wall model input location -- can uncomment to add the marker
+        # average_y_plus_store.append(np.array(y_plus_wall_model_input))
+        # labels_store.append("Wall Model Input")
+        # average_u_plus_store.append(np.array(u_plus_wall_model_input))
 
     qp.plotfxn(average_y_plus_store,average_u_plus_store,
         figure_filename="boundary_layer_profile",
@@ -244,7 +244,7 @@ def plot_boundary_layer_profile(filenames_,labels_,which_lines_dashed_=[]):
         xlimits=[1.0e0,5200.0],
         ylimits=[0,30],
         which_lines_black=[0],
-        which_lines_only_markers=[2,3,4],
+        which_lines_only_markers=[1,2],
         transparent_legend=True,
         legend_border_on=False,
         grid_lines_on=False,
@@ -252,9 +252,10 @@ def plot_boundary_layer_profile(filenames_,labels_,which_lines_dashed_=[]):
         legend_location="upper left",
         vertical_lines=[y_plus_wall_model_input])
 
-    average_y_plus_store.append(unique_y_plus[:(index_wall_model_input+1)])
-    labels_store.append("Unresolved")
-    average_u_plus_store.append(unique_u_plus[:(index_wall_model_input+1)])
+    # uncomment for unresolved section
+    # average_y_plus_store.append(unique_y_plus[:(index_wall_model_input+1)])
+    # labels_store.append("Unresolved")
+    # average_u_plus_store.append(unique_u_plus[:(index_wall_model_input+1)])
 
     qp.plotfxn(average_y_plus_store,average_u_plus_store,
         figure_filename="boundary_layer_profile_zoom",
@@ -269,7 +270,7 @@ def plot_boundary_layer_profile(filenames_,labels_,which_lines_dashed_=[]):
         xlimits=[1.0e2,5200.0],
         ylimits=[18,28],
         which_lines_black=[0],
-        which_lines_only_markers=[2,3,4],
+        which_lines_only_markers=[1,2],
         which_lines_dashed=[5],
         transparent_legend=True,
         legend_border_on=False,
@@ -364,25 +365,30 @@ labels=[\
 
 filenames=[\
 filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/turbulent_quantities.txt",\
-# filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization/turbulent_quantities.txt",\
+filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization/turbulent_quantities.txt",\
 ]
 labels=[\
-"p4 $c_{DG}$ NSFR.IR.GLL-WMLES\n $(\\Delta x^{+},\\Delta y^{+},\\Delta z^{+})=(400,250,400)$",\
-# "$Re_{\\tau}\\approx5200$",\
-# "$Re_{\\tau}\\approx395$",\
+# "p4 $c_{DG}$ NSFR.IR.GLL-WMLES\n $(\\Delta x^{+},\\Delta y^{+},\\Delta z^{+})=(400,250,400)$",\
+"$Re_{\\tau}\\approx5200$",\
+"$Re_{\\tau}\\approx395$",\
 ]
 which_lines_dashed=[]
-friction_velocity_based_reynolds_number=[5200]#,395]
-plot_transient(filenames,labels,starting_data_index_for_plot=0,friction_velocity_based_reynolds_number=friction_velocity_based_reynolds_number)
-
+friction_velocity_based_reynolds_number=[5200,395]
+# plot_transient(filenames,labels,starting_data_index_for_plot=0,friction_velocity_based_reynolds_number=friction_velocity_based_reynolds_number)
+# exit()
 # plot boundary layer profile
 filenames=[\
 # filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t0200.dat",\
 # filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t0240.dat",\
 filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t0330.dat",\
+filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t0450.dat",\
 ]
 labels=[\
-"p4 $c_{DG}$ NSFR.IR.GLL-WMLES\n $(\\Delta x^{+},\\Delta y^{+},\\Delta z^{+})=(400,250,400)$"\
+# "p4 $c_{DG}$ NSFR.IR.GLL-WMLES\n $(\\Delta x^{+},\\Delta y^{+},\\Delta z^{+})=(400,250,400)$",\
+# "$t^{*}=200$",\
+# "$t^{*}=240$",\
+"$t^{*}=330$",\
+"$t^{*}=450$",\
 ]
 which_lines_dashed=[]
 plot_boundary_layer_profile(filenames,labels)
