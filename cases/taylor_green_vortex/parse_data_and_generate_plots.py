@@ -135,7 +135,81 @@ def reinit_inputs():
     smoothing_input = []
 #=====================================================
 #-----------------------------------------------------
-
+#=====================================================
+# DOFs: 96^3 | Strong DG GLL without OI, SGS model stabilization
+#-----------------------------------------------------
+if(True):
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="2023_JCP"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_filename_postfix = "96_sDG_gll_sgs_model_stabilization"
+    legend_inside_input=True
+    #-----------------------------------------------------
+    subdirectories_for_plot = [\
+    "flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GLL_OI-6_dofs096_p5_procs512", \
+    # "filter_width_stabilization/viscous_TGV_LES_SMAG_MC-0.18_std_strong_DG_Roe_GLL_OI-0_dofs096_p5_procs512", \
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SI.SMAG.LRNC_MC-0.10_strong_DG_Roe_GLL_OI-0_dofs096_p5_CFL-0.1_procs512", \
+    "filter_width_stabilization/viscous_TGV_ILES_std_strong_DG_Roe_GLL_OI-0_dofs096_p5_procs512", \
+    ]
+    labels_for_plot=[\
+    "sDG-GLL-OI", \
+    # "Strong DG-Roe-GLL-Smag. $C_{S}=0.18$", \
+    "sDG-GLL-HPF.SI.SM", \
+    "sDG-GLL", \
+    ]
+    black_line_flag_for_plot=[False,False,False,False,False,False]
+    dashed_line_flag_for_plot=[False,False,True,False,False]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
+        final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12,
+        plot_zoomed_section_dissipation_rate=False,
+        plot_zoomed_section_numerical_dissipation_components=False,
+        plot_zoomed_section_enstrophy=False,
+        plot_PHiLiP_DNS_result_as_reference_input=True)
+exit()
+#=====================================================
+# DOFs: 96^3 | LRNC Advanced SGS Models on GL flux nodes (no filter width modifications)
+#-----------------------------------------------------
+if(True):
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="2023_JCP"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_filename_postfix = "96_p5_selected_sgs_models_gl"
+    legend_inside_input=True
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    # "sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_SI.SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SI.SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16",\
+    "sgs_model_GL_flux_nodes/viscous_TGV_LES_DYNAMIC.SMAG.LRNC_CLIPMC-0.01-pL3_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16_corrected",\
+    ]
+    # labels
+    labels_for_plot=[\
+    "No Model", \
+    # "Smag. $C_{S}=0.10$", \
+    "SM", \
+    "SI.SM", \
+    "HPF.SM", \
+    "HPF.SI.SM", \
+    "DSM", \
+    ]
+    black_line_flag_for_plot=[False,False,False,False,False,False,False,False,False,False]
+    dashed_line_flag_for_plot=[False,False,False,False,False,False,False,False,False,False]
+    smoothing_input=[False,False,False,False,False,False,False,False,False,False]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
+        final_time_for_plot=12.5,plot_filtered_dns_input=True,legend_fontSize_input=12,
+        plot_zoomed_section_dissipation_rate=True,
+        plot_zoomed_section_numerical_dissipation_components=True,
+        plot_zoomed_section_enstrophy=True,
+        dofs_for_zoomed_section=96,
+        plot_PHiLiP_DNS_result_as_reference_input=True)
 #=====================================================
 # DOFs: 96^3 | Collocated vs Uncollocated
 #-----------------------------------------------------
@@ -175,7 +249,6 @@ if(True):
         solid_and_dashed_lines=False,
         dashed_and_solid_lines=False,
         plot_PHiLiP_DNS_result_as_reference_input=True)
-exit()
 
 #=====================================================
 # DOFs: ALL | NSFR CONVERGENCE VERSION FOR WCCM
@@ -359,7 +432,6 @@ if(True):
                             plot_zoomed_section_pressure_dilatation=True,
                             plot_zoomed_section_enstrophy=True,
                             plot_PHiLiP_DNS_result_as_reference_input=True)
-exit()
 #=====================================================
 # DOFs: 96^3 | P5 cDG NSFR.IR-GL and P5 cDG NSFR.IR-GLL
 #-----------------------------------------------------
@@ -392,47 +464,6 @@ if(True):
     dashed_line_flag_for_plot=[False,False,False,True,True]
     plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
         final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12,
-        plot_zoomed_section_dissipation_rate=True,
-        plot_zoomed_section_numerical_dissipation_components=True,
-        plot_zoomed_section_enstrophy=True,
-        dofs_for_zoomed_section=96,
-        plot_PHiLiP_DNS_result_as_reference_input=True)
-#=====================================================
-# DOFs: 96^3 | LRNC Advanced SGS Models on GL flux nodes (no filter width modifications)
-#-----------------------------------------------------
-if(True):
-    reinit_inputs()
-    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
-    date_for_runs="."
-    figure_subdirectory="2023_JCP"
-    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
-    figure_filename_postfix = "96_p5_selected_sgs_models_gl"
-    legend_inside_input=True
-    #-----------------------------------------------------
-    subdirectories_for_plot=[\
-    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
-    # "sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
-    "sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512",\
-    "sgs_model_GL_flux_nodes/viscous_TGV_LES_SI.SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16",\
-    "sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16",\
-    "sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SI.SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16",\
-    "sgs_model_GL_flux_nodes/viscous_TGV_LES_DYNAMIC.SMAG.LRNC_CLIPMC-0.01-pL3_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16_corrected",\
-    ]
-    # labels
-    labels_for_plot=[\
-    "No Model", \
-    # "Smag. $C_{S}=0.10$", \
-    "SM", \
-    "SI.SM", \
-    "HPF.SM", \
-    "HPF.SI.SM", \
-    "DSM", \
-    ]
-    black_line_flag_for_plot=[False,False,False,False,False,False,False,False,False,False]
-    dashed_line_flag_for_plot=[False,False,False,False,False,False,False,False,False,False]
-    smoothing_input=[False,False,False,False,False,False,False,False,False,False]
-    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
-        final_time_for_plot=12.5,plot_filtered_dns_input=True,legend_fontSize_input=12,
         plot_zoomed_section_dissipation_rate=True,
         plot_zoomed_section_numerical_dissipation_components=True,
         plot_zoomed_section_enstrophy=True,
@@ -473,39 +504,6 @@ if(True):
         plot_zoomed_section_numerical_dissipation_components=True,
         plot_zoomed_section_enstrophy=True)
 
-#=====================================================
-# DOFs: 96^3 | Strong DG GLL without OI, SGS model stabilization
-#-----------------------------------------------------
-if(True):
-    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
-    reinit_inputs()
-    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
-    date_for_runs="."
-    figure_subdirectory="2023_JCP"
-    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
-    figure_filename_postfix = "96_sDG_gll_sgs_model_stabilization"
-    legend_inside_input=True
-    #-----------------------------------------------------
-    subdirectories_for_plot = [\
-    "flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GLL_OI-6_dofs096_p5_procs512", \
-    # "filter_width_stabilization/viscous_TGV_LES_SMAG_MC-0.18_std_strong_DG_Roe_GLL_OI-0_dofs096_p5_procs512", \
-    "sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SI.SMAG.LRNC_MC-0.10_strong_DG_Roe_GLL_OI-0_dofs096_p5_CFL-0.1_procs512", \
-    "filter_width_stabilization/viscous_TGV_ILES_std_strong_DG_Roe_GLL_OI-0_dofs096_p5_procs512", \
-    ]
-    labels_for_plot=[\
-    "sDG-GLL-OI", \
-    # "Strong DG-Roe-GLL-Smag. $C_{S}=0.18$", \
-    "sDG-GLL-HPF.SI.SM", \
-    "sDG-GLL", \
-    ]
-    black_line_flag_for_plot=[False,False,False,False,False,False]
-    dashed_line_flag_for_plot=[False,False,True,False,False]
-    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
-        final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12,
-        plot_zoomed_section_dissipation_rate=False,
-        plot_zoomed_section_numerical_dissipation_components=False,
-        plot_zoomed_section_enstrophy=False,
-        plot_PHiLiP_DNS_result_as_reference_input=True)
 #=====================================================
 # DOFs: 96^3 | Correction Parameter Accuracy
 #-----------------------------------------------------
