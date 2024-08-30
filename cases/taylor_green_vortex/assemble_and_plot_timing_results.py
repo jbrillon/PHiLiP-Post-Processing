@@ -243,7 +243,7 @@ if(strong_DG_vs_NSFR):
     x_store.append(std_sDG_poly_degree)
     y_store.append(avg_std_sDG_store_cpu_time_per_step/avg_NSFR_store_cpu_time_per_step)
     figure_filename_input = "cpu_timing_vs_poly_averaged_ratio"
-    labels_store.append("Strong DG-Roe-GL-OI / $c_{DG}$ NSFR.IR-GLL")
+    labels_store.append("Strong DG-Roe-GL-OI / $c_{DG}$ NSFR.IR-GL")
 
     title_label="TGV at Re$_{\\infty}=1600$ with $%i^3$ Elements on %i CPUs" % (4,nCPUs)
 

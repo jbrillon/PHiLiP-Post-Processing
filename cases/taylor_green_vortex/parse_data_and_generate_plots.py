@@ -136,6 +136,57 @@ def reinit_inputs():
 #=====================================================
 #-----------------------------------------------------
 #=====================================================
+# DOFs: 48,64,96 | Strong DG vs NSFR CONVERGENCE
+#-----------------------------------------------------
+if(True):
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="2023_JCP"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_filename_postfix = "convergence_comparison"
+    legend_inside_input=True
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512",\
+    "high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs064_p7_procs512",\
+    "high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-8_dofs064_p7_procs512",\
+    "high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-0_dofs064_p7_procs512",\
+    "robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs048_p5_procs64",\
+    "robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs048_p5_procs64",\
+    # "robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs024_p5_procs16",\
+    # "robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs024_p5_procs16",\
+    # "robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs012_p5_procs16",\
+    # "robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs012_p5_procs16",\
+    ]
+    # labels
+    labels_for_plot=[\
+    "$96^{3}$, P$5$, $c_{DG}$", \
+    "$96^{3}$, P$5$, sDG", \
+    "$64^{3}$, P$7$, $c_{DG}$", \
+    "$64^{3}$, P$7$, sDG", \
+    "$64^{3}$, P$7$, sDG-OI.0", \
+    "$48^{3}$, P$5$, $c_{DG}$",\
+    "$48^{3}$, P$5$, sDG",\
+    # "$24^{3}$, P$5$",\
+    # "$24^{3}$, P$5$",\
+    # "$12^{3}$, P$5$",\
+    # "$12^{3}$, P$5$",\
+    ]
+    black_line_flag_for_plot=[False,False,False,False,False,False,False]
+    dashed_line_flag_for_plot=[False,False,False,False,False,False,False]
+    smoothing_input = [False,False,False,False,False,False,False]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,
+        black_line_flag_for_plot,dashed_line_flag_for_plot,
+        final_time_for_plot=12.5,plot_filtered_dns_input=True,
+        legend_fontSize_input=12,
+        plot_PHiLiP_DNS_result_as_reference_input=True,
+        clr_input=['tab:blue','tab:blue','tab:red','tab:red','tab:red','tab:green','tab:green'],
+        mrkr_input=['None','None','None','None','None','None','None','None','None'],
+        lnstl_input=['solid','dashed','solid','dashed','dashdot','solid','dashed'],)
+exit()
+#=====================================================
 # DOFs: 96^3 | Strong DG GLL without OI, SGS model stabilization
 #-----------------------------------------------------
 if(True):
@@ -168,7 +219,6 @@ if(True):
         plot_zoomed_section_numerical_dissipation_components=False,
         plot_zoomed_section_enstrophy=False,
         plot_PHiLiP_DNS_result_as_reference_input=True)
-exit()
 #=====================================================
 # DOFs: 96^3 | LRNC Advanced SGS Models on GL flux nodes (no filter width modifications)
 #-----------------------------------------------------
@@ -577,52 +627,6 @@ if(True):
     smoothing_input = [False,False,False,False,False,False,False]
     plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
         final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12,
-        plot_PHiLiP_DNS_result_as_reference_input=True)
-
-#=====================================================
-# DOFs: 48,64,96 | Strong DG vs NSFR CONVERGENCE
-#-----------------------------------------------------
-if(True):
-    reinit_inputs()
-    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
-    date_for_runs="."
-    figure_subdirectory="2023_JCP"
-    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
-    figure_filename_postfix = "convergence_comparison"
-    legend_inside_input=True
-    #-----------------------------------------------------
-    subdirectories_for_plot=[\
-    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
-    "flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512",\
-    "high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs064_p7_procs512",\
-    "high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-8_dofs064_p7_procs512",\
-    "robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs048_p5_procs64",\
-    "robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs048_p5_procs64",\
-    # "robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs024_p5_procs16",\
-    # "robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs024_p5_procs16",\
-    # "robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs012_p5_procs16",\
-    # "robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs012_p5_procs16",\
-    "high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-0_dofs064_p7_procs512",\
-    ]
-    # labels
-    labels_for_plot=[\
-    "$96^{3}$, P$5$, $c_{DG}$", \
-    "$96^{3}$, P$5$, sDG", \
-    "$64^{3}$, P$7$, $c_{DG}$", \
-    "$64^{3}$, P$7$, sDG", \
-    "$48^{3}$, P$5$, $c_{DG}$",\
-    "$48^{3}$, P$5$, sDG",\
-    # "$24^{3}$, P$5$",\
-    # "$24^{3}$, P$5$",\
-    # "$12^{3}$, P$5$",\
-    # "$12^{3}$, P$5$",\
-    "$64^{3}$, P$7$, sDG-OI.0", \
-    ]
-    black_line_flag_for_plot=[False,False,False,False,False,False,False]
-    dashed_line_flag_for_plot=[False,False,False,False,False,False,False]
-    smoothing_input = [False,False,False,False,False,False,False]
-    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
-        final_time_for_plot=12.5,plot_filtered_dns_input=True,legend_fontSize_input=12,solid_and_dashed_lines=True,
         plot_PHiLiP_DNS_result_as_reference_input=True)
 exit()
 #=====================================================

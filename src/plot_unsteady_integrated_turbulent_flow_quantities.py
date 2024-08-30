@@ -218,7 +218,7 @@ def plot_periodic_turbulence(
         if(mrkr_input!=[]):
             mrkr_input_store.append('None')
         if(lnstl_input!=[]):
-            lnstl_input_store.append('.') # supported values are '-', '--', '-.', ':', 'None', ' ', '', 'solid', 'dashed', 'dashdot', 'dotted'
+            lnstl_input_store.append(':') # supported values are '-', '--', '-.', ':', 'None', ' ', '', 'solid', 'dashed', 'dashdot', 'dotted'
     # PHiLiP Results
     number_of_result_curves = len(filenames)
     for i in range(0,number_of_result_curves):
@@ -779,6 +779,12 @@ def plot_periodic_turbulence(
         labels_store.append("DRP [DeBonis]\n $512^3$ DOFs")
         which_lines_black_input = [number_of_result_curves]
         which_lines_dashed_input = [number_of_result_curves]
+        if(clr_input!=[]):
+            clr_input_store.insert(number_of_result_curves,'k')
+        if(mrkr_input!=[]):
+            mrkr_input_store.insert(number_of_result_curves,'None')
+        if(lnstl_input!=[]):
+            lnstl_input_store.insert(number_of_result_curves,'dashed')
 
         path_to_reference_result=CURRENT_PATH+"../cases/taylor_green_vortex/data"
         filename=path_to_reference_result+"/"+"chapelier_2012_64p3_pressure_dilatation_kedr"+".txt"
@@ -791,6 +797,12 @@ def plot_periodic_turbulence(
         labels_store.append("DG [Chapelier et al.]\n $256^3$ DOFs ($64$p$3$)")
         which_lines_black_input = [number_of_result_curves,number_of_result_curves+1]
         which_lines_dotted_input = [number_of_result_curves+1]
+        if(clr_input!=[]):
+            clr_input_store.insert(number_of_result_curves+1,'k')
+        if(mrkr_input!=[]):
+            mrkr_input_store.insert(number_of_result_curves+1,'None')
+        if(lnstl_input!=[]):
+            lnstl_input_store.insert(number_of_result_curves+1,'dotted')
 
         qp.plotfxn(xdata=time_store,
                 ydata=eps_K_minus_eps_Sd_store,
