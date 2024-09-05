@@ -2,6 +2,7 @@
 # Import public libraries
 import numpy as np # NumPy: contains basic numerical routines
 from scipy.interpolate import interp1d
+from scipy import integrate, interpolate
 #-----------------------------------------------------
 import os;CURRENT_PATH = os.path.split(os.path.realpath(__file__))[0]+"/";
 import sys
@@ -426,10 +427,10 @@ title_label = "DHIT, $128^{3}$ DOF, P3, $c_{DG}$ NSFR.IR-GLL, CFL$=0.2$"
 figure_filename = "spectra_128_no_smoothing_oversampled_t2"
 
 # compute reference curve 1
-x_ref_curve = np.linspace(1.0e0,3.2e1,100)
+x_ref_curve = np.linspace(1.0e0,6.0e1,100)
 order_for_ref_curve = -5.0/3.0
 ref_curve_label = "$\\left(k^{*}\\right)^{-5/3}$"
-shift = 0.9
+shift = 0.3
 y_ref_curve = (x_ref_curve**(order_for_ref_curve))/np.exp(shift)
 append_to_plot(x_ref_curve,y_ref_curve,ref_curve_label)
 
@@ -438,14 +439,53 @@ append_to_plot(fds_spectra[:,0],fds_spectra[:,1],"FDS [Jefferson-Loveday and Tuc
 # append_to_plot(vermeire_spectra_p1_126dofs[:,0],vermeire_spectra_p1_126dofs[:,1],"CPR $126^3p1$ [Vermeire et al.]")
 append_to_plot(vermeire_spectra_p5_78dofs[:,0],vermeire_spectra_p5_78dofs[:,1],"CPR [Vermeire et al.]")
 
+#-----------------------------------------------------
+def get_total_turbulent_kinetic_energy_from_spectra(spectra):
+    wavenumbers = spectra[:,0]
+    turbulent_kinetic_energy = spectra[:,1] 
+    total_turbulent_kinetic_energy = integrate.trapezoid(turbulent_kinetic_energy,x=wavenumbers)
+    return total_turbulent_kinetic_energy
+
+
+f_cbc_spectra_t2 = interpolate.interp1d(cbc_spectra_t2[:,0],cbc_spectra_t2[:,1],fill_value="extrapolate")
+cbc_spectra_t2_fine_wavenumbers = np.arange(1.33,1.11169e2,0.1)
+cbc_spectra_t2_fine_tke = f_cbc_spectra_t2(cbc_spectra_t2_fine_wavenumbers)
+cbc_spectra_t2_fine = np.zeros((np.size(cbc_spectra_t2_fine_wavenumbers),2))#np.size(cbc_spectra_t2_fine_wavenumbers)[0]
+cbc_spectra_t2_fine[:,0] = cbc_spectra_t2_fine_wavenumbers
+cbc_spectra_t2_fine[:,1] = cbc_spectra_t2_fine_tke
+
 spectra = np.loadtxt(filesystem+"NarvalFiles/2023_JCP/DHIT/viscous_DHIT_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs128_p3_CFL-0.2_procs512_oversampled_nquad12/flow_field_files/velocity_vorticity-4_reordered_spectra_no_smoothing.dat",skiprows=0,dtype=np.float64)
 # spectra_truncated = get_truncated_spectra_from_DOFs_information(spectra, 3, 32,True)
-spectra_truncated = get_truncated_spectra_from_cutoff_wavenumber_and_spectra(spectra, 32)
+spectra_truncated = get_truncated_spectra_from_cutoff_wavenumber_and_spectra(spectra, 48)
 append_to_plot(spectra_truncated[:,0],spectra_truncated[:,1],"NSFR")
+# append_to_plot(cbc_spectra_t2_fine[:,0],cbc_spectra_t2_fine[:,1],"fine cbc")
 
-clr_input_store = ['k','k','k','k','k']
+print(get_total_turbulent_kinetic_energy_from_spectra(cbc_spectra_t2))
+print(get_total_turbulent_kinetic_energy_from_spectra(cbc_spectra_t2_fine))
+print("31")
+cbc_KE_kc31 = get_total_turbulent_kinetic_energy_from_spectra(\
+    get_truncated_spectra_from_cutoff_wavenumber_and_spectra(cbc_spectra_t2_fine, 31))
+FDS_KE = get_total_turbulent_kinetic_energy_from_spectra(fds_spectra)
+CPR_KE = get_total_turbulent_kinetic_energy_from_spectra(vermeire_spectra_p5_78dofs)
+print("CBC kc31: %1.3f" % cbc_KE_kc31)
+print("FDS: %1.3f" % FDS_KE)
+error_FDS = 100.0*np.abs(FDS_KE - cbc_KE_kc31)/cbc_KE_kc31
+print(" - error percentage is %3.2f" % error_FDS)
+print("CPR: %1.3f" % CPR_KE)
+error_CPR = 100.0*np.abs(CPR_KE - cbc_KE_kc31)/cbc_KE_kc31
+print(" - error percentage is %3.2f" % error_CPR)
+print("48")
+cbc_KE_kc48 = get_total_turbulent_kinetic_energy_from_spectra(\
+    get_truncated_spectra_from_cutoff_wavenumber_and_spectra(cbc_spectra_t2_fine, 48))
+print("CBC kc48: %1.3f" % cbc_KE_kc48)
+NSFR_KE = get_total_turbulent_kinetic_energy_from_spectra(spectra_truncated)
+print("NSFR: %1.3f" % NSFR_KE)
+error_NSFR = 100.0*np.abs(NSFR_KE - cbc_KE_kc48)/cbc_KE_kc48
+print(" - error percentage is %3.2f" % error_NSFR)
+
+clr_input_store = ['k','k','k','k','k','r']
 mrkr_input_store = ['None','o','None','None','None','None','None']
-lnstl_input_store = ['dotted','None','dashed','dashdot','solid']
+lnstl_input_store = ['dotted','None','dashed','dashdot','solid','solid']
 
 qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $k^{*}$",ylabel="Nondimensional TKE Spectra, $E^{*}(k^{*},t^{*})$",
     # title_label=title_label,
@@ -454,13 +494,14 @@ qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $k^{*}$",ylabel="N
     # xlimits=[2.0,3e2],ylimits=[1e-5,1e-1],
     # xlimits=[1e0,0.5*96],ylimits=[1e-5,1e-1],
     # xlimits=[2e0,3.0e1],ylimits=[1e-3,3e-2],
-    xlimits=[1e0,3.2e1],ylimits=[1e-3,2.0e-2],
+    # xlimits=[1e0,4.8e1],ylimits=[1e-4,2.0e-2],#good one
+    xlimits=[1e0,6e1],ylimits=[1e-4,3.0e-2],
     # xlimits=[1e0,1.0e2],ylimits=[1e-5,1e-1],
     markers=False,legend_on=True,legend_labels_tex=labels,
     clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
     transparent_legend=True,
-    legend_border_on=False,grid_lines_on=False)
-
+    legend_border_on=False,grid_lines_on=False,
+    legend_location="lower left")
 # =====================================================
 # 128 DOF check | Transient
 # =====================================================
@@ -475,9 +516,10 @@ index_for_exp_times = [0,2,4]
 for i in index_for_exp_times:
 # for i in range(0,len(labels_)):
     filename="NarvalFiles/2023_JCP/DHIT/viscous_DHIT_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs128_p3_CFL-0.2_procs512_oversampled_nquad12/flow_field_files/velocity_vorticity-%i_reordered_spectra_no_smoothing.dat" % i
+    # filename="NarvalFiles/2023_JCP/DHIT/viscous_DHIT_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs128_p3_CFL-0.2_procs512/flow_field_files/velocity_vorticity-%i_reordered_spectra.dat" % i
     spectra = np.loadtxt(filesystem+filename,skiprows=0,dtype=np.float64)
     # spectra_truncated = get_truncated_spectra_from_DOFs_information(spectra, 3, 32,True)
-    spectra_truncated = get_truncated_spectra_from_cutoff_wavenumber_and_spectra(spectra, 30)
+    spectra_truncated = get_truncated_spectra_from_cutoff_wavenumber_and_spectra(spectra, 48)
     append_to_plot(spectra_truncated[:,0],spectra_truncated[:,1],labels_[i])
 # labels.append("CBC $t^{*}=0$")
 # labels.append("CBC $t^{*}=1$")
@@ -487,8 +529,11 @@ append_to_plot(cbc_spectra_t1[:,0],cbc_spectra_t1[:,1],"CBC $t^{*}=1$")
 append_to_plot(cbc_spectra_t2[:,0],cbc_spectra_t2[:,1],"CBC $t^{*}=2$")
 
 clr_input_store = ['tab:blue','tab:red','tab:green','k','k','k']
+# clr_input_store = ['tab:blue','tab:red','tab:green','tab:orange','tab:purple','tab:blue','tab:green','tab:purple','tab:pink','tab:brown','tab:gray','tab:olive','tab:cyan']
 mrkr_input_store = ['None','None','None','o','s','^']
+# mrkr_input_store = ['None','None','None','None','None','o','s','^']
 lnstl_input_store = ['solid','solid','solid','None','None','None']
+# lnstl_input_store = ['solid','solid','solid','solid','solid','None','None','None']
 
 qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $k^{*}$",ylabel="Nondimensional TKE Spectra, $E^{*}(k^{*},t^{*})$",
     # title_label=title_label,
