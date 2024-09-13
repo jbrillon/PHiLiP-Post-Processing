@@ -348,7 +348,8 @@ def plot_boundary_layer_profile(filenames_,labels_,friction_velocity_based_reyno
         grid_lines_on=False,
         log_axes=None,
         legend_location="best",
-        vertical_lines=[y_plus_wall_model_input/np.float64(friction_velocity_based_reynolds_number)])
+        vertical_lines=[y_plus_wall_model_input/np.float64(friction_velocity_based_reynolds_number)],
+        secondary_vertical_lines=[0.3])
 
     # fluctuations
     # xdata_for_fluctuations=[y_plus_after_wall_model_input_point,y_plus_after_wall_model_input_point,y_plus_after_wall_model_input_point]
@@ -373,7 +374,8 @@ def plot_boundary_layer_profile(filenames_,labels_,friction_velocity_based_reyno
         grid_lines_on=True,
         log_axes=None,
         legend_location="best",
-        vertical_lines=[y_plus_wall_model_input/np.float64(friction_velocity_based_reynolds_number)])
+        vertical_lines=[y_plus_wall_model_input/np.float64(friction_velocity_based_reynolds_number)],
+        secondary_vertical_lines=[0.3])
     qp.plotfxn(nondim_y_store,average_y_velocity_fluctuation_rms_store,
         figure_filename="boundary_layer_profile_of_y_velocity_fluctuations_Re"+str(friction_velocity_based_reynolds_number),
         figure_size=(7,6),
@@ -392,7 +394,8 @@ def plot_boundary_layer_profile(filenames_,labels_,friction_velocity_based_reyno
         grid_lines_on=True,
         log_axes=None,
         legend_location="best",
-        vertical_lines=[y_plus_wall_model_input/np.float64(friction_velocity_based_reynolds_number)])
+        vertical_lines=[y_plus_wall_model_input/np.float64(friction_velocity_based_reynolds_number)],
+        secondary_vertical_lines=[0.3])
     qp.plotfxn(nondim_y_store,average_z_velocity_fluctuation_rms_store,
         figure_filename="boundary_layer_profile_of_z_velocity_fluctuations_Re"+str(friction_velocity_based_reynolds_number),
         figure_size=(7,6),
@@ -411,7 +414,8 @@ def plot_boundary_layer_profile(filenames_,labels_,friction_velocity_based_reyno
         grid_lines_on=True,
         log_axes=None,
         legend_location="best",
-        vertical_lines=[y_plus_wall_model_input/np.float64(friction_velocity_based_reynolds_number)])
+        vertical_lines=[y_plus_wall_model_input/np.float64(friction_velocity_based_reynolds_number)],
+        secondary_vertical_lines=[0.3])
 
 
     return
@@ -475,16 +479,17 @@ labels=[\
 
 
 filenames=[\
-filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/turbulent_quantities.txt",\
+# filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/turbulent_quantities.txt",\
 filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization/turbulent_quantities.txt",\
 ]
 labels=[\
 # "p4 $c_{DG}$ NSFR.IR.GLL-WMLES\n $(\\Delta x^{+},\\Delta y^{+},\\Delta z^{+})=(400,250,400)$",\
-"$Re_{\\tau}\\approx5200$",\
+# "$Re_{\\tau}\\approx5200$",\
 "$Re_{\\tau}\\approx395$",\
 ]
 which_lines_dashed=[]
-friction_velocity_based_reynolds_number=[5200,395]
+# friction_velocity_based_reynolds_number=[5200,395]
+friction_velocity_based_reynolds_number=[395]
 plot_transient(filenames,labels,starting_data_index_for_plot=0,friction_velocity_based_reynolds_number=friction_velocity_based_reynolds_number)
 # exit()
 
