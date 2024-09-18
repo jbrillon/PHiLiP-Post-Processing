@@ -442,7 +442,11 @@ append_to_plot(vermeire_spectra_p5_78dofs[:,0],vermeire_spectra_p5_78dofs[:,1],"
 #-----------------------------------------------------
 def get_total_turbulent_kinetic_energy_from_spectra(spectra):
     wavenumbers = spectra[:,0]
+    indices_of_nonzero_wavenumbers = wavenumbers>0.0
+    wavenumbers = 1.0*wavenumbers[indices_of_nonzero_wavenumbers]
+    print(wavenumbers)
     turbulent_kinetic_energy = spectra[:,1] 
+    turbulent_kinetic_energy = 1.0*turbulent_kinetic_energy[indices_of_nonzero_wavenumbers]
     total_turbulent_kinetic_energy = integrate.trapezoid(turbulent_kinetic_energy,x=wavenumbers)
     return total_turbulent_kinetic_energy
 
@@ -464,13 +468,16 @@ print(get_total_turbulent_kinetic_energy_from_spectra(cbc_spectra_t2))
 print(get_total_turbulent_kinetic_energy_from_spectra(cbc_spectra_t2_fine))
 print("31")
 cbc_KE_kc31 = get_total_turbulent_kinetic_energy_from_spectra(\
-    get_truncated_spectra_from_cutoff_wavenumber_and_spectra(cbc_spectra_t2_fine, 31))
-FDS_KE = get_total_turbulent_kinetic_energy_from_spectra(fds_spectra)
-CPR_KE = get_total_turbulent_kinetic_energy_from_spectra(vermeire_spectra_p5_78dofs)
+    get_truncated_spectra_from_cutoff_wavenumber_and_spectra(cbc_spectra_t2_fine, 31.2))
+cbc_KE_kc31_coarse = get_total_turbulent_kinetic_energy_from_spectra(\
+    get_truncated_spectra_from_cutoff_wavenumber_and_spectra(cbc_spectra_t2, 31.2))
+print("CBC kc31 coarse: %1.3f" % cbc_KE_kc31_coarse)
 print("CBC kc31: %1.3f" % cbc_KE_kc31)
+FDS_KE = get_total_turbulent_kinetic_energy_from_spectra(fds_spectra)
 print("FDS: %1.3f" % FDS_KE)
 error_FDS = 100.0*np.abs(FDS_KE - cbc_KE_kc31)/cbc_KE_kc31
 print(" - error percentage is %3.2f" % error_FDS)
+CPR_KE = get_total_turbulent_kinetic_energy_from_spectra(vermeire_spectra_p5_78dofs)
 print("CPR: %1.3f" % CPR_KE)
 error_CPR = 100.0*np.abs(CPR_KE - cbc_KE_kc31)/cbc_KE_kc31
 print(" - error percentage is %3.2f" % error_CPR)
