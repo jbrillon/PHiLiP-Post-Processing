@@ -152,9 +152,9 @@ if(True):
     "flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512",\
     "high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs064_p7_procs512",\
     "high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-8_dofs064_p7_procs512",\
-    "high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-0_dofs064_p7_procs512",\
     "robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs048_p5_procs64",\
     "robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs048_p5_procs64",\
+    "high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-0_dofs064_p7_procs512",\
     # "robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs024_p5_procs16",\
     # "robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs024_p5_procs16",\
     # "robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs012_p5_procs16",\
@@ -166,9 +166,9 @@ if(True):
     "$96^{3}$, P$5$, sDG-OI.6", \
     "$64^{3}$, P$7$, $c_{DG}$", \
     "$64^{3}$, P$7$, sDG-OI.8", \
-    "$64^{3}$, P$7$, sDG-OI.0", \
     "$48^{3}$, P$5$, $c_{DG}$",\
     "$48^{3}$, P$5$, sDG-OI.6",\
+    "$64^{3}$, P$7$, sDG-OI.0", \
     # "$24^{3}$, P$5$",\
     # "$24^{3}$, P$5$",\
     # "$12^{3}$, P$5$",\
@@ -182,9 +182,10 @@ if(True):
         final_time_for_plot=12.5,plot_filtered_dns_input=True,
         legend_fontSize_input=12,
         plot_PHiLiP_DNS_result_as_reference_input=True,
-        clr_input=['tab:blue','tab:blue','tab:red','tab:red','tab:red','tab:green','tab:green'],
-        mrkr_input=['None','None','None','None','None','None','None','None','None'],
-        lnstl_input=['solid','dashed','solid','dashed','dashdot','solid','dashed'],)
+        # clr_input=['tab:blue','tab:blue','tab:red','tab:red','tab:red','tab:green','tab:green'],
+        # mrkr_input=['None','None','None','None','None','None','None','None','None'],
+        # lnstl_input=['solid','dashed','solid','dashed','dashdot','solid','dashed'],
+        )
 exit()
 #=====================================================
 # DOFs: 96^3 | Strong DG GLL without OI, SGS model stabilization

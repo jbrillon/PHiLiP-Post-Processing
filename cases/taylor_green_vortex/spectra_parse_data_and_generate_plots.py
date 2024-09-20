@@ -752,7 +752,7 @@ if(False or regenerate_all_plots):
         list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
 
 # =====================================================
-if(False or regenerate_all_plots):
+if(True or regenerate_all_plots):
     batch_paths = [ \
     "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
     "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512/",\
@@ -773,7 +773,7 @@ if(False or regenerate_all_plots):
     list_of_number_of_elements_per_direction=[16,16,8,8,8,8]
     
     batch_plot_spectra("all","convergence_comparison",batch_paths,batch_labels,
-        solid_and_dashed_lines=True,
+        solid_and_dashed_lines=False,
         title_off=title_off_input,figure_directory=fig_dir_input,
         plot_cutoff_wavenumber_asymptote=True,
         plot_PHiLiP_DNS_result_as_reference=True,
