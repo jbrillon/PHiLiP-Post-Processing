@@ -38,7 +38,8 @@ def plot_for_presentation(
     solid_and_dashed_lines=False,
     dashed_and_solid_lines=False,
     dofs_for_zoomed_section=256,
-    plot_PHiLiP_DNS_result_as_reference_input=False):
+    plot_PHiLiP_DNS_result_as_reference_input=False,
+    plot_secondary_zoomed_section_numerical_dissipation_components=False):
     
     # flag to generate only the final plot with all the curves to save plotting time
     generate_only_final_plot_with_all_curves=True
@@ -102,7 +103,8 @@ def plot_for_presentation(
                 plot_zoomed_section_numerical_dissipation_components=plot_zoomed_section_numerical_dissipation_components,
                 plot_zoomed_section_enstrophy=plot_zoomed_section_enstrophy,
                 plot_zoomed_section_pressure_dilatation=plot_zoomed_section_pressure_dilatation,
-                dofs_for_zoomed_section=dofs_for_zoomed_section)
+                dofs_for_zoomed_section=dofs_for_zoomed_section,
+                plot_secondary_zoomed_section_numerical_dissipation_components=plot_secondary_zoomed_section_numerical_dissipation_components)
     #-----------------------------------------------------
 #=====================================================
 def reinit_inputs():
@@ -136,59 +138,47 @@ def reinit_inputs():
 #=====================================================
 #-----------------------------------------------------
 #=====================================================
-# DOFs: 48,64,96 | Strong DG vs NSFR CONVERGENCE
+# DOF: 96^3 | Collocated vs Uncollocated
 #-----------------------------------------------------
 if(True):
     reinit_inputs()
     data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
     date_for_runs="."
     figure_subdirectory="2023_JCP"
-    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
-    figure_filename_postfix = "convergence_comparison"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOF, CFL$=0.10$" # comment to turn off
+    figure_filename_postfix = "96_p5_flux_nodes"
     legend_inside_input=True
     #-----------------------------------------------------
     subdirectories_for_plot=[\
+    # "flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512",\
     "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
-    "flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512",\
-    "high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs064_p7_procs512",\
-    "high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-8_dofs064_p7_procs512",\
-    "robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs048_p5_procs64",\
-    "robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs048_p5_procs64",\
-    "high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-0_dofs064_p7_procs512",\
-    # "robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs024_p5_procs16",\
-    # "robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs024_p5_procs16",\
-    # "robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs012_p5_procs16",\
-    # "robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs012_p5_procs16",\
+    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512",\
+    "over_integration/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-3_dofs096_p5_procs512",\
+    "over_integration/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-3_dofs096_p5_procs512",\
     ]
     # labels
     labels_for_plot=[\
-    "$96^{3}$, P$5$, $c_{DG}$", \
-    "$96^{3}$, P$5$, sDG-OI.6", \
-    "$64^{3}$, P$7$, $c_{DG}$", \
-    "$64^{3}$, P$7$, sDG-OI.8", \
-    "$48^{3}$, P$5$, $c_{DG}$",\
-    "$48^{3}$, P$5$, sDG-OI.6",\
-    "$64^{3}$, P$7$, sDG-OI.0", \
-    # "$24^{3}$, P$5$",\
-    # "$24^{3}$, P$5$",\
-    # "$12^{3}$, P$5$",\
-    # "$12^{3}$, P$5$",\
+    # "Strong DG-Roe-GL-OI", \
+    "GL", \
+    "GLL", \
+    "GL-OI.3", \
+    "GLL-OI.3", \
     ]
-    black_line_flag_for_plot=[False,False,False,False,False,False,False]
-    dashed_line_flag_for_plot=[False,False,False,False,False,False,False]
-    smoothing_input = [False,False,False,False,False,False,False]
-    plot_for_presentation(subdirectories_for_plot,labels_for_plot,
-        black_line_flag_for_plot,dashed_line_flag_for_plot,
-        final_time_for_plot=12.5,plot_filtered_dns_input=True,
-        legend_fontSize_input=12,
-        plot_PHiLiP_DNS_result_as_reference_input=True,
-        # clr_input=['tab:blue','tab:blue','tab:red','tab:red','tab:red','tab:green','tab:green'],
-        # mrkr_input=['None','None','None','None','None','None','None','None','None'],
-        # lnstl_input=['solid','dashed','solid','dashed','dashdot','solid','dashed'],
-        )
+    black_line_flag_for_plot=[False,False,False,False]
+    dashed_line_flag_for_plot=[False,False,False,True]
+    smoothing_input = [False,False,False,False]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
+        final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12,
+        plot_zoomed_section_dissipation_rate=True,
+        plot_zoomed_section_numerical_dissipation_components=True,
+        plot_zoomed_section_enstrophy=True,
+        dofs_for_zoomed_section=96,
+        solid_and_dashed_lines=False,
+        dashed_and_solid_lines=False,
+        plot_PHiLiP_DNS_result_as_reference_input=True)
 exit()
 #=====================================================
-# DOFs: 96^3 | Strong DG GLL without OI, SGS model stabilization
+# DOF: 96^3 | Strong DG GLL without OI, SGS model stabilization
 #-----------------------------------------------------
 if(True):
     # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
@@ -196,7 +186,7 @@ if(True):
     data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
     date_for_runs="."
     figure_subdirectory="2023_JCP"
-    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOF, CFL$=0.10$" # comment to turn off
     figure_filename_postfix = "96_sDG_gll_sgs_model_stabilization"
     legend_inside_input=True
     #-----------------------------------------------------
@@ -207,10 +197,10 @@ if(True):
     "filter_width_stabilization/viscous_TGV_ILES_std_strong_DG_Roe_GLL_OI-0_dofs096_p5_procs512", \
     ]
     labels_for_plot=[\
-    "sDG-GLL-OI", \
+    "sDG-OI.6", \
     # "Strong DG-Roe-GLL-Smag. $C_{S}=0.18$", \
-    "sDG-GLL-HPF.SI.SM", \
-    "sDG-GLL", \
+    "sDG-OI.0-HPF.SI.SM", \
+    "sDG-OI.0", \
     ]
     black_line_flag_for_plot=[False,False,False,False,False,False]
     dashed_line_flag_for_plot=[False,False,True,False,False]
@@ -221,14 +211,14 @@ if(True):
         plot_zoomed_section_enstrophy=False,
         plot_PHiLiP_DNS_result_as_reference_input=True)
 #=====================================================
-# DOFs: 96^3 | LRNC Advanced SGS Models on GL flux nodes (no filter width modifications)
+# DOF: 96^3 | LRNC Advanced SGS Models on GL flux nodes (no filter width modifications)
 #-----------------------------------------------------
 if(True):
     reinit_inputs()
     data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
     date_for_runs="."
     figure_subdirectory="2023_JCP"
-    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOF, CFL$=0.10$" # comment to turn off
     figure_filename_postfix = "96_p5_selected_sgs_models_gl"
     legend_inside_input=True
     #-----------------------------------------------------
@@ -243,7 +233,7 @@ if(True):
     ]
     # labels
     labels_for_plot=[\
-    "No Model", \
+    "$c_{DG}$ NSFR.IR-GL\n(No SGS Model)", \
     # "Smag. $C_{S}=0.10$", \
     "SM", \
     "SI.SM", \
@@ -262,54 +252,14 @@ if(True):
         dofs_for_zoomed_section=96,
         plot_PHiLiP_DNS_result_as_reference_input=True)
 #=====================================================
-# DOFs: 96^3 | Collocated vs Uncollocated
-#-----------------------------------------------------
-if(True):
-    reinit_inputs()
-    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
-    date_for_runs="."
-    figure_subdirectory="2023_JCP"
-    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
-    figure_filename_postfix = "96_p5_flux_nodes"
-    legend_inside_input=True
-    #-----------------------------------------------------
-    subdirectories_for_plot=[\
-    # "flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512",\
-    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
-    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512",\
-    "over_integration/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-3_dofs096_p5_procs512",\
-    "over_integration/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-3_dofs096_p5_procs512",\
-    ]
-    # labels
-    labels_for_plot=[\
-    # "Strong DG-Roe-GL-OI", \
-    "GL", \
-    "GLL", \
-    "GL-OI-3", \
-    "GLL-OI-3", \
-    ]
-    black_line_flag_for_plot=[False,False,False,False]
-    dashed_line_flag_for_plot=[False,False,False,True]
-    smoothing_input = [False,False,False,False]
-    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
-        final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12,
-        plot_zoomed_section_dissipation_rate=True,
-        plot_zoomed_section_numerical_dissipation_components=True,
-        plot_zoomed_section_enstrophy=True,
-        dofs_for_zoomed_section=96,
-        solid_and_dashed_lines=False,
-        dashed_and_solid_lines=False,
-        plot_PHiLiP_DNS_result_as_reference_input=True)
-
-#=====================================================
-# DOFs: ALL | NSFR CONVERGENCE VERSION FOR WCCM
+# DOF: ALL | NSFR CONVERGENCE VERSION FOR WCCM
 #-----------------------------------------------------
 if(False):
     reinit_inputs()
     data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
     date_for_runs="."
     figure_subdirectory="2023_JCP"
-    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOF, CFL$=0.10$" # comment to turn off
     figure_filename_postfix = "cDG_NSFR_overview_for_wccm"
     legend_inside_input=True
     #-----------------------------------------------------
@@ -328,7 +278,7 @@ if(False):
     "$64^{3}$ ($8^{3}$p$7$)", \
     "$48^{3}$ ($8^{3}$p$5$)",\
     "$24^{3}$ ($4^{3}$p$7$)",\
-    # "$12^{3}$ DOFs, P$5$",\
+    # "$12^{3}$ DOF, P$5$",\
     ]
     black_line_flag_for_plot=[False,False,False,False,False,False,False]
     dashed_line_flag_for_plot=[False,False,False,False,False,False,False]
@@ -338,93 +288,16 @@ if(False):
         plot_zoomed_section_dissipation_rate=True,
         plot_zoomed_section_numerical_dissipation_components=False,
         plot_zoomed_section_enstrophy=False)
-#=====================================================
-# DOFs: 256^3 | P7 cDG NSFR.IR-GL and P7 cDG NSFR.IR-GLL
-#-----------------------------------------------------
-if(True):
-    #-----------------------------------------------------
-    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
-    reinit_inputs()
-    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
-    date_for_runs="."
-    figure_subdirectory="2023_JCP"
-    # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
-    figure_filename_postfix = "256_p7_verification"
-    legend_inside_input=True
-    plot_reference_result=True
-    #-----------------------------------------------------
-    subdirectories_for_plot=[\
-    "filtered_dns_viscous_tgv/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024",\
-    "verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs1024",\
-    # "verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p3_procs1024",\
-    # "verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs0256_p3_procs1024",\
-    # "verification/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-4_dofs0256_p3_CFL-0.15_procs1024",\
-    ]
-    # labels
-    labels_for_plot=[\
-    "$c_{DG}$ NSFR.IR-GL\n $256^3$ DOFs ($32$p$7$)",\
-    "$c_{DG}$ NSFR.IR-GLL\n $256^3$ DOFs ($32$p$7$)",\
-    # "$c_{DG}$ NSFR.IR-GL\n $256^3$ DOFs ($64$p$3$)",\
-    # "P$3$ $c_{DG}$ NSFR.IR-GL-Roe",\
-    # "P$3$ Strong DG-Roe-GL-OI",\
-    ]
-    black_line_flag_for_plot=[False,False,False,False,False]
-    dashed_line_flag_for_plot=[False,False,False,True,True]
-    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
-        final_time_for_plot=20.0,plot_filtered_dns_input=False,legend_fontSize_input=12,
-        plot_zoomed_section_dissipation_rate=True,
-        plot_zoomed_section_numerical_dissipation_components=True,
-        plot_zoomed_section_enstrophy=True)
 
 #=====================================================
-# DOFs: 256^3 | All results
-#-----------------------------------------------------
-if(True):
-    #-----------------------------------------------------
-    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
-    reinit_inputs()
-    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
-    date_for_runs="."
-    figure_subdirectory="2023_JCP"
-    # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
-    figure_filename_postfix = "256_verification"
-    legend_inside_input=True
-    plot_reference_result=True
-    #-----------------------------------------------------
-    subdirectories_for_plot=[\
-    "filtered_dns_viscous_tgv/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024",\
-    "verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p3_procs1024",\
-    "verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs0256_p3_procs1024",\
-    "verification/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-4_dofs0256_p3_CFL-0.15_procs1024",\
-    "verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs1024",\
-    ]
-    # labels
-    labels_for_plot=[\
-    "P$7$ $c_{DG}$ NSFR.IR-GL",\
-    "P$3$ $c_{DG}$ NSFR.IR-GL",\
-    "P$3$ $c_{DG}$ NSFR.IR-GL-Roe",\
-    "P$3$ Strong DG-Roe-GL-OI",\
-    "P$7$ $c_{DG}$ NSFR.IR-GLL",\
-    ]
-    black_line_flag_for_plot=[False,False,False,False,False]
-    dashed_line_flag_for_plot=[False,False,False,True,True]
-    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
-        final_time_for_plot=20.0,plot_filtered_dns_input=False,legend_fontSize_input=12,
-        plot_zoomed_section_dissipation_rate=True,
-        plot_zoomed_section_numerical_dissipation_components=True,
-        plot_zoomed_section_enstrophy=True,
-        dofs_for_zoomed_section=256,
-        plot_zoomed_section_pressure_dilatation=True)
-
-#=====================================================
-# DOFs: 96^3 | Upwind dissipation on GL flux nodes
+# DOF: 96^3 | Upwind dissipation on GL flux nodes
 #-----------------------------------------------------
 if(True):
     reinit_inputs()
     data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
     date_for_runs="."
     figure_subdirectory="2023_JCP"
-    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOF, CFL$=0.10$" # comment to turn off
     figure_filename_postfix = "96_p5_upwind_gl"
     legend_inside_input=True
     #-----------------------------------------------------
@@ -436,7 +309,7 @@ if(True):
     ]
     # labels
     labels_for_plot=[\
-    "$c_{DG}$ NSFR.IR-GL", \
+    "$c_{DG}$ NSFR.IR-GL\n(No Upwinding)", \
     # "No Upwinding", \
     "LxF", \
     "Roe", \
@@ -456,7 +329,7 @@ if(True):
     data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
     date_for_runs="."
     figure_subdirectory="2023_JCP"
-    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOF, CFL$=0.10$" # comment to turn off
     figure_filename_postfix = "96_p5_upwind_gll"
     legend_inside_input=True
     #-----------------------------------------------------
@@ -468,7 +341,7 @@ if(True):
     ]
     # labels
     labels_for_plot=[\
-    "$c_{DG}$ NSFR.IR-GLL", \
+    "$c_{DG}$ NSFR.IR-GLL\n(No Upwinding)", \
     # "No Upwinding", \
     "LxF", \
     "Roe", \
@@ -484,154 +357,39 @@ if(True):
                             plot_zoomed_section_enstrophy=True,
                             plot_PHiLiP_DNS_result_as_reference_input=True)
 #=====================================================
-# DOFs: 96^3 | P5 cDG NSFR.IR-GL and P5 cDG NSFR.IR-GLL
+# DOF: 96^3 | NSFR Two-Point-Flux
 #-----------------------------------------------------
 if(True):
-    #-----------------------------------------------------
-    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
     reinit_inputs()
     data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
     date_for_runs="."
     figure_subdirectory="2023_JCP"
-    # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
-    figure_filename_postfix = "096_p5"
-    legend_inside_input=True
-    plot_reference_result=True
-    #-----------------------------------------------------
-    subdirectories_for_plot=[\
-    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
-    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512",\
-    "upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs096_p5_procs512",\
-    "flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512",\
-    ]
-    # labels
-    labels_for_plot=[\
-    "P$5$ $c_{DG}$ NSFR.IR-GL",\
-    "P$5$ $c_{DG}$ NSFR.IR-GLL",\
-    "P$5$ $c_{DG}$ NSFR.IR-GL-Roe",\
-    "P$5$ Strong DG"
-    ]
-    black_line_flag_for_plot=[False,False,False,False,False]
-    dashed_line_flag_for_plot=[False,False,False,True,True]
-    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
-        final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12,
-        plot_zoomed_section_dissipation_rate=True,
-        plot_zoomed_section_numerical_dissipation_components=True,
-        plot_zoomed_section_enstrophy=True,
-        dofs_for_zoomed_section=96,
-        plot_PHiLiP_DNS_result_as_reference_input=True)
-
-#=====================================================
-# DOFs: 256^3 | All results
-#-----------------------------------------------------
-if(True):
-    #-----------------------------------------------------
-    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
-    reinit_inputs()
-    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
-    date_for_runs="."
-    figure_subdirectory="2023_JCP"
-    # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
-    figure_filename_postfix = "256_verification_full_time"
-    legend_inside_input=True
-    plot_reference_result=True
-    #-----------------------------------------------------
-    subdirectories_for_plot=[\
-    "filtered_dns_viscous_tgv/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024",\
-    "verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p3_procs1024",\
-    "verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs1024",\
-    ]
-    # labels
-    labels_for_plot=[\
-    "P$7$ $c_{DG}$ NSFR.IR-GL",\
-    "P$3$ $c_{DG}$ NSFR.IR-GL",\
-    "P$7$ $c_{DG}$ NSFR.IR-GLL",\
-    ]
-    black_line_flag_for_plot=[False,False,False,False,False]
-    dashed_line_flag_for_plot=[False,False,False,True,True]
-    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
-        final_time_for_plot=20.0,plot_filtered_dns_input=False,legend_fontSize_input=12,
-        plot_zoomed_section_dissipation_rate=True,
-        plot_zoomed_section_numerical_dissipation_components=True,
-        plot_zoomed_section_enstrophy=True)
-
-#=====================================================
-# DOFs: 96^3 | Correction Parameter Accuracy
-#-----------------------------------------------------
-if(True):
-    #-----------------------------------------------------
-    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
-    reinit_inputs()
-    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
-    date_for_runs="."
-    figure_subdirectory="2023_JCP"
-    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL=$0.10$" # comment to turn off
-    figure_filename_postfix = "96_p5_correction_parameter"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOF, CFL$=0.10$" # comment to turn off
+    figure_filename_postfix = "96_p5_two_point_flux"
     legend_inside_input=True
     #-----------------------------------------------------
     subdirectories_for_plot=[\
     "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
-    "correction_parameter/viscous_TGV_ILES_NSFR_cSD_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
-    "correction_parameter/viscous_TGV_ILES_NSFR_cHU_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
-    "correction_parameter/viscous_TGV_ILES_NSFR_cPlus_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "two_point_flux/viscous_TGV_ILES_NSFR_cDG_KG_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "two_point_flux/viscous_TGV_ILES_NSFR_cDG_CH_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "two_point_flux/viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GL_OI-0_dofs096_p5_procs512",\
     ]
     # labels
     labels_for_plot=[\
-    "$c_{DG}$",\
-    "$c_{SD}$",\
-    "$c_{HU}$",\
-    "$c_{+}$",\
+    "$c_{DG}$ NSFR.IR-GL", \
+    "$c_{DG}$ NSFR.KG-GL", \
+    "$c_{DG}$ NSFR.CH-GL", \
+    "$c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$-GL", \
     ]
     black_line_flag_for_plot=[False,False,False,False]
-    dashed_line_flag_for_plot=[False,False,False,False]
+    dashed_line_flag_for_plot=[False,True,True,True]
+    smoothing_input = [False,False,False,False]
     plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
         final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12,
-        plot_zoomed_section_dissipation_rate=True,
-        plot_zoomed_section_numerical_dissipation_components=True,
-        plot_zoomed_section_enstrophy=True,
-        dofs_for_zoomed_section=96,
-        plot_PHiLiP_DNS_result_as_reference_input=True)
-
+        plot_PHiLiP_DNS_result_as_reference_input=True
+        )
 #=====================================================
-# DOFs: 96^3 | OI Stability on GL flux nodes
-#-----------------------------------------------------
-if(True):
-    reinit_inputs()
-    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
-    date_for_runs="."
-    figure_subdirectory="2023_JCP"
-    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
-    figure_filename_postfix = "96_OI_stability_GL"
-    legend_inside_input=True
-    #-----------------------------------------------------
-    subdirectories_for_plot=[\
-    # "upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs096_p5_procs512",\
-    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
-    "over_integration/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-3_dofs096_p5_procs512",\
-    "flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512",\
-    # "over_integration_accuracy_strong_DG/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-4_dofs096_p5_CFL-0.10_procs512",\
-    "over_integration_accuracy_strong_DG/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-2_dofs096_p5_CFL-0.10_procs512",\
-    "filter_width_stabilization/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-0_dofs096_p5_procs512",\
-    ]
-    # labels
-    labels_for_plot=[\
-    # "$c_{DG}$ NSFR.IR-GL-Roe",\
-    "$c_{DG}$ NSFR.IR-GL-OI-0",\
-    "$c_{DG}$ NSFR.IR-GL-OI-3",\
-    "sDG-OI-6", \
-    # "sDG-OI-4", \
-    "sDG-OI-2",\
-    "sDG-OI-0",\
-    ]
-    black_line_flag_for_plot=[False,False,False,False,False,False,False]
-    dashed_line_flag_for_plot=[False,False,False,True,False,False,False]
-    smoothing_input = [False,False,False,False,False,False,False]
-    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
-        final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12,
-        plot_PHiLiP_DNS_result_as_reference_input=True)
-exit()
-#=====================================================
-# DOFs: 96^3 | Correction Parameter Time-Step
+# DOF: 96^3 | Correction Parameter Time-Step
 #-----------------------------------------------------
 if(True):
     #-----------------------------------------------------
@@ -640,7 +398,7 @@ if(True):
     data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
     date_for_runs="."
     figure_subdirectory="2023_JCP"
-    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs" # comment to turn off
+    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOF" # comment to turn off
     figure_filename_postfix = "96_p5_correction_parameter_cfl_advantage"
     legend_inside_input=True
     #-----------------------------------------------------
@@ -671,10 +429,317 @@ if(True):
         plot_zoomed_section_enstrophy=True,
         dofs_for_zoomed_section=96,
         solid_and_dashed_lines=False,
-        dashed_and_solid_lines=True)
+        dashed_and_solid_lines=False,
+        plot_PHiLiP_DNS_result_as_reference_input=True)
+#=====================================================
+# DOF: 96^3 | Correction Parameter Accuracy
+#-----------------------------------------------------
+if(True):
+    #-----------------------------------------------------
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="2023_JCP"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOF, CFL=$0.10$" # comment to turn off
+    figure_filename_postfix = "96_p5_correction_parameter"
+    legend_inside_input=True
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "correction_parameter/viscous_TGV_ILES_NSFR_cSD_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "correction_parameter/viscous_TGV_ILES_NSFR_cHU_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "correction_parameter/viscous_TGV_ILES_NSFR_cPlus_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    ]
+    # labels
+    labels_for_plot=[\
+    "$c_{DG}$",\
+    "$c_{SD}$",\
+    "$c_{HU}$",\
+    "$c_{+}$",\
+    ]
+    black_line_flag_for_plot=[False,False,False,False]
+    dashed_line_flag_for_plot=[False,False,False,False]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
+        final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12,
+        plot_zoomed_section_dissipation_rate=True,
+        plot_zoomed_section_numerical_dissipation_components=True,
+        plot_zoomed_section_enstrophy=True,
+        dofs_for_zoomed_section=96,
+        plot_PHiLiP_DNS_result_as_reference_input=True)
+#=====================================================
+# DOF: 48,64,96 | Strong DG vs NSFR CONVERGENCE
+#-----------------------------------------------------
+if(True):
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="2023_JCP"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOF, CFL$=0.10$" # comment to turn off
+    figure_filename_postfix = "convergence_comparison"
+    legend_inside_input=True
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512",\
+    "high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs064_p7_procs512",\
+    "high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-8_dofs064_p7_procs512",\
+    "robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs048_p5_procs64",\
+    "robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs048_p5_procs64",\
+    "high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-0_dofs064_p7_procs512",\
+    # "robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs024_p5_procs16",\
+    # "robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs024_p5_procs16",\
+    # "robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs012_p5_procs16",\
+    # "robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs012_p5_procs16",\
+    ]
+    # labels
+    labels_for_plot=[\
+    "$96^{3}$ DOF, p$5$, $c_{DG}$", \
+    "$96^{3}$ DOF, p$5$, sDG-OI.6", \
+    "$64^{3}$ DOF, p$7$, $c_{DG}$", \
+    "$64^{3}$ DOF, p$7$, sDG-OI.8", \
+    "$48^{3}$ DOF, p$5$, $c_{DG}$",\
+    "$48^{3}$ DOF, p$5$, sDG-OI.6",\
+    "$64^{3}$ DOF, p$7$, sDG-OI.0", \
+    # "$24^{3}$, P$5$",\
+    # "$24^{3}$, P$5$",\
+    # "$12^{3}$, P$5$",\
+    # "$12^{3}$, P$5$",\
+    ]
+    black_line_flag_for_plot=[False,False,False,False,False,False,False]
+    dashed_line_flag_for_plot=[False,False,False,False,False,False,False]
+    smoothing_input = [False,False,False,False,False,False,False]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,
+        black_line_flag_for_plot,dashed_line_flag_for_plot,
+        final_time_for_plot=12.5,plot_filtered_dns_input=True,
+        legend_fontSize_input=12,
+        plot_PHiLiP_DNS_result_as_reference_input=True,
+        # clr_input=['tab:blue','tab:blue','tab:red','tab:red','tab:red','tab:green','tab:green'],
+        # mrkr_input=['None','None','None','None','None','None','None','None','None'],
+        # lnstl_input=['solid','dashed','solid','dashed','dashdot','solid','dashed'],
+        )
+#=====================================================
+# DOF: 256^3 | P7 cDG NSFR.IR-GL and P7 cDG NSFR.IR-GLL
+#-----------------------------------------------------
+if(True):
+    #-----------------------------------------------------
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="2023_JCP"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOF, CFL=$0.10$" # comment to turn off
+    figure_filename_postfix = "256_p7_verification"
+    legend_inside_input=True
+    plot_reference_result=True
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "filtered_dns_viscous_tgv/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024",\
+    "verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs1024",\
+    # "verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p3_procs1024",\
+    # "verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs0256_p3_procs1024",\
+    # "verification/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-4_dofs0256_p3_CFL-0.15_procs1024",\
+    ]
+    # labels
+    labels_for_plot=[\
+    "p$7$ $c_{DG}$ NSFR.IR-GL",\
+    "p$7$ $c_{DG}$ NSFR.IR-GLL",\
+    # "$c_{DG}$ NSFR.IR-GL\n $256^3$ DOF ($64$p$3$)",\
+    # "p$3$ $c_{DG}$ NSFR.IR-GL-Roe",\
+    # "p$3$ Strong DG-Roe-GL-OI",\
+    ]
+    black_line_flag_for_plot=[False,False,False,False,False]
+    dashed_line_flag_for_plot=[False,False,False,True,True]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
+        final_time_for_plot=20.0,plot_filtered_dns_input=False,legend_fontSize_input=12,
+        plot_zoomed_section_dissipation_rate=True,
+        plot_zoomed_section_numerical_dissipation_components=True,
+        plot_zoomed_section_enstrophy=True)
+#=====================================================
+# DOF: ALL | NSFR CONVERGENCE
+#-----------------------------------------------------
+if(True):
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="2023_JCP"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOF, CFL$=0.10$" # comment to turn off
+    figure_filename_postfix = "cDG_NSFR_convergence"
+    legend_inside_input=True
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs064_p7_procs512",\
+    "robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs048_p5_procs64",\
+    "robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs024_p5_procs16",\
+    # "robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs012_p5_procs16",\
+    ]
+    # labels
+    labels_for_plot=[\
+    "$96^{3}$ DOF, p$5$", \
+    "$64^{3}$ DOF, p$7$", \
+    "$48^{3}$ DOF, p$5$",\
+    "$24^{3}$ DOF, p$5$",\
+    # "$12^{3}$ DOF, p$5$",\
+    ]
+    black_line_flag_for_plot=[False,False,False,False,False,False,False]
+    dashed_line_flag_for_plot=[False,False,False,False,False,False,False]
+    smoothing_input = [False,False,False,False,False,False,False]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
+        final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12,
+        plot_PHiLiP_DNS_result_as_reference_input=True)
+#=====================================================
+# DOF: 256^3 | All results
+#-----------------------------------------------------
+if(True):
+    #-----------------------------------------------------
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="2023_JCP"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOF, CFL=$0.10$" # comment to turn off
+    figure_filename_postfix = "256_verification"
+    legend_inside_input=True
+    plot_reference_result=True
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "filtered_dns_viscous_tgv/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024",\
+    "verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p3_procs1024",\
+    "verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs0256_p3_procs1024",\
+    "verification/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-4_dofs0256_p3_CFL-0.15_procs1024",\
+    "verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs1024",\
+    ]
+    # labels
+    labels_for_plot=[\
+    "p$7$ $c_{DG}$ NSFR.IR-GL",\
+    "p$3$ $c_{DG}$ NSFR.IR-GL",\
+    "p$3$ $c_{DG}$ NSFR.IR-GL-Roe",\
+    "p$3$ Strong DG-Roe-GL-OI",\
+    "p$7$ $c_{DG}$ NSFR.IR-GLL",\
+    ]
+    black_line_flag_for_plot=[False,False,False,False,False]
+    dashed_line_flag_for_plot=[False,False,False,True,True]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
+        final_time_for_plot=20.0,plot_filtered_dns_input=False,legend_fontSize_input=12,
+        plot_zoomed_section_dissipation_rate=True,
+        plot_zoomed_section_numerical_dissipation_components=True,
+        plot_secondary_zoomed_section_numerical_dissipation_components=True,
+        plot_zoomed_section_enstrophy=True,
+        dofs_for_zoomed_section=256,
+        plot_zoomed_section_pressure_dilatation=True)
+#=====================================================
+# DOF: 96^3 | P5 cDG NSFR.IR-GL and P5 cDG NSFR.IR-GLL
+#-----------------------------------------------------
+if(True):
+    #-----------------------------------------------------
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="2023_JCP"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOF, CFL=$0.10$" # comment to turn off
+    figure_filename_postfix = "096_p5"
+    legend_inside_input=True
+    plot_reference_result=True
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512",\
+    "upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs096_p5_procs512",\
+    "flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512",\
+    ]
+    # labels
+    labels_for_plot=[\
+    "p$5$ $c_{DG}$ NSFR.IR-GL",\
+    "p$5$ $c_{DG}$ NSFR.IR-GLL",\
+    "p$5$ $c_{DG}$ NSFR.IR-GL-Roe",\
+    "p$5$ Strong DG"
+    ]
+    black_line_flag_for_plot=[False,False,False,False,False]
+    dashed_line_flag_for_plot=[False,False,False,True,True]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
+        final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12,
+        plot_zoomed_section_dissipation_rate=True,
+        plot_zoomed_section_numerical_dissipation_components=True,
+        plot_zoomed_section_enstrophy=True,
+        dofs_for_zoomed_section=96,
+        plot_PHiLiP_DNS_result_as_reference_input=True)
 
 #=====================================================
-# DOFs: 96^3 | NSFR vs Strong DG on GL and GLL flux nodes
+# DOF: 256^3 | All results
+#-----------------------------------------------------
+if(True):
+    #-----------------------------------------------------
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="2023_JCP"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOF, CFL=$0.10$" # comment to turn off
+    figure_filename_postfix = "256_verification_full_time"
+    legend_inside_input=True
+    plot_reference_result=True
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "filtered_dns_viscous_tgv/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024",\
+    "verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p3_procs1024",\
+    "verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs1024",\
+    ]
+    # labels
+    labels_for_plot=[\
+    "p$7$ $c_{DG}$ NSFR.IR-GL",\
+    "p$3$ $c_{DG}$ NSFR.IR-GL",\
+    "p$7$ $c_{DG}$ NSFR.IR-GLL",\
+    ]
+    black_line_flag_for_plot=[False,False,False,False,False]
+    dashed_line_flag_for_plot=[False,False,False,True,True]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
+        final_time_for_plot=20.0,plot_filtered_dns_input=False,legend_fontSize_input=12,
+        plot_zoomed_section_dissipation_rate=True,
+        plot_zoomed_section_numerical_dissipation_components=True,
+        plot_zoomed_section_enstrophy=True)
+
+#=====================================================
+# DOF: 96^3 | OI Stability on GL flux nodes
+#-----------------------------------------------------
+if(True):
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="2023_JCP"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOF, CFL$=0.10$" # comment to turn off
+    figure_filename_postfix = "96_OI_stability_GL"
+    legend_inside_input=True
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    # "upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs096_p5_procs512",\
+    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "over_integration/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-3_dofs096_p5_procs512",\
+    "flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512",\
+    # "over_integration_accuracy_strong_DG/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-4_dofs096_p5_CFL-0.10_procs512",\
+    "over_integration_accuracy_strong_DG/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-2_dofs096_p5_CFL-0.10_procs512",\
+    "filter_width_stabilization/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-0_dofs096_p5_procs512",\
+    ]
+    # labels
+    labels_for_plot=[\
+    # "$c_{DG}$ NSFR.IR-GL-Roe",\
+    "$c_{DG}$ NSFR.IR-GL-OI-0",\
+    "$c_{DG}$ NSFR.IR-GL-OI-3",\
+    "sDG-OI-6", \
+    # "sDG-OI-4", \
+    "sDG-OI-2",\
+    "sDG-OI-0",\
+    ]
+    black_line_flag_for_plot=[False,False,False,False,False,False,False]
+    dashed_line_flag_for_plot=[False,False,False,True,False,False,False]
+    smoothing_input = [False,False,False,False,False,False,False]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
+        final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12,
+        plot_PHiLiP_DNS_result_as_reference_input=True)
+
+#=====================================================
+# DOF: 96^3 | NSFR vs Strong DG on GL and GLL flux nodes
 #-----------------------------------------------------
 if(True):
     # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
@@ -682,7 +747,7 @@ if(True):
     data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
     date_for_runs="."
     figure_subdirectory="2023_JCP"
-    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOF, CFL$=0.10$" # comment to turn off
     figure_filename_postfix = "96_p5_flux_nodes_with_sDG"
     legend_inside_input=True
     #-----------------------------------------------------
@@ -704,10 +769,11 @@ if(True):
         final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12,
         plot_zoomed_section_dissipation_rate=True,
         plot_zoomed_section_numerical_dissipation_components=False,
-        plot_zoomed_section_enstrophy=False)
+        plot_zoomed_section_enstrophy=False,
+        plot_PHiLiP_DNS_result_as_reference_input=True)
 
 #=====================================================
-# DOFs: 64^3 | Over-integration stabilization
+# DOF: 64^3 | Over-integration stabilization
 #-----------------------------------------------------
 if(True):
     # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
@@ -715,7 +781,7 @@ if(True):
     data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
     date_for_runs="."
     figure_subdirectory="2023_JCP"
-    # figure_title = "TGV at Re$_{\\infty}=1600$, P$7$, $64^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    # figure_title = "TGV at Re$_{\\infty}=1600$, P$7$, $64^{3}$ DOF, CFL$=0.10$" # comment to turn off
     figure_filename_postfix = "64_p7_overintegration_stability"
     legend_inside_input=True
     #-----------------------------------------------------
@@ -737,17 +803,19 @@ if(True):
     ]
     black_line_flag_for_plot=[False,False,False,False,False,False]
     dashed_line_flag_for_plot=[False,False,True,False,False,True]
-    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0,plot_filtered_dns_input=False,legend_fontSize_input=12)
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
+        final_time_for_plot=20.0,plot_filtered_dns_input=False,legend_fontSize_input=12,
+        plot_PHiLiP_DNS_result_as_reference_input=True)
 
 #=====================================================
-# DOFs: 96^3 | Basic SGS Models on GLL flux nodes (no filter width modifications)
+# DOF: 96^3 | Basic SGS Models on GLL flux nodes (no filter width modifications)
 #-----------------------------------------------------
 if(False):
     reinit_inputs()
     data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
     date_for_runs="."
     figure_subdirectory="2023_JCP"
-    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOF, CFL$=0.10$" # comment to turn off
     figure_filename_postfix = "96_sgs_models_gll"
     legend_inside_input=True
     #-----------------------------------------------------
@@ -772,14 +840,14 @@ if(False):
     plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12)
 
 #=====================================================
-# DOFs: 96^3 | sDG with and without OI vs NSFR
+# DOF: 96^3 | sDG with and without OI vs NSFR
 #-----------------------------------------------------
 if(True):
     reinit_inputs()
     data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
     date_for_runs="."
     figure_subdirectory="2023_JCP"
-    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOF, CFL$=0.10$" # comment to turn off
     figure_filename_postfix = "96_sDG_with_and_without_OI_vs_NSFR"
     legend_inside_input=True
     #-----------------------------------------------------
@@ -799,17 +867,19 @@ if(True):
     black_line_flag_for_plot=[False,False,False,False,False,False,False]
     dashed_line_flag_for_plot=[False,False,False,False,False,False,False]
     smoothing_input = [False,False,False,False,False,False,False]
-    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12)
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
+        final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12,
+        plot_PHiLiP_DNS_result_as_reference_input=True)
 
 #=====================================================
-# DOFs: ALL | Strong DG CONVERGENCE
+# DOF: ALL | Strong DG CONVERGENCE
 #-----------------------------------------------------
 if(True):
     reinit_inputs()
     data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
     date_for_runs="."
     figure_subdirectory="2023_JCP"
-    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOF, CFL$=0.10$" # comment to turn off
     figure_filename_postfix = "strong_DG_convergence"
     legend_inside_input=True
     #-----------------------------------------------------
@@ -822,19 +892,21 @@ if(True):
     ]
     # labels
     labels_for_plot=[\
-    "$96^{3}$ DOFs, P$5$", \
-    "$64^{3}$ DOFs, P$7$", \
-    "$48^{3}$ DOFs, P$5$",\
-    "$24^{3}$ DOFs, P$5$",\
-    # "$12^{3}$ DOFs, P$5$",\
+    "$96^{3}$ DOF, p$5$", \
+    "$64^{3}$ DOF, p$7$", \
+    "$48^{3}$ DOF, p$5$",\
+    "$24^{3}$ DOF, p$5$",\
+    # "$12^{3}$ DOF, P$5$",\
     ]
     black_line_flag_for_plot=[False,False,False,False,False,False,False]
     dashed_line_flag_for_plot=[False,False,False,False,False,False,False]
     smoothing_input = [False,False,False,False,False,False,False]
-    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12)
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
+        final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12,
+        plot_PHiLiP_DNS_result_as_reference_input=True)
 
 #=====================================================
-# DOFs: 96^3 | Basic SGS Models on GL flux nodes (no filter width modifications)
+# DOF: 96^3 | Basic SGS Models on GL flux nodes (no filter width modifications)
 #-----------------------------------------------------
 if(True):
     # batch_labels = [ \
@@ -849,7 +921,7 @@ if(True):
     data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
     date_for_runs="."
     figure_subdirectory="2023_JCP"
-    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOF, CFL$=0.10$" # comment to turn off
     figure_filename_postfix = "96_p5_sgs_models_gl"
     legend_inside_input=True
     # #-----------------------------------------------------
@@ -879,17 +951,19 @@ if(True):
     black_line_flag_for_plot=[False,False,False,False,False,False]
     dashed_line_flag_for_plot=[False,False,False,False,False,True]
     smoothing_input=[False,False,False,False,False,False]
-    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12)
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
+        final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12,
+        plot_PHiLiP_DNS_result_as_reference_input=True)
 
 #=====================================================
-# DOFs: 96^3 | LRNC Advanced SGS Models on GL flux nodes (no filter width modifications)
+# DOF: 96^3 | LRNC Advanced SGS Models on GL flux nodes (no filter width modifications)
 #-----------------------------------------------------
 if(True):
     reinit_inputs()
     data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
     date_for_runs="."
     figure_subdirectory="2023_JCP"
-    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOF, CFL$=0.10$" # comment to turn off
     figure_filename_postfix = "96_p5_lrnc_sgs_models_gl"
     legend_inside_input=True
     #-----------------------------------------------------
@@ -915,17 +989,19 @@ if(True):
     black_line_flag_for_plot=[False,False,False,False,False,False,False]
     dashed_line_flag_for_plot=[False,False,False,False,True,True,True]
     smoothing_input=[False,False,False,False,True,True,True]
-    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12)
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
+        final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12,
+        plot_PHiLiP_DNS_result_as_reference_input=True)
 
 #=====================================================
-# DOFs: 96^3 | LRNC Advanced SGS Models on GL flux nodes (no filter width modifications)
+# DOF: 96^3 | LRNC Advanced SGS Models on GL flux nodes (no filter width modifications)
 #-----------------------------------------------------
 if(True):
     reinit_inputs()
     data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
     date_for_runs="."
     figure_subdirectory="2023_JCP"
-    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOF, CFL$=0.10$" # comment to turn off
     figure_filename_postfix = "96_p5_lrnc_advanced_sgs_models_gl"
     legend_inside_input=True
     #-----------------------------------------------------
@@ -954,14 +1030,14 @@ if(True):
     plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12)
 
 #=====================================================
-# DOFs: 96^3 | Advanced SGS Models on GL flux nodes (no filter width modifications)
+# DOF: 96^3 | Advanced SGS Models on GL flux nodes (no filter width modifications)
 #-----------------------------------------------------
 if(True):
     reinit_inputs()
     data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
     date_for_runs="."
     figure_subdirectory="2023_JCP"
-    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOF, CFL$=0.10$" # comment to turn off
     figure_filename_postfix = "96_p5_advanced_sgs_models_gl"
     legend_inside_input=True
     #-----------------------------------------------------
@@ -995,41 +1071,8 @@ if(True):
     dashed_line_flag_for_plot=[False,False,False,False,False,False,True]
     smoothing_input=[False,False,False,False,False,False,False]
     plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12)
-
 #=====================================================
-# DOFs: ALL | NSFR CONVERGENCE
-#-----------------------------------------------------
-if(True):
-    reinit_inputs()
-    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
-    date_for_runs="."
-    figure_subdirectory="2023_JCP"
-    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
-    figure_filename_postfix = "cDG_NSFR_convergence"
-    legend_inside_input=True
-    #-----------------------------------------------------
-    subdirectories_for_plot=[\
-    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
-    "high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs064_p7_procs512",\
-    "robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs048_p5_procs64",\
-    "robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs024_p5_procs16",\
-    # "robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs012_p5_procs16",\
-    ]
-    # labels
-    labels_for_plot=[\
-    "$96^{3}$ DOFs, P$5$", \
-    "$64^{3}$ DOFs, P$7$", \
-    "$48^{3}$ DOFs, P$5$",\
-    "$24^{3}$ DOFs, P$5$",\
-    # "$12^{3}$ DOFs, P$5$",\
-    ]
-    black_line_flag_for_plot=[False,False,False,False,False,False,False]
-    dashed_line_flag_for_plot=[False,False,False,False,False,False,False]
-    smoothing_input = [False,False,False,False,False,False,False]
-    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12)
-
-#=====================================================
-# DOFs: ALL | Strong DG CONVERGENCE
+# DOF: ALL | Strong DG CONVERGENCE
 #-----------------------------------------------------
 if(False):
     reinit_inputs()
@@ -1042,43 +1085,43 @@ if(False):
     #-----------------------------------------------------
     subdirectories.append("flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512")
     filenames.append("turbulent_quantities.txt")
-    labels.append("$96^{3}$ DOFs, Strong DG-Roe-GL-OI")
+    labels.append("$96^{3}$ DOF, Strong DG-Roe-GL-OI")
     black_line_flag.append(False)
     dashed_line_flag.append(False)
     #-----------------------------------------------------
     subdirectories.append("robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs048_p5_procs64")
     filenames.append("turbulent_quantities.txt")
-    labels.append("$48^{3}$ DOFs, Strong DG-Roe-GL-OI")
+    labels.append("$48^{3}$ DOF, Strong DG-Roe-GL-OI")
     black_line_flag.append(False)
     dashed_line_flag.append(False)
     #-----------------------------------------------------
     subdirectories.append("robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-0_dofs048_p5_procs64")
     filenames.append("turbulent_quantities.txt")
-    labels.append("$48^{3}$ DOFs, Strong DG-Roe-GL")
+    labels.append("$48^{3}$ DOF, Strong DG-Roe-GL")
     black_line_flag.append(False)
     dashed_line_flag.append(True)
     #-----------------------------------------------------
     subdirectories.append("robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs024_p5_procs16")
     filenames.append("turbulent_quantities.txt")
-    labels.append("$24^{3}$ DOFs, Strong DG-Roe-GL-OI")
+    labels.append("$24^{3}$ DOF, Strong DG-Roe-GL-OI")
     black_line_flag.append(False)
     dashed_line_flag.append(False)
     #-----------------------------------------------------
     subdirectories.append("robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-0_dofs024_p5_procs16")
     filenames.append("turbulent_quantities.txt")
-    labels.append("$24^{3}$ DOFs, Strong DG-Roe-GL")
+    labels.append("$24^{3}$ DOF, Strong DG-Roe-GL")
     black_line_flag.append(False)
     dashed_line_flag.append(True)
     #-----------------------------------------------------
     subdirectories.append("robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs012_p5_procs16")
     filenames.append("turbulent_quantities.txt")
-    labels.append("$12^{3}$ DOFs, Strong DG-Roe-GL-OI")
+    labels.append("$12^{3}$ DOF, Strong DG-Roe-GL-OI")
     black_line_flag.append(False)
     dashed_line_flag.append(False)
     #-----------------------------------------------------
     subdirectories.append("robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-0_dofs012_p5_procs16")
     filenames.append("turbulent_quantities.txt")
-    labels.append("$12^{3}$ DOFs, Strong DG-Roe-GL")
+    labels.append("$12^{3}$ DOF, Strong DG-Roe-GL")
     black_line_flag.append(False)
     dashed_line_flag.append(True)
     #-----------------------------------------------------
@@ -1103,41 +1146,10 @@ if(False):
         legend_fontSize_input=14,
         solid_and_dashed_lines=False)
     #-----------------------------------------------------
-
-#=====================================================
-# DOFs: 96^3 | NSFR Two-Point-Flux
-#-----------------------------------------------------
-if(True):
-    reinit_inputs()
-    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
-    date_for_runs="."
-    figure_subdirectory="2023_JCP"
-    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
-    figure_filename_postfix = "96_p5_two_point_flux"
-    legend_inside_input=True
-    #-----------------------------------------------------
-    subdirectories_for_plot=[\
-    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
-    "two_point_flux/viscous_TGV_ILES_NSFR_cDG_KG_2PF_GL_OI-0_dofs096_p5_procs512",\
-    "two_point_flux/viscous_TGV_ILES_NSFR_cDG_CH_2PF_GL_OI-0_dofs096_p5_procs512",\
-    "two_point_flux/viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GL_OI-0_dofs096_p5_procs512",\
-    ]
-    # labels
-    labels_for_plot=[\
-    "$c_{DG}$ NSFR.IR-GL", \
-    "$c_{DG}$ NSFR.KG-GL", \
-    "$c_{DG}$ NSFR.CH-GL", \
-    "$c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$-GL", \
-    ]
-    black_line_flag_for_plot=[False,False,False,False]
-    dashed_line_flag_for_plot=[False,True,True,True]
-    smoothing_input = [False,False,False,False]
-    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12)
-
 exit()
 #////////// everything after has not been updated
 #=====================================================
-# DOFs: 96^3 | cDG vs cPlus
+# DOF: 96^3 | cDG vs cPlus
 #-----------------------------------------------------
 if(True):
     #-----------------------------------------------------
@@ -1146,7 +1158,7 @@ if(True):
     data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
     date_for_runs="."
     figure_subdirectory="2023_JCP"
-    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL=$0.10$" # comment to turn off
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOF, CFL=$0.10$" # comment to turn off
     figure_filename_postfix = "96_p5_cDG_vs_cPlus"
     legend_inside_input=True
     #-----------------------------------------------------
@@ -1168,7 +1180,7 @@ if(True):
     plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=20.0)
 
 #=====================================================
-# DOFs: 96^3 | Over-integration vs Split Form De-aliasing strategy
+# DOF: 96^3 | Over-integration vs Split Form De-aliasing strategy
 #-----------------------------------------------------
 if(False):
     #-----------------------------------------------------
@@ -1178,7 +1190,7 @@ if(False):
     data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
     date_for_runs="."
     figure_subdirectory="2023_JCP"
-    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL=$0.10$" # comment to turn off
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOF, CFL=$0.10$" # comment to turn off
     figure_filename_postfix = "96_p5_OI_vs_SF"
     legend_inside_input=True
     #-----------------------------------------------------
@@ -1196,7 +1208,7 @@ if(False):
     plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot)
 
 #=====================================================
-# DOFs: 96^3 | Time step advantage with physical solution check
+# DOF: 96^3 | Time step advantage with physical solution check
 #-----------------------------------------------------
 if(False):
     #-----------------------------------------------------
@@ -1206,7 +1218,7 @@ if(False):
     data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
     date_for_runs="."
     figure_subdirectory="2023_JCP"
-    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs" # comment to turn off
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOF" # comment to turn off
     figure_filename_postfix = "96_p5_cPlus_cfl_physically_consistent"
     legend_inside_input=True
     #-----------------------------------------------------
@@ -1274,7 +1286,7 @@ if(False):
     data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
     date_for_runs="."
     figure_subdirectory="2023_JCP"
-    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs" # comment to turn off
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOF" # comment to turn off
     figure_filename_postfix = "96_p5_cDG_cfl_physically_consistent"
     legend_inside_input=True
     #-----------------------------------------------------
@@ -1335,7 +1347,7 @@ if(False):
     # data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
     # date_for_runs="."
     # figure_subdirectory="2023_JCP"
-    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOF, CFL$=0.10$" # comment to turn off
     # figure_filename_postfix = "96_p5_strong_DG_cfl"
     # legend_inside_input=True
     # #-----------------------------------------------------
@@ -1395,7 +1407,7 @@ if(False):
     # data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
     # date_for_runs="."
     # figure_subdirectory="2023_JCP"
-    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOF, CFL$=0.10$" # comment to turn off
     # figure_filename_postfix = "96_p5_cfl_advantage"
     # legend_inside_input=True
     # #-----------------------------------------------------
@@ -1462,7 +1474,7 @@ if(False):
     # #-----------------------------------------------------
 
 #=====================================================
-# DOFs: 96^3 | Time step advantage (CFL advantage)
+# DOF: 96^3 | Time step advantage (CFL advantage)
 #-----------------------------------------------------
 if(False):
     #-----------------------------------------------------
@@ -1472,7 +1484,7 @@ if(False):
     data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
     date_for_runs="."
     figure_subdirectory="2023_JCP"
-    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOF, CFL$=0.10$" # comment to turn off
     figure_filename_postfix = "96_p5_cPlus_cfl"
     legend_inside_input=True
     #-----------------------------------------------------
@@ -1534,7 +1546,7 @@ if(False):
     data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
     date_for_runs="."
     figure_subdirectory="2023_JCP"
-    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOF, CFL$=0.10$" # comment to turn off
     figure_filename_postfix = "96_p5_cDG_cfl"
     legend_inside_input=True
     #-----------------------------------------------------
@@ -1589,7 +1601,7 @@ if(False):
     data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
     date_for_runs="."
     figure_subdirectory="2023_JCP"
-    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOF, CFL$=0.10$" # comment to turn off
     figure_filename_postfix = "96_p5_strong_DG_cfl"
     legend_inside_input=True
     #-----------------------------------------------------
@@ -1656,7 +1668,7 @@ if(False):
     data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
     date_for_runs="."
     figure_subdirectory="2023_JCP"
-    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOF, CFL$=0.10$" # comment to turn off
     figure_filename_postfix = "96_p5_cfl_advantage"
     legend_inside_input=True
     #-----------------------------------------------------
@@ -1723,14 +1735,14 @@ if(False):
     #-----------------------------------------------------
 
 #=====================================================
-# DOFs: 96^3 | NSFR.IR-cDG-GL and NSFR.IR-cDG-GLL (BASELINE)
+# DOF: 96^3 | NSFR.IR-cDG-GL and NSFR.IR-cDG-GLL (BASELINE)
 #-----------------------------------------------------
 if(False):
     reinit_inputs()
     data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
     date_for_runs="."
     figure_subdirectory="2023_JCP"
-    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOF, CFL$=0.10$" # comment to turn off
     figure_filename_postfix = "96_cDG_roe_vs_sDG"
     legend_inside_input=True
     #-----------------------------------------------------
@@ -1771,7 +1783,7 @@ if(False):
     #-----------------------------------------------------
 
 #=====================================================
-# DOFs: 96^3 | NSFR.IR-cDG-GL and NSFR.IR-cDG-GLL (BASELINE)
+# DOF: 96^3 | NSFR.IR-cDG-GL and NSFR.IR-cDG-GLL (BASELINE)
 #-----------------------------------------------------
 if(True):
     #-----------------------------------------------------
@@ -1779,7 +1791,7 @@ if(True):
     data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
     date_for_runs="."
     figure_subdirectory="2023_JCP"
-    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOF, CFL$=0.10$" # comment to turn off
     figure_filename_postfix = "96_baseline_scheme"
     legend_inside_input=True
     #-----------------------------------------------------
@@ -1807,7 +1819,7 @@ if(True):
     plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot)
 
 #=====================================================
-# DOFs: 256^3 | NSFR.IR-cDG-GL (BASELINE)
+# DOF: 256^3 | NSFR.IR-cDG-GL (BASELINE)
 #-----------------------------------------------------
 if(False):
     clr_input = ['tab:blue','tab:red','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
@@ -1815,8 +1827,8 @@ if(False):
     data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
     date_for_runs="."
     figure_subdirectory="2023_JCP"
-    # figure_title = "TGV at Re$_{\\infty}=1600$, P$3$, $256^{3}$ DOFs, CFL$=0.30$" # comment to turn off
-    figure_title = "TGV at Re$_{\\infty}=1600$, P$3$, $256^{3}$ DOFs" # comment to turn off
+    # figure_title = "TGV at Re$_{\\infty}=1600$, P$3$, $256^{3}$ DOF, CFL$=0.30$" # comment to turn off
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$3$, $256^{3}$ DOF" # comment to turn off
     figure_filename_postfix = "256_verification"
     legend_inside_input=True
     #-----------------------------------------------------
@@ -1862,8 +1874,8 @@ if(True):
     data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
     date_for_runs="."
     figure_subdirectory="2023_JCP"
-    # figure_title = "TGV at Re$_{\\infty}=1600$, P$3$, $256^{3}$ DOFs, CFL$=0.30$" # comment to turn off
-    figure_title = "TGV at Re$_{\\infty}=1600$, P$3$, $256^{3}$ DOFs" # comment to turn off
+    # figure_title = "TGV at Re$_{\\infty}=1600$, P$3$, $256^{3}$ DOF, CFL$=0.30$" # comment to turn off
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$3$, $256^{3}$ DOF" # comment to turn off
     figure_filename_postfix = "256_p3_OI_vs_SF"
     legend_inside_input=True
     #-----------------------------------------------------
@@ -1891,7 +1903,7 @@ if(True):
     plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,final_time_for_plot=10.0)
 
 #=====================================================
-# DOFs: 96^3 | High order poly instabilities
+# DOF: 96^3 | High order poly instabilities
 #-----------------------------------------------------
 if(False):
     # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
@@ -1899,7 +1911,7 @@ if(False):
     data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
     date_for_runs="."
     figure_subdirectory="2023_JCP"
-    figure_title = "TGV at Re$_{\\infty}=1600$, P$7$, $64^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$7$, $64^{3}$ DOF, CFL$=0.10$" # comment to turn off
     figure_filename_postfix = "64_high_poly_degree"
     legend_inside_input=True
     #-----------------------------------------------------
@@ -1945,14 +1957,14 @@ if(False):
     #-----------------------------------------------------
 
 #=====================================================
-# DOFs: 96^3 | NSFR.IR-cDG (GL and GLL) WITH OVERINTEGRATION
+# DOF: 96^3 | NSFR.IR-cDG (GL and GLL) WITH OVERINTEGRATION
 #-----------------------------------------------------
 if(False):
     reinit_inputs()
     data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
     date_for_runs="."
     figure_subdirectory="2023_JCP"
-    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOF, CFL$=0.10$" # comment to turn off
     figure_filename_postfix = "96_overintegration"
     legend_inside_input=True
     #-----------------------------------------------------
@@ -2003,14 +2015,14 @@ if(False):
     #-----------------------------------------------------
 
 #=====================================================
-# DOFs: 96^3 | Flux Nodes (cDG NSFR vs Strong DG)
+# DOF: 96^3 | Flux Nodes (cDG NSFR vs Strong DG)
 #-----------------------------------------------------
 if(False):
     reinit_inputs()
     data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
     date_for_runs="."
     figure_subdirectory="2023_JCP"
-    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOF, CFL$=0.10$" # comment to turn off
     figure_filename_postfix = "96_flux_nodes"
     legend_inside_input=True
     #-----------------------------------------------------
@@ -2063,14 +2075,14 @@ if(False):
     #-----------------------------------------------------
 
 #=====================================================
-# DOFs: 96^3 | Upwind dissipation on GLL flux nodes
+# DOF: 96^3 | Upwind dissipation on GLL flux nodes
 #-----------------------------------------------------
 if(False):
     reinit_inputs()
     data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
     date_for_runs="."
     figure_subdirectory="2023_JCP"
-    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOF, CFL$=0.10$" # comment to turn off
     figure_filename_postfix = "96_upwind_gll"
     legend_inside_input=True
     #-----------------------------------------------------
@@ -2121,14 +2133,14 @@ if(False):
     #-----------------------------------------------------
 
 #=====================================================
-# DOFs: 96^3 | Filter width stabilization
+# DOF: 96^3 | Filter width stabilization
 #-----------------------------------------------------
 if(False):
     reinit_inputs()
     data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
     date_for_runs="."
     figure_subdirectory="2023_JCP"
-    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOF, CFL$=0.10$" # comment to turn off
     figure_filename_postfix = "96_filter_width_stabilization"
     legend_inside_input=True
     #-----------------------------------------------------
@@ -2217,14 +2229,14 @@ if(False):
     #-----------------------------------------------------
 
 #=====================================================
-# DOFs: 96^3 | Filter width stabilization
+# DOF: 96^3 | Filter width stabilization
 #-----------------------------------------------------
 if(False):
     reinit_inputs()
     data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
     date_for_runs="."
     figure_subdirectory="2023_JCP"
-    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOF, CFL$=0.10$" # comment to turn off
     figure_filename_postfix = "96_filter_width_stabilization_gll"
     legend_inside_input=True
     # #-----------------------------------------------------
@@ -2313,14 +2325,14 @@ if(False):
     #-----------------------------------------------------
 
 # #=====================================================
-# # DOFs: 96^3 | Filter width stabilization
+# # DOF: 96^3 | Filter width stabilization
 # #-----------------------------------------------------
 # if(False):
 #     reinit_inputs()
 #     data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
 #     date_for_runs="."
 #     figure_subdirectory="2023_JCP"
-#     figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+#     figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOF, CFL$=0.10$" # comment to turn off
 #     figure_filename_postfix = "96_filter_width_stabilization"
 #     legend_inside_input=True
 #     #-----------------------------------------------------
@@ -2402,14 +2414,14 @@ if(False):
 #     #-----------------------------------------------------
 
 #=====================================================
-# DOFs: 96^3 | NSFR Correction Parameter
+# DOF: 96^3 | NSFR Correction Parameter
 #-----------------------------------------------------
 if(False):
     reinit_inputs()
     data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
     date_for_runs="."
     figure_subdirectory="2023_JCP"
-    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOFs, CFL$=0.10$" # comment to turn off
+    figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOF, CFL$=0.10$" # comment to turn off
     figure_filename_postfix = "96_correction_parameter"
     legend_inside_input=True
     #-----------------------------------------------------

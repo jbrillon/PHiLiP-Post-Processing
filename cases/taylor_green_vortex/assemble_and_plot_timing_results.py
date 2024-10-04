@@ -131,7 +131,7 @@ else:
 # y_store.append(avg_NSFR_store_cpu_time_per_step)
 # labels_store.append("$c_{DG}$ NSFR.IR-GL")
 title_label="TGV at Re$_{\\infty}=1600$ with $%i^3$ Elements on %i CPUs" % (4,nCPUs)
-qp.plotfxn(xdata=x_store,ydata=y_store,xlabel="Polynomial Degree, P",ylabel="CPU Time for One Time Step [s]",
+qp.plotfxn(xdata=x_store,ydata=y_store,xlabel="Polynomial Degree, p",ylabel="CPU Time for One Time Step [s]",
             # title_label=title_label,
             fig_directory="figures/2023_JCP",
             figure_filename=figure_filename_input,
@@ -180,12 +180,12 @@ order_for_ref_curve = 3.0+1.0
 reference_curve = (reference_curve_x**(order_for_ref_curve))/np.exp(shift)
 x_store.append(reference_curve_x)
 y_store.append(reference_curve) # p^(d+1)
-labels_store.append("P$^{d+1}$")
+labels_store.append("p$^{d+1}$")
 # to do: (1) See task (2) first; write these x and y data to files so that I can delete the entire cpu_time_advantage_runs_for_averaging directory and plot faster
 #        (2) split this code into the assembly that generates the file for (1); and the other that takes that assembled file and plots it
 
 # loglog
-qp.plotfxn(xdata=x_store,ydata=y_store,xlabel="Polynomial Degree, P",ylabel="CPU Time for One Time Step [s]",
+qp.plotfxn(xdata=x_store,ydata=y_store,xlabel="Polynomial Degree, p",ylabel="CPU Time for One Time Step [s]",
             # title_label=title_label,
             fig_directory="figures/2023_JCP",
             figure_filename=figure_filename_input,
@@ -212,7 +212,7 @@ if(strong_DG_vs_NSFR):
     figure_filename_input = "cpu_timing_vs_poly_averaged_semilog_1"
 else:
     figure_filename_input = "cpu_timing_coll_vs_uncoll_averaged_semilog_1"
-qp.plotfxn(xdata=x_store,ydata=y_store,xlabel="Polynomial Degree, P",ylabel="CPU Time for One Time Step [s]",
+qp.plotfxn(xdata=x_store,ydata=y_store,xlabel="Polynomial Degree, p",ylabel="CPU Time for One Time Step [s]",
             # title_label=title_label,
             fig_directory="figures/2023_JCP",
             figure_filename=figure_filename_input,
@@ -248,7 +248,7 @@ if(strong_DG_vs_NSFR):
     title_label="TGV at Re$_{\\infty}=1600$ with $%i^3$ Elements on %i CPUs" % (4,nCPUs)
 
     # loglog
-    qp.plotfxn(xdata=x_store,ydata=y_store,xlabel="Polynomial Degree, P",ylabel="Ratio of CPU Time for One Time Step",
+    qp.plotfxn(xdata=x_store,ydata=y_store,xlabel="Polynomial Degree, p",ylabel="Ratio of CPU Time for One Time Step",
                 # title_label=title_label,
                 fig_directory="figures/2023_JCP",
                 figure_filename=figure_filename_input,

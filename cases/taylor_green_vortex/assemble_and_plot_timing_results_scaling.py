@@ -63,7 +63,7 @@ labels_store = []
 x_store.append(nCPUs_store)
 y_store.append(avg_NSFR_store_cpu_time_per_step)
 labels_store.append("$c_{DG}$ NSFR.IR-GL")
-title_label="TGV at Re$_{\\infty}=1600$ with $%i^{3}$ DOFs (P$%i$, $N_{el}=%i^3$)" % (dofs,poly_degree,number_of_elements_per_direction)
+title_label="TGV at Re$_{\\infty}=1600$ with $%i^{3}$ DOFs (p$%i$, $N_{el}=%i^3$)" % (dofs,poly_degree,number_of_elements_per_direction)
 # figure_filename_input = "strong_scaling_p5_96_averaged"
 # qp.plotfxn(xdata=x_store,ydata=y_store,xlabel="Number of CPUs",ylabel="CPU Time for One Time Step [s]",
 #             title_label=title_label,

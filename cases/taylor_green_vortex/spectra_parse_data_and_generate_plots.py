@@ -138,7 +138,7 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
         clr_input_store.insert(i_curve,"k")
         filepath_to_reference_result=CURRENT_PATH+"data/brillon/flow_field_files/velocity_vorticity_p7_dofs256-0_reordered_spectra.dat"
         spectra = np.loadtxt(filepath_to_reference_result)
-        append_to_plot(spectra[:,0],spectra[:,1],"DNS ($256^3$ DOFs, P$7$)")
+        append_to_plot(spectra[:,0],spectra[:,1],"DNS ($256^3$ DOF, p$7$)")
         i_curve += 1
     elif(plot_reference_result):
         # which_lines_black.append(0)
@@ -156,7 +156,7 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
     if(plot_filtered_dns):
         # filepath_to_reference_result=CURRENT_PATH+"data/brillon/flow_field_files/velocity_vorticity_p7_dofs256_projected_to_p2_dofs096-0_reordered_spectra_oversampled_nquad12.dat"
         # spectra = np.loadtxt(filepath_to_reference_result)
-        # append_to_plot(spectra[:,0],spectra[:,1],"Projected DNS ($96^3$ DOFs, P$2$)")
+        # append_to_plot(spectra[:,0],spectra[:,1],"Projected DNS ($96^3$ DOFs, p$2$)")
         clr_input_store.insert(i_curve,"k")
         # which_lines_black.append(i_curve)
         if(solid_and_dashed_lines or dashed_and_solid_lines or markers_on):
@@ -244,7 +244,7 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
     if(plot_PHiLiP_DNS_result_as_reference):
         filepath_to_reference_result=CURRENT_PATH+"data/brillon/flow_field_files/velocity_vorticity_p7_dofs256-1_reordered_spectra_oversampled_nquad16.dat"
         spectra = np.loadtxt(filepath_to_reference_result)
-        append_to_plot(spectra[:,0],spectra[:,1],"DNS ($256^{3}$p$7$)")
+        append_to_plot(spectra[:,0],spectra[:,1],"DNS ($256^{3}$ DOF, p$7$)")
         i_curve += 1
     elif(plot_reference_result):
         # Note: This is the 512^3 spectral reference result in their paper
@@ -256,7 +256,7 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
         spectra_ = np.loadtxt(filepath_to_reference_result)
         # spectra = get_truncated_spectra_from_DOFs_information(spectra_, 2, 32)
         spectra = get_truncated_spectra_from_DOFs_information(spectra_, 5, 16, truncate_spectra_at_effective_DOFs) # to match cut-off for 96P5
-        append_to_plot(spectra[:,0],spectra[:,1],"Projected DNS ($96^{3}$p$2$)")
+        append_to_plot(spectra[:,0],spectra[:,1],"Projected DNS\n ($96^{3}$ DOF, p$2$)")
         # clr_input_store.insert(i_curve,"k")
         # which_lines_black.append(i_curve)
         # mrkr_input_store.insert(i_curve,'None')
@@ -372,7 +372,7 @@ def batch_compute_resolved_turbulent_kinetic_energy(
 #=====================================================
 global x,y,labels
 x=[];y=[];labels=[];
-regenerate_all_plots=True
+regenerate_all_plots=False
 title_off_input=True
 # fig_dir_input="figures"
 # fig_dir_input="/Users/Julien/julien_phd/presentations/slides/wip_paper/20221205-AIAA/figures"
@@ -395,8 +395,8 @@ if(True or regenerate_all_plots):
     # "Strong DG-Roe-GL-OI", \
     "GL", \
     "GLL", \
-    "GL-OI-3", \
-    "GLL-OI-3", \
+    "GL-OI.3", \
+    "GLL-OI.3", \
     ]
     list_of_poly_degree=[5,5,5,5,5]
     list_of_number_of_elements_per_direction=[16,16,16,16,16]
@@ -413,7 +413,7 @@ if(True or regenerate_all_plots):
         list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
 
 # =====================================================
-if(False or regenerate_all_plots):
+if(True or regenerate_all_plots):
     batch_paths = [ \
     "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
     "NarvalFiles/2023_JCP/high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs064_p7_procs512/",\
@@ -422,14 +422,14 @@ if(False or regenerate_all_plots):
     # "NarvalFiles/2023_JCP/filtered_dns_viscous_tgv/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024/",\
     ]
     batch_labels = [ \
-    # "$96^{3}$ DOFs, P$5$", \
-    # "$64^{3}$ DOFs, P$7$", \
-    # "$48^{3}$ DOFs, P$5$",\
-    # "$24^{3}$ DOFs, P$5$",\
-    "$96^{3}$p$5$", \
-    "$64^{3}$p$7$", \
-    "$48^{3}$p$5$",\
-    "$24^{3}$p$5$",\
+    "$96^{3}$ DOF, p$5$", \
+    "$64^{3}$ DOF, p$7$", \
+    "$48^{3}$ DOF, p$5$",\
+    "$24^{3}$ DOF, p$5$",\
+    # "$96^{3}$", \
+    # "$64^{3}$", \
+    # "$48^{3}$",\
+    # "$24^{3}$",\
     # "$32^{3}$p$7$",\
     ]
     list_of_poly_degree=[5,7,5,5,7]
@@ -446,7 +446,7 @@ if(False or regenerate_all_plots):
     batch_compute_resolved_turbulent_kinetic_energy(batch_paths,batch_labels,list_of_poly_degree,list_of_number_of_elements_per_direction)
 
 # =====================================================
-if(False or regenerate_all_plots):
+if(True or regenerate_all_plots):
     batch_paths = [ \
     "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
     "NarvalFiles/2023_JCP/spectra_fix/high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs064_p7_procs512/",\
@@ -455,14 +455,14 @@ if(False or regenerate_all_plots):
     # "NarvalFiles/2023_JCP/verification_tke_fix/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024_2refinements/",\
     ]
     batch_labels = [ \
-    # "$96^{3}$ DOFs, P$5$", \
-    # "$64^{3}$ DOFs, P$7$", \
-    # "$48^{3}$ DOFs, P$5$",\
-    # "$24^{3}$ DOFs, P$5$",\
-    "$96^{3}$p$5$", \
-    "$64^{3}$p$7$", \
-    "$48^{3}$p$5$",\
-    "$24^{3}$p$5$",\
+    "$96^{3}$ DOF, p$5$", \
+    "$64^{3}$ DOF, p$7$", \
+    "$48^{3}$ DOF, p$5$",\
+    "$24^{3}$ DOF, p$5$",\
+    # "$96^{3}$", \
+    # "$64^{3}$", \
+    # "$48^{3}$",\
+    # "$24^{3}$",\
     # "$32^{3}$p$7$",\
     ]
     list_of_poly_degree=[5,7,5,5,7]
@@ -477,7 +477,6 @@ if(False or regenerate_all_plots):
         list_of_poly_degree_input=list_of_poly_degree,
         list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
     batch_compute_resolved_turbulent_kinetic_energy(batch_paths,batch_labels,list_of_poly_degree,list_of_number_of_elements_per_direction)
-
 #=====================================================
 # DOFs: ALL | NSFR CONVERGENCE VERSION FOR WCCM
 #-----------------------------------------------------
@@ -524,11 +523,11 @@ if(False or regenerate_all_plots):
     "NarvalFiles/2023_JCP/verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs1024/",\
     ]
     batch_labels = [ \
-    "P$7$ $c_{DG}$ NSFR.IR-GL",\
-    "P$3$ $c_{DG}$ NSFR.IR-GL",\
-    "P$3$ $c_{DG}$ NSFR.IR-GL-Roe",\
-    "P$3$ Strong DG-Roe-GL-OI",\
-    "P$7$ $c_{DG}$ NSFR.IR-GLL",\
+    "p$7$ $c_{DG}$ NSFR.IR-GL",\
+    "p$3$ $c_{DG}$ NSFR.IR-GL",\
+    "p$3$ $c_{DG}$ NSFR.IR-GL-Roe",\
+    "p$3$ Strong DG-Roe-GL-OI",\
+    "p$7$ $c_{DG}$ NSFR.IR-GLL",\
     ]
     lnstl_input=['solid','solid','solid','solid','dashed','dashed']
     list_of_poly_degree=[7,3,3,3,7]
@@ -556,11 +555,11 @@ if(False or regenerate_all_plots):
     "NarvalFiles/2023_JCP/spectra_fix/verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs1024/",\
     ]
     batch_labels = [ \
-    "P$7$ $c_{DG}$ NSFR.IR-GL",\
-    "P$3$ $c_{DG}$ NSFR.IR-GL",\
-    "P$3$ $c_{DG}$ NSFR.IR-GL-Roe",\
-    "P$3$ Strong DG-Roe-GL-OI",\
-    "P$7$ $c_{DG}$ NSFR.IR-GLL",\
+    "p$7$ $c_{DG}$ NSFR.IR-GL",\
+    "p$3$ $c_{DG}$ NSFR.IR-GL",\
+    "p$3$ $c_{DG}$ NSFR.IR-GL-Roe",\
+    "p$3$ Strong DG-Roe-GL-OI",\
+    "p$7$ $c_{DG}$ NSFR.IR-GLL",\
     ]
     lnstl_input=['solid','solid','solid','solid','dashed','dashed']
     list_of_poly_degree=[7,3,3,3,7]
@@ -629,8 +628,8 @@ if(True or regenerate_all_plots):
     "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512/", \
     ]
     batch_labels = [ \
-    "P$5$ $c_{DG}$ NSFR.IR-GL",\
-    "P$5$ $c_{DG}$ NSFR.IR-GLL",\
+    "p$5$ $c_{DG}$ NSFR.IR-GL",\
+    "p$5$ $c_{DG}$ NSFR.IR-GLL",\
     ]
     lnstl_input=['solid','solid']
     list_of_poly_degree=[5,5]
@@ -655,8 +654,8 @@ if(True or regenerate_all_plots):
     "NarvalFiles/2023_JCP/spectra_fix/verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs1024/",\
     ]
     batch_labels = [ \
-    "P$7$ $c_{DG}$ NSFR.IR-GL",\
-    "P$7$ $c_{DG}$ NSFR.IR-GLL",\
+    "p$7$ $c_{DG}$ NSFR.IR-GL",\
+    "p$7$ $c_{DG}$ NSFR.IR-GLL",\
     ]
     lnstl_input=['solid','solid']
     list_of_poly_degree=[7,7]
@@ -705,8 +704,8 @@ if(False or regenerate_all_plots):
     "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
     ]
     batch_labels = [ \
-    "$96^{3}$p$5$, $c_{DG}$", \
-    "$96^{3}$p$5$, $c_{DG}$, oversampled", \
+    "$96^{3}$, $c_{DG}$", \
+    "$96^{3}$, $c_{DG}$, oversampled", \
     ]
     list_of_poly_degree=[5,5,7,7,5,5]
     list_of_number_of_elements_per_direction=[16,16,8,8,8,8]
@@ -730,14 +729,14 @@ if(False or regenerate_all_plots):
     "NarvalFiles/2023_JCP/spectra_fix/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs024_p5_procs16/",\
     ]
     batch_labels = [ \
-    # "$96^{3}$ DOFs, P$5$", \
-    # "$64^{3}$ DOFs, P$7$", \
-    # "$48^{3}$ DOFs, P$5$",\
-    # "$24^{3}$ DOFs, P$5$",\
-    "$96^{3}$p$5$", \
-    "$64^{3}$p$7$", \
-    "$48^{3}$p$5$",\
-    "$24^{3}$p$5$",\
+    # "$96^{3}$ DOFs, p$5$", \
+    # "$64^{3}$ DOFs, p$7$", \
+    # "$48^{3}$ DOFs, p$5$",\
+    # "$24^{3}$ DOFs, p$5$",\
+    "$96^{3}$", \
+    "$64^{3}$", \
+    "$48^{3}$",\
+    "$24^{3}$",\
     ]
     list_of_poly_degree=[5,7,5,5]
     list_of_number_of_elements_per_direction=[16,8,8,4]
@@ -762,12 +761,12 @@ if(True or regenerate_all_plots):
     "NarvalFiles/2023_JCP/spectra_fix/robustness/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs048_p5_procs64/",\
     ]
     batch_labels = [ \
-    "$96^{3}$p$5$, $c_{DG}$", \
-    "$96^{3}$p$5$, sDG-OI.6", \
-    "$64^{3}$p$7$, $c_{DG}$", \
-    "$64^{3}$p$7$, sDG-OI.6", \
-    "$48^{3}$p$5$, $c_{DG}$",\
-    "$48^{3}$p$5$, sDG-OI.6",\
+    "$96^{3}$ DOF, p$5$, $c_{DG}$", \
+    "$96^{3}$ DOF, p$5$, sDG-OI.6", \
+    "$64^{3}$ DOF, p$7$, $c_{DG}$", \
+    "$64^{3}$ DOF, p$7$, sDG-OI.8", \
+    "$48^{3}$ DOF, p$5$, $c_{DG}$",\
+    "$48^{3}$ DOF, p$5$, sDG-OI.6",\
     ]
     list_of_poly_degree=[5,5,7,7,5,5]
     list_of_number_of_elements_per_direction=[16,16,8,8,8,8]
@@ -840,7 +839,7 @@ if(False or regenerate_all_plots):
         list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
 
 # =====================================================
-if(False or regenerate_all_plots):
+if(True or regenerate_all_plots):
     batch_paths = [ \
     "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
     "NarvalFiles/2023_JCP/spectra_fix/correction_parameter/viscous_TGV_ILES_NSFR_cSD_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
@@ -868,7 +867,7 @@ if(False or regenerate_all_plots):
         list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
 
 # =====================================================
-if(False or regenerate_all_plots):
+if(True or regenerate_all_plots):
     batch_paths = [ \
     "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
     "NarvalFiles/2023_JCP/spectra_fix/time_step_advantage_with_physical_check/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.26_procs512/",\
@@ -889,13 +888,13 @@ if(False or regenerate_all_plots):
     list_of_number_of_elements_per_direction=[16,16,16,16,16,16]
     
     batch_plot_spectra(96,"p5_correction_parameter_cfl_advantage",batch_paths,batch_labels,
-        solid_and_dashed_lines=True,
+        solid_and_dashed_lines=False,
         title_off=title_off_input,figure_directory=fig_dir_input,
         plot_cutoff_wavenumber_asymptote=True,
         plot_PHiLiP_DNS_result_as_reference=True,
         plot_filtered_dns=True,
         plot_zoomed_section=True,
-        which_lines_dashed=[],
+        which_lines_dashed=[2,4,6],
         list_of_poly_degree_input=list_of_poly_degree,
         list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
 
@@ -927,7 +926,7 @@ if(True or regenerate_all_plots):
         list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction,
         markers_on=True)
 # =====================================================
-if(False or regenerate_all_plots):
+if(True or regenerate_all_plots):
     batch_paths = [ \
     "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
     "NarvalFiles/2023_JCP/spectra_fix/upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-LxF_GL_OI-0_dofs096_p5_procs512/", \
@@ -935,7 +934,7 @@ if(False or regenerate_all_plots):
     "NarvalFiles/2023_JCP/spectra_fix/upwind_dissipation_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF-L2R_GL_OI-0_dofs096_p5_procs512/", \
     ]
     batch_labels = [ \
-    "No Upwinding", \
+    "$c_{DG}$ NSFR.IR-GL\n(No Upwinding)", \
     "LxF", \
     "Roe", \
     "L$^2$Roe", \
@@ -955,7 +954,7 @@ if(False or regenerate_all_plots):
         list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
 
 # =====================================================
-if(False or regenerate_all_plots):
+if(True or regenerate_all_plots):
     batch_paths = [ \
     "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
     "NarvalFiles/2023_JCP/spectra_fix/sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512/",\
@@ -965,7 +964,7 @@ if(False or regenerate_all_plots):
     "NarvalFiles/2023_JCP/spectra_fix/sgs_model_GL_flux_nodes/viscous_TGV_LES_DYNAMIC.SMAG.LRNC_CLIPMC-0.01-pL3_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16_corrected/",\
     ]
     batch_labels = [ \
-    "No Model", \
+    "$c_{DG}$ NSFR.IR-GL\n(No SGS Model)", \
     "SM", \
     "SI.SM", \
     "HPF.SM", \
@@ -988,14 +987,14 @@ if(False or regenerate_all_plots):
         list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
 
 # =====================================================
-if(False or regenerate_all_plots):
+if(True or regenerate_all_plots):
     batch_paths = [ \
     "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GLL_OI-6_dofs096_p5_procs512/", \
     "NarvalFiles/2023_JCP/spectra_fix/sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SI.SMAG.LRNC_MC-0.10_strong_DG_Roe_GLL_OI-0_dofs096_p5_CFL-0.1_procs512/", \
     ]
     batch_labels = [ \
-    "sDG-GLL-OI", \
-    "sDG-GLL-HPF.SI.SM", \
+    "sDG-OI.6", \
+    "sDG-OI.0-HPF.SI.SM", \
     ]
     list_of_poly_degree=[5,5]
     list_of_number_of_elements_per_direction=[16,16]

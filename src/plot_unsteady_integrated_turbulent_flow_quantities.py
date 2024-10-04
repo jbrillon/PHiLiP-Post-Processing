@@ -74,6 +74,7 @@ def plot_periodic_turbulence(
     plot_zoomed_section_enstrophy=False,
     dofs_for_zoomed_section=256,
     plot_zoomed_section_pressure_dilatation=False,
+    plot_secondary_zoomed_section_numerical_dissipation_components=False,
     ):
     # plotting parameters store
     labels_store = []
@@ -114,8 +115,8 @@ def plot_periodic_turbulence(
             time, kinetic_energy = np.loadtxt(filename,skiprows=0,dtype=np.float64,unpack=True)
             time_store.append(time)
             kinetic_energy_store.append(kinetic_energy)
-            # labels_store.append("Spectral DNS (P4, $260^{3}$ DOFs)")
-            # labels_store.append("DNS ($260^{3}$ DOFs)\n [Vermeire, 2014]")
+            # labels_store.append("Spectral DNS (P4, $260^{3}$ DOF)")
+            # labels_store.append("DNS ($260^{3}$ DOF)\n [Vermeire, 2014]")
             labels_store.append("DNS [Vermeire]")
             # DNS - dissipation
             filename=path_to_reference_result+"/"+"dissipation"+".txt"
@@ -154,7 +155,7 @@ def plot_periodic_turbulence(
         if(lnstl_input!=[]):
             lnstl_input_store.append('solid') # supported values are '-', '--', '-.', ':', 'None', ' ', '', 'solid', 'dashed', 'dashdot', 'dotted'
     elif(plot_PHiLiP_DNS_result_as_reference):
-        labels_store.append("DNS ($256^3$ DOFs, P$7$)")
+        labels_store.append("DNS ($256^3$ DOF, p$7$)")
         path_to_reference_result=CURRENT_PATH+"../cases/taylor_green_vortex/data/brillon"
         filename=path_to_reference_result+"/"+"turbulent_quantities_256dofs_p7"+".txt"
         time, kinetic_energy, enstrophy, vorticity_based_dissipation, pressure_dilatation_based_dissipation, strain_rate_based_dissipation, deviatoric_strain_rate_based_dissipation = np.loadtxt(filename,skiprows=1,dtype=np.float64,unpack=True)
@@ -187,7 +188,7 @@ def plot_periodic_turbulence(
         if(lnstl_input!=[]):
             lnstl_input_store.append('solid') # supported values are '-', '--', '-.', ':', 'None', ' ', '', 'solid', 'dashed', 'dashdot', 'dotted'
     if(plot_filtered_dns):
-        labels_store.append("Projected DNS\n($96^3$ DOFs, P$2$)")
+        labels_store.append("Projected DNS\n($96^3$ DOF, p$2$)")
         path_to_reference_result=CURRENT_PATH+"../cases/taylor_green_vortex/data/brillon/filtered_dns"
         filename=path_to_reference_result+"/"+"turbulent_quantities_96dofs_p2"+".txt"
         time, kinetic_energy, enstrophy, vorticity_based_dissipation, pressure_dilatation_based_dissipation, strain_rate_based_dissipation, deviatoric_strain_rate_based_dissipation = np.loadtxt(filename,skiprows=1,dtype=np.float64,unpack=True)
@@ -445,6 +446,16 @@ def plot_periodic_turbulence(
                 y_limits_zoom=[0.008, 0.0135]
                 x_limits_zoom=[7.5, 11]
 
+        # initialize default values
+        x_limits_secondary_zoom_input=[]
+        y_limits_secondary_zoom_input=[]
+        secondary_zoom_box_origin_and_extent_input=[]
+        if(plot_secondary_zoomed_section_numerical_dissipation_components):
+            x_limits_secondary_zoom_input=[8, 10.5]
+            y_limits_secondary_zoom_input=[0.0, 0.0006]
+            secondary_zoom_box_origin_and_extent_input=[0.65, 0.37, 0.32, 0.25]
+            
+
         qp.plotfxn(xdata=KE_molecular_and_numerical_dissipation_x_store,
                     ydata=KE_molecular_and_numerical_dissipation_y_store,
                     ylabel='Nondimensional Dissipation Components',
@@ -478,7 +489,10 @@ def plot_periodic_turbulence(
                     second_leg_anchor=second_leg_anchor_input,
                     plot_zoomed_section=plot_zoomed_section_numerical_dissipation_components,
                     x_limits_zoom=x_limits_zoom,y_limits_zoom=y_limits_zoom,
-                    zoom_box_origin_and_extent=zoom_box_origin_and_extent_input)
+                    zoom_box_origin_and_extent=zoom_box_origin_and_extent_input,
+                    plot_secondary_zoomed_section=plot_secondary_zoomed_section_numerical_dissipation_components,
+                    x_limits_secondary_zoom=x_limits_secondary_zoom_input,y_limits_secondary_zoom=y_limits_secondary_zoom_input,
+                    secondary_zoom_box_origin_and_extent=secondary_zoom_box_origin_and_extent_input)
 
     if(plot_reference_result and reference_result_author=="Vermeire"):
         # DNS - enstrophy
@@ -735,6 +749,7 @@ def plot_periodic_turbulence(
                 figure_size=(6,6),
                 transparent_legend=transparent_legend_input,
                 legend_border_on=False,
+                # legend_location="upper left",
                 grid_lines_on=False,
                 fig_directory=figure_directory_base,
                 clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
@@ -776,7 +791,7 @@ def plot_periodic_turbulence(
         # labels_store.insert(0,"DRP $512^2$")
         time_store.append(time)
         eps_K_minus_eps_Sd_store.append(pressure_dilatation_based_dissipation)
-        labels_store.append("DRP [DeBonis]\n $512^3$ DOFs")
+        labels_store.append("DRP [DeBonis]\n $512^3$ DOF")
         which_lines_black_input = [number_of_result_curves]
         which_lines_dashed_input = [number_of_result_curves]
         if(clr_input!=[]):
@@ -794,7 +809,7 @@ def plot_periodic_turbulence(
         # labels_store.insert(0,"DRP $512^2$")
         time_store.append(time)
         eps_K_minus_eps_Sd_store.append(pressure_dilatation_based_dissipation)
-        labels_store.append("DG [Chapelier et al.]\n $256^3$ DOFs ($64$p$3$)")
+        labels_store.append("DG [Chapelier et al.]\n $256^3$ DOF, p$3$")
         which_lines_black_input = [number_of_result_curves,number_of_result_curves+1]
         which_lines_dotted_input = [number_of_result_curves+1]
         if(clr_input!=[]):
