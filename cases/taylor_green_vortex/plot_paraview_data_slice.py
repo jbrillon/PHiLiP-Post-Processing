@@ -122,7 +122,7 @@ def plot_vorticity_plane(path,filename_without_extension,file_extension,fig_dire
     y_label = "$z$"
     x_label = "$y$"
     z_label = "$|\\Omega|$"
-    fig, ax = plt.subplots(figsize=(6,4))
+    fig, ax = plt.subplots(figsize=(6,6)) # use (6,4) for 256^3 DOF
     # fig = plt.figure(figsize=(6,6))
     # plt.xlim([np.amin(X),np.amax(X)]) # if not provided
     # plt.ylim([np.amin(Y),np.amax(Y)]) # if not provided
@@ -134,8 +134,8 @@ def plot_vorticity_plane(path,filename_without_extension,file_extension,fig_dire
         plt.ylim([element_edges[y_edge_index],element_edges[y_edge_index+1]])
     else:
         plt.xlim([0.0,np.pi])
-        # plt.ylim([-np.pi,0.0])
-        plt.ylim([-2.5,-0.6])
+        plt.ylim([-np.pi,0.0])
+        # plt.ylim([-2.5,-0.6]) # for 256^3 DOF
 
     ax.set_xlabel(x_label,fontsize=axisTitle_FontSize)
     ax.set_ylabel(y_label,rotation=90,fontsize=axisTitle_FontSize)
@@ -194,7 +194,7 @@ def plot_vorticity_plane(path,filename_without_extension,file_extension,fig_dire
     if(fill_contour):
         cbar.remove()
 
-    plt.axis('off')
+    # plt.axis('off')
     plt.tight_layout()
     print('\t ... Saving figure ...')
     # plt.show()
@@ -203,6 +203,39 @@ def plot_vorticity_plane(path,filename_without_extension,file_extension,fig_dire
     print('\t     Saved.')
     print("---------------------------------------------")
     return
+
+# lets check the 96^3 DOFs P5 results
+paths=(
+filesystem+"NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/flow_field_files/",\
+filesystem+"NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/flow_field_files/",\
+)
+files_per_path=[2,2]
+
+file_extension="dat"
+n_paths=len(paths)
+
+fig_directory = "./figures/2023_JCP"
+labels_for_plot=[\
+    "$96^3$ DOF p$5$ $c_{DG}$ NSFR.IR-GL",\
+    "Oversampled $96^3$ DOF p$5$ $c_{DG}$ NSFR.IR-GL",\
+]
+fig_prepre_fix = [\
+    "new_96_p5_NSFR_cDG_IR_GL_",\
+    "new_96_p5_NSFR_cDG_IR_GL_oversampled_",\
+]
+shift_domain_by_minus_pi_store=[False,True]
+
+for i in range(0,n_paths):
+    for j in range(1,files_per_path[i]):
+            filename_without_extension = "velocity_vorticity-%i_reordered_slice_interface_averaged" % j
+            plot_title = labels_for_plot[i]
+            plot_vorticity_plane(paths[i],filename_without_extension,file_extension,fig_directory,fig_prepre_fix[i],
+                subdivide=False,
+                #title_label=plot_title,
+                fill_contour=True,plot_reference_result=False,
+                shift_domain_by_minus_pi=shift_domain_by_minus_pi_store[i],
+                plot_single_element_domain=False)
+exit()
 
 # DNS STUFF FROM PAPER BELOW
 # output_solution_fixed_times_string = [0.0,4.0,5.0,8.0,9.0,10.0,12.0,15.0,16.0,20.0]
@@ -270,34 +303,4 @@ for i in range(0,n_paths):
                 #title_label=plot_title,
                 fill_contour=False,plot_reference_result=True)
 
-exit()
-# lets check the 96^3 DOFs P5 results
-paths=(
-filesystem+"NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/flow_field_files/",\
-filesystem+"NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/flow_field_files/",\
-)
-files_per_path=[2,2]
-
-file_extension="dat"
-n_paths=len(paths)
-
-fig_directory = "./figures/2023_JCP"
-labels_for_plot=[\
-    "$96^3$ P$5$ $c_{DG}$ NSFR.IR-GL",\
-    "Oversampled $96^3$ P$5$ $c_{DG}$ NSFR.IR-GL",\
-]
-fig_prepre_fix = [\
-    "new_96_p5_NSFR_cDG_IR_GL_",\
-    "new_96_p5_NSFR_cDG_IR_GL_oversampled_",\
-]
-shift_domain_by_minus_pi_store=[False,True]
-
-for i in range(0,n_paths):
-    for j in range(1,files_per_path[i]):
-            filename_without_extension = "velocity_vorticity-%i_reordered_slice_interface_averaged" % j
-            plot_title = labels_for_plot[i]
-            plot_vorticity_plane(paths[i],filename_without_extension,file_extension,fig_directory,fig_prepre_fix[i],
-                subdivide=False,title_label=plot_title,fill_contour=True,plot_reference_result=False,
-                shift_domain_by_minus_pi=shift_domain_by_minus_pi_store[i],
-                plot_single_element_domain=False)
 exit()

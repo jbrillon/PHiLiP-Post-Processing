@@ -19,6 +19,7 @@ sys.path.append(CURRENT_PATH+"../../submodules/quickplotlib/lib"); import quickp
 #     # OS X
 #     sys.path.append("/Users/Julien/Python/quickplotlib/lib"); import quickplotlib as qp # uncomment if testing quickplotlib changes
 from scipy import integrate
+import matplotlib;from matplotlib.lines import Line2D
 #-----------------------------------------------------
 from sys import platform
 if platform == "linux" or platform == "linux2":
@@ -51,19 +52,31 @@ def get_truncated_spectra_from_DOFs_information(spectra, poly_degree, number_of_
     cutoff_wavenumber = get_cutoff_wavenumber(poly_degree,number_of_elements_per_direction,truncate_spectra_at_effective_DOFs)
     return get_truncated_spectra_from_cutoff_wavenumber_and_spectra(spectra,cutoff_wavenumber)
 #-----------------------------------------------------
+def get_unresolved_spectra_from_DOFs_information(spectra, poly_degree, number_of_elements_per_direction,truncate_spectra_at_effective_DOFs):
+    cutoff_wavenumber = get_cutoff_wavenumber(poly_degree,number_of_elements_per_direction,truncate_spectra_at_effective_DOFs)
+    idx = (np.abs(spectra[:,0] - cutoff_wavenumber)).argmin()
+    # return spectra[(idx+1):,:]
+    return spectra[(idx):,:]
+#-----------------------------------------------------
 def append_to_plot(x_,y_,label_):
     global x,y,labels
     labels.append(label_);x.append(x_);y.append(y_)
 #-----------------------------------------------------
-def batch_append_to_plot(paths_,labels_,filename,list_of_poly_degree_,list_of_number_of_elements_per_direction_,truncate_spectra_at_effective_DOFs):
+def batch_append_to_plot(paths_,labels_,filename,list_of_poly_degree_,list_of_number_of_elements_per_direction_,truncate_spectra_at_effective_DOFs,
+    append_unresolved_wavenumber_range=False):
     global x,y,labels
     for i,path in enumerate(paths_):
         spectra_ = np.loadtxt(filesystem+path+filename)
         poly_degree = list_of_poly_degree_[i]
         number_of_elements_per_direction = list_of_number_of_elements_per_direction_[i]
-        spectra = get_truncated_spectra_from_DOFs_information(spectra_, poly_degree, number_of_elements_per_direction,truncate_spectra_at_effective_DOFs)
-        # spectra = 1.0*spectra_ # uncomment for no truncation
-        append_to_plot(spectra[:,0],spectra[:,1],labels_[i])
+        if(append_unresolved_wavenumber_range):
+            spectra = get_unresolved_spectra_from_DOFs_information(spectra_, poly_degree, number_of_elements_per_direction,truncate_spectra_at_effective_DOFs)
+            x.append(spectra[:,0]);y.append(spectra[:,1])
+            labels.append("unresolved")
+        else:
+            spectra = get_truncated_spectra_from_DOFs_information(spectra_, poly_degree, number_of_elements_per_direction,truncate_spectra_at_effective_DOFs)
+            # spectra = 1.0*spectra_ # uncomment for no truncation
+            append_to_plot(spectra[:,0],spectra[:,1],labels_[i])
 #-----------------------------------------------------
 def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
     solid_and_dashed_lines=False,
@@ -84,7 +97,10 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
     list_of_number_of_elements_per_direction_input=[],
     truncate_spectra_at_effective_DOFs=True, # Modify this here
     fix_legend_location_for_presentation=False,
-    markers_on=False):
+    markers_on=False,
+    plot_unresolved_wavenumber_range_as_dashed=False,
+    plot_full_wavenumber_range_of_reference_DNS=False,
+    extend_y_max_limit=False):
     # TO DO: Move this function to its own file
     global x,y,labels
     x=[];y=[];labels=[];
@@ -167,7 +183,7 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
 
     # compute reference curve 1
     index_of_reference_curve = len(batch_labels)+i_curve
-    x_ref_curve = np.linspace(2.0e0,2.0e2,100)
+    x_ref_curve = np.linspace(2.0e0,3.0e2,100)
     order_for_ref_curve = -5.0/3.0
     ref_curve_label = "$\\left(k^{*}\\right)^{-5/3}$"
     shift = 2.0
@@ -229,6 +245,8 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
     #     secondary_vertical_lines=grid_cutoff_wavenumber_store
     #     )
 
+    # t=9
+
     if(nDOF_=="all"):
         title_label = "TKE Spectra at $t^{*}=9.0$"
     else:
@@ -283,17 +301,57 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
         legend_anchor_input=[0.0,0.45]
         legend_location_input="upper left"
 
+    # for plotting unresolved spectra component
+    leg_elements_input=[]
+    clr_input_store_=[]
+    mrkr_input_store_=[]
+    lnstl_input_store_=[]
+    number_of_legend_entries = len(labels)
+    for i in range(0,number_of_legend_entries):
+        leg_elements_input.append(Line2D([0],[0], label=labels[i], color=clr_input_store[i],
+                                 marker=mrkr_input_store[i], markersize=6, mfc='None', linestyle=lnstl_input_store[i]))
+        clr_input_store_.append(clr_input_store[i])
+        mrkr_input_store_.append(mrkr_input_store[i])
+        lnstl_input_store_.append(lnstl_input_store[i])
+
+    if(plot_unresolved_wavenumber_range_as_dashed):
+        index_where_result_curves_start = labels.index(batch_labels[0])
+        number_of_result_curves = len(batch_labels)
+        # append the unresolved wavenumber range to the plotted x,y arrays
+        batch_append_to_plot(batch_paths, batch_labels, 
+            "flow_field_files/velocity_vorticity-1_reordered_spectra_no_smoothing.dat",
+            list_of_poly_degree_input, list_of_number_of_elements_per_direction_input,truncate_spectra_at_effective_DOFs,append_unresolved_wavenumber_range=True)
+        # set the line styles
+        for i in range(0,number_of_result_curves):
+            index_for_line_stuff = i+index_where_result_curves_start
+            clr_input_store_.append(clr_input_store[index_for_line_stuff])
+            mrkr_input_store_.append(mrkr_input_store[index_for_line_stuff])
+            lnstl_input_store_.append("dotted")
+
+    # regular range in paper
+    xlimits_=[4.0e0,112]; ylimits_=[4.0e-7,1e-2]
+    if(plot_full_wavenumber_range_of_reference_DNS):
+        # xlimits_=[2e0,7e1]; ylimits_=[2.45e-5,3e-2]
+        xlimits_=[4.0e0,240]; ylimits_=[1.0e-9,1e-2]
+    if(extend_y_max_limit):
+        ylimits_[1]=2e-2
+
     qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $k^{*}$",ylabel="Nondimensional TKE Spectra, $E^{*}(k^{*},t^{*})$",
         title_label=title_label,
+        leg_elements_input=leg_elements_input,
         fig_directory=figure_directory,figure_filename=figure_filename,log_axes="both",figure_filetype="pdf",
         nlegendcols=1,
-        # xlimits=[2e0,7e1],ylimits=[2.45e-5,3e-2],
-        xlimits=[4.0e0,112],ylimits=[4.0e-7,1e-2],
-        # xlimits=[4.0e0,240],ylimits=[1.0e-9,1e-2],
-        markers=False,legend_on=True,legend_labels_tex=labels,
+        xlimits=xlimits_,ylimits=ylimits_,
+        markers=False,
+        legend_on=True,
+        # legend_labels_tex=labels,
         which_lines_black=which_lines_black,
-        transparent_legend=False,legend_border_on=False,grid_lines_on=False,
-        clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
+        transparent_legend=False,
+        legend_border_on=False,
+        grid_lines_on=False,
+        clr_input=clr_input_store_,
+        mrkr_input=mrkr_input_store_,
+        lnstl_input=lnstl_input_store_,
         legend_fontSize=legend_fontSize_input,
         legend_location=legend_location_input,
         legend_anchor=legend_anchor_input,
@@ -385,6 +443,40 @@ fig_dir_input="./figures/2023_JCP/oversampled_spectra"
 # =====================================================
 if(True or regenerate_all_plots):
     batch_paths = [ \
+    "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
+    "NarvalFiles/2023_JCP/spectra_fix/high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs064_p7_procs512/",\
+    "NarvalFiles/2023_JCP/spectra_fix/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs048_p5_procs64/",\
+    "NarvalFiles/2023_JCP/spectra_fix/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs024_p5_procs16/",\
+    # "NarvalFiles/2023_JCP/verification_tke_fix/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024_2refinements/",\
+    ]
+    batch_labels = [ \
+    "$96^{3}$ DOF, p$5$", \
+    "$64^{3}$ DOF, p$7$", \
+    "$48^{3}$ DOF, p$5$",\
+    "$24^{3}$ DOF, p$5$",\
+    # "$96^{3}$", \
+    # "$64^{3}$", \
+    # "$48^{3}$",\
+    # "$24^{3}$",\
+    # "$32^{3}$p$7$",\
+    ]
+    list_of_poly_degree=[5,7,5,5,7]
+    list_of_number_of_elements_per_direction=[16,8,8,4,32]
+    
+    batch_plot_spectra("all","cDG_NSFR_convergence",batch_paths,batch_labels,
+        solid_and_dashed_lines=False,
+        title_off=title_off_input,figure_directory=fig_dir_input,
+        plot_cutoff_wavenumber_asymptote=True,
+        plot_PHiLiP_DNS_result_as_reference=True,
+        plot_filtered_dns=True,
+        list_of_poly_degree_input=list_of_poly_degree,
+        list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction,
+        plot_unresolved_wavenumber_range_as_dashed=True,
+        extend_y_max_limit=True)
+    batch_compute_resolved_turbulent_kinetic_energy(batch_paths,batch_labels,list_of_poly_degree,list_of_number_of_elements_per_direction)
+# =====================================================
+if(True or regenerate_all_plots):
+    batch_paths = [ \
     # "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-6_dofs096_p5_procs512/",\
     "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/", \
     "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs096_p5_procs512/", \
@@ -442,41 +534,11 @@ if(True or regenerate_all_plots):
         plot_PHiLiP_DNS_result_as_reference=True,
         plot_filtered_dns=True,
         list_of_poly_degree_input=list_of_poly_degree,
-        list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
+        list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction,
+        plot_unresolved_wavenumber_range_as_dashed=True,
+        extend_y_max_limit=True)
     batch_compute_resolved_turbulent_kinetic_energy(batch_paths,batch_labels,list_of_poly_degree,list_of_number_of_elements_per_direction)
 
-# =====================================================
-if(True or regenerate_all_plots):
-    batch_paths = [ \
-    "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
-    "NarvalFiles/2023_JCP/spectra_fix/high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs064_p7_procs512/",\
-    "NarvalFiles/2023_JCP/spectra_fix/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs048_p5_procs64/",\
-    "NarvalFiles/2023_JCP/spectra_fix/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs024_p5_procs16/",\
-    # "NarvalFiles/2023_JCP/verification_tke_fix/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024_2refinements/",\
-    ]
-    batch_labels = [ \
-    "$96^{3}$ DOF, p$5$", \
-    "$64^{3}$ DOF, p$7$", \
-    "$48^{3}$ DOF, p$5$",\
-    "$24^{3}$ DOF, p$5$",\
-    # "$96^{3}$", \
-    # "$64^{3}$", \
-    # "$48^{3}$",\
-    # "$24^{3}$",\
-    # "$32^{3}$p$7$",\
-    ]
-    list_of_poly_degree=[5,7,5,5,7]
-    list_of_number_of_elements_per_direction=[16,8,8,4,32]
-    
-    batch_plot_spectra("all","cDG_NSFR_convergence",batch_paths,batch_labels,
-        solid_and_dashed_lines=False,
-        title_off=title_off_input,figure_directory=fig_dir_input,
-        plot_cutoff_wavenumber_asymptote=True,
-        plot_PHiLiP_DNS_result_as_reference=True,
-        plot_filtered_dns=True,
-        list_of_poly_degree_input=list_of_poly_degree,
-        list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
-    batch_compute_resolved_turbulent_kinetic_energy(batch_paths,batch_labels,list_of_poly_degree,list_of_number_of_elements_per_direction)
 #=====================================================
 # DOFs: ALL | NSFR CONVERGENCE VERSION FOR WCCM
 #-----------------------------------------------------
@@ -514,7 +576,7 @@ if(False or regenerate_all_plots):
             fix_legend_location_for_presentation=True)
 
 # =====================================================
-if(False or regenerate_all_plots):
+if(True or regenerate_all_plots):
     batch_paths = [ \
     "NarvalFiles/2023_JCP/filtered_dns_viscous_tgv/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024/",\
     "NarvalFiles/2023_JCP/verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p3_procs1024/",\
@@ -543,10 +605,12 @@ if(False or regenerate_all_plots):
         which_lines_dashed=[3,4],
         plot_zoomed_section=False,
         list_of_poly_degree_input=list_of_poly_degree,
-        list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
+        list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction,
+        plot_unresolved_wavenumber_range_as_dashed=True,
+        plot_full_wavenumber_range_of_reference_DNS=True)
 
 # =====================================================
-if(False or regenerate_all_plots):
+if(True or regenerate_all_plots):
     batch_paths = [ \
     "NarvalFiles/2023_JCP/verification_tke_fix/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024_2refinements/",\
     "NarvalFiles/2023_JCP/spectra_fix/verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p3_procs1024/",\
@@ -577,6 +641,39 @@ if(False or regenerate_all_plots):
         list_of_poly_degree_input=list_of_poly_degree,
         list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
 
+# =====================================================
+if(True or regenerate_all_plots):
+    batch_paths = [ \
+    "NarvalFiles/2023_JCP/verification_tke_fix/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024_2refinements/",\
+    "NarvalFiles/2023_JCP/spectra_fix/verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p3_procs1024/",\
+    "NarvalFiles/2023_JCP/spectra_fix/verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs0256_p3_procs1024/",\
+    "NarvalFiles/2023_JCP/spectra_fix/verification/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-4_dofs0256_p3_CFL-0.15_procs1024/",\
+    "NarvalFiles/2023_JCP/spectra_fix/verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs1024/",\
+    ]
+    batch_labels = [ \
+    "p$7$ $c_{DG}$ NSFR.IR-GL",\
+    "p$3$ $c_{DG}$ NSFR.IR-GL",\
+    "p$3$ $c_{DG}$ NSFR.IR-GL-Roe",\
+    "p$3$ Strong DG-Roe-GL-OI",\
+    "p$7$ $c_{DG}$ NSFR.IR-GLL",\
+    ]
+    lnstl_input=['solid','solid','solid','solid','dashed','dashed']
+    list_of_poly_degree=[7,3,3,3,7]
+    list_of_number_of_elements_per_direction=[32,64,64,64,32]
+    
+    batch_plot_spectra(256,"verification_full_range",batch_paths,batch_labels,
+        solid_and_dashed_lines=False,
+        title_off=title_off_input,figure_directory=fig_dir_input,
+        plot_cutoff_wavenumber_asymptote=True,
+        truncate_spectra_at_effective_DOFs=True,
+        plot_PHiLiP_DNS_result_as_reference=False,
+        plot_filtered_dns=False,
+        which_lines_dashed=[3,4],
+        plot_zoomed_section=True,
+        list_of_poly_degree_input=list_of_poly_degree,
+        list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction,
+        plot_unresolved_wavenumber_range_as_dashed=True,
+        plot_full_wavenumber_range_of_reference_DNS=True)
 # =====================================================
 # MISSING FIG 3
 # =====================================================
@@ -698,14 +795,14 @@ if(True or regenerate_all_plots):
         list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
 
 # =====================================================
-if(False or regenerate_all_plots):
+if(True or regenerate_all_plots):
     batch_paths = [ \
     "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
     "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
     ]
     batch_labels = [ \
-    "$96^{3}$, $c_{DG}$", \
-    "$96^{3}$, $c_{DG}$, oversampled", \
+    "$96^{3}$ DOF, $c_{DG}$, without oversampling", \
+    "$96^{3}$ DOF, $c_{DG}$, oversampled", \
     ]
     list_of_poly_degree=[5,5,7,7,5,5]
     list_of_number_of_elements_per_direction=[16,16,8,8,8,8]
