@@ -1112,8 +1112,9 @@ if(True or regenerate_all_plots):
         plot_cutoff_wavenumber_asymptote=True,
         plot_PHiLiP_DNS_result_as_reference=True,
         plot_filtered_dns=True,
-        plot_zoomed_section=True,
+        plot_zoomed_section=False,
         y_limits_zoom_input=[4e-5, 5.0e-4],
         which_lines_dashed=[],
         list_of_poly_degree_input=list_of_poly_degree,
-        list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
+        list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction,
+        extend_y_max_limit=True)
