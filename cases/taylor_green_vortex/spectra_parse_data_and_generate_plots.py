@@ -100,7 +100,8 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
     markers_on=False,
     plot_unresolved_wavenumber_range_as_dashed=False,
     plot_full_wavenumber_range_of_reference_DNS=False,
-    extend_y_max_limit=False):
+    extend_y_max_limit=False,
+    zoom_box_on_left=False):
     # TO DO: Move this function to its own file
     global x,y,labels
     x=[];y=[];labels=[];
@@ -336,6 +337,13 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
     if(extend_y_max_limit):
         ylimits_[1]=2e-2
 
+    transparent_legend_=False
+    zoom_box_origin_and_extent_=[0.65, 0.65, 0.32, 0.32]
+    if(zoom_box_on_left):
+        zoom_box_origin_and_extent_=[0.03, 0.47, 0.32, 0.32]
+        leg_elements_input[0], leg_elements_input[-1] = leg_elements_input[-1], leg_elements_input[0]
+        transparent_legend_=True
+
     qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $k^{*}$",ylabel="Nondimensional TKE Spectra, $E^{*}(k^{*},t^{*})$",
         title_label=title_label,
         leg_elements_input=leg_elements_input,
@@ -346,7 +354,7 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
         legend_on=True,
         # legend_labels_tex=labels,
         which_lines_black=which_lines_black,
-        transparent_legend=False,
+        transparent_legend=transparent_legend_,
         legend_border_on=False,
         grid_lines_on=False,
         clr_input=clr_input_store_,
@@ -359,7 +367,7 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
         # which_lines_dashed=which_lines_dashed,
         plot_zoomed_section=plot_zoomed_section,
         x_limits_zoom=x_limits_zoom,y_limits_zoom=y_limits_zoom,
-        zoom_box_origin_and_extent=[0.65, 0.65, 0.32, 0.32],
+        zoom_box_origin_and_extent=zoom_box_origin_and_extent_,
         # vertical_lines=cutoff_wavenumber_store,
         # secondary_vertical_lines=grid_cutoff_wavenumber_store
         )
@@ -603,11 +611,12 @@ if(True or regenerate_all_plots):
         plot_PHiLiP_DNS_result_as_reference=False,
         plot_filtered_dns=False,
         which_lines_dashed=[3,4],
-        plot_zoomed_section=False,
+        plot_zoomed_section=True,
         list_of_poly_degree_input=list_of_poly_degree,
         list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction,
         plot_unresolved_wavenumber_range_as_dashed=True,
-        plot_full_wavenumber_range_of_reference_DNS=True)
+        plot_full_wavenumber_range_of_reference_DNS=True,
+        zoom_box_on_left=True)
 
 # =====================================================
 if(True or regenerate_all_plots):
@@ -673,7 +682,8 @@ if(True or regenerate_all_plots):
         list_of_poly_degree_input=list_of_poly_degree,
         list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction,
         plot_unresolved_wavenumber_range_as_dashed=True,
-        plot_full_wavenumber_range_of_reference_DNS=True)
+        plot_full_wavenumber_range_of_reference_DNS=True,
+        zoom_box_on_left=True)
 # =====================================================
 # MISSING FIG 3
 # =====================================================
