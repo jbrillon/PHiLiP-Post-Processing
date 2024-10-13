@@ -386,11 +386,11 @@ def plot_periodic_turbulence(
         # explain the linestyles
         ls='solid'
         # "$\\varepsilon=-\\frac{\\mathrm{d} K^{*}}{\\mathrm{d}t^{*}}$"
-        second_leg_elements_input.append(Line2D([0],[0], label="$\\varepsilon\\left(K^{*}\\right)$", color='grey', marker='None', markersize=6, mfc='None', linestyle=ls))
+        second_leg_elements_input.append(Line2D([0],[0], label="$\\varepsilon^{*}$", color='grey', marker='None', markersize=6, mfc='None', linestyle=ls))
         ls='dashed'
-        second_leg_elements_input.append(Line2D([0],[0], label="$\\varepsilon\\left(\\zeta^{*}\\right)$", color='grey', marker='None', markersize=6, mfc='None', linestyle=ls))
+        second_leg_elements_input.append(Line2D([0],[0], label="$\\varepsilon^{*}_{\\zeta}$", color='grey', marker='None', markersize=6, mfc='None', linestyle=ls))
         ls='dotted'
-        second_leg_elements_input.append(Line2D([0],[0], label="$\\varepsilon\\left(K^{*}\\right)-\\varepsilon\\left(\\zeta^{*}\\right)$", color='grey', marker='None', markersize=6, mfc='None', linestyle=ls))
+        second_leg_elements_input.append(Line2D([0],[0], label="$\\varepsilon^{*}-\\varepsilon^{*}_{\\zeta}$", color='grey', marker='None', markersize=6, mfc='None', linestyle=ls))
         
         index_shift_for_ref_result = 0 # initialize
         if(plot_reference_result and reference_result_author!="Dairay et al."):
@@ -401,7 +401,8 @@ def plot_periodic_turbulence(
             second_leg_anchor_input=[0.0,0.5]
         elif(plot_zoomed_section_numerical_dissipation_components):
             second_leg_anchor_input=[0.0,0.7]
-
+            if(dofs_for_zoomed_section==96):
+                second_leg_anchor_input=[0.0,0.65]
         # results
         number_of_refernce_curves_numerical_dissipation=1 # default has one
         if(plot_filtered_dns):
