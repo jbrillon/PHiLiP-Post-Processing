@@ -170,7 +170,7 @@ def plot_periodic_turbulence(
         strain_rate_based_dissipation_store.append(strain_rate_based_dissipation)
         deviatoric_strain_rate_based_dissipation_store.append(deviatoric_strain_rate_based_dissipation)
         eps_K_minus_eps_S_plus_eps_p_store.append(dissipation - strain_rate_based_dissipation + pressure_dilatation_based_dissipation)
-        eps_K_minus_eps_Sd_plus_eps_p_store.append(dissipation - deviatoric_strain_rate_based_dissipation + pressure_dilatation_based_dissipation)
+        eps_K_minus_eps_Sd_plus_eps_p_store.append(np.abs(dissipation - deviatoric_strain_rate_based_dissipation - pressure_dilatation_based_dissipation))
         eps_K_minus_eps_Sd_store.append(dissipation - deviatoric_strain_rate_based_dissipation)
         eps_K_minus_eps_S_store.append(dissipation - strain_rate_based_dissipation)
         eps_S_minus_eps_Sd_store.append(strain_rate_based_dissipation - deviatoric_strain_rate_based_dissipation)
@@ -203,7 +203,7 @@ def plot_periodic_turbulence(
         strain_rate_based_dissipation_store.append(strain_rate_based_dissipation)
         deviatoric_strain_rate_based_dissipation_store.append(deviatoric_strain_rate_based_dissipation)
         eps_K_minus_eps_S_plus_eps_p_store.append(dissipation - strain_rate_based_dissipation + pressure_dilatation_based_dissipation)
-        eps_K_minus_eps_Sd_plus_eps_p_store.append(dissipation - deviatoric_strain_rate_based_dissipation + pressure_dilatation_based_dissipation)
+        eps_K_minus_eps_Sd_plus_eps_p_store.append(np.abs(dissipation - deviatoric_strain_rate_based_dissipation - pressure_dilatation_based_dissipation))
         eps_K_minus_eps_Sd_store.append(dissipation - deviatoric_strain_rate_based_dissipation)
         eps_K_minus_eps_S_store.append(dissipation - strain_rate_based_dissipation)
         eps_S_minus_eps_Sd_store.append(strain_rate_based_dissipation - deviatoric_strain_rate_based_dissipation)
@@ -255,7 +255,7 @@ def plot_periodic_turbulence(
         strain_rate_based_dissipation_store.append(strain_rate_based_dissipation)
         deviatoric_strain_rate_based_dissipation_store.append(deviatoric_strain_rate_based_dissipation)
         eps_K_minus_eps_S_plus_eps_p_store.append(dissipation - strain_rate_based_dissipation + pressure_dilatation_based_dissipation)
-        eps_K_minus_eps_Sd_plus_eps_p_store.append(dissipation - deviatoric_strain_rate_based_dissipation + pressure_dilatation_based_dissipation)
+        eps_K_minus_eps_Sd_plus_eps_p_store.append(np.abs(dissipation - deviatoric_strain_rate_based_dissipation - pressure_dilatation_based_dissipation))
         eps_K_minus_eps_Sd_store.append(dissipation - deviatoric_strain_rate_based_dissipation)
         eps_K_minus_eps_S_store.append(dissipation - strain_rate_based_dissipation)
         eps_S_minus_eps_Sd_store.append(strain_rate_based_dissipation - deviatoric_strain_rate_based_dissipation)
@@ -568,7 +568,7 @@ def plot_periodic_turbulence(
         qp.plotfxn(xdata=time_store,
                 ydata=numerical_viscosity_store,
                 # ylabel='$\\varepsilon=-\\frac{\\mathrm{d} K^{*}}{\\mathrm{d}t^{*}}$',
-                ylabel='Nondimensional Numerical Viscosity, $\\frac{\\mathrm{Re}_{\\infty}\\varepsilon^{*}}{2\\zeta^{*}}$',
+                ylabel='Nondim. Effective Kinematic Viscosity, $\\nu^{*}_{\\mathrm{effective}}$',
                 xlabel='Nondimensional Time, $t^{*}$',
                 figure_filename=figure_subdirectory+'numerical_viscosity_vs_time'+figure_filename_postfix,
                 title_label=figure_title,
@@ -726,14 +726,16 @@ def plot_periodic_turbulence(
         y_limits_zoom=[-0.06, 0.06]
         zoom_box_origin_and_extent_input=[0.01,0.60, 0.32, 0.32]
         if(dofs_for_zoomed_section==96):
-            y_limits_zoom=[-0.2, 0.2]
-            x_limits_zoom=[7.0, 14.0]
+            # y_limits_zoom=[-0.2, 0.2]
+            # x_limits_zoom=[7.0, 14.0]
+            y_limits_zoom=[0.65, 0.87]
+            x_limits_zoom=[14.25, 15.5]
 
         # pressure dilatation component
         qp.plotfxn(xdata=time_store,
                 ydata=eps_p_store,
-                ylabel='$\\varepsilon\\left(p\\right)$',
-                xlabel='$t^{*}$',
+                ylabel='Nondimensional Pressure Dilatation, $-\\varepsilon^{*}_{P}$',
+                xlabel='Nondimensional Time, $t^{*}$',
                 figure_filename=figure_subdirectory+'pressure_dilatation_dissipation_vs_time'+figure_filename_postfix,
                 title_label=figure_title,
                 markers=False,
@@ -761,7 +763,7 @@ def plot_periodic_turbulence(
 
         qp.plotfxn(xdata=time_store,
                 ydata=eps_K_minus_eps_Sd_plus_eps_p_store,
-                ylabel='$\\varepsilon^{*}-\\left[-\\varepsilon\\left(p\\right)+\\varepsilon\\left(\\mathbf{S}^{d}\\right)\\right]$',
+                ylabel='Absolute Error in KE Budget, $\\left|\\varepsilon^{*}+\\varepsilon^{*}_{P}-\\varepsilon_{v}\\right|$',
                 xlabel='$t^{*}$',
                 figure_filename=figure_subdirectory+'error_in_KE_budget_vs_time'+figure_filename_postfix,
                 title_label=figure_title,
@@ -770,7 +772,7 @@ def plot_periodic_turbulence(
                 black_lines=False,
                 xlimits=[0,tmax],
                 # ylimits=[-1e-1,1e-1],
-                log_axes=log_axes_input,
+                log_axes="y",
                 which_lines_black=which_lines_black_input,
                 which_lines_dashed=which_lines_dashed_input,
                 legend_on=legend_on_input,
@@ -822,8 +824,8 @@ def plot_periodic_turbulence(
 
         qp.plotfxn(xdata=time_store,
                 ydata=eps_K_minus_eps_Sd_store,
-                ylabel='$-\\varepsilon^{*}_{p}=\\varepsilon^{*}-\\varepsilon^{*}_{v}$',
-                xlabel='$t^{*}$',
+                ylabel='Nondim. Observed Pressure Dilatation, $-\\varepsilon^{*}_{P}=\\varepsilon^{*}-\\varepsilon^{*}_{v}$',
+                xlabel='Nondimensional Time, $t^{*}$',
                 figure_filename=figure_subdirectory+'observed_pressure_dissipation_rate_vs_time'+figure_filename_postfix,
                 title_label=figure_title,
                 markers=False,
