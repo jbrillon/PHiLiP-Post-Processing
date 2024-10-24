@@ -124,7 +124,8 @@ def plot_for_presentation(
                     dofs_for_zoomed_section=dofs_for_zoomed_section,
                     check_smoothing_parameters=True,
                     smoothing_parameters=smoothing_parameters_input,
-                    xlimits=[0.25,0.8])
+                    xlimits=[0.25,0.8]
+                    )
             else:
                 plot_periodic_turbulence(
                     figure_subdirectory,
@@ -197,7 +198,7 @@ def reinit_inputs():
 #=====================================================
 # DOFs: 256^3 | All results
 #-----------------------------------------------------
-if(False):
+if(True):
     #-----------------------------------------------------
     # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
     reinit_inputs()
@@ -221,7 +222,7 @@ if(False):
     labels_for_plot=[\
     # "$c_{DG}$ NSFR 64p$2$ ($192^2$ DOF)",\
     # "$c_{DG}$ NSFR 64p$5$ ($384^2$ DOF)\n $\\Delta t=10e^{-6}$",\
-    "$c_{DG}$ NSFR 64p$7$ ($512^2$ DOF)",\
+    "$512^2$ DOF, p$7$ $c_{DG}$ NSFR.IR-GL,\n uniform mesh",\
     # "$c_{DG}$ NSFR 64p$2$ ($192^2$ DOF),\n Stretched mesh",\
     # "$c_{DG}$ NSFR 128p$7$ ($1024^2$ DOF)",\
     ]
@@ -254,13 +255,21 @@ if(True):
     "viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0192_p2_stretched_mesh",\
     "viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs1024_p7",\
     ]
+    # # labels
+    # labels_for_plot=[\
+    # "$c_{DG}$ NSFR 64p$2$ ($192^2$ DOF)",\
+    # "$c_{DG}$ NSFR 64p$5$ ($384^2$ DOF)",\
+    # "$c_{DG}$ NSFR 64p$7$ ($512^2$ DOF)",\
+    # "$c_{DG}$ NSFR 64p$2$ ($192^2$ DOF),\n Stretched mesh",\
+    # "$c_{DG}$ NSFR 128p$7$ ($1024^2$ DOF)",\
+    # ]
     # labels
     labels_for_plot=[\
-    "$c_{DG}$ NSFR 64p$2$ ($192^2$ DOF)",\
-    "$c_{DG}$ NSFR 64p$5$ ($384^2$ DOF)",\
-    "$c_{DG}$ NSFR 64p$7$ ($512^2$ DOF)",\
-    "$c_{DG}$ NSFR 64p$2$ ($192^2$ DOF),\n Stretched mesh",\
-    "$c_{DG}$ NSFR 128p$7$ ($1024^2$ DOF)",\
+    "$192^2$ DOF, p$2$, uniform mesh",\
+    "$384^2$ DOF, p$5$, uniform mesh",\
+    "$512^2$ DOF, p$7$, uniform mesh",\
+    "$192^2$ DOF, p$2$, stretched mesh",\
+    "$1024^2$ DOF, p$7$, uniform mesh",\
     ]
     black_line_flag_for_plot=[False,False,False,False,False,False,False,False]
     dashed_line_flag_for_plot=[False,False,False,False,False,True,True]

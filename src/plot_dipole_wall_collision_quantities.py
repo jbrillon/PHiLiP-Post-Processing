@@ -152,7 +152,7 @@ def plot_periodic_turbulence(
             time, kinetic_energy = np.loadtxt(filename,skiprows=1,delimiter=",",dtype=np.float64,unpack=True)
             time_store.append(time)
             kinetic_energy_store.append(kinetic_energy)
-            labels_store.append("Keetels et al.")
+            labels_store.append("PS [Keetels et al.]\n $2048\\times1024$ DOF")
             filename=path_to_reference_result+"/"+"enstrophy"+".txt"
             time, enstrophy = np.loadtxt(filename,skiprows=1,delimiter=",",dtype=np.float64,unpack=True)
             enstrophy_store.append(enstrophy)
@@ -371,7 +371,7 @@ def plot_periodic_turbulence(
 
         qp.plotfxn(xdata=time_store,
                 ydata=ydata_to_plot,
-                ylabel='Nondimensional Palinstrophy',
+                ylabel='Nondimensional Palinstrophy, $\\mathcal{P}^{*}$',
                 xlabel='Nondimensional Time, $t^{*}$',
                 figure_filename=figure_subdirectory+'palinstrophy_vs_time'+figure_filename_postfix,
                 title_label=figure_title,
