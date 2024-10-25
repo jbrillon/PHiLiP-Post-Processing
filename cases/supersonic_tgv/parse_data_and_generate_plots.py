@@ -78,7 +78,10 @@ def plot_for_presentation(
         time, dilatational_dissipation = np.loadtxt("./data/chapelier2024/dilatational_dissipation.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
     dilatational_dissipation_store.append(dilatational_dissipation)
     pressure_dissipation_store.append(np.nan*dilatational_dissipation)
-    labels.append("$2048^3$ DOFs [Chapelier et al.]")
+    if(plotting_subsonic_result):
+        labels.append("SPADE $512^3$ DOF\n[Chapelier et al.]")
+    else:
+        labels.append("$2048^3$ DOF [Chapelier et al.]")
     black_line_flag.append(True)
     dashed_line_flag.append(False)
     #-----------------------------------------------------
@@ -199,14 +202,14 @@ def plot_for_presentation(
         time_store.append(time)
         solenoidal_dissipation_store.append(solenoidal_dissipation)
         # labels.append("FLEXI $256^3$\n($4^{th}$-order DGSEM with subgrid FV)\n[Chapelier et al.]")
-        labels.append("FLEXI $256^3$\n[Chapelier et al.]")
+        labels.append("FLEXI $256^3$ DOF\n[Chapelier et al.]")
         dashed_line_flag.append(True)
     if(128 in number_of_degrees_of_freedom):
         time, solenoidal_dissipation = np.loadtxt("./data/chapelier2024/solenoidal_dissipation_128_best_result.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
         time_store.append(time)
         solenoidal_dissipation_store.append(solenoidal_dissipation)
         # labels.append("FLEXI $128^3$\n($4^{th}$-order DGSEM with subgrid FV)\n[Chapelier et al.]")
-        labels.append("FLEXI $128^3$\n[Chapelier et al.]")
+        labels.append("FLEXI $128^3$ DOF\n[Chapelier et al.]")
         dashed_line_flag.append(True)
     qp.plotfxn(xdata=time_store,
             ydata=solenoidal_dissipation_store,
@@ -249,7 +252,7 @@ def plot_for_presentation(
         dilatational_dissipation_store.append(dilatational_dissipation)
         pressure_dissipation_store.append(np.nan*dilatational_dissipation)
         # labels.append("NS3D $256^3$\n($6^{th}$-order FD with HO Filter)\n[Chapelier et al.]")
-        labels[-1] = "NS3D $256^3$\n[Chapelier et al.]"
+        labels[-1] = "NS3D $256^3$ DOF\n[Chapelier et al.]"
         dashed_line_flag[-1]=True
     if(128 in number_of_degrees_of_freedom):
         time, dilatational_dissipation = np.loadtxt("./data/chapelier2024/dilational_dissipation_128_best_result.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
@@ -257,7 +260,7 @@ def plot_for_presentation(
         dilatational_dissipation_store.append(dilatational_dissipation)
         pressure_dissipation_store.append(np.nan*dilatational_dissipation)
         # labels.append("NS3D $128^3$\n($6^{th}$-order FD with HO Filter)\n[Chapelier et al.]")
-        labels[-1] = "NS3D $128^3$\n[Chapelier et al.]"
+        labels[-1] = "NS3D $128^3$ DOF\n[Chapelier et al.]"
         dashed_line_flag[-1]=True
 
     qp.plotfxn(xdata=time_store,
@@ -417,11 +420,10 @@ if(True):
         which_was_ran_with_corrected_quantites=which_was_ran_with_corrected_quantites,
         number_of_degrees_of_freedom=number_of_degrees_of_freedom_input,
         compare_with_reference_result_at_same_degrees_of_freedom=compare_with_ref_result_at_same_dof)
-    exit()
 #=====================================================
 # DOFs: 256^3 | Subsonic case
 #-----------------------------------------------------
-if(False):
+if(True):
     #-----------------------------------------------------
     # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
     reinit_inputs()
@@ -436,14 +438,15 @@ if(False):
     #-----------------------------------------------------
     subdirectories_for_plot=[\
     "subsonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs512",\
-    "subsonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs512_no_limiter",\
-    "subsonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs512_corrected_quantities",\
+    # "subsonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs512_no_limiter",\
+    # "subsonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs512_corrected_quantities",\
     ]
     # labels
     labels_for_plot=[\
-    "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL $32^{3}$p$7$\n ($256^3$ DOF) CFL=0.1",\
-    "$c_{DG}$ NSFR.CH$_{RA}$+Roe $32^{3}$p$7$\n ($256^3$ DOF) CFL=0.1",\
-    "with correction",\
+    "PHiLiP $256^3$ DOF",\
+    #"$c_{DG}$ NSFR.CH$_{RA}$-GLL-Roe-PPL $32^{3}$p$7$\n ($256^3$ DOF) CFL=0.1",\
+    # "$c_{DG}$ NSFR.CH$_{RA}$+Roe $32^{3}$p$7$\n ($256^3$ DOF) CFL=0.1",\
+    # "with correction",\
     # "$c_{+}$ NSFR.CH$_{RA}$+Roe+PPL $32$p$3$\n ($128^3$ DOF) CFL=0.1",\
     # "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL $8$p$15$\n ($128^3$ DOF) CFL=0.01",\
     # "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL $32$p$7$\n ($256^3$ DOF) CFL=0.1",\
