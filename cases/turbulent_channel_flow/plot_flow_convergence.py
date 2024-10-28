@@ -90,7 +90,9 @@ def plot_transient(filenames_,labels_,which_lines_dashed_=[],
     if(plot_skin_friction_coefficient):
         plotfxn(time_store,skin_friction_coefficient_store,\
             "$t^{*}$","Normalized Skin Friction Coefficient, $C_{f}(t^{*})/C^{expected}_{f}$","skin_friction_coefficient",\
-            labels_store,which_lines_dashed_,xlimits=[0,460])
+            labels_store,which_lines_dashed_,
+            # xlimits=[0,460]
+            )
         # plotfxn(time_store,skin_friction_coefficient_store/expected_mean_value_for_skin_friction_coefficient,\
         #     "$t$","$C_{f}(t)$/$C_{f}^{expected}$","skin_friction_coefficient",\
         #     labels_store,which_lines_dashed_)

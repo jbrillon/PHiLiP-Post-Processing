@@ -39,6 +39,13 @@ def plot_mach_number_profile(files,labels_,DOF):
     y_store = []
     mach_store = []
 
+    # reference data
+    y, scalar = np.loadtxt("./data/chapelier2024/reference_teno6_512_mach_number_profile.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+    y_store.append(y)
+    mach_store.append(scalar)
+    labels.append("Ref. TENO6 $512^3$ DOF\n[Chapelier et al.]")
+    # labels.append("$512^3$ DOF\n[Chapelier et al.]")
+
     # load results
     scalar_field_name = "mach_number"
     for i,input_filename in enumerate(files):
@@ -52,16 +59,10 @@ def plot_mach_number_profile(files,labels_,DOF):
         mach_store.append(scalar)
         labels.append(labels_[i])
 
-    # reference data
-    y, scalar = np.loadtxt("./data/chapelier2024/reference_teno6_512_mach_number_profile.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
-    y_store.append(y)
-    mach_store.append(scalar)
-    labels.append("Ref. TENO6 $512^3$ DOF\n[Chapelier et al.]")
-
     #-----------------------------------------------------
-    clr_input_store = ['tab:blue','tab:red','k','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
-    mrkr_input_store = ['None','None','+','None','None','None','None','None']
-    lnstl_input_store = ['solid','solid','None','solid','solid','dashed','solid','dashed','solid']
+    clr_input_store = ['k','tab:blue','tab:red','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    mrkr_input_store = ['o','None','None','None','None','None','None','None','None']
+    lnstl_input_store = ['None','solid','solid','solid','solid','dashed','solid','dashed','solid']
     # if(plotting_subsonic_result):
     #     lnstl_input_store = ['None','solid','dashed','solid','solid','dashed','solid','dashed','solid']
     # if(DOF==256):
@@ -128,6 +129,69 @@ def reinit_inputs():
 #-----------------------------------------------------
 
 #=====================================================
+# DOFs: 64^3 | All results
+#-----------------------------------------------------
+if(True):
+    #-----------------------------------------------------
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2024_JCP/"
+    date_for_runs="."
+    figure_subdirectory="./"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
+    figure_filename_postfix = "_64"
+    legend_inside_input=True
+    plot_reference_result=True
+    plot_PHiLiP_DNS_result_as_reference_input=False
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "supersonic_viscous_TGV_ILES_NSFR_cHU_Ra_2PF_GLL_OI-0_dofs0064_p7_procs128/paraview_mach_number_vs_y_t2point5.txt",\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0064_p7_procs128/paraview_mach_number_vs_y_t2point5.txt",\
+    "supersonic_viscous_TGV_ILES_NSFR_cPlus_Ra_2PF_GLL_OI-0_dofs0064_p3_procs128/paraview_mach_number_vs_y_t2point5.txt",\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0064_p3_procs128/paraview_mach_number_vs_y_t2point5.txt",\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0064_p3_procs128/paraview_mach_number_vs_y_t2point5.txt",\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_KG_2PF_GLL_OI-0_dofs0064_p3_procs128/paraview_mach_number_vs_y_t2point5.txt",\
+    ]
+    # labels
+    labels_for_plot=[\
+    "p$7$ $c_{HU}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    "p$7$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    "p$3$ $c_{+}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    "p$3$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    "p$3$ $c_{DG}$ NSFR.IR",\
+    "p$3$ $c_{DG}$ NSFR.KG",\
+    ]
+    plot_mach_number_profile(subdirectories_for_plot,labels_for_plot,64)
+
+#=====================================================
+# DOFs: 128^3 | All results
+#-----------------------------------------------------
+if(True):
+    #-----------------------------------------------------
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2024_JCP/"
+    date_for_runs="."
+    figure_subdirectory="./"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
+    figure_filename_postfix = "_128"
+    legend_inside_input=True
+    plot_reference_result=True
+    plot_PHiLiP_DNS_result_as_reference_input=False
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0128_p3_procs512/paraview_mach_number_vs_y_t2point5.txt",\
+    "supersonic_viscous_TGV_ILES_NSFR_cPlus_Ra_2PF_GLL_OI-0_dofs0128_p3_procs512/paraview_mach_number_vs_y_t2point5.txt",\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p7_procs512/paraview_mach_number_vs_y_t2point5.txt",\
+    ]
+    # labels
+    labels_for_plot=[\
+    "p$3$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    "p$3$ $c_{+}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    "p$7$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    ]
+    plot_mach_number_profile(subdirectories_for_plot,labels_for_plot,128)
+#=====================================================
 # DOFs: 256^3 | All results
 #-----------------------------------------------------
 if(True):
@@ -144,12 +208,10 @@ if(True):
     plot_PHiLiP_DNS_result_as_reference_input=False
     #-----------------------------------------------------
     subdirectories_for_plot=[\
-    "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p7_procs512/paraview_mach_number_vs_y_t2point5.txt",\
     "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs512/paraview_mach_number_vs_y_t2point5.txt",\
     ]
     # labels
     labels_for_plot=[\
-    "$128^3$ DOF p$7$",\
-    "$256^3$ DOF p$7$",\
+    "p$7$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
     ]
     plot_mach_number_profile(subdirectories_for_plot,labels_for_plot,256)
