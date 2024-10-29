@@ -149,8 +149,6 @@ if(True):
     "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0064_p7_procs128/paraview_mach_number_vs_y_t2point5.txt",\
     "supersonic_viscous_TGV_ILES_NSFR_cPlus_Ra_2PF_GLL_OI-0_dofs0064_p3_procs128/paraview_mach_number_vs_y_t2point5.txt",\
     "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0064_p3_procs128/paraview_mach_number_vs_y_t2point5.txt",\
-    "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0064_p3_procs128/paraview_mach_number_vs_y_t2point5.txt",\
-    "supersonic_viscous_TGV_ILES_NSFR_cDG_KG_2PF_GLL_OI-0_dofs0064_p3_procs128/paraview_mach_number_vs_y_t2point5.txt",\
     ]
     # labels
     labels_for_plot=[\
@@ -158,8 +156,37 @@ if(True):
     "p$7$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
     "p$3$ $c_{+}$ NSFR.CH$_{\\mathrm{RA}}$",\
     "p$3$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    ]
+    plot_mach_number_profile(subdirectories_for_plot,labels_for_plot,64)
+
+#=====================================================
+# DOFs: 64^3 | All results
+#-----------------------------------------------------
+if(True):
+    #-----------------------------------------------------
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2024_JCP/"
+    date_for_runs="."
+    figure_subdirectory="./"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
+    figure_filename_postfix = "_tpf_64"
+    legend_inside_input=True
+    plot_reference_result=True
+    plot_PHiLiP_DNS_result_as_reference_input=False
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0064_p3_procs128/paraview_mach_number_vs_y_t2point5.txt",\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0064_p3_procs128/paraview_mach_number_vs_y_t2point5.txt",\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_KG_2PF_GLL_OI-0_dofs0064_p3_procs128/paraview_mach_number_vs_y_t2point5.txt",\
+    # "supersonic_viscous_TGV_ILES_NSFR_cDG_CH_2PF_GLL_OI-0_dofs0064_p3_procs128/paraview_mach_number_vs_y_t2point5.txt",\
+    ]
+    # labels
+    labels_for_plot=[\
+    "p$3$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
     "p$3$ $c_{DG}$ NSFR.IR",\
     "p$3$ $c_{DG}$ NSFR.KG",\
+    # "p$3$ $c_{DG}$ NSFR.CH",\
     ]
     plot_mach_number_profile(subdirectories_for_plot,labels_for_plot,64)
 
@@ -180,15 +207,15 @@ if(True):
     plot_PHiLiP_DNS_result_as_reference_input=False
     #-----------------------------------------------------
     subdirectories_for_plot=[\
-    "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0128_p3_procs512/paraview_mach_number_vs_y_t2point5.txt",\
-    "supersonic_viscous_TGV_ILES_NSFR_cPlus_Ra_2PF_GLL_OI-0_dofs0128_p3_procs512/paraview_mach_number_vs_y_t2point5.txt",\
     "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p7_procs512/paraview_mach_number_vs_y_t2point5.txt",\
+    "supersonic_viscous_TGV_ILES_NSFR_cPlus_Ra_2PF_GLL_OI-0_dofs0128_p3_procs512/paraview_mach_number_vs_y_t2point5.txt",\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0128_p3_procs512/paraview_mach_number_vs_y_t2point5.txt",\
     ]
     # labels
     labels_for_plot=[\
-    "p$3$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
-    "p$3$ $c_{+}$ NSFR.CH$_{\\mathrm{RA}}$",\
     "p$7$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    "p$3$ $c_{+}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    "p$3$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
     ]
     plot_mach_number_profile(subdirectories_for_plot,labels_for_plot,128)
 #=====================================================
