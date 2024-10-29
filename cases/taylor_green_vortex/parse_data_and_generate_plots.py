@@ -158,11 +158,11 @@ if(True):
     # "verification/20241029/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p3_procs1024",\
     # "verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs0256_p3_procs1024",\
     "verification/20241029/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GL_OI-0_dofs0256_p3_procs1024",\
-    # "verification/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-4_dofs0256_p3_CFL-0.15_procs1024",\
+    "verification/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-4_dofs0256_p3_CFL-0.15_procs1024",\
     # "verification/20241029/viscous_TGV_ILES_std_strong_DG_Roe_GL_OI-4_dofs0256_p3_CFL-0.15_procs1024",\
     "verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs1024",\
     # "verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GLL_OI-0_dofs0256_p7_procs1024",\
-    "verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GLL_OI-0_dofs0256_p3_procs1024",\
+    # "verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF-Roe_GLL_OI-0_dofs0256_p3_procs1024",\
     ]
     # labels
     labels_for_plot=[\
@@ -170,15 +170,15 @@ if(True):
     "p$3$ $c_{DG}$ NSFR.IR-GL",\
     # "p$3$ $c_{DG}$ NSFR.IR-GL (check)",\
     # "p$3$ $c_{DG}$ NSFR.IR-GL-Roe",\
-    "p$3$ $c_{DG}$ NSFR.IR-GL-Roe (check)",\
-    # "p$3$ Strong DG-Roe-GL-OI",\
+    "p$3$ $c_{DG}$ NSFR.IR-GL-Roe",\
+    "p$3$ Strong DG-Roe-GL-OI",\
     # "p$3$ Strong DG-Roe-GL-OI (check)",\
     "p$7$ $c_{DG}$ NSFR.IR-GLL",\
     # "p$7$ $c_{DG}$ NSFR.IR-GLL-Roe",\
-    "p$3$ $c_{DG}$ NSFR.IR-GLL-Roe",\
+    # "p$3$ $c_{DG}$ NSFR.IR-GLL-Roe",\
     ]
     black_line_flag_for_plot=[False,False,False,False,False]
-    dashed_line_flag_for_plot=[False,True,False,True,True]
+    dashed_line_flag_for_plot=[False,False,False,True,True]
     plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
         final_time_for_plot=20.0,plot_filtered_dns_input=False,legend_fontSize_input=12,
         plot_zoomed_section_dissipation_rate=True,
