@@ -62,7 +62,7 @@ def plot_mach_number_profile(files,labels_,DOF):
     #-----------------------------------------------------
     clr_input_store = ['k','tab:blue','tab:red','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
     mrkr_input_store = ['o','None','None','None','None','None','None','None','None']
-    lnstl_input_store = ['None','solid','solid','solid','solid','dashed','solid','dashed','solid']
+    lnstl_input_store = ['None','solid','solid','solid','dashed','solid','solid','dashed','solid']
     # if(plotting_subsonic_result):
     #     lnstl_input_store = ['None','solid','dashed','solid','solid','dashed','solid','dashed','solid']
     # if(DOF==256):
@@ -179,14 +179,14 @@ if(True):
     "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0064_p3_procs128/paraview_mach_number_vs_y_t2point5.txt",\
     "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0064_p3_procs128/paraview_mach_number_vs_y_t2point5.txt",\
     "supersonic_viscous_TGV_ILES_NSFR_cDG_KG_2PF_GLL_OI-0_dofs0064_p3_procs128/paraview_mach_number_vs_y_t2point5.txt",\
-    # "supersonic_viscous_TGV_ILES_NSFR_cDG_CH_2PF_GLL_OI-0_dofs0064_p3_procs128/paraview_mach_number_vs_y_t2point5.txt",\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_CH_2PF_GLL_OI-0_dofs0064_p3_procs128/paraview_mach_number_vs_y_t2point5.txt",\
     ]
     # labels
     labels_for_plot=[\
     "p$3$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
     "p$3$ $c_{DG}$ NSFR.IR",\
     "p$3$ $c_{DG}$ NSFR.KG",\
-    # "p$3$ $c_{DG}$ NSFR.CH",\
+    "p$3$ $c_{DG}$ NSFR.CH",\
     ]
     plot_mach_number_profile(subdirectories_for_plot,labels_for_plot,64)
 
