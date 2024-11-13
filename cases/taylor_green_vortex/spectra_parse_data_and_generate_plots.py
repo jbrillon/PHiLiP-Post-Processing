@@ -186,7 +186,7 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
     index_of_reference_curve = len(batch_labels)+i_curve
     x_ref_curve = np.linspace(2.0e0,3.0e2,100)
     order_for_ref_curve = -5.0/3.0
-    ref_curve_label = "$\\left(k^{*}\\right)^{-5/3}$"
+    ref_curve_label = "$\\left(\\kappa^{*}\\right)^{-5/3}$"
     shift = 2.0
     y_ref_curve = (x_ref_curve**(order_for_ref_curve))/np.exp(shift)
     clr_input_store.insert(index_of_reference_curve,"k")#"tab:gray"
@@ -344,7 +344,7 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
         leg_elements_input[0], leg_elements_input[-1] = leg_elements_input[-1], leg_elements_input[0]
         transparent_legend_=True
 
-    qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $k^{*}$",ylabel="Nondimensional TKE Spectra, $E^{*}(k^{*},t^{*})$",
+    qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $\\kappa^{*}$",ylabel="Nondimensional TKE Spectra, $E^{*}(\\kappa^{*},t^{*})$",
         title_label=title_label,
         leg_elements_input=leg_elements_input,
         fig_directory=figure_directory,figure_filename=figure_filename,log_axes="both",figure_filetype="pdf",

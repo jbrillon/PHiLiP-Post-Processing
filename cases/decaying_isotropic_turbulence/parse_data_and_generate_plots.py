@@ -403,7 +403,7 @@ spectra = np.loadtxt(filesystem+"NarvalFiles/2023_JCP/DHIT/viscous_DHIT_ILES_NSF
 # spectra_truncated = get_truncated_spectra_from_DOFs_information(spectra, 3, 32,True)
 spectra_truncated = get_truncated_spectra_from_cutoff_wavenumber_and_spectra(spectra, 30)
 append_to_plot(spectra_truncated[:,0],spectra_truncated[:,1],"NSFR")
-qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $k^{*}$",ylabel="Nondimensional TKE Spectra, $E^{*}(k^{*},t^{*})$",
+qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $\\kappa^{*}$",ylabel="Nondimensional TKE Spectra, $E^{*}(\\kappa^{*},t^{*})$",
     # title_label=title_label,
     fig_directory="figures",figure_filename=figure_filename,log_axes="both",figure_filetype="pdf",
     # xlimits=[8e-1,3e2],ylimits=[1e-6,6e-1],
@@ -429,7 +429,7 @@ figure_filename = "spectra_128_no_smoothing_oversampled_t2"
 # compute reference curve 1
 x_ref_curve = np.linspace(1.0e0,6.0e1,100)
 order_for_ref_curve = -5.0/3.0
-ref_curve_label = "$\\left(k^{*}\\right)^{-5/3}$"
+ref_curve_label = "$\\left(\\kappa^{*}\\right)^{-5/3}$"
 shift = 0.3
 y_ref_curve = (x_ref_curve**(order_for_ref_curve))/np.exp(shift)
 append_to_plot(x_ref_curve,y_ref_curve,ref_curve_label)
@@ -500,7 +500,7 @@ clr_input_store = ['k','k','k','k','k','r']
 mrkr_input_store = ['None','o','None','None','None','None','None']
 lnstl_input_store = ['dotted','None','dashed','dashdot','solid','solid']
 
-qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $k^{*}$",ylabel="Nondimensional TKE Spectra, $E^{*}(k^{*},t^{*})$",
+qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $\\kappa^{*}$",ylabel="Nondimensional TKE Spectra, $E^{*}(\\kappa^{*},t^{*})$",
     # title_label=title_label,
     fig_directory="figures",figure_filename=figure_filename,log_axes="both",figure_filetype="pdf",
     # xlimits=[8e-1,3e2],ylimits=[1e-6,6e-1],
@@ -548,7 +548,7 @@ mrkr_input_store = ['None','None','None','o','s','^']
 lnstl_input_store = ['solid','solid','solid','None','None','None']
 # lnstl_input_store = ['solid','solid','solid','solid','solid','None','None','None']
 
-qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $k^{*}$",ylabel="Nondimensional TKE Spectra, $E^{*}(k^{*},t^{*})$",
+qp.plotfxn(xdata=x,ydata=y,xlabel="Nondimensional Wavenumber, $\\kappa^{*}$",ylabel="Nondimensional TKE Spectra, $E^{*}(\\kappa^{*},t^{*})$",
     # title_label=title_label,
     fig_directory="figures",figure_filename=figure_filename,log_axes="both",figure_filetype="pdf",
     # xlimits=[8e-1,3e2],ylimits=[1e-6,6e-1],
