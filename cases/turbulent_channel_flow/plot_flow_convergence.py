@@ -7,6 +7,13 @@ import numpy as np # NumPy: contains basic numerical routines
 import os;CURRENT_PATH = os.path.split(os.path.realpath(__file__))[0]+"/";
 import sys
 sys.path.append(CURRENT_PATH+"../../submodules/quickplotlib/lib"); import quickplotlib as qp
+# from sys import platform
+# if platform == "linux" or platform == "linux2":
+#     # linux
+#     sys.path.append("/home/julien/Codes/quickplotlib/lib"); import quickplotlib as qp # uncomment if testing quickplotlib changes
+# elif platform == "darwin":
+#     # OS X
+#     sys.path.append("/Users/Julien/Python/quickplotlib/lib"); import quickplotlib as qp # uncomment if testing quickplotlib changes
 #-----------------------------------------------------
 from sys import platform
 if platform == "linux" or platform == "linux2":
@@ -16,6 +23,7 @@ elif platform == "darwin":
     # OS X
     filesystem="/Volumes/Samsung_T5/"
 #-----------------------------------------------------
+import matplotlib;from matplotlib.lines import Line2D
 #=====================================================
 # Helper functions
 #=====================================================
@@ -335,93 +343,180 @@ def plot_boundary_layer_profile(filenames_,labels_,friction_velocity_based_reyno
         legend_location="upper left",
         vertical_lines=[y_plus_wall_model_input])
 
-    qp.plotfxn(nondim_y_store,average_reynolds_stress_uv_store,
-        figure_filename="reynolds_stress_uv_profile_Re"+str(friction_velocity_based_reynolds_number),
+    if(False):
+        qp.plotfxn(nondim_y_store,average_reynolds_stress_uv_store,
+            figure_filename="reynolds_stress_uv_profile_Re"+str(friction_velocity_based_reynolds_number),
+            figure_size=(7,6),
+            legend_labels_tex=labels_store,
+            figure_filetype="pdf",
+            # title_label="Turbulent Channel Flow $Re_{\\tau}\\approx395$, $CFL\\approx0.2$, $\\alpha=0.0$",
+            # title_label="WMLES Approach to Turbulent Channel Flow at $Re_{\\tau}\\approx5200$",
+            # xlabel="$\\left\\langle y^{+}\\right\\rangle$",
+            xlabel="$y/\\delta$",
+            ylabel="$-u'v'/u_{\\tau}^{2}$",
+            # xlimits=[],
+            # ylimits=ylimits_,
+            which_lines_black=which_lines_black_,
+            which_lines_only_markers=which_lines_only_markers_,
+            transparent_legend=True,
+            legend_border_on=False,
+            grid_lines_on=False,
+            log_axes=None,
+            legend_location="best",
+            vertical_lines=[y_plus_wall_model_input/np.float64(friction_velocity_based_reynolds_number)],
+            secondary_vertical_lines=[0.3])
+
+        # fluctuations
+        # xdata_for_fluctuations=[y_plus_after_wall_model_input_point,y_plus_after_wall_model_input_point,y_plus_after_wall_model_input_point]
+        # labels_store = ["$\\left\\langle u'^{+}\\right\\rangle _{rms}$",\
+        #                 "$\\left\\langle v'^{+}\\right\\rangle _{rms}$",\
+        #                 "$\\left\\langle w'^{+}\\right\\rangle _{rms}$"]
+        qp.plotfxn(nondim_y_store,average_x_velocity_fluctuation_rms_store,
+            figure_filename="boundary_layer_profile_of_x_velocity_fluctuations_Re"+str(friction_velocity_based_reynolds_number),
+            figure_size=(7,6),
+            legend_labels_tex=labels_store,
+            figure_filetype="pdf",
+            # title_label="Turbulent Channel Flow $Re_{\\tau}\\approx395$, $CFL\\approx0.2$, $\\alpha=0.0$",
+            # title_label="WMLES Approach to Turbulent Channel Flow at $Re_{\\tau}\\approx395$",
+            xlabel="$\\left\\langle y^{+}\\right\\rangle$",
+            ylabel="$\\left\\langle u'^{+}\\right\\rangle _{rms}$",
+            xlimits=xlimits_,
+            ylimits=[],
+            which_lines_black=which_lines_black_,
+            which_lines_only_markers=[],
+            transparent_legend=False,
+            legend_border_on=True,
+            grid_lines_on=True,
+            log_axes=None,
+            legend_location="best",
+            vertical_lines=[y_plus_wall_model_input/np.float64(friction_velocity_based_reynolds_number)],
+            secondary_vertical_lines=[0.3])
+        qp.plotfxn(nondim_y_store,average_y_velocity_fluctuation_rms_store,
+            figure_filename="boundary_layer_profile_of_y_velocity_fluctuations_Re"+str(friction_velocity_based_reynolds_number),
+            figure_size=(7,6),
+            legend_labels_tex=labels_store,
+            figure_filetype="pdf",
+            # title_label="Turbulent Channel Flow $Re_{\\tau}\\approx395$, $CFL\\approx0.2$, $\\alpha=0.0$",
+            # title_label="WMLES Approach to Turbulent Channel Flow at $Re_{\\tau}\\approx395$",
+            xlabel="$\\left\\langle y^{+}\\right\\rangle$",
+            ylabel="$\\left\\langle v'^{+}\\right\\rangle _{rms}$",
+            xlimits=xlimits_,
+            ylimits=[],
+            which_lines_black=which_lines_black_,
+            which_lines_only_markers=[],
+            transparent_legend=False,
+            legend_border_on=True,
+            grid_lines_on=True,
+            log_axes=None,
+            legend_location="best",
+            vertical_lines=[y_plus_wall_model_input/np.float64(friction_velocity_based_reynolds_number)],
+            secondary_vertical_lines=[0.3])
+        qp.plotfxn(nondim_y_store,average_z_velocity_fluctuation_rms_store,
+            figure_filename="boundary_layer_profile_of_z_velocity_fluctuations_Re"+str(friction_velocity_based_reynolds_number),
+            figure_size=(7,6),
+            legend_labels_tex=labels_store,
+            figure_filetype="pdf",
+            # title_label="Turbulent Channel Flow $Re_{\\tau}\\approx395$, $CFL\\approx0.2$, $\\alpha=0.0$",
+            # title_label="WMLES Approach to Turbulent Channel Flow at $Re_{\\tau}\\approx395$",
+            xlabel="$\\left\\langle y^{+}\\right\\rangle$",
+            ylabel="$\\left\\langle w'^{+}\\right\\rangle _{rms}$",
+            xlimits=xlimits_,
+            ylimits=[],
+            which_lines_black=which_lines_black_,
+            which_lines_only_markers=[],
+            transparent_legend=False,
+            legend_border_on=True,
+            grid_lines_on=True,
+            log_axes=None,
+            legend_location="best",
+            vertical_lines=[y_plus_wall_model_input/np.float64(friction_velocity_based_reynolds_number)],
+            secondary_vertical_lines=[0.3])
+
+    # plot with all profiles in one
+    number_of_profiles = 4
+    number_of_runs = len(filenames_)
+    xdata_for_plot = []
+    ydata_for_plot = []
+    clr_reference = ['tab:blue','tab:red','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    mrkr_reference=['None','None','None','None','None','None','None','None','None']
+    lnstl_reference=['solid','solid','solid','dashed','dashdot','solid','dashed']
+    clr_input_store = []
+    mrkr_input_store = []
+    lnstl_input_store = []
+    leg_elements_input = []
+    # labels_store_all_profiles = []
+    # load in the reference results
+    leg_elements_input.append(Line2D([0],[0], label=labels_store[0], color='k', marker='None', markersize=6, mfc='None', linestyle='solid'))
+    for i in range(0,number_of_profiles):
+        clr_input_store.append('k')
+        mrkr_input_store.append('None')
+        lnstl_input_store.append('solid')
+        xdata_for_plot.append(average_y_plus_store[0])
+    # ydata_for_plot.append(average_u_plus_store[0])
+    ydata_for_plot.append(average_reynolds_stress_uv_store[0])
+    ydata_for_plot.append(average_x_velocity_fluctuation_rms_store[0])
+    ydata_for_plot.append(average_y_velocity_fluctuation_rms_store[0])
+    ydata_for_plot.append(average_z_velocity_fluctuation_rms_store[0])
+
+
+    for j in range(number_of_runs):
+        leg_elements_input.append(Line2D([0],[0], label=labels_store[j+1], color=clr_reference[j], marker=mrkr_reference[j], markersize=6, mfc='None', linestyle=lnstl_reference[j]))
+        for i in range(0,number_of_profiles):
+            clr_input_store.append(clr_reference[j])
+            mrkr_input_store.append(mrkr_reference[j])
+            lnstl_input_store.append(lnstl_reference[j])
+            xdata_for_plot.append(average_y_plus_store[j+1])
+        # ydata_for_plot.append(average_u_plus_store[j+1])
+        ydata_for_plot.append(average_reynolds_stress_uv_store[j+1])
+        ydata_for_plot.append(average_x_velocity_fluctuation_rms_store[j+1])
+        ydata_for_plot.append(average_y_velocity_fluctuation_rms_store[j+1])
+        ydata_for_plot.append(average_z_velocity_fluctuation_rms_store[j+1])
+
+
+    # index_loc_for_text = np.argmin(np.abs(average_y_plus_store[0]-y_plus_wall_model_input))
+    index_loc_for_text = np.argmin(np.abs(average_y_plus_store[0]-180.0))
+    x_loc_for_text = []
+    y_loc_for_text = []
+    strings_for_textbox = []
+    for i in range(0,number_of_profiles):
+        x_loc_for_text.append(average_y_plus_store[0][index_loc_for_text])
+    y_loc_for_text.append(average_reynolds_stress_uv_store[0][index_loc_for_text])
+    y_loc_for_text.append(average_x_velocity_fluctuation_rms_store[0][index_loc_for_text])
+    y_loc_for_text.append(average_y_velocity_fluctuation_rms_store[0][index_loc_for_text])
+    y_loc_for_text.append(average_z_velocity_fluctuation_rms_store[0][index_loc_for_text])
+    strings_for_textbox.append("$-\\left\\langle u'v'\\right\\rangle^{+}$")
+    strings_for_textbox.append("$\\left\\langle u'\\right\\rangle^{+}_{rms}$")
+    strings_for_textbox.append("$\\left\\langle v'\\right\\rangle^{+}_{rms}$")
+    strings_for_textbox.append("$\\left\\langle w'\\right\\rangle^{+}_{rms}$")
+    horizontal_alignment_for_textbox_input=['right','left','right','left']
+    vertical_alignment_for_textbox_input=['top','bottom','top','bottom']
+
+    qp.plotfxn(xdata_for_plot,ydata_for_plot,
+        figure_filename="reynolds_stress_profiles_Re"+str(friction_velocity_based_reynolds_number),
         figure_size=(7,6),
-        legend_labels_tex=labels_store,
+        # legend_labels_tex=labels_store,
         figure_filetype="pdf",
         # title_label="Turbulent Channel Flow $Re_{\\tau}\\approx395$, $CFL\\approx0.2$, $\\alpha=0.0$",
-        # title_label="WMLES Approach to Turbulent Channel Flow at $Re_{\\tau}\\approx5200$",
-        # xlabel="$\\left\\langle y^{+}\\right\\rangle$",
-        xlabel="$y/\\delta$",
-        ylabel="$-u'v'/u_{\\tau}^{2}$",
-        # xlimits=[],
-        # ylimits=ylimits_,
-        which_lines_black=which_lines_black_,
-        which_lines_only_markers=which_lines_only_markers_,
+        # title_label="WMLES Approach to Turbulent Channel Flow at $Re_{\\tau}\\approx395$",
+        xlabel="$\\left\\langle y^{+}\\right\\rangle$",
+        ylabel="Reynolds Stress Profiles",
+        xlimits=xlimits_,
+        ylimits=[0.0,3.0],
+        clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
+        leg_elements_input=leg_elements_input,
         transparent_legend=True,
         legend_border_on=False,
         grid_lines_on=False,
         log_axes=None,
         legend_location="best",
-        vertical_lines=[y_plus_wall_model_input/np.float64(friction_velocity_based_reynolds_number)],
-        secondary_vertical_lines=[0.3])
-
-    # fluctuations
-    # xdata_for_fluctuations=[y_plus_after_wall_model_input_point,y_plus_after_wall_model_input_point,y_plus_after_wall_model_input_point]
-    # labels_store = ["$\\left\\langle u'^{+}\\right\\rangle _{rms}$",\
-    #                 "$\\left\\langle v'^{+}\\right\\rangle _{rms}$",\
-    #                 "$\\left\\langle w'^{+}\\right\\rangle _{rms}$"]
-    qp.plotfxn(nondim_y_store,average_x_velocity_fluctuation_rms_store,
-        figure_filename="boundary_layer_profile_of_x_velocity_fluctuations_Re"+str(friction_velocity_based_reynolds_number),
-        figure_size=(7,6),
-        legend_labels_tex=labels_store,
-        figure_filetype="pdf",
-        # title_label="Turbulent Channel Flow $Re_{\\tau}\\approx395$, $CFL\\approx0.2$, $\\alpha=0.0$",
-        # title_label="WMLES Approach to Turbulent Channel Flow at $Re_{\\tau}\\approx395$",
-        xlabel="$\\left\\langle y^{+}\\right\\rangle$",
-        ylabel="$\\left\\langle u'^{+}\\right\\rangle _{rms}$",
-        xlimits=xlimits_,
-        ylimits=[],
-        which_lines_black=which_lines_black_,
-        which_lines_only_markers=[],
-        transparent_legend=False,
-        legend_border_on=True,
-        grid_lines_on=True,
-        log_axes=None,
-        legend_location="best",
-        vertical_lines=[y_plus_wall_model_input/np.float64(friction_velocity_based_reynolds_number)],
-        secondary_vertical_lines=[0.3])
-    qp.plotfxn(nondim_y_store,average_y_velocity_fluctuation_rms_store,
-        figure_filename="boundary_layer_profile_of_y_velocity_fluctuations_Re"+str(friction_velocity_based_reynolds_number),
-        figure_size=(7,6),
-        legend_labels_tex=labels_store,
-        figure_filetype="pdf",
-        # title_label="Turbulent Channel Flow $Re_{\\tau}\\approx395$, $CFL\\approx0.2$, $\\alpha=0.0$",
-        # title_label="WMLES Approach to Turbulent Channel Flow at $Re_{\\tau}\\approx395$",
-        xlabel="$\\left\\langle y^{+}\\right\\rangle$",
-        ylabel="$\\left\\langle v'^{+}\\right\\rangle _{rms}$",
-        xlimits=xlimits_,
-        ylimits=[],
-        which_lines_black=which_lines_black_,
-        which_lines_only_markers=[],
-        transparent_legend=False,
-        legend_border_on=True,
-        grid_lines_on=True,
-        log_axes=None,
-        legend_location="best",
-        vertical_lines=[y_plus_wall_model_input/np.float64(friction_velocity_based_reynolds_number)],
-        secondary_vertical_lines=[0.3])
-    qp.plotfxn(nondim_y_store,average_z_velocity_fluctuation_rms_store,
-        figure_filename="boundary_layer_profile_of_z_velocity_fluctuations_Re"+str(friction_velocity_based_reynolds_number),
-        figure_size=(7,6),
-        legend_labels_tex=labels_store,
-        figure_filetype="pdf",
-        # title_label="Turbulent Channel Flow $Re_{\\tau}\\approx395$, $CFL\\approx0.2$, $\\alpha=0.0$",
-        # title_label="WMLES Approach to Turbulent Channel Flow at $Re_{\\tau}\\approx395$",
-        xlabel="$\\left\\langle y^{+}\\right\\rangle$",
-        ylabel="$\\left\\langle w'^{+}\\right\\rangle _{rms}$",
-        xlimits=xlimits_,
-        ylimits=[],
-        which_lines_black=which_lines_black_,
-        which_lines_only_markers=[],
-        transparent_legend=False,
-        legend_border_on=True,
-        grid_lines_on=True,
-        log_axes=None,
-        legend_location="best",
-        vertical_lines=[y_plus_wall_model_input/np.float64(friction_velocity_based_reynolds_number)],
-        secondary_vertical_lines=[0.3])
+        # vertical_lines=[y_plus_wall_model_input/np.float64(friction_velocity_based_reynolds_number)],
+        vertical_lines=[y_plus_wall_model_input],
+        # secondary_vertical_lines=[0.3],
+        strings_for_textbox=strings_for_textbox,
+        x_positions_for_textbox=x_loc_for_text,
+        y_positions_for_textbox=y_loc_for_text,
+        horizontal_alignment_for_textbox=horizontal_alignment_for_textbox_input,
+        vertical_alignment_for_textbox=vertical_alignment_for_textbox_input)
 
 
     return
@@ -506,8 +601,8 @@ filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_c
 filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input/flow_field_files/velocity_vorticity-0_boundary_layer_profile.dat",\
 ]
 labels=[\
-"P$4$ NSFR-WMLES $(t^{*}=300)$\n $n_{x}\\times n_{y}\\times n_{z} = 20\\times 10\\times 10$",\
-"P$4$ NSFR-WMLES 2nd el. input $(t^{*}=400)$\n $n_{x}\\times n_{y}\\times n_{z} = 20\\times 10\\times 10$",\
+"P$4$ NSFR-WMLES\n $n_{x}\\times n_{y}\\times n_{z} = 20\\times 10\\times 10$\n$(t^{*}=300)$",\
+"P$4$ NSFR-WMLES 2nd el. input\n $n_{x}\\times n_{y}\\times n_{z} = 20\\times 10\\times 10$\n$(t^{*}=400)$",\
 ]
 which_lines_dashed=[2]
 plot_boundary_layer_profile(filenames,labels,395,which_lines_dashed_=which_lines_dashed)
