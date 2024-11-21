@@ -273,12 +273,16 @@ def plot_boundary_layer_profile(filenames_,labels_,friction_velocity_based_reyno
     if(friction_velocity_based_reynolds_number==5200):
         xlimits_=[1.0e0,5200.0]
         ylimits_=[0,30]
+        xlimits_=[5e1,5e2]
+        ylimits_=[12.5,22.5]
         which_lines_black_=[0]
         which_lines_only_markers_=[1,2]
         which_lines_dashed_=[5]
     elif(friction_velocity_based_reynolds_number==395):
         xlimits_=[]
         ylimits_=[]
+        xlimits_zoom=[5e1,5e2]
+        ylimits_zoom=[12.5,22.5]
         which_lines_black_=[0]
         which_lines_only_markers_=[]
         which_lines_dashed_=[]
@@ -319,8 +323,8 @@ def plot_boundary_layer_profile(filenames_,labels_,friction_velocity_based_reyno
         # xlabel="$\\left\\langle y^{+}\\right\\rangle$",
         xlabel="$y^{+}$",
         ylabel="$\\left\\langle u^{+}\\right\\rangle$",
-        xlimits=xlimits_,
-        ylimits=ylimits_,
+        xlimits=xlimits_zoom,
+        ylimits=ylimits_zoom,
         which_lines_black=which_lines_black_,
         which_lines_only_markers=which_lines_only_markers_,
         which_lines_dashed=which_lines_dashed_,
@@ -369,7 +373,7 @@ def plot_boundary_layer_profile(filenames_,labels_,friction_velocity_based_reyno
         ylabel="$\\left\\langle u'^{+}\\right\\rangle _{rms}$",
         xlimits=xlimits_,
         ylimits=[],
-        which_lines_black=[],
+        which_lines_black=which_lines_black_,
         which_lines_only_markers=[],
         transparent_legend=False,
         legend_border_on=True,
@@ -389,7 +393,7 @@ def plot_boundary_layer_profile(filenames_,labels_,friction_velocity_based_reyno
         ylabel="$\\left\\langle v'^{+}\\right\\rangle _{rms}$",
         xlimits=xlimits_,
         ylimits=[],
-        which_lines_black=[],
+        which_lines_black=which_lines_black_,
         which_lines_only_markers=[],
         transparent_legend=False,
         legend_border_on=True,
@@ -409,7 +413,7 @@ def plot_boundary_layer_profile(filenames_,labels_,friction_velocity_based_reyno
         ylabel="$\\left\\langle w'^{+}\\right\\rangle _{rms}$",
         xlimits=xlimits_,
         ylimits=[],
-        which_lines_black=[],
+        which_lines_black=which_lines_black_,
         which_lines_only_markers=[],
         transparent_legend=False,
         legend_border_on=True,
@@ -483,26 +487,30 @@ labels=[\
 filenames=[\
 # filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/turbulent_quantities.txt",\
 filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization/turbulent_quantities.txt",\
+filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input/turbulent_quantities.txt",\
 ]
 labels=[\
 # "p4 $c_{DG}$ NSFR.IR.GLL-WMLES\n $(\\Delta x^{+},\\Delta y^{+},\\Delta z^{+})=(400,250,400)$",\
 # "$Re_{\\tau}\\approx5200$",\
 "$Re_{\\tau}\\approx395$",\
+"$Re_{\\tau}\\approx395$ 2nd el. input",\
 ]
-which_lines_dashed=[]
+which_lines_dashed=[1]
 # friction_velocity_based_reynolds_number=[5200,395]
-friction_velocity_based_reynolds_number=[395]
-plot_transient(filenames,labels,starting_data_index_for_plot=0,friction_velocity_based_reynolds_number=friction_velocity_based_reynolds_number)
+friction_velocity_based_reynolds_number=[395,395]
+plot_transient(filenames,labels,which_lines_dashed_=which_lines_dashed,starting_data_index_for_plot=0,friction_velocity_based_reynolds_number=friction_velocity_based_reynolds_number)
 # exit()
 
 filenames=[\
 filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t0300.dat",\
+filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input/flow_field_files/velocity_vorticity-0_boundary_layer_profile.dat",\
 ]
 labels=[\
 "P$4$ NSFR-WMLES $(t^{*}=300)$\n $n_{x}\\times n_{y}\\times n_{z} = 20\\times 10\\times 10$",\
+"P$4$ NSFR-WMLES 2nd el. input $(t^{*}=400)$\n $n_{x}\\times n_{y}\\times n_{z} = 20\\times 10\\times 10$",\
 ]
-which_lines_dashed=[]
-plot_boundary_layer_profile(filenames,labels,395)
+which_lines_dashed=[2]
+plot_boundary_layer_profile(filenames,labels,395,which_lines_dashed_=which_lines_dashed)
 exit()
 # plot boundary layer profile
 filenames=[\
