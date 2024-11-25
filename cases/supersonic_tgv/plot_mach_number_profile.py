@@ -46,6 +46,30 @@ def plot_mach_number_profile(files,labels_,DOF):
     labels.append("Ref. TENO6 $512^3$ DOF\n[Chapelier et al.]")
     # labels.append("$512^3$ DOF\n[Chapelier et al.]")
 
+    if(DOF==256):
+        # additional data
+        filename_additional_data = "./data/chapelier2024/mach_profile_%i_flexi.txt" % DOF
+        y, scalar = np.loadtxt(filename_additional_data,skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+        y_store.append(y)
+        mach_store.append(scalar)
+        labels.append("FLEXI\n(p$4$ DGSEM, LAD)\n[Chapelier et al.]")
+
+        # additional data
+        filename_additional_data = "./data/chapelier2024/mach_profile_%i_ns3d.txt" % DOF
+        y, scalar = np.loadtxt(filename_additional_data,skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+        y_store.append(y)
+        mach_store.append(scalar)
+        labels.append("NS3D\n(FD-6, HO filter)\n[Chapelier et al.]")
+        #-----------------------------------------------------
+        clr_input_store = ['k','k','k','tab:blue','tab:red','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+        mrkr_input_store = ['o','None','None','None','None','None','None','None','None','None','None']
+        lnstl_input_store = ['None','dashed','dotted','solid','solid','solid','solid','solid','solid','dashed','solid']
+    else:
+        #-----------------------------------------------------
+        clr_input_store = ['k','tab:blue','tab:red','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+        mrkr_input_store = ['o','None','None','None','None','None','None','None','None']
+        lnstl_input_store = ['None','solid','solid','solid','solid','solid','solid','dashed','solid']
+        
     # load results
     scalar_field_name = "mach_number"
     for i,input_filename in enumerate(files):
@@ -59,10 +83,6 @@ def plot_mach_number_profile(files,labels_,DOF):
         mach_store.append(scalar)
         labels.append(labels_[i])
 
-    #-----------------------------------------------------
-    clr_input_store = ['k','tab:blue','tab:red','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
-    mrkr_input_store = ['o','None','None','None','None','None','None','None','None']
-    lnstl_input_store = ['None','solid','solid','solid','solid','solid','solid','dashed','solid']
     # if(plotting_subsonic_result):
     #     lnstl_input_store = ['None','solid','dashed','solid','solid','dashed','solid','dashed','solid']
     # if(DOF==256):
