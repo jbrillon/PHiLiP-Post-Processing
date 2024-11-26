@@ -253,8 +253,8 @@ def batch_assemble_mpi_flow_field_files_generate_boundary_layer_profile(
 
 # Inputs
 # file_path=["/Users/Julien/NarvalFiles/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/flow_field_files/"]
-# file_path=["/home/julien/Codes/dummy_dir_test_channel_flow/flow_field_files/"]
-file_path=["/home/julien/Codes/turbulent_channel_flow_post_processing/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input/flow_field_files/"]
+file_path=["/home/julien/Codes/dummy_dir_test_channel_flow/flow_field_files/"]
+# file_path=["/home/julien/Codes/turbulent_channel_flow_post_processing/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input/flow_field_files/"]
 n_different_files_in_path=[1]
 
 # generate the standard prefix files
