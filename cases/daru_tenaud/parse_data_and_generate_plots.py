@@ -93,9 +93,9 @@ def plot_for_presentation(
         x, density = np.loadtxt(directory+"density_along_y0point05.csv",skiprows=0,dtype=np.float64,unpack=True,delimiter=",")
         density_near_wall_value_store.append(density)
         density_near_wall_x_store.append(x)
-        # x, vorticity = np.loadtxt(directory+"vorticity_along_y0.05.csv",skiprows=0,dtype=np.float64,unpack=True,delimiter=",")
-        # vorticity_near_wall_value_store.append(vorticity)
-        # vorticity_near_wall_x_store.append(x)
+        x, vorticity = np.loadtxt(directory+"vorticity_along_y0point05.csv",skiprows=0,dtype=np.float64,unpack=True,delimiter=",")
+        vorticity_near_wall_value_store.append(vorticity/1000.0) # WARNING SCALED RESULTS MANUALLY
+        vorticity_near_wall_x_store.append(x)
         # x, skin_friction = np.loadtxt(directory+"skinFriction_along_wall.csv",skiprows=0,dtype=np.float64,unpack=True,delimiter=",")
         # skin_friction_value_store.append(skin_friction)
         # skin_friction_x_store.append(x)
@@ -157,31 +157,31 @@ def plot_for_presentation(
             legend_fontSize=12,#14
             legend_location="best")
 
-    # qp.plotfxn(xdata=vorticity_near_wall_x_store,
-    #         ydata=vorticity_near_wall_value_store,
-    #         ylabel='Vorticity near wall at $y^{*}=0.05$',
-    #         xlabel='Nondimensional $x$-coordinate, $x^{*}$',
-    #         figure_filename=figure_subdirectory+'vorticity_near_wall'+figure_filename_postfix,
-    #         title_label=figure_title,
-    #         markers=False,
-    #         legend_labels_tex=labels,
-    #         black_lines=False,
-    #         xlimits=[0.3,1.0],
-    #         ylimits=[20,120],
-    #         log_axes=log_axes_input,
-    #         which_lines_black=black_line_flag,
-    #         which_lines_dashed=dashed_line_flag,
-    #         which_lines_only_markers=[0],
-    #         legend_on=legend_on_input,
-    #         legend_inside=legend_inside_input,
-    #         nlegendcols=nlegendcols_input,
-    #         figure_size=(6,6),
-    #         transparent_legend=True,#transparent_legend_input,
-    #         legend_border_on=False,
-    #         grid_lines_on=False,
-    #         clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
-    #         legend_fontSize=12,#14
-    #         legend_location="best")
+    qp.plotfxn(xdata=vorticity_near_wall_x_store,
+            ydata=vorticity_near_wall_value_store,
+            ylabel='Vorticity near wall at $y^{*}=0.05$',
+            xlabel='Nondimensional $x$-coordinate, $x^{*}$',
+            figure_filename=figure_subdirectory+'vorticity_near_wall'+figure_filename_postfix,
+            title_label=figure_title,
+            markers=False,
+            legend_labels_tex=labels,
+            black_lines=False,
+            xlimits=[0.5,1.0],
+            # ylimits=[20,120],
+            log_axes=log_axes_input,
+            which_lines_black=black_line_flag,
+            which_lines_dashed=dashed_line_flag,
+            which_lines_only_markers=[0],
+            legend_on=legend_on_input,
+            legend_inside=legend_inside_input,
+            nlegendcols=nlegendcols_input,
+            figure_size=(6,6),
+            transparent_legend=True,#transparent_legend_input,
+            legend_border_on=False,
+            grid_lines_on=False,
+            clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
+            legend_fontSize=12,#14
+            legend_location="best")
 
     # qp.plotfxn(xdata=skin_friction_x_store,
     #         ydata=skin_friction_value_store,
