@@ -67,7 +67,7 @@ def plot_for_presentation(
     time, location = np.loadtxt("./data/reference/daru2009numerical/triplePointLocation_y.csv",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
     triple_point_y_location_value_store.append(location)
     triple_point_y_location_time_store.append(time)
-    labels.append("Ref. OSMP7 $(4000\\times2000)$ DOF\n[Daru and Tenaud]")
+    labels.append("OSMP7 [Daru \\& Tenaud]\n $4000\\times2000$ DOF")
     black_line_flag.append(True)
     dashed_line_flag.append(False)
     #-----------------------------------------------------
@@ -90,7 +90,7 @@ def plot_for_presentation(
         x, density = np.loadtxt(directory+"density_along_wall.csv",skiprows=0,dtype=np.float64,unpack=True,delimiter=",")
         density_along_wall_value_store.append(density)
         density_along_wall_x_store.append(x)
-        x, density = np.loadtxt(directory+"density_along_y0.05.csv",skiprows=0,dtype=np.float64,unpack=True,delimiter=",")
+        x, density = np.loadtxt(directory+"density_along_y0point05.csv",skiprows=0,dtype=np.float64,unpack=True,delimiter=",")
         density_near_wall_value_store.append(density)
         density_near_wall_x_store.append(x)
         # x, vorticity = np.loadtxt(directory+"vorticity_along_y0.05.csv",skiprows=0,dtype=np.float64,unpack=True,delimiter=",")
@@ -107,8 +107,8 @@ def plot_for_presentation(
 
     qp.plotfxn(xdata=density_along_wall_x_store,
             ydata=density_along_wall_value_store,
-            ylabel='Density along wall, $\\rho^{*}$',
-            xlabel='$x^{*}$',
+            ylabel='Density $\\rho^{*}$ along wall',
+            xlabel='Nondimensional $x$-coordinate, $x^{*}$',
             figure_filename=figure_subdirectory+'density_along_wall'+figure_filename_postfix,
             title_label=figure_title,
             markers=False,
@@ -116,6 +116,137 @@ def plot_for_presentation(
             black_lines=False,
             xlimits=[0.3,1.0],
             ylimits=[20,120],
+            log_axes=log_axes_input,
+            which_lines_black=black_line_flag,
+            which_lines_dashed=dashed_line_flag,
+            which_lines_only_markers=[0],
+            legend_on=legend_on_input,
+            legend_inside=legend_inside_input,
+            nlegendcols=nlegendcols_input,
+            figure_size=(6,6),
+            transparent_legend=True,#transparent_legend_input,
+            legend_border_on=False,
+            grid_lines_on=False,
+            clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
+            legend_fontSize=12,#14
+            legend_location="best")
+
+    qp.plotfxn(xdata=density_near_wall_x_store,
+            ydata=density_near_wall_value_store,
+            ylabel='Density $\\rho^{*}$ near wall at $y^{*}=0.05$',
+            xlabel='Nondimensional $x$-coordinate, $x^{*}$',
+            figure_filename=figure_subdirectory+'density_near_wall'+figure_filename_postfix,
+            title_label=figure_title,
+            markers=False,
+            legend_labels_tex=labels,
+            black_lines=False,
+            xlimits=[0.3,1.0],
+            ylimits=[10,110],
+            log_axes=log_axes_input,
+            which_lines_black=black_line_flag,
+            which_lines_dashed=dashed_line_flag,
+            which_lines_only_markers=[0],
+            legend_on=legend_on_input,
+            legend_inside=legend_inside_input,
+            nlegendcols=nlegendcols_input,
+            figure_size=(6,6),
+            transparent_legend=True,#transparent_legend_input,
+            legend_border_on=False,
+            grid_lines_on=False,
+            clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
+            legend_fontSize=12,#14
+            legend_location="best")
+
+    # qp.plotfxn(xdata=vorticity_near_wall_x_store,
+    #         ydata=vorticity_near_wall_value_store,
+    #         ylabel='Vorticity near wall at $y^{*}=0.05$',
+    #         xlabel='Nondimensional $x$-coordinate, $x^{*}$',
+    #         figure_filename=figure_subdirectory+'vorticity_near_wall'+figure_filename_postfix,
+    #         title_label=figure_title,
+    #         markers=False,
+    #         legend_labels_tex=labels,
+    #         black_lines=False,
+    #         xlimits=[0.3,1.0],
+    #         ylimits=[20,120],
+    #         log_axes=log_axes_input,
+    #         which_lines_black=black_line_flag,
+    #         which_lines_dashed=dashed_line_flag,
+    #         which_lines_only_markers=[0],
+    #         legend_on=legend_on_input,
+    #         legend_inside=legend_inside_input,
+    #         nlegendcols=nlegendcols_input,
+    #         figure_size=(6,6),
+    #         transparent_legend=True,#transparent_legend_input,
+    #         legend_border_on=False,
+    #         grid_lines_on=False,
+    #         clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
+    #         legend_fontSize=12,#14
+    #         legend_location="best")
+
+    # qp.plotfxn(xdata=skin_friction_x_store,
+    #         ydata=skin_friction_value_store,
+    #         ylabel='Skin friction',
+    #         xlabel='Nondimensional $x$-coordinate, $x^{*}$',
+    #         figure_filename=figure_subdirectory+'skin_friction_wall'+figure_filename_postfix,
+    #         title_label=figure_title,
+    #         markers=False,
+    #         legend_labels_tex=labels,
+    #         black_lines=False,
+    #         xlimits=[0.3,1.0],
+    #         ylimits=[20,120],
+    #         log_axes=log_axes_input,
+    #         which_lines_black=black_line_flag,
+    #         which_lines_dashed=dashed_line_flag,
+    #         which_lines_only_markers=[0],
+    #         legend_on=legend_on_input,
+    #         legend_inside=legend_inside_input,
+    #         nlegendcols=nlegendcols_input,
+    #         figure_size=(6,6),
+    #         transparent_legend=True,#transparent_legend_input,
+    #         legend_border_on=False,
+    #         grid_lines_on=False,
+    #         clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
+    #         legend_fontSize=12,#14
+    #         legend_location="best")
+
+    mrkr_input_store = ['o','^','d','s','+','d','v','>','<']
+    qp.plotfxn(xdata=triple_point_x_location_time_store,
+            ydata=triple_point_x_location_value_store,
+            ylabel='Nondimensional $x$-coordinate, $x^{*}$',
+            xlabel='Nondimensional Time, $t^{*}$',
+            figure_filename=figure_subdirectory+'triple_point_x_location'+figure_filename_postfix,
+            title_label=figure_title,
+            markers=False,
+            legend_labels_tex=labels,
+            black_lines=False,
+            xlimits=[0.4,1.0],
+            ylimits=[0.55,0.95],
+            log_axes=log_axes_input,
+            which_lines_black=black_line_flag,
+            which_lines_dashed=dashed_line_flag,
+            which_lines_only_markers=[0],
+            legend_on=legend_on_input,
+            legend_inside=legend_inside_input,
+            nlegendcols=nlegendcols_input,
+            figure_size=(6,6),
+            transparent_legend=True,#transparent_legend_input,
+            legend_border_on=False,
+            grid_lines_on=False,
+            clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
+            legend_fontSize=12,#14
+            legend_location="best")
+
+    qp.plotfxn(xdata=triple_point_y_location_time_store,
+            ydata=triple_point_y_location_value_store,
+            ylabel='Nondimensional $y$-coordinate, $y^{*}$',
+            xlabel='Nondimensional Time, $t^{*}$',
+            figure_filename=figure_subdirectory+'triple_point_y_location'+figure_filename_postfix,
+            title_label=figure_title,
+            markers=False,
+            legend_labels_tex=labels,
+            black_lines=False,
+            xlimits=[0.4,1.0],
+            ylimits=[0.07,0.16],
             log_axes=log_axes_input,
             which_lines_black=black_line_flag,
             which_lines_dashed=dashed_line_flag,
@@ -185,7 +316,7 @@ if(True):
     ]
     # labels
     labels_for_plot=[\
-    "p$3$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$-GLL-Roe-PPL\n1000\\times500 DOF",\
+    "p$3$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$-GLL-Roe-PPL\n $1000\\times500$ DOF",\
     # "p$3$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
     ]
     black_line_flag_for_plot=[False,False,False,False,False,False,False,False]
