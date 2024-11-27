@@ -206,8 +206,10 @@ def plot_for_presentation(
         # labels.append("FLEXI $256^3$\n($4^{th}$-order DGSEM with subgrid FV)\n[Chapelier et al.]")
         labels.insert(1,"FLEXI (p$4$ DGSEM, LAD)\n[Chapelier et al.]")
         dashed_line_flag.insert(1,True)
-        clr_input_store.insert(1,"k")
-        lnstl_input_store.insert(1,"dashed")
+        # clr_input_store.insert(1,"k")
+        # lnstl_input_store.insert(1,"dashed")
+        clr_input_store.insert(1,'tab:blue')
+        lnstl_input_store.insert(1,"solid")
         # NS3D
         time, solenoidal_dissipation = np.loadtxt("./data/chapelier2024/solenoidal_dissipation_256_ns3d.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
         time_store.insert(2,time)
@@ -215,8 +217,11 @@ def plot_for_presentation(
         # labels.append("FLEXI $256^3$\n($4^{th}$-order DGSEM with subgrid FV)\n[Chapelier et al.]")
         labels.insert(2,"NS3D (6th order FD, HO filter)\n[Chapelier et al.]")
         dashed_line_flag.insert(2,True)
-        clr_input_store.insert(2,"k")
-        lnstl_input_store.insert(2,"dotted")
+        # clr_input_store.insert(2,"k")
+        # lnstl_input_store.insert(2,"dotted")
+        clr_input_store.insert(2,'tab:red')
+        lnstl_input_store.insert(2,"solid")
+        clr_input_store.insert(3,'tab:green') # WARNING: HACKY FIX
     if(128 in number_of_degrees_of_freedom):
         time, solenoidal_dissipation = np.loadtxt("./data/chapelier2024/solenoidal_dissipation_128_best_result.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
         time_store.insert(1,time)

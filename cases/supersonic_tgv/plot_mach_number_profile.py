@@ -61,9 +61,12 @@ def plot_mach_number_profile(files,labels_,DOF):
         mach_store.append(scalar)
         labels.append("NS3D\n(FD-6, HO filter)\n[Chapelier et al.]")
         #-----------------------------------------------------
-        clr_input_store = ['k','k','k','tab:blue','tab:red','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
-        mrkr_input_store = ['o','None','None','None','None','None','None','None','None','None','None']
-        lnstl_input_store = ['None','dashed','dotted','solid','solid','solid','solid','solid','solid','dashed','solid']
+        # clr_input_store = ['k','k','k','tab:blue','tab:red','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+        # mrkr_input_store = ['o','None','None','None','None','None','None','None','None','None','None']
+        # lnstl_input_store = ['None','dashed','dotted','solid','solid','solid','solid','solid','solid','dashed','solid']
+        clr_input_store = ['k','tab:blue','tab:red','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+        mrkr_input_store = ['+','None','None','None','None','None','None','None','None']
+        lnstl_input_store = ['solid','solid','solid','solid','solid','solid','solid','dashed','solid']
     else:
         #-----------------------------------------------------
         clr_input_store = ['k','tab:blue','tab:red','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
@@ -90,6 +93,16 @@ def plot_mach_number_profile(files,labels_,DOF):
     # if(DOF==128):
     #     lnstl_input_store = ['None','solid','solid','solid','dashed','dashed','solid','dashed','solid']
 
+    plot_zoomed_section=False
+    if(DOF==256):
+        x_limits_zoom=[0.78,1.08]
+        y_limits_zoom=[1.46,1.52]
+        plot_zoomed_section=True
+        zoom_box_origin_and_extent=[0.60, 0.02, 0.38, 0.38]
+    else:
+        x_limits_zoom=[]
+        y_limits_zoom=[]
+        zoom_box_origin_and_extent=[]
     qp.plotfxn(xdata=y_store,
             ydata=mach_store,
             xlabel='$y^{*}$',#=\\frac{1}{\\rho_{\\infty}V_{\\infty}^{2}|\\Omega|}\\int_{\\Omega}\\rho(u\\cdot\\u)d\\Omega$',
@@ -114,7 +127,10 @@ def plot_mach_number_profile(files,labels_,DOF):
             grid_lines_on=False,
             clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
             legend_fontSize=12,#14
-            legend_location="best")
+            legend_location="best",
+            plot_zoomed_section=plot_zoomed_section,
+            x_limits_zoom=x_limits_zoom,y_limits_zoom=y_limits_zoom,
+            zoom_box_origin_and_extent=zoom_box_origin_and_extent,)
     return
 #=====================================================
 def reinit_inputs():
