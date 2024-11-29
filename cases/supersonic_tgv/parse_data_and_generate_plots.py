@@ -91,11 +91,17 @@ def plot_for_presentation(
     if(plotting_subsonic_result):
         lnstl_input_store = ['None','solid','dashed','solid','solid','dashed','solid','dashed','solid']
     if(256 in number_of_degrees_of_freedom):
-        clr_input_store = ['k','tab:blue','tab:red','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
-        lnstl_input_store = ['None','solid','solid','solid','dashed','solid','dashed','solid']
+        clr_input_store = ['k','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+        # clr_input_store = ['k','tab:blue','tab:red','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+        lnstl_input_store = ['None','solid','solid','solid','dashed','solid','solid','solid']
     if(128 in number_of_degrees_of_freedom):
-        clr_input_store = ['k','tab:blue','tab:red','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
-        lnstl_input_store = ['None','solid','solid','solid','solid','dashed','solid','dashed','solid']
+        # clr_input_store = ['k','tab:blue','tab:red','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+        clr_input_store = ['k','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+        lnstl_input_store = ['None','solid','solid','solid','solid','solid','solid','dashed','solid']
+    if(64 in number_of_degrees_of_freedom):
+        # clr_input_store = ['k','tab:blue','tab:red','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+        clr_input_store = ['k','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+        lnstl_input_store = ['None','solid','solid','solid','solid','solid','solid','dashed','solid']
     #-----------------------------------------------------
     number_of_result_curves=len(subdirectories_for_plot)
     for i in range(0,number_of_result_curves):
@@ -200,7 +206,7 @@ def plot_for_presentation(
         time, solenoidal_dissipation = np.loadtxt("./data/chapelier2024/subsonic/solenoidal_dissipation.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
     time_store[0] = time # replace it -- this is a hack
     if(256 in number_of_degrees_of_freedom):
-        time, solenoidal_dissipation = np.loadtxt("./data/chapelier2024/solenoidal_dissipation_256_best_result.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+        time, solenoidal_dissipation = np.loadtxt("./data/chapelier2024/solenoidal_dissipation_256_flexi.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
         time_store.insert(1,time)
         solenoidal_dissipation_store.insert(1,solenoidal_dissipation)
         # labels.append("FLEXI $256^3$\n($4^{th}$-order DGSEM with subgrid FV)\n[Chapelier et al.]")
@@ -221,16 +227,50 @@ def plot_for_presentation(
         # lnstl_input_store.insert(2,"dotted")
         clr_input_store.insert(2,'tab:red')
         lnstl_input_store.insert(2,"solid")
-        clr_input_store.insert(3,'tab:green') # WARNING: HACKY FIX
     if(128 in number_of_degrees_of_freedom):
-        time, solenoidal_dissipation = np.loadtxt("./data/chapelier2024/solenoidal_dissipation_128_best_result.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+        time, solenoidal_dissipation = np.loadtxt("./data/chapelier2024/solenoidal_dissipation_128_flexi.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
         time_store.insert(1,time)
         solenoidal_dissipation_store.insert(1,solenoidal_dissipation)
         # labels.append("FLEXI $128^3$\n($4^{th}$-order DGSEM with subgrid FV)\n[Chapelier et al.]")
-        labels.insert(1,"FLEXI [Chapelier et al.]")
+        labels.insert(1,"FLEXI (p$4$ DGSEM, LAD)\n[Chapelier et al.]")
         dashed_line_flag.insert(1,True)
-        clr_input_store.insert(1,"k")
-        lnstl_input_store.insert(1,"dashed")
+        # clr_input_store.insert(1,"k")
+        # lnstl_input_store.insert(1,"dashed")
+        clr_input_store.insert(1,'tab:blue')
+        lnstl_input_store.insert(1,"solid")
+        # NS3D
+        time, solenoidal_dissipation = np.loadtxt("./data/chapelier2024/solenoidal_dissipation_128_ns3d.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+        time_store.insert(2,time)
+        solenoidal_dissipation_store.insert(2,solenoidal_dissipation)
+        # labels.append("FLEXI $256^3$\n($4^{th}$-order DGSEM with subgrid FV)\n[Chapelier et al.]")
+        labels.insert(2,"NS3D (6th order FD, HO filter)\n[Chapelier et al.]")
+        dashed_line_flag.insert(2,True)
+        # clr_input_store.insert(2,"k")
+        # lnstl_input_store.insert(2,"dotted")
+        clr_input_store.insert(2,'tab:red')
+        lnstl_input_store.insert(2,"solid")
+    if(64 in number_of_degrees_of_freedom):
+        time, solenoidal_dissipation = np.loadtxt("./data/chapelier2024/solenoidal_dissipation_64_flexi.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+        time_store.insert(1,time)
+        solenoidal_dissipation_store.insert(1,solenoidal_dissipation)
+        # labels.append("FLEXI $128^3$\n($4^{th}$-order DGSEM with subgrid FV)\n[Chapelier et al.]")
+        labels.insert(1,"FLEXI (p$4$ DGSEM, LAD)\n[Chapelier et al.]")
+        dashed_line_flag.insert(1,True)
+        # clr_input_store.insert(1,"k")
+        # lnstl_input_store.insert(1,"dashed")
+        clr_input_store.insert(1,'tab:blue')
+        lnstl_input_store.insert(1,"solid")
+        # NS3D
+        time, solenoidal_dissipation = np.loadtxt("./data/chapelier2024/solenoidal_dissipation_64_ns3d.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+        time_store.insert(2,time)
+        solenoidal_dissipation_store.insert(2,solenoidal_dissipation)
+        # labels.append("FLEXI $256^3$\n($4^{th}$-order DGSEM with subgrid FV)\n[Chapelier et al.]")
+        labels.insert(2,"NS3D (6th order FD, HO filter)\n[Chapelier et al.]")
+        dashed_line_flag.insert(2,True)
+        # clr_input_store.insert(2,"k")
+        # lnstl_input_store.insert(2,"dotted")
+        clr_input_store.insert(2,'tab:red')
+        lnstl_input_store.insert(2,"solid")
     qp.plotfxn(xdata=time_store,
             ydata=solenoidal_dissipation_store,
             ylabel='Nondimensional Solenoidal Dissipation, $\\varepsilon_{s}^{*}$',#=\\frac{1}{\\rho_{\\infty}V_{\\infty}^{2}|\\Omega|}\\int_{\\Omega}\\rho(u\\cdot\\u)d\\Omega$',
@@ -275,7 +315,7 @@ def plot_for_presentation(
         # labels.append("FLEXI $256^3$\n($4^{th}$-order DGSEM with subgrid FV)\n[Chapelier et al.]")
         labels[1] = "FLEXI (p$4$ DGSEM, LAD)\n[Chapelier et al.]"
         # NS3D
-        time, dilatational_dissipation = np.loadtxt("./data/chapelier2024/dilational_dissipation_256_best_result.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+        time, dilatational_dissipation = np.loadtxt("./data/chapelier2024/dilational_dissipation_256_ns3d.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
         time_store[2] = time
         dilatational_dissipation_store.insert(2,dilatational_dissipation)
         pressure_dissipation_store.insert(2,np.nan*dilatational_dissipation)
@@ -286,13 +326,43 @@ def plot_for_presentation(
         # clr_input_store.insert(1,"k")
         # lnstl_input_store.insert(1,"dotted")
     if(128 in number_of_degrees_of_freedom):
-        time, dilatational_dissipation = np.loadtxt("./data/chapelier2024/dilational_dissipation_128_best_result.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
-        time_store[1] = time # TO DO: FIX IF 256 also being plotted
+        # FLEXI
+        time, dilatational_dissipation = np.loadtxt("./data/chapelier2024/dilatational_dissipation_128_flexi.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+        time_store[1] = time
         dilatational_dissipation_store.insert(1,dilatational_dissipation)
         pressure_dissipation_store.insert(1,np.nan*dilatational_dissipation)
-        # labels.append("NS3D $128^3$\n($6^{th}$-order FD with HO Filter)\n[Chapelier et al.]")
-        labels[1] = "NS3D [Chapelier et al.]"
-        dashed_line_flag[1]=True
+        # labels.append("FLEXI $256^3$\n($4^{th}$-order DGSEM with subgrid FV)\n[Chapelier et al.]")
+        labels[1] = "FLEXI (p$4$ DGSEM, LAD)\n[Chapelier et al.]"
+        # NS3D
+        time, dilatational_dissipation = np.loadtxt("./data/chapelier2024/dilational_dissipation_128_ns3d.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+        time_store[2] = time
+        dilatational_dissipation_store.insert(2,dilatational_dissipation)
+        pressure_dissipation_store.insert(2,np.nan*dilatational_dissipation)
+        # labels.append("NS3D $256^3$\n($6^{th}$-order FD with HO Filter)\n[Chapelier et al.]")
+        labels[2] = "NS3D (6th order FD, HO filter)\n[Chapelier et al.]"
+        dashed_line_flag[2]=True
+        # dashed_line_flag.insert(1,True)
+        # clr_input_store.insert(1,"k")
+        # lnstl_input_store.insert(1,"dotted")
+    if(64 in number_of_degrees_of_freedom):
+        # FLEXI
+        time, dilatational_dissipation = np.loadtxt("./data/chapelier2024/dilatational_dissipation_64_flexi.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+        time_store[1] = time
+        dilatational_dissipation_store.insert(1,dilatational_dissipation)
+        pressure_dissipation_store.insert(1,np.nan*dilatational_dissipation)
+        # labels.append("FLEXI $256^3$\n($4^{th}$-order DGSEM with subgrid FV)\n[Chapelier et al.]")
+        labels[1] = "FLEXI (p$4$ DGSEM, LAD)\n[Chapelier et al.]"
+        # NS3D
+        time, dilatational_dissipation = np.loadtxt("./data/chapelier2024/dilational_dissipation_64_ns3d.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+        time_store[2] = time
+        dilatational_dissipation_store.insert(2,dilatational_dissipation)
+        pressure_dissipation_store.insert(2,np.nan*dilatational_dissipation)
+        # labels.append("NS3D $256^3$\n($6^{th}$-order FD with HO Filter)\n[Chapelier et al.]")
+        labels[2] = "NS3D (6th order FD, HO filter)\n[Chapelier et al.]"
+        dashed_line_flag[2]=True
+        # dashed_line_flag.insert(1,True)
+        # clr_input_store.insert(1,"k")
+        # lnstl_input_store.insert(1,"dotted")
 
     qp.plotfxn(xdata=time_store,
             ydata=dilatational_dissipation_store,
