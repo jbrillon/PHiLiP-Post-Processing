@@ -51,8 +51,8 @@ def plot_mach_number_profile(files,labels_,DOF,convergence_plot=False):
         y, scalar = np.loadtxt(filename_additional_data,skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
         y_store.append(y)
         mach_store.append(scalar)
-        labels.append("FLEXI\n(p$4$ DGSEM, LAD)\n[Chapelier et al.]")
-
+        labels.append("FLEXI\n(p$4$ DGSEM, Sub-cell FV)\n[Chapelier et al.]")
+        
         # additional data
         filename_additional_data = "./data/chapelier2024/mach_profile_%i_ns3d.txt" % DOF
         y, scalar = np.loadtxt(filename_additional_data,skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
@@ -91,7 +91,7 @@ def plot_mach_number_profile(files,labels_,DOF,convergence_plot=False):
     #     clr_input_store = ['k','tab:blue','tab:red','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
     #     mrkr_input_store = ['o','None','None','None','None','None','None','None','None']
     #     lnstl_input_store = ['None','solid','solid','solid','solid','solid','solid','dashed','solid']
-        
+    
     # load results
     scalar_field_name = "mach_number"
     for i,input_filename in enumerate(files):
@@ -146,7 +146,7 @@ def plot_mach_number_profile(files,labels_,DOF,convergence_plot=False):
             grid_lines_on=False,
             clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
             legend_fontSize=12,#14
-            legend_location="best",
+            legend_location="upper left",
             plot_zoomed_section=plot_zoomed_section,
             x_limits_zoom=x_limits_zoom,y_limits_zoom=y_limits_zoom,
             zoom_box_origin_and_extent=zoom_box_origin_and_extent,)
@@ -182,7 +182,31 @@ def reinit_inputs():
     plot_PHiLiP_DNS_result_as_reference_input=True # default
 #=====================================================
 #-----------------------------------------------------
-
+#=====================================================
+# DOFs: 256^3 | All results
+#-----------------------------------------------------
+if(True):
+    #-----------------------------------------------------
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2024_JCP/"
+    date_for_runs="."
+    figure_subdirectory="./"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
+    figure_filename_postfix = "_256_04"
+    legend_inside_input=True
+    plot_reference_result=True
+    plot_PHiLiP_DNS_result_as_reference_input=False
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs512/paraview_mach_number_vs_y_t2point5.txt",\
+    ]
+    # labels
+    labels_for_plot=[\
+    "p$7$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$-Roe\n(with PPL)",\
+    ]
+    plot_mach_number_profile(subdirectories_for_plot,labels_for_plot,256)
+    exit()
 #=====================================================
 # DOFs: 64^3 | All results
 #-----------------------------------------------------

@@ -210,7 +210,7 @@ def plot_for_presentation(
         time_store.insert(1,time)
         solenoidal_dissipation_store.insert(1,solenoidal_dissipation)
         # labels.append("FLEXI $256^3$\n($4^{th}$-order DGSEM with subgrid FV)\n[Chapelier et al.]")
-        labels.insert(1,"FLEXI (p$4$ DGSEM, LAD)\n[Chapelier et al.]")
+        labels.insert(1,"FLEXI (p$4$ DGSEM, Sub-cell FV)\n[Chapelier et al.]")
         dashed_line_flag.insert(1,True)
         # clr_input_store.insert(1,"k")
         # lnstl_input_store.insert(1,"dashed")
@@ -232,7 +232,7 @@ def plot_for_presentation(
         time_store.insert(1,time)
         solenoidal_dissipation_store.insert(1,solenoidal_dissipation)
         # labels.append("FLEXI $128^3$\n($4^{th}$-order DGSEM with subgrid FV)\n[Chapelier et al.]")
-        labels.insert(1,"FLEXI (p$4$ DGSEM, LAD)\n[Chapelier et al.]")
+        labels.insert(1,"FLEXI (p$4$ DGSEM, Sub-cell FV)\n[Chapelier et al.]")
         dashed_line_flag.insert(1,True)
         # clr_input_store.insert(1,"k")
         # lnstl_input_store.insert(1,"dashed")
@@ -254,7 +254,7 @@ def plot_for_presentation(
         time_store.insert(1,time)
         solenoidal_dissipation_store.insert(1,solenoidal_dissipation)
         # labels.append("FLEXI $128^3$\n($4^{th}$-order DGSEM with subgrid FV)\n[Chapelier et al.]")
-        labels.insert(1,"FLEXI (p$4$ DGSEM, LAD)\n[Chapelier et al.]")
+        labels.insert(1,"FLEXI (p$4$ DGSEM, Sub-cell FV)\n[Chapelier et al.]")
         dashed_line_flag.insert(1,True)
         # clr_input_store.insert(1,"k")
         # lnstl_input_store.insert(1,"dashed")
@@ -295,7 +295,7 @@ def plot_for_presentation(
             grid_lines_on=False,
             clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
             legend_fontSize=12,#14
-            legend_location="best")
+            legend_location="upper right")
     #-----------------------------------------------------
     ylimits_for_plot = [0.0,0.0014]
     if(plotting_subsonic_result):
@@ -313,14 +313,14 @@ def plot_for_presentation(
         dilatational_dissipation_store.insert(1,dilatational_dissipation)
         pressure_dissipation_store.insert(1,np.nan*dilatational_dissipation)
         # labels.append("FLEXI $256^3$\n($4^{th}$-order DGSEM with subgrid FV)\n[Chapelier et al.]")
-        labels[1] = "FLEXI (p$4$ DGSEM, LAD)\n[Chapelier et al.]"
+        labels[1] = "FLEXI\n(p$4$ DGSEM, Sub-cell FV)\n[Chapelier et al.]"
         # NS3D
         time, dilatational_dissipation = np.loadtxt("./data/chapelier2024/dilatational_dissipation_256_ns3d.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
         time_store[2] = time
         dilatational_dissipation_store.insert(2,dilatational_dissipation)
         pressure_dissipation_store.insert(2,np.nan*dilatational_dissipation)
         # labels.append("NS3D $256^3$\n($6^{th}$-order FD with HO Filter)\n[Chapelier et al.]")
-        labels[2] = "NS3D (6th order FD, HO filter)\n[Chapelier et al.]"
+        labels[2] = "NS3D\n(6th order FD, HO filter)\n[Chapelier et al.]"
         dashed_line_flag[2]=True
         # dashed_line_flag.insert(1,True)
         # clr_input_store.insert(1,"k")
@@ -332,14 +332,14 @@ def plot_for_presentation(
         dilatational_dissipation_store.insert(1,dilatational_dissipation)
         pressure_dissipation_store.insert(1,np.nan*dilatational_dissipation)
         # labels.append("FLEXI $256^3$\n($4^{th}$-order DGSEM with subgrid FV)\n[Chapelier et al.]")
-        labels[1] = "FLEXI (p$4$ DGSEM, LAD)\n[Chapelier et al.]"
+        labels[1] = "FLEXI\n(p$4$ DGSEM, Sub-cell FV)\n[Chapelier et al.]"
         # NS3D
         time, dilatational_dissipation = np.loadtxt("./data/chapelier2024/dilatational_dissipation_128_ns3d.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
         time_store[2] = time
         dilatational_dissipation_store.insert(2,dilatational_dissipation)
         pressure_dissipation_store.insert(2,np.nan*dilatational_dissipation)
         # labels.append("NS3D $256^3$\n($6^{th}$-order FD with HO Filter)\n[Chapelier et al.]")
-        labels[2] = "NS3D (6th order FD, HO filter)\n[Chapelier et al.]"
+        labels[2] = "NS3D\n(6th order FD, HO filter)\n[Chapelier et al.]"
         dashed_line_flag[2]=True
         # dashed_line_flag.insert(1,True)
         # clr_input_store.insert(1,"k")
@@ -351,14 +351,14 @@ def plot_for_presentation(
         dilatational_dissipation_store.insert(1,dilatational_dissipation)
         pressure_dissipation_store.insert(1,np.nan*dilatational_dissipation)
         # labels.append("FLEXI $256^3$\n($4^{th}$-order DGSEM with subgrid FV)\n[Chapelier et al.]")
-        labels[1] = "FLEXI (p$4$ DGSEM, LAD)\n[Chapelier et al.]"
+        labels[1] = "FLEXI\n(p$4$ DGSEM, Sub-cell FV)\n[Chapelier et al.]"
         # NS3D
         time, dilatational_dissipation = np.loadtxt("./data/chapelier2024/dilatational_dissipation_64_ns3d.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
         time_store[2] = time
         dilatational_dissipation_store.insert(2,dilatational_dissipation)
         pressure_dissipation_store.insert(2,np.nan*dilatational_dissipation)
         # labels.append("NS3D $256^3$\n($6^{th}$-order FD with HO Filter)\n[Chapelier et al.]")
-        labels[2] = "NS3D (6th order FD, HO filter)\n[Chapelier et al.]"
+        labels[2] = "NS3D\n(6th order FD, HO filter)\n[Chapelier et al.]"
         dashed_line_flag[2]=True
         # dashed_line_flag.insert(1,True)
         # clr_input_store.insert(1,"k")
@@ -388,7 +388,7 @@ def plot_for_presentation(
             grid_lines_on=False,
             clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
             legend_fontSize=12,#14
-            legend_location="best")
+            legend_location="upper right")
 
     #-----------------------------------------------------
     ylimits_for_plot = [0.0,0.002]
@@ -463,6 +463,37 @@ if(True):
     date_for_runs="."
     figure_subdirectory="./"
     # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
+    figure_filename_postfix = "_256"
+    legend_inside_input=True
+    plot_reference_result=True
+    plot_PHiLiP_DNS_result_as_reference_input=False
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs512",\
+    ]
+    # labels
+    labels_for_plot=[\
+    # "p$7$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$-GLL-Roe-PPL",\
+    "p$7$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$-Roe\n(with PPL)",\
+    # "p$7$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    ]
+    black_line_flag_for_plot=[False,False,False,False,False,False,False,False]
+    dashed_line_flag_for_plot=[False,False,False,False,False,True,True]
+    which_was_ran_with_corrected_quantites=[0]
+    number_of_degrees_of_freedom_input=[256]
+    compare_with_ref_result_at_same_dof=True
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
+        which_was_ran_with_corrected_quantites=which_was_ran_with_corrected_quantites,
+        number_of_degrees_of_freedom=number_of_degrees_of_freedom_input,
+        compare_with_reference_result_at_same_degrees_of_freedom=compare_with_ref_result_at_same_dof)
+    exit()
+    #-----------------------------------------------------
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2024_JCP/"
+    date_for_runs="."
+    figure_subdirectory="./"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
     figure_filename_postfix = "_p7_convergence"
     legend_inside_input=True
     plot_reference_result=True
@@ -515,36 +546,6 @@ if(True):
     which_was_ran_with_corrected_quantites=[0]
     number_of_degrees_of_freedom_input=[]
     compare_with_ref_result_at_same_dof=False
-    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
-        which_was_ran_with_corrected_quantites=which_was_ran_with_corrected_quantites,
-        number_of_degrees_of_freedom=number_of_degrees_of_freedom_input,
-        compare_with_reference_result_at_same_degrees_of_freedom=compare_with_ref_result_at_same_dof)
-
-    #-----------------------------------------------------
-    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
-    reinit_inputs()
-    data_directory_base=filesystem+"NarvalFiles/2024_JCP/"
-    date_for_runs="."
-    figure_subdirectory="./"
-    # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
-    figure_filename_postfix = "_256"
-    legend_inside_input=True
-    plot_reference_result=True
-    plot_PHiLiP_DNS_result_as_reference_input=False
-    #-----------------------------------------------------
-    subdirectories_for_plot=[\
-    "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs512",\
-    ]
-    # labels
-    labels_for_plot=[\
-    # "p$7$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$-GLL-Roe-PPL",\
-    "p$7$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
-    ]
-    black_line_flag_for_plot=[False,False,False,False,False,False,False,False]
-    dashed_line_flag_for_plot=[False,False,False,False,False,True,True]
-    which_was_ran_with_corrected_quantites=[0]
-    number_of_degrees_of_freedom_input=[256]
-    compare_with_ref_result_at_same_dof=True
     plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
         which_was_ran_with_corrected_quantites=which_was_ran_with_corrected_quantites,
         number_of_degrees_of_freedom=number_of_degrees_of_freedom_input,
