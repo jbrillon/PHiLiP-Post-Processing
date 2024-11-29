@@ -27,7 +27,7 @@ log_axes_input, legend_on_input, legend_inside_input, \
 plot_reference_result, nlegendcols_input, \
 figure_subdirectory, data_directory_base, figure_directory_base
 #=====================================================
-def plot_mach_number_profile(files,labels_,DOF):
+def plot_mach_number_profile(files,labels_,DOF,convergence_plot=False):
     global subdirectories, filenames, labels, black_line_flag, \
     dashed_line_flag, figure_filename_postfix, figure_title, \
     ylimits_kinetic_energy_input, ylimits_dissipation_input, \
@@ -45,20 +45,35 @@ def plot_mach_number_profile(files,labels_,DOF):
     mach_store.append(scalar)
     labels.append("Ref. TENO6 $512^3$ DOF\n[Chapelier et al.]")
     # labels.append("$512^3$ DOF\n[Chapelier et al.]")
+    if(convergence_plot==False):
+        # additional data
+        filename_additional_data = "./data/chapelier2024/mach_profile_%i_flexi.txt" % DOF
+        y, scalar = np.loadtxt(filename_additional_data,skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+        y_store.append(y)
+        mach_store.append(scalar)
+        labels.append("FLEXI\n(p$4$ DGSEM, LAD)\n[Chapelier et al.]")
 
-    # additional data
-    filename_additional_data = "./data/chapelier2024/mach_profile_%i_flexi.txt" % DOF
-    y, scalar = np.loadtxt(filename_additional_data,skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
-    y_store.append(y)
-    mach_store.append(scalar)
-    labels.append("FLEXI\n(p$4$ DGSEM, LAD)\n[Chapelier et al.]")
+        # additional data
+        filename_additional_data = "./data/chapelier2024/mach_profile_%i_ns3d.txt" % DOF
+        y, scalar = np.loadtxt(filename_additional_data,skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+        y_store.append(y)
+        mach_store.append(scalar)
+        labels.append("NS3D\n(FD-6, HO filter)\n[Chapelier et al.]")
+    # if(convergence_plot==True):
+    #     for iDOF in [64,128,256]:
+    #         # additional data
+    #         filename_additional_data = "./data/chapelier2024/mach_profile_%i_flexi.txt" % iDOF
+    #         y, scalar = np.loadtxt(filename_additional_data,skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+    #         y_store.append(y)
+    #         mach_store.append(scalar)
+    #         labels.append("FLEXI $%i^{3}$ DOFs" % iDOF)
 
-    # additional data
-    filename_additional_data = "./data/chapelier2024/mach_profile_%i_ns3d.txt" % DOF
-    y, scalar = np.loadtxt(filename_additional_data,skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
-    y_store.append(y)
-    mach_store.append(scalar)
-    labels.append("NS3D\n(FD-6, HO filter)\n[Chapelier et al.]")
+    #         # additional data
+    #         filename_additional_data = "./data/chapelier2024/mach_profile_%i_ns3d.txt" % iDOF
+    #         y, scalar = np.loadtxt(filename_additional_data,skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+    #         y_store.append(y)
+    #         mach_store.append(scalar)
+    #         labels.append("NS3D $%i^{3}$ DOFs" % iDOF)
     #-----------------------------------------------------
     # clr_input_store = ['k','k','k','tab:blue','tab:red','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
     # mrkr_input_store = ['o','None','None','None','None','None','None','None','None','None','None']
@@ -66,6 +81,11 @@ def plot_mach_number_profile(files,labels_,DOF):
     clr_input_store = ['k','tab:blue','tab:red','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
     mrkr_input_store = ['+','None','None','None','None','None','None','None','None']
     lnstl_input_store = ['solid','solid','solid','solid','solid','solid','solid','dashed','solid']
+    # if(convergence_plot==True):
+    #     clr_input_store = ['k','tab:blue','tab:blue','tab:red','tab:red','tab:green','tab:green','tab:blue','tab:red','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    #     mrkr_input_store = ['+','o','s','o','s','o','s','None','None','None','None','None','None','None','None']
+    #     # lnstl_input_store = ['solid','dashed','dotted','dashed','dotted','dashed','dotted','solid','solid','solid','solid','dashed','solid']
+    #     lnstl_input_store = ['solid','None','None','None','None','None','None','solid','solid','solid','solid','dashed','solid']
     # else:
     #     #-----------------------------------------------------
     #     clr_input_store = ['k','tab:blue','tab:red','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
@@ -193,6 +213,61 @@ if(True):
     "p$3$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
     ]
     plot_mach_number_profile(subdirectories_for_plot,labels_for_plot,64)
+
+#=====================================================
+# DOFs: 64^3 | All results
+#-----------------------------------------------------
+if(True):
+    #-----------------------------------------------------
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2024_JCP/"
+    date_for_runs="."
+    figure_subdirectory="./"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
+    figure_filename_postfix = "_p3_convergence"
+    legend_inside_input=True
+    plot_reference_result=True
+    plot_PHiLiP_DNS_result_as_reference_input=False
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0064_p3_procs128/paraview_mach_number_vs_y_t2point5.txt",\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0128_p3_procs512/paraview_mach_number_vs_y_t2point5.txt",\
+    ]
+    # labels "p$3$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    labels_for_plot=[\
+    "$64^{3}$",\
+    "$128^{3}$",\
+    ]
+    plot_mach_number_profile(subdirectories_for_plot,labels_for_plot,0,convergence_plot=True)
+#=====================================================
+# DOFs: 64^3 | All results
+#-----------------------------------------------------
+if(True):
+    #-----------------------------------------------------
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2024_JCP/"
+    date_for_runs="."
+    figure_subdirectory="./"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
+    figure_filename_postfix = "_p7_convergence"
+    legend_inside_input=True
+    plot_reference_result=True
+    plot_PHiLiP_DNS_result_as_reference_input=False
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0064_p7_procs128/paraview_mach_number_vs_y_t2point5.txt",\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p7_procs512/paraview_mach_number_vs_y_t2point5.txt",\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs512/paraview_mach_number_vs_y_t2point5.txt",\
+    ]
+    # labels "p$3$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    labels_for_plot=[\
+    "$64^{3}$",\
+    "$128^{3}$",\
+    "$256^{3}$",\
+    ]
+    plot_mach_number_profile(subdirectories_for_plot,labels_for_plot,0,convergence_plot=True)
 
 #=====================================================
 # DOFs: 64^3 | All results
