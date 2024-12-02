@@ -610,10 +610,12 @@ plot_transient(filenames,labels,which_lines_dashed_=which_lines_dashed,starting_
 filenames=[\
 filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t0300.dat",\
 filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input/flow_field_files/velocity_vorticity-0_boundary_layer_profile.dat",\
+filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t670.dat",\
 ]
 labels=[\
 "P$4$ NSFR-WMLES\n $n_{x}\\times n_{y}\\times n_{z} = 20\\times 10\\times 10$\n$(t^{*}=300)$",\
 "P$4$ NSFR-WMLES 2nd el. input\n $n_{x}\\times n_{y}\\times n_{z} = 20\\times 10\\times 10$\n$(t^{*}=400)$",\
+"P$4$ NSFR-WMLES 2nd el. input\n $n_{x}\\times n_{y}\\times n_{z} = 20\\times 10\\times 10$\n$(t^{*}=670)$",\
 ]
 which_lines_dashed=[2]
 plot_boundary_layer_profile(filenames,labels,395,which_lines_dashed_=which_lines_dashed)
