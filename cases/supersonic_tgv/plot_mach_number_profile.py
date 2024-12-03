@@ -54,7 +54,7 @@ def plot_mach_number_profile(files,labels_,DOF,
         y, scalar = np.loadtxt(filename_additional_data,skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
         y_store.append(y)
         mach_store.append(scalar)
-        labels.append("FLEXI\n(p$3$ DGSEM, Sub-cell FV)\n[Chapelier et al.]")
+        labels.append("FLEXI\n(p$3$ DGSEM, sub-cell FV)\n[Chapelier et al.]")
         
         # additional data
         filename_additional_data = "./data/chapelier2024/mach_profile_%i_ns3d.txt" % DOF
@@ -359,12 +359,14 @@ if(True):
     #-----------------------------------------------------
     subdirectories_for_plot=[\
     "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p7_procs512/paraview_mach_number_vs_y_t2point5.txt",\
+    # "supersonic_viscous_TGV_ILES_NSFR_cHU_Ra_2PF_GLL_OI-0_dofs0128_p7_procs512/paraview_mach_number_vs_y_t2point5.txt",\
     "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0128_p3_procs512/paraview_mach_number_vs_y_t2point5.txt",\
     "supersonic_viscous_TGV_ILES_NSFR_cPlus_Ra_2PF_GLL_OI-0_dofs0128_p3_procs512/paraview_mach_number_vs_y_t2point5.txt",\
     ]
     # labels
     labels_for_plot=[\
     "p$7$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    # "p$7$ $c_{HU}$ NSFR.CH$_{\\mathrm{RA}}$",\
     "p$3$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
     "p$3$ $c_{+}$ NSFR.CH$_{\\mathrm{RA}}$",\
     ]
