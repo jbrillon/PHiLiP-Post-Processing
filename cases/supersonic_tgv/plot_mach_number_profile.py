@@ -27,7 +27,10 @@ log_axes_input, legend_on_input, legend_inside_input, \
 plot_reference_result, nlegendcols_input, \
 figure_subdirectory, data_directory_base, figure_directory_base
 #=====================================================
-def plot_mach_number_profile(files,labels_,DOF,convergence_plot=False):
+def plot_mach_number_profile(files,labels_,DOF,
+    convergence_plot=False,compare_with_reference_at_same_DOF=True,
+    plot_zoomed_section=False,
+    lnstl_input_store=['solid','solid','solid','solid','solid','solid','solid','dashed','solid']):
     global subdirectories, filenames, labels, black_line_flag, \
     dashed_line_flag, figure_filename_postfix, figure_title, \
     ylimits_kinetic_energy_input, ylimits_dissipation_input, \
@@ -45,13 +48,13 @@ def plot_mach_number_profile(files,labels_,DOF,convergence_plot=False):
     mach_store.append(scalar)
     labels.append("Ref. TENO6 $512^3$ DOF\n[Chapelier et al.]")
     # labels.append("$512^3$ DOF\n[Chapelier et al.]")
-    if(convergence_plot==False):
+    if(convergence_plot==False and compare_with_reference_at_same_DOF==True):
         # additional data
         filename_additional_data = "./data/chapelier2024/mach_profile_%i_flexi.txt" % DOF
         y, scalar = np.loadtxt(filename_additional_data,skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
         y_store.append(y)
         mach_store.append(scalar)
-        labels.append("FLEXI\n(p$4$ DGSEM, Sub-cell FV)\n[Chapelier et al.]")
+        labels.append("FLEXI\n(p$3$ DGSEM, Sub-cell FV)\n[Chapelier et al.]")
         
         # additional data
         filename_additional_data = "./data/chapelier2024/mach_profile_%i_ns3d.txt" % DOF
@@ -80,7 +83,7 @@ def plot_mach_number_profile(files,labels_,DOF,convergence_plot=False):
     # lnstl_input_store = ['None','dashed','dotted','solid','solid','solid','solid','solid','solid','dashed','solid']
     clr_input_store = ['k','tab:blue','tab:red','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
     mrkr_input_store = ['+','None','None','None','None','None','None','None','None']
-    lnstl_input_store = ['solid','solid','solid','solid','solid','solid','solid','dashed','solid']
+    # lnstl_input_store = ['solid','solid','solid','solid','solid','solid','solid','dashed','solid']
     # if(convergence_plot==True):
     #     clr_input_store = ['k','tab:blue','tab:blue','tab:red','tab:red','tab:green','tab:green','tab:blue','tab:red','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
     #     mrkr_input_store = ['+','o','s','o','s','o','s','None','None','None','None','None','None','None','None']
@@ -112,11 +115,17 @@ def plot_mach_number_profile(files,labels_,DOF,convergence_plot=False):
     # if(DOF==128):
     #     lnstl_input_store = ['None','solid','solid','solid','dashed','dashed','solid','dashed','solid']
 
-    plot_zoomed_section=False
     if(DOF==256):
         x_limits_zoom=[0.78,1.08]
         y_limits_zoom=[1.46,1.52]
-        plot_zoomed_section=True
+        zoom_box_origin_and_extent=[0.60, 0.02, 0.38, 0.38]
+    elif(DOF==128):
+        x_limits_zoom=[0.78,1.19]
+        y_limits_zoom=[1.42,1.56]
+        zoom_box_origin_and_extent=[0.60, 0.02, 0.38, 0.38]
+    elif(DOF==64):
+        x_limits_zoom=[0.78,1.2]
+        y_limits_zoom=[1.42,1.54]
         zoom_box_origin_and_extent=[0.60, 0.02, 0.38, 0.38]
     else:
         x_limits_zoom=[]
@@ -183,31 +192,6 @@ def reinit_inputs():
 #=====================================================
 #-----------------------------------------------------
 #=====================================================
-# DOFs: 256^3 | All results
-#-----------------------------------------------------
-if(True):
-    #-----------------------------------------------------
-    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
-    reinit_inputs()
-    data_directory_base=filesystem+"NarvalFiles/2024_JCP/"
-    date_for_runs="."
-    figure_subdirectory="./"
-    # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
-    figure_filename_postfix = "_256_04"
-    legend_inside_input=True
-    plot_reference_result=True
-    plot_PHiLiP_DNS_result_as_reference_input=False
-    #-----------------------------------------------------
-    subdirectories_for_plot=[\
-    "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs512/paraview_mach_number_vs_y_t2point5.txt",\
-    ]
-    # labels
-    labels_for_plot=[\
-    "p$7$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$-Roe\n(with PPL)",\
-    ]
-    plot_mach_number_profile(subdirectories_for_plot,labels_for_plot,256)
-    exit()
-#=====================================================
 # DOFs: 64^3 | All results
 #-----------------------------------------------------
 if(True):
@@ -224,19 +208,15 @@ if(True):
     plot_PHiLiP_DNS_result_as_reference_input=False
     #-----------------------------------------------------
     subdirectories_for_plot=[\
-    "supersonic_viscous_TGV_ILES_NSFR_cHU_Ra_2PF_GLL_OI-0_dofs0064_p7_procs128/paraview_mach_number_vs_y_t2point5.txt",\
     "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0064_p7_procs128/paraview_mach_number_vs_y_t2point5.txt",\
-    "supersonic_viscous_TGV_ILES_NSFR_cPlus_Ra_2PF_GLL_OI-0_dofs0064_p3_procs128/paraview_mach_number_vs_y_t2point5.txt",\
     "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0064_p3_procs128/paraview_mach_number_vs_y_t2point5.txt",\
     ]
     # labels
     labels_for_plot=[\
-    "p$7$ $c_{HU}$ NSFR.CH$_{\\mathrm{RA}}$",\
     "p$7$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
-    "p$3$ $c_{+}$ NSFR.CH$_{\\mathrm{RA}}$",\
     "p$3$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
     ]
-    plot_mach_number_profile(subdirectories_for_plot,labels_for_plot,64)
+    plot_mach_number_profile(subdirectories_for_plot,labels_for_plot,64,plot_zoomed_section=True)
 
 #=====================================================
 # DOFs: 64^3 | All results
@@ -304,7 +284,7 @@ if(True):
     date_for_runs="."
     figure_subdirectory="./"
     # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
-    figure_filename_postfix = "_tpf_64"
+    figure_filename_postfix = "_64_two_point_flux"
     legend_inside_input=True
     plot_reference_result=True
     plot_PHiLiP_DNS_result_as_reference_input=False
@@ -322,7 +302,76 @@ if(True):
     "p$3$ $c_{DG}$ NSFR.KG",\
     "p$3$ $c_{DG}$ NSFR.CH",\
     ]
-    plot_mach_number_profile(subdirectories_for_plot,labels_for_plot,64)
+    plot_mach_number_profile(subdirectories_for_plot,labels_for_plot,64,
+        compare_with_reference_at_same_DOF=False,
+        plot_zoomed_section=True,
+        lnstl_input_store = ['solid','solid','dashdot','solid','dashed','solid','solid','dashed','solid'])
+
+#=====================================================
+# DOFs: 64^3 | All results
+#-----------------------------------------------------
+if(True):
+    #-----------------------------------------------------
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2024_JCP/"
+    date_for_runs="."
+    figure_subdirectory="./"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
+    figure_filename_postfix = "_64_correction_parameter"
+    legend_inside_input=True
+    plot_reference_result=True
+    plot_PHiLiP_DNS_result_as_reference_input=False
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0064_p7_procs128/paraview_mach_number_vs_y_t2point5.txt",\
+    "supersonic_viscous_TGV_ILES_NSFR_cHU_Ra_2PF_GLL_OI-0_dofs0064_p7_procs128/paraview_mach_number_vs_y_t2point5.txt",\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0064_p3_procs128/paraview_mach_number_vs_y_t2point5.txt",\
+    "supersonic_viscous_TGV_ILES_NSFR_cPlus_Ra_2PF_GLL_OI-0_dofs0064_p3_procs128/paraview_mach_number_vs_y_t2point5.txt",\
+    ]
+    # labels
+    labels_for_plot=[\
+    "p$7$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    "p$7$ $c_{HU}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    "p$3$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    "p$3$ $c_{+}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    ]
+    plot_mach_number_profile(subdirectories_for_plot,labels_for_plot,64,
+        compare_with_reference_at_same_DOF=False,
+        plot_zoomed_section=True,
+        lnstl_input_store = ['solid','solid','dashed','solid','dashed','solid','solid','dashed','solid'])
+
+#=====================================================
+# DOFs: 128^3 | All results
+#-----------------------------------------------------
+if(True):
+    #-----------------------------------------------------
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2024_JCP/"
+    date_for_runs="."
+    figure_subdirectory="./"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
+    figure_filename_postfix = "_128_correction_parameter"
+    legend_inside_input=True
+    plot_reference_result=True
+    plot_PHiLiP_DNS_result_as_reference_input=False
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p7_procs512/paraview_mach_number_vs_y_t2point5.txt",\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0128_p3_procs512/paraview_mach_number_vs_y_t2point5.txt",\
+    "supersonic_viscous_TGV_ILES_NSFR_cPlus_Ra_2PF_GLL_OI-0_dofs0128_p3_procs512/paraview_mach_number_vs_y_t2point5.txt",\
+    ]
+    # labels
+    labels_for_plot=[\
+    "p$7$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    "p$3$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    "p$3$ $c_{+}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    ]
+    plot_mach_number_profile(subdirectories_for_plot,labels_for_plot,128,
+        compare_with_reference_at_same_DOF=False,
+        plot_zoomed_section=True,
+        lnstl_input_store = ['solid','solid','solid','dashed','solid','solid','solid','dashed','solid'])
 
 #=====================================================
 # DOFs: 128^3 | All results
@@ -341,19 +390,45 @@ if(True):
     plot_PHiLiP_DNS_result_as_reference_input=False
     #-----------------------------------------------------
     subdirectories_for_plot=[\
-    "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p15_procs128/paraview_mach_number_vs_y_t2point5.txt",\
     "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p7_procs512/paraview_mach_number_vs_y_t2point5.txt",\
     "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0128_p3_procs512/paraview_mach_number_vs_y_t2point5.txt",\
-    "supersonic_viscous_TGV_ILES_NSFR_cPlus_Ra_2PF_GLL_OI-0_dofs0128_p3_procs512/paraview_mach_number_vs_y_t2point5.txt",\
     ]
     # labels
     labels_for_plot=[\
-    "p$15$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
     "p$7$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
     "p$3$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
-    "p$3$ $c_{+}$ NSFR.CH$_{\\mathrm{RA}}$",\
     ]
-    plot_mach_number_profile(subdirectories_for_plot,labels_for_plot,128)
+    plot_mach_number_profile(subdirectories_for_plot,labels_for_plot,128,plot_zoomed_section=True)
+#=====================================================
+# DOFs: 128^3 | High poly-degree
+#-----------------------------------------------------
+if(True):
+    #-----------------------------------------------------
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2024_JCP/"
+    date_for_runs="."
+    figure_subdirectory="./"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
+    figure_filename_postfix = "_128_high_poly_degree"
+    legend_inside_input=True
+    plot_reference_result=True
+    plot_PHiLiP_DNS_result_as_reference_input=False
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0128_p3_procs512/paraview_mach_number_vs_y_t2point5.txt",\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p7_procs512/paraview_mach_number_vs_y_t2point5.txt",\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p15_procs128/paraview_mach_number_vs_y_t2point5.txt",\
+    ]
+    # labels
+    labels_for_plot=[\
+    "p$3$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    "p$7$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    "p$15$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    ]
+    plot_mach_number_profile(subdirectories_for_plot,labels_for_plot,128,
+        compare_with_reference_at_same_DOF=False,
+        plot_zoomed_section=True)
 #=====================================================
 # DOFs: 256^3 | All results
 #-----------------------------------------------------
@@ -377,4 +452,4 @@ if(True):
     labels_for_plot=[\
     "p$7$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
     ]
-    plot_mach_number_profile(subdirectories_for_plot,labels_for_plot,256)
+    plot_mach_number_profile(subdirectories_for_plot,labels_for_plot,256,plot_zoomed_section=True)
