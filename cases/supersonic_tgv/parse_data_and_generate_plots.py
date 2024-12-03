@@ -144,6 +144,7 @@ def plot_for_presentation(
     ylimits_for_plot = [0.0,0.14]
     if(plotting_subsonic_result):
         ylimits_for_plot = [0.04,0.13]
+
     qp.plotfxn(xdata=time_store,#[time,time],
             ydata=kinetic_energy_store,#[kinetic_energy,kolmogorov_slope],
             ylabel='Nondimensional Kinetic Energy, $K^{*}$',#=\\frac{1}{\\rho_{\\infty}V_{\\infty}^{2}|\\Omega|}\\int_{\\Omega}\\rho(u\\cdot\\u)d\\Omega$',
@@ -420,6 +421,47 @@ def plot_for_presentation(
             clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
             legend_fontSize=12,#14
             legend_location="upper right")
+    if(64 in number_of_degrees_of_freedom and (compare_with_reference_result_at_same_degrees_of_freedom==True)):
+        # FLEXI
+        time, kinetic_energy = np.loadtxt("./data/chapelier2024/kinetic_energy_64_flexi.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+        time_store[1] = time
+        kinetic_energy_store.insert(1,dilatational_dissipation)
+        # labels.append("FLEXI $256^3$\n($4^{th}$-order DGSEM with subgrid FV)\n[Chapelier et al.]")
+        labels[1] = "FLEXI\n(p$3$ DGSEM, sub-cell FV)\n[Chapelier et al.]"
+        # NS3D
+        time, kinetic_energy = np.loadtxt("./data/chapelier2024/kinetic_energy_64_ns3d.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+        time_store[2] = time
+        kinetic_energy_store.insert(2,kinetic_energy)
+        labels[2] = "NS3D\n(FD-6, HO filter)\n[Chapelier et al.]"
+        dashed_line_flag[2]=True
+        # dashed_line_flag.insert(1,True)
+        # clr_input_store.insert(1,"k")
+        # lnstl_input_store.insert(1,"dotted")
+        qp.plotfxn(xdata=time_store,#[time,time],
+                ydata=kinetic_energy_store,#[kinetic_energy,kolmogorov_slope],
+                ylabel='Nondimensional Kinetic Energy, $K^{*}$',#=\\frac{1}{\\rho_{\\infty}V_{\\infty}^{2}|\\Omega|}\\int_{\\Omega}\\rho(u\\cdot\\u)d\\Omega$',
+                xlabel='Nondimensional Time, $t^{*}$',
+                figure_filename=figure_subdirectory+'kinetic_energy_vs_time'+figure_filename_postfix,
+                title_label=figure_title,
+                markers=False,
+                legend_labels_tex=labels,
+                black_lines=False,
+                xlimits=[0,final_time_for_plot],
+                ylimits=ylimits_for_plot,
+                log_axes=log_axes_input,
+                which_lines_black=black_line_flag,
+                which_lines_dashed=dashed_line_flag,
+                which_lines_only_markers=[0],
+                legend_on=legend_on_input,
+                legend_inside=legend_inside_input,
+                nlegendcols=nlegendcols_input,
+                figure_size=(6,6),
+                transparent_legend=True,#transparent_legend_input,
+                legend_border_on=False,
+                grid_lines_on=False,
+                clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
+                legend_fontSize=12,#14
+                legend_location="best")
 #-----------------------------------------------------
 #=====================================================
 def reinit_inputs():
