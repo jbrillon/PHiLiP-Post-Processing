@@ -42,7 +42,8 @@ def plot_for_presentation(
     plotting_subsonic_result=False,
     which_was_ran_with_corrected_quantites=[],
     number_of_degrees_of_freedom=[],
-    compare_with_reference_result_at_same_degrees_of_freedom=False):
+    compare_with_reference_result_at_same_degrees_of_freedom=False,
+    lnstl_input_store_=[]):
     
     global subdirectories, filenames, labels, black_line_flag, \
     dashed_line_flag, figure_filename_postfix, figure_title, \
@@ -273,6 +274,8 @@ def plot_for_presentation(
         # lnstl_input_store.insert(2,"dotted")
         clr_input_store.insert(2,'tab:red')
         lnstl_input_store.insert(2,"solid")
+    if(lnstl_input_store_!=[]):
+        lnstl_input_store = lnstl_input_store_
     qp.plotfxn(xdata=time_store,
             ydata=solenoidal_dissipation_store,
             ylabel='Nondimensional Solenoidal Dissipation, $\\varepsilon_{s}^{*}$',#=\\frac{1}{\\rho_{\\infty}V_{\\infty}^{2}|\\Omega|}\\int_{\\Omega}\\rho(u\\cdot\\u)d\\Omega$',
@@ -421,22 +424,25 @@ def plot_for_presentation(
             clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
             legend_fontSize=12,#14
             legend_location="upper right")
-    if(64 in number_of_degrees_of_freedom and (compare_with_reference_result_at_same_degrees_of_freedom==True)):
-        # FLEXI
-        time, kinetic_energy = np.loadtxt("./data/chapelier2024/kinetic_energy_64_flexi.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
-        time_store[1] = time
-        kinetic_energy_store.insert(1,dilatational_dissipation)
-        # labels.append("FLEXI $256^3$\n($4^{th}$-order DGSEM with subgrid FV)\n[Chapelier et al.]")
-        labels[1] = "FLEXI\n(p$3$ DGSEM, sub-cell FV)\n[Chapelier et al.]"
-        # NS3D
-        time, kinetic_energy = np.loadtxt("./data/chapelier2024/kinetic_energy_64_ns3d.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
-        time_store[2] = time
-        kinetic_energy_store.insert(2,kinetic_energy)
-        labels[2] = "NS3D\n(FD-6, HO filter)\n[Chapelier et al.]"
-        dashed_line_flag[2]=True
-        # dashed_line_flag.insert(1,True)
-        # clr_input_store.insert(1,"k")
-        # lnstl_input_store.insert(1,"dotted")
+    if(64 in number_of_degrees_of_freedom):
+        time, kinetic_energy = np.loadtxt("./data/chapelier2024/kinetic_energy.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+        time_store[0] = time # replace it -- this is a hack
+        ylimits_for_plot = [0.0,0.14]
+        if(compare_with_reference_result_at_same_degrees_of_freedom==True):
+            # FLEXI
+            time, kinetic_energy = np.loadtxt("./data/chapelier2024/kinetic_energy_64_flexi.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+            time_store[1] = time
+            kinetic_energy_store.insert(1,kinetic_energy)
+            # kinetic_energy_store.insert(1,time)
+            # labels.append("FLEXI $256^3$\n($4^{th}$-order DGSEM with subgrid FV)\n[Chapelier et al.]")
+            labels[1] = "FLEXI\n(p$3$ DGSEM, sub-cell FV)\n[Chapelier et al.]"
+            # NS3D
+            time, kinetic_energy = np.loadtxt("./data/chapelier2024/kinetic_energy_64_ns3d.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+            time_store[2] = time
+            kinetic_energy_store.insert(2,kinetic_energy)
+            # kinetic_energy_store.insert(2,time)
+            labels[2] = "NS3D\n(FD-6, HO filter)\n[Chapelier et al.]"
+            dashed_line_flag[2]=True
         qp.plotfxn(xdata=time_store,#[time,time],
                 ydata=kinetic_energy_store,#[kinetic_energy,kolmogorov_slope],
                 ylabel='Nondimensional Kinetic Energy, $K^{*}$',#=\\frac{1}{\\rho_{\\infty}V_{\\infty}^{2}|\\Omega|}\\int_{\\Omega}\\rho(u\\cdot\\u)d\\Omega$',
@@ -499,46 +505,129 @@ def reinit_inputs():
 # DOFs: 256^3 | All results
 #-----------------------------------------------------
 if(True):
-    # #-----------------------------------------------------
-    # # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
-    # reinit_inputs()
-    # data_directory_base=filesystem+"NarvalFiles/2024_JCP/"
-    # date_for_runs="."
-    # figure_subdirectory="./"
-    # # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
-    # figure_filename_postfix = "_064_correction_parameter"
-    # legend_inside_input=True
-    # plot_reference_result=True
-    # plot_PHiLiP_DNS_result_as_reference_input=False
-    # #-----------------------------------------------------
-    # subdirectories_for_plot=[\
-    # "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0064_p7_procs128",\
-    # "supersonic_viscous_TGV_ILES_NSFR_cHU_IR_2PF_GLL_OI-0_dofs0064_p7_procs128",\
-    # "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0064_p3_procs128",\
-    # "supersonic_viscous_TGV_ILES_NSFR_cPlus_Ra_2PF_GLL_OI-0_dofs0064_p3_procs128",\
-    # ]
-    # # labels
-    # # labels_for_plot=[\
-    # # "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL\n $16$p$7$ ($128^3$ DOF) CFL=0.1",\
-    # # "$c_{+}$ NSFR.CH$_{RA}$+Roe+PPL\n $32$p$3$ ($128^3$ DOF) CFL=0.1",\
-    # # "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL\n $8$p$15$ ($128^3$ DOF) CFL=0.01",\
-    # # ]
+    #-----------------------------------------------------
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2024_JCP/"
+    date_for_runs="."
+    figure_subdirectory="./"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
+    figure_filename_postfix = "_64_two_point_flux"
+    legend_inside_input=True
+    plot_reference_result=True
+    plot_PHiLiP_DNS_result_as_reference_input=False
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0064_p3_procs128",\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0064_p3_procs128",\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_KG_2PF_GLL_OI-0_dofs0064_p3_procs128",\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_CH_2PF_GLL_OI-0_dofs0064_p3_procs128",\
+    ]
+    # labels
     # labels_for_plot=[\
-    # "p$7$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
-    # "p$7$ $c_{HU}$ NSFR.CH$_{\\mathrm{RA}}$",\
-    # "p$3$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
-    # "p$3$ $c_{+}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    # "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL\n $16$p$7$ ($128^3$ DOF) CFL=0.1",\
+    # "$c_{+}$ NSFR.CH$_{RA}$+Roe+PPL\n $32$p$3$ ($128^3$ DOF) CFL=0.1",\
+    # "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL\n $8$p$15$ ($128^3$ DOF) CFL=0.01",\
     # ]
-    # black_line_flag_for_plot=[False,False,False,False,False,False,False,False]
-    # dashed_line_flag_for_plot=[False,False,False,False,False,True,True]
-    # which_was_ran_with_corrected_quantites=[2]
-    # number_of_degrees_of_freedom_input=[64]
-    # compare_with_ref_result_at_same_dof=True
-    # plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
-    #     which_was_ran_with_corrected_quantites=which_was_ran_with_corrected_quantites,
-    #     number_of_degrees_of_freedom=number_of_degrees_of_freedom_input,
-    #     compare_with_reference_result_at_same_degrees_of_freedom=compare_with_ref_result_at_same_dof)
-
+    labels_for_plot=[\
+    "p$3$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    "p$3$ $c_{DG}$ NSFR.IR",\
+    "p$3$ $c_{DG}$ NSFR.KG",\
+    "p$3$ $c_{DG}$ NSFR.CH",\
+    ]
+    black_line_flag_for_plot=[False,False,False,False,False,False,False,False]
+    dashed_line_flag_for_plot=[False,False,False,False,False,True,True]
+    which_was_ran_with_corrected_quantites=[2]
+    number_of_degrees_of_freedom_input=[64]
+    compare_with_ref_result_at_same_dof=False
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
+        which_was_ran_with_corrected_quantites=which_was_ran_with_corrected_quantites,
+        number_of_degrees_of_freedom=number_of_degrees_of_freedom_input,
+        compare_with_reference_result_at_same_degrees_of_freedom=compare_with_ref_result_at_same_dof,
+        lnstl_input_store_ = ['None','solid','dashed','solid','dashed','dashed','solid','dashed','solid'])
+    #-----------------------------------------------------
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2024_JCP/"
+    date_for_runs="."
+    figure_subdirectory="./"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
+    figure_filename_postfix = "_64_correction_parameter"
+    legend_inside_input=True
+    plot_reference_result=True
+    plot_PHiLiP_DNS_result_as_reference_input=False
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0064_p7_procs128",\
+    "supersonic_viscous_TGV_ILES_NSFR_cHU_Ra_2PF_GLL_OI-0_dofs0064_p7_procs128",\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0064_p3_procs128",\
+    "supersonic_viscous_TGV_ILES_NSFR_cPlus_Ra_2PF_GLL_OI-0_dofs0064_p3_procs128",\
+    ]
+    # labels
+    # labels_for_plot=[\
+    # "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL\n $16$p$7$ ($128^3$ DOF) CFL=0.1",\
+    # "$c_{+}$ NSFR.CH$_{RA}$+Roe+PPL\n $32$p$3$ ($128^3$ DOF) CFL=0.1",\
+    # "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL\n $8$p$15$ ($128^3$ DOF) CFL=0.01",\
+    # ]
+    labels_for_plot=[\
+    "p$7$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    "p$7$ $c_{HU}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    "p$3$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    "p$3$ $c_{+}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    ]
+    black_line_flag_for_plot=[False,False,False,False,False,False,False,False]
+    dashed_line_flag_for_plot=[False,False,False,False,False,True,True]
+    which_was_ran_with_corrected_quantites=[2]
+    number_of_degrees_of_freedom_input=[64]
+    compare_with_ref_result_at_same_dof=False
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
+        which_was_ran_with_corrected_quantites=which_was_ran_with_corrected_quantites,
+        number_of_degrees_of_freedom=number_of_degrees_of_freedom_input,
+        compare_with_reference_result_at_same_degrees_of_freedom=compare_with_ref_result_at_same_dof,
+        lnstl_input_store_ = ['None','solid','dashed','solid','dashed','solid','dashed','solid','dashed','solid'])
+    #-----------------------------------------------------
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2024_JCP/"
+    date_for_runs="."
+    figure_subdirectory="./"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
+    # figure_filename_postfix = "_064_correction_parameter"
+    figure_filename_postfix = "_64"
+    legend_inside_input=True
+    plot_reference_result=True
+    plot_PHiLiP_DNS_result_as_reference_input=False
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0064_p7_procs128",\
+    # "supersonic_viscous_TGV_ILES_NSFR_cHU_Ra_2PF_GLL_OI-0_dofs0064_p7_procs128",\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0064_p3_procs128",\
+    # "supersonic_viscous_TGV_ILES_NSFR_cPlus_Ra_2PF_GLL_OI-0_dofs0064_p3_procs128",\
+    # "supersonic_viscous_TGV_ILES_NSFR_cDG_KG_2PF_GLL_OI-0_dofs0064_p3_procs128",\
+    ]
+    # labels
+    # labels_for_plot=[\
+    # "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL\n $16$p$7$ ($128^3$ DOF) CFL=0.1",\
+    # "$c_{+}$ NSFR.CH$_{RA}$+Roe+PPL\n $32$p$3$ ($128^3$ DOF) CFL=0.1",\
+    # "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL\n $8$p$15$ ($128^3$ DOF) CFL=0.01",\
+    # ]
+    labels_for_plot=[\
+    "p$7$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    # "p$7$ $c_{HU}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    "p$3$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    # "p$3$ $c_{+}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    # "p$3$ $c_{DG}$ NSFR.KG",\
+    ]
+    black_line_flag_for_plot=[False,False,False,False,False,False,False,False]
+    dashed_line_flag_for_plot=[False,False,False,False,False,True,True]
+    which_was_ran_with_corrected_quantites=[2]
+    number_of_degrees_of_freedom_input=[64]
+    compare_with_ref_result_at_same_dof=True
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
+        which_was_ran_with_corrected_quantites=which_was_ran_with_corrected_quantites,
+        number_of_degrees_of_freedom=number_of_degrees_of_freedom_input,
+        compare_with_reference_result_at_same_degrees_of_freedom=compare_with_ref_result_at_same_dof)
+    # exit()
     #-----------------------------------------------------
     # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
     reinit_inputs()
@@ -577,7 +666,8 @@ if(True):
     plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
         which_was_ran_with_corrected_quantites=which_was_ran_with_corrected_quantites,
         number_of_degrees_of_freedom=number_of_degrees_of_freedom_input,
-        compare_with_reference_result_at_same_degrees_of_freedom=compare_with_ref_result_at_same_dof)
+        compare_with_reference_result_at_same_degrees_of_freedom=compare_with_ref_result_at_same_dof,
+        lnstl_input_store_ = ['None','solid','solid','dashed','solid','dashed','solid','dashed','solid'])
     #-----------------------------------------------------
     # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
     reinit_inputs()
@@ -592,12 +682,14 @@ if(True):
     #-----------------------------------------------------
     subdirectories_for_plot=[\
     "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs512",\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p3_procs512",\
     ]
     # labels
     labels_for_plot=[\
     # "p$7$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$-GLL-Roe-PPL",\
     # "p$7$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$-Roe\n(with PPL)",\
     "p$7$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    "p$3$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
     ]
     black_line_flag_for_plot=[False,False,False,False,False,False,False,False]
     dashed_line_flag_for_plot=[False,False,False,False,False,True,True]
@@ -608,7 +700,7 @@ if(True):
         which_was_ran_with_corrected_quantites=which_was_ran_with_corrected_quantites,
         number_of_degrees_of_freedom=number_of_degrees_of_freedom_input,
         compare_with_reference_result_at_same_degrees_of_freedom=compare_with_ref_result_at_same_dof)
-
+    exit()
     #-----------------------------------------------------
     # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
     reinit_inputs()
@@ -622,14 +714,14 @@ if(True):
     plot_PHiLiP_DNS_result_as_reference_input=False
     #-----------------------------------------------------
     subdirectories_for_plot=[\
-    # "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0064_p7_procs128",\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0064_p7_procs128",\
     "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p7_procs512",\
     "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs512",\
     # "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0512_p7_procs512",\
     ]
     # labels
     labels_for_plot=[\
-    # "$64^{3}$",\
+    "$64^{3}$",\
     "$128^{3}$",\
     "$256^{3}$",\
     # "$512^{3}$",\
@@ -657,16 +749,16 @@ if(True):
     plot_PHiLiP_DNS_result_as_reference_input=False
     #-----------------------------------------------------
     subdirectories_for_plot=[\
-    # "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0064_p3_procs128",\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0064_p3_procs128",\
     "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0128_p3_procs512",\
-    # "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p3_procs512",\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p3_procs512",\
     # "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0512_p7_procs512",\
     ]
     # labels
     labels_for_plot=[\
-    # "$64^{3}$",\
+    "$64^{3}$",\
     "$128^{3}$",\
-    # "$256^{3}$",\
+    "$256^{3}$",\
     # "$512^{3}$",\
     ]
     black_line_flag_for_plot=[False,False,False,False,False,False,False,False]
