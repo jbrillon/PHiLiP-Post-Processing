@@ -700,7 +700,6 @@ if(True):
         which_was_ran_with_corrected_quantites=which_was_ran_with_corrected_quantites,
         number_of_degrees_of_freedom=number_of_degrees_of_freedom_input,
         compare_with_reference_result_at_same_degrees_of_freedom=compare_with_ref_result_at_same_dof)
-    exit()
     #-----------------------------------------------------
     # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
     reinit_inputs()
