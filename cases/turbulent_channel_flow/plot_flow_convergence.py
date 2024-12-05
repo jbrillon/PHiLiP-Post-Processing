@@ -187,6 +187,7 @@ def plot_boundary_layer_profile(filenames_,labels_,friction_velocity_based_reyno
             average_reynolds_stress_uv_store.append(-uvplus)
             labels_store.append("DNS [Lee, 1989]")
         # MOSER KIM MANSOUR DATA
+        # available at: https://turbulence.oden.utexas.edu/data/MKM/chan395/profiles/
         nondim_y, y_plus_reference, average_u_plus_reference = np.loadtxt("./data/reference/moser_1999_chan395_means.txt",usecols=(0,1,2),skiprows=25,dtype=np.float64,unpack=True)
         uuplus, vvplus, wwplus, uvplus = np.loadtxt("./data/reference/moser_1999_chan395_reystress.txt",usecols=(2,3,4,5),skiprows=25,dtype=np.float64,unpack=True)
         average_y_plus_store.append(y_plus_reference)
