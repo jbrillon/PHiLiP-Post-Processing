@@ -128,8 +128,19 @@ def plot_boundary_layer_profile(filenames_,labels_,friction_velocity_based_reyno
     average_z_velocity_fluctuation_rms_store=[]
     average_reynolds_stress_uv_store=[]
     nondim_y_store = []
+    average_u_by_ubulk_store = []
     # plot function inputs
     labels_store=[]
+
+    if(friction_velocity_based_reynolds_number==5200):
+        Re_tau = 5200.0
+        Re_inf = 129245.0
+    elif(friction_velocity_based_reynolds_number==395):
+        Re_tau = 395.0
+        Re_inf = 6793.46
+    else:
+        print("Error: Invalid friction_velocity_based_reynolds_number. Aborting...")
+        exit()
 
     if(friction_velocity_based_reynolds_number==5200):
         # load reference data
@@ -165,7 +176,19 @@ def plot_boundary_layer_profile(filenames_,labels_,friction_velocity_based_reyno
         # average_u_plus_store.append(average_u_plus_reference)
         # labels_store.append("DNS [Moser et al., 1999]")
         # load Kim data; available at http://cfd.mace.manchester.ac.uk/ercoftac/doku.php?id=cases:case032
-        nondim_y, y_plus_reference, average_u_plus_reference, uuplus, vvplus, wwplus, uvplus = np.loadtxt("./data/reference/kim_1989_data_Re395.txt",usecols=(1,2,3,4,5,6,7),skiprows=11,max_rows=97,dtype=np.float64,unpack=True)
+        if(False):
+            nondim_y, y_plus_reference, average_u_plus_reference, uuplus, vvplus, wwplus, uvplus = np.loadtxt("./data/reference/kim_1989_data_Re395.txt",usecols=(1,2,3,4,5,6,7),skiprows=11,max_rows=97,dtype=np.float64,unpack=True)
+            average_y_plus_store.append(y_plus_reference)
+            average_u_plus_store.append(average_u_plus_reference)
+            nondim_y_store.append(nondim_y)
+            average_x_velocity_fluctuation_rms_store.append(np.sqrt(uuplus))
+            average_y_velocity_fluctuation_rms_store.append(np.sqrt(vvplus))
+            average_z_velocity_fluctuation_rms_store.append(np.sqrt(wwplus))
+            average_reynolds_stress_uv_store.append(-uvplus)
+            labels_store.append("DNS [Lee, 1989]")
+        # MOSER KIM MANSOUR DATA
+        nondim_y, y_plus_reference, average_u_plus_reference = np.loadtxt("./data/reference/moser_1999_chan395_means.txt",usecols=(0,1,2),skiprows=25,dtype=np.float64,unpack=True)
+        uuplus, vvplus, wwplus, uvplus = np.loadtxt("./data/reference/moser_1999_chan395_reystress.txt",usecols=(2,3,4,5),skiprows=25,dtype=np.float64,unpack=True)
         average_y_plus_store.append(y_plus_reference)
         average_u_plus_store.append(average_u_plus_reference)
         nondim_y_store.append(nondim_y)
@@ -173,7 +196,8 @@ def plot_boundary_layer_profile(filenames_,labels_,friction_velocity_based_reyno
         average_y_velocity_fluctuation_rms_store.append(np.sqrt(vvplus))
         average_z_velocity_fluctuation_rms_store.append(np.sqrt(wwplus))
         average_reynolds_stress_uv_store.append(-uvplus)
-        labels_store.append("DNS [Lee, 1989]")
+        labels_store.append("DNS [Moser et al., 1999]")
+        average_u_by_ubulk_store.append(average_u_plus_reference*(Re_tau/Re_inf))
 
     for i,filename in enumerate(filenames_):
         # load data
@@ -260,7 +284,7 @@ def plot_boundary_layer_profile(filenames_,labels_,friction_velocity_based_reyno
             unique_reynolds_stress_uv[j] = 0.5*(reynolds_stress_uv[j]+reynolds_stress_uv[index_for_second_BL])
 
         # marker for the input
-        y_plus_wall_model_input = 0.2*Re_tau # 0.2 is the uniform delta y from the grid
+        y_plus_wall_model_input = 0.2*Re_tau # 0.2 is the uniform delta y from the grid # WARNING -- SHOULD BE AN INPUT -- TO DO
         u_plus_wall_model_input = np.average(u_plus[np.where(np.abs(y_plus - y_plus_wall_model_input)<1e-4)])
         index_wall_model_input = np.abs(unique_y_plus - y_plus_wall_model_input).argmin()
 
@@ -272,21 +296,39 @@ def plot_boundary_layer_profile(filenames_,labels_,friction_velocity_based_reyno
         w_plus_fluctuation_after_wall_model_input_point = unique_w_plus_fluctuation[np.where(unique_y_plus >= (y_plus_wall_model_input-1e-4))]
         reynolds_stress_uv_after_wall_model_input_point = unique_reynolds_stress_uv[np.where(unique_y_plus >= (y_plus_wall_model_input-1e-4))]
 
+        # vbulk_store=[9.8272033399675807e-01,1.0242263253573591e+00] # to account for imperfect bulk velocity due to source term
+        # vbulk_store=[1.0,1.0]
+        instantaneous_nondim_bulk_velocity = 1.0 #vbulk_store[i]
+        instantaneous_nondim_bulk_velocity_sqr = instantaneous_nondim_bulk_velocity*instantaneous_nondim_bulk_velocity
+
         # add to plot
         average_y_plus_store.append(y_plus_after_wall_model_input_point)
         labels_store.append(labels_[i])
-        average_u_plus_store.append(u_plus_after_wall_model_input_point)
+        average_u_plus_store.append(u_plus_after_wall_model_input_point/instantaneous_nondim_bulk_velocity)
 
-        average_x_velocity_fluctuation_rms_store.append(u_plus_fluctuation_after_wall_model_input_point)
-        average_y_velocity_fluctuation_rms_store.append(v_plus_fluctuation_after_wall_model_input_point)
-        average_z_velocity_fluctuation_rms_store.append(w_plus_fluctuation_after_wall_model_input_point)
+        average_x_velocity_fluctuation_rms_store.append(u_plus_fluctuation_after_wall_model_input_point/instantaneous_nondim_bulk_velocity)
+        average_y_velocity_fluctuation_rms_store.append(v_plus_fluctuation_after_wall_model_input_point/instantaneous_nondim_bulk_velocity)
+        average_z_velocity_fluctuation_rms_store.append(w_plus_fluctuation_after_wall_model_input_point/instantaneous_nondim_bulk_velocity)
 
-        average_reynolds_stress_uv_store.append(reynolds_stress_uv_after_wall_model_input_point)
+        average_reynolds_stress_uv_store.append(reynolds_stress_uv_after_wall_model_input_point/instantaneous_nondim_bulk_velocity_sqr)
         nondim_y_store.append(y_plus_after_wall_model_input_point/np.float64(friction_velocity_based_reynolds_number))
         # add the marker to the plot for wall model input location -- can uncomment to add the marker
         # average_y_plus_store.append(np.array(y_plus_wall_model_input))
         # labels_store.append("Wall Model Input")
         # average_u_plus_store.append(np.array(u_plus_wall_model_input))
+
+        if(friction_velocity_based_reynolds_number==5200):
+            Re_tau = 5200.0
+            Re_inf = 129245.0
+        elif(friction_velocity_based_reynolds_number==395):
+            Re_tau = 395.0
+            Re_inf = 6793.46
+        else:
+            print("Error: Invalid friction_velocity_based_reynolds_number. Aborting...")
+            exit()
+        nondimensional_friction_velocity = Re_tau/Re_inf
+        average_u_by_ubulk_store.append(u_plus_after_wall_model_input_point*np.float64(nondimensional_friction_velocity)/instantaneous_nondim_bulk_velocity)
+
     if(friction_velocity_based_reynolds_number==5200):
         xlimits_=[1.0e0,5200.0]
         ylimits_=[0,30]
@@ -302,10 +344,45 @@ def plot_boundary_layer_profile(filenames_,labels_,friction_velocity_based_reyno
         ylimits_=[]
         xlimits_zoom=[5e1,5e2]
         ylimits_zoom=[12.5,22.5]
-        which_lines_black_=[0]
+        which_lines_black_=[0]#[0,1]
         which_lines_only_markers_=[]
-        which_lines_dashed_=[]
+        which_lines_dashed_=[]#[1]
         y_plus_val_for_reynolds_stress_textboxes=180.0
+
+    if(friction_velocity_based_reynolds_number==395):
+        qp.plotfxn(nondim_y_store,average_u_by_ubulk_store,
+            figure_filename="boundary_layer_profile_scaled_by_bulk_velocity_Re"+str(friction_velocity_based_reynolds_number),
+            figure_size=(7,6),
+            legend_labels_tex=labels_store,
+            figure_filetype="pdf",
+            # title_label="Turbulent Channel Flow $Re_{\\tau}\\approx395$, $CFL\\approx0.2$, $\\alpha=0.0$",
+            # title_label="WMLES Approach to Turbulent Channel Flow at $Re_{\\tau}\\approx5200$",
+            # xlabel="$\\left\\langle y^{+}\\right\\rangle$",
+            xlabel="$y/\\delta$",
+            ylabel="$\\left\\langle u/U_{b}\\right\\rangle$",
+            xlimits=xlimits_,
+            ylimits=ylimits_,
+            # xlimits=xlimits_zoom,
+            # ylimits=ylimits_zoom,
+            which_lines_black=which_lines_black_,
+            which_lines_only_markers=which_lines_only_markers_,
+            which_lines_dashed=which_lines_dashed_,
+            transparent_legend=True,
+            legend_border_on=False,
+            grid_lines_on=False,
+            # log_axes="x",
+            legend_location="best",
+            vertical_lines=[y_plus_wall_model_input/np.float64(friction_velocity_based_reynolds_number)])
+
+    if(friction_velocity_based_reynolds_number==395):
+        y_plus_reference, average_u_plus_reference = np.loadtxt("./data/reference/vermeire2016cpr/p4_fine_uplus_vs_yplus.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+        average_y_plus_store.insert(1,y_plus_reference)
+        average_u_plus_store.insert(1,average_u_plus_reference)
+        # labels_store.insert(1,"p4 fine CPR\n[Vermeire et al., 2016]")
+        labels_store.insert(1,"p$4$ WR-ILES via CPR\n[Vermeire et al., 2016]")
+        which_lines_black_=[0,1]
+        which_lines_only_markers_=[1]
+
 
     qp.plotfxn(average_y_plus_store,average_u_plus_store,
         figure_filename="boundary_layer_profile_Re"+str(friction_velocity_based_reynolds_number),
@@ -321,6 +398,7 @@ def plot_boundary_layer_profile(filenames_,labels_,friction_velocity_based_reyno
         ylimits=ylimits_,
         which_lines_black=which_lines_black_,
         which_lines_only_markers=which_lines_only_markers_,
+        which_lines_dashed=which_lines_dashed_,
         transparent_legend=True,
         legend_border_on=False,
         grid_lines_on=False,
@@ -355,94 +433,164 @@ def plot_boundary_layer_profile(filenames_,labels_,friction_velocity_based_reyno
         legend_location="upper left",
         vertical_lines=[y_plus_wall_model_input])
 
+    if(friction_velocity_based_reynolds_number==395):
+        # remove vermeire data
+        average_y_plus_store.pop(1)
+        average_u_plus_store.pop(1)
+        labels_store.pop(1)
+        which_lines_black_=[0]
+        which_lines_only_markers_=[]
+
     if(True):
-        qp.plotfxn(average_y_plus_store,average_reynolds_stress_uv_store,
+        plot_vs_nondim_y=True # FLAG
+
+        xlabel_="$\\left\\langle y^{+}\\right\\rangle$"
+        xdata_=average_y_plus_store
+        if(plot_vs_nondim_y==True):
+            xlabel_="$y/\\delta$"
+            xdata_=nondim_y_store
+
+        if(friction_velocity_based_reynolds_number==395 and plot_vs_nondim_y==True):
+            nondim_y, value = np.loadtxt("./data/reference/vermeire2016cpr/p4_fine_uvrms_vs_y.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+            nondim_y_store.insert(1,nondim_y)
+            average_reynolds_stress_uv_store.insert(1,value)
+            # labels_store.insert(1,"p$4$ WR-ILES CPR\n[Vermeire et al., 2016]")
+            labels_store.insert(1,"p$4$ WR-ILES via CPR\n[Vermeire et al., 2016]")
+            which_lines_black_=[0,1]
+            which_lines_only_markers_=[1]
+            xdata_=nondim_y_store # as a precaution; to avoid relying on deep copy
+        qp.plotfxn(
+            xdata_,
+            average_reynolds_stress_uv_store,
             figure_filename="reynolds_stress_uv_profile_Re"+str(friction_velocity_based_reynolds_number),
             figure_size=(7,6),
             legend_labels_tex=labels_store,
             figure_filetype="pdf",
             # title_label="Turbulent Channel Flow $Re_{\\tau}\\approx395$, $CFL\\approx0.2$, $\\alpha=0.0$",
             # title_label="WMLES Approach to Turbulent Channel Flow at $Re_{\\tau}\\approx5200$",
-            # xlabel="$\\left\\langle y^{+}\\right\\rangle$",
-            xlabel="$\\left\\langle y^{+}\\right\\rangle$",
+            xlabel=xlabel_,
             ylabel="$-u'v'/u_{\\tau}^{2}$",
             # xlimits=[],
             # ylimits=ylimits_,
             which_lines_black=which_lines_black_,
             which_lines_only_markers=which_lines_only_markers_,
+            which_lines_dashed=which_lines_dashed_,
             transparent_legend=True,
             legend_border_on=False,
             grid_lines_on=False,
-            log_axes="x",
+            # log_axes="x",
             legend_location="best",
             vertical_lines=[y_plus_wall_model_input/np.float64(friction_velocity_based_reynolds_number)],
-            secondary_vertical_lines=[0.3])
+            # secondary_vertical_lines=[0.3]
+            )
+        
+        if(friction_velocity_based_reynolds_number==395 and plot_vs_nondim_y==True):
+            nondim_y, value = np.loadtxt("./data/reference/vermeire2016cpr/p4_fine_urms_vs_y.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+            nondim_y_store[1]=nondim_y
+            average_x_velocity_fluctuation_rms_store.insert(1,value)
+            xdata_=nondim_y_store # as a precaution; to avoid relying on deep copy
 
         # fluctuations
         # xdata_for_fluctuations=[y_plus_after_wall_model_input_point,y_plus_after_wall_model_input_point,y_plus_after_wall_model_input_point]
         # labels_store = ["$\\left\\langle u'^{+}\\right\\rangle _{rms}$",\
         #                 "$\\left\\langle v'^{+}\\right\\rangle _{rms}$",\
         #                 "$\\left\\langle w'^{+}\\right\\rangle _{rms}$"]
-        qp.plotfxn(average_y_plus_store,average_x_velocity_fluctuation_rms_store,
+        qp.plotfxn(
+            xdata_,
+            average_x_velocity_fluctuation_rms_store,
             figure_filename="boundary_layer_profile_of_x_velocity_fluctuations_Re"+str(friction_velocity_based_reynolds_number),
             figure_size=(7,6),
             legend_labels_tex=labels_store,
             figure_filetype="pdf",
             # title_label="Turbulent Channel Flow $Re_{\\tau}\\approx395$, $CFL\\approx0.2$, $\\alpha=0.0$",
             # title_label="WMLES Approach to Turbulent Channel Flow at $Re_{\\tau}\\approx395$",
-            xlabel="$\\left\\langle y^{+}\\right\\rangle$",
+            # xlabel="$\\left\\langle y^{+}\\right\\rangle$",
+            xlabel=xlabel_,
             ylabel="$\\left\\langle u'^{+}\\right\\rangle _{rms}$",
             # xlimits=xlimits_,
             # ylimits=[],
             which_lines_black=which_lines_black_,
-            which_lines_only_markers=[],
+            which_lines_dashed=which_lines_dashed_,
+            which_lines_only_markers=which_lines_only_markers_,
             transparent_legend=True,
-            legend_border_on=True,
-            grid_lines_on=True,
-            log_axes="x",
+            legend_border_on=False,
+            grid_lines_on=False,
+            # log_axes="x",
             legend_location="best",
             vertical_lines=[y_plus_wall_model_input/np.float64(friction_velocity_based_reynolds_number)],
-            secondary_vertical_lines=[0.3])
-        qp.plotfxn(average_y_plus_store,average_y_velocity_fluctuation_rms_store,
+            # secondary_vertical_lines=[0.3]
+            )
+        
+        if(friction_velocity_based_reynolds_number==395 and plot_vs_nondim_y==True):
+            nondim_y, value = np.loadtxt("./data/reference/vermeire2016cpr/p4_fine_vrms_vs_y.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+            nondim_y_store[1]=nondim_y
+            average_y_velocity_fluctuation_rms_store.insert(1,value)
+            xdata_=nondim_y_store # as a precaution; to avoid relying on deep copy
+        qp.plotfxn(
+            xdata_,
+            average_y_velocity_fluctuation_rms_store,
             figure_filename="boundary_layer_profile_of_y_velocity_fluctuations_Re"+str(friction_velocity_based_reynolds_number),
             figure_size=(7,6),
             legend_labels_tex=labels_store,
             figure_filetype="pdf",
             # title_label="Turbulent Channel Flow $Re_{\\tau}\\approx395$, $CFL\\approx0.2$, $\\alpha=0.0$",
             # title_label="WMLES Approach to Turbulent Channel Flow at $Re_{\\tau}\\approx395$",
-            xlabel="$\\left\\langle y^{+}\\right\\rangle$",
+            xlabel=xlabel_,
             ylabel="$\\left\\langle v'^{+}\\right\\rangle _{rms}$",
             # xlimits=xlimits_,
             # ylimits=[],
             which_lines_black=which_lines_black_,
-            which_lines_only_markers=[],
+            which_lines_dashed=which_lines_dashed_,
+            which_lines_only_markers=which_lines_only_markers_,
             transparent_legend=True,
-            legend_border_on=True,
-            grid_lines_on=True,
-            log_axes="x",
+            legend_border_on=False,
+            grid_lines_on=False,
+            # log_axes="x",
             legend_location="best",
             vertical_lines=[y_plus_wall_model_input/np.float64(friction_velocity_based_reynolds_number)],
-            secondary_vertical_lines=[0.3])
-        qp.plotfxn(average_y_plus_store,average_z_velocity_fluctuation_rms_store,
+            # secondary_vertical_lines=[0.3]
+            )
+        
+        if(friction_velocity_based_reynolds_number==395 and plot_vs_nondim_y==True):
+            nondim_y, value = np.loadtxt("./data/reference/vermeire2016cpr/p4_fine_wrms_vs_y.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+            nondim_y_store[1]=nondim_y
+            average_z_velocity_fluctuation_rms_store.insert(1,value)
+            xdata_=nondim_y_store # as a precaution; to avoid relying on deep copy
+        qp.plotfxn(
+            xdata_,
+            average_z_velocity_fluctuation_rms_store,
             figure_filename="boundary_layer_profile_of_z_velocity_fluctuations_Re"+str(friction_velocity_based_reynolds_number),
             figure_size=(7,6),
             legend_labels_tex=labels_store,
             figure_filetype="pdf",
             # title_label="Turbulent Channel Flow $Re_{\\tau}\\approx395$, $CFL\\approx0.2$, $\\alpha=0.0$",
             # title_label="WMLES Approach to Turbulent Channel Flow at $Re_{\\tau}\\approx395$",
-            xlabel="$\\left\\langle y^{+}\\right\\rangle$",
+            xlabel=xlabel_,
             ylabel="$\\left\\langle w'^{+}\\right\\rangle _{rms}$",
             # xlimits=xlimits_,
             # ylimits=[],
             which_lines_black=which_lines_black_,
-            which_lines_only_markers=[],
+            which_lines_only_markers=which_lines_only_markers_,
+            which_lines_dashed=which_lines_dashed_,
             transparent_legend=True,
-            legend_border_on=True,
-            grid_lines_on=True,
-            log_axes="x",
+            legend_border_on=False,
+            grid_lines_on=False,
+            # log_axes="x",
             legend_location="best",
             vertical_lines=[y_plus_wall_model_input/np.float64(friction_velocity_based_reynolds_number)],
-            secondary_vertical_lines=[0.3])
+            # secondary_vertical_lines=[0.3]
+            )
+
+        if(friction_velocity_based_reynolds_number==395 and plot_vs_nondim_y==True):
+            # remove vermeire data
+            nondim_y_store.pop(1)
+            average_reynolds_stress_uv_store.pop(1)
+            average_x_velocity_fluctuation_rms_store.pop(1)
+            average_y_velocity_fluctuation_rms_store.pop(1)
+            average_z_velocity_fluctuation_rms_store.pop(1)
+            labels_store.pop(1)
+            which_lines_black_=[0]
+            which_lines_only_markers_=[]
 
     # plot with all profiles in one
     number_of_profiles = 4
@@ -604,22 +752,25 @@ labels=[\
 which_lines_dashed=[1]
 # friction_velocity_based_reynolds_number=[5200,395]
 friction_velocity_based_reynolds_number=[395,395]
-plot_transient(filenames,labels,which_lines_dashed_=which_lines_dashed,starting_data_index_for_plot=0,friction_velocity_based_reynolds_number=friction_velocity_based_reynolds_number)
+# plot_transient(filenames,labels,which_lines_dashed_=which_lines_dashed,starting_data_index_for_plot=0,friction_velocity_based_reynolds_number=friction_velocity_based_reynolds_number)
 # exit()
 
 filenames=[\
 filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t0300.dat",\
 filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input/flow_field_files/velocity_vorticity-0_boundary_layer_profile.dat",\
-filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t670.dat",\
+# filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t670.dat",\
 ]
 labels=[\
-"P$4$ NSFR-WMLES\n $n_{x}\\times n_{y}\\times n_{z} = 20\\times 10\\times 10$\n$(t^{*}=300)$",\
-"P$4$ NSFR-WMLES 2nd el. input\n $n_{x}\\times n_{y}\\times n_{z} = 20\\times 10\\times 10$\n$(t^{*}=400)$",\
-"P$4$ NSFR-WMLES 2nd el. input\n $n_{x}\\times n_{y}\\times n_{z} = 20\\times 10\\times 10$\n$(t^{*}=670)$",\
+# "P$4$ NSFR-WMLES\n $n_{x}\\times n_{y}\\times n_{z} = 20\\times 10\\times 10$\n$(t^{*}=300)$",\
+# "P$4$ NSFR-WMLES 2nd el. input\n $n_{x}\\times n_{y}\\times n_{z} = 20\\times 10\\times 10$\n$(t^{*}=400)$",\
+# "P$4$ NSFR-WMLES 2nd el. input\n $n_{x}\\times n_{y}\\times n_{z} = 20\\times 10\\times 10$\n$(t^{*}=670)$",\
+"p$4$ WM-ILES-1st-element",\
+"p$4$ WM-ILES-2nd-element",\
+# "3",\
 ]
 which_lines_dashed=[2]
 plot_boundary_layer_profile(filenames,labels,395,which_lines_dashed_=which_lines_dashed)
-
+exit()
 # plot boundary layer profile
 filenames=[\
 # filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t0200.dat",\
