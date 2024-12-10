@@ -297,9 +297,9 @@ def plot_boundary_layer_profile(filenames_,labels_,friction_velocity_based_reyno
         w_plus_fluctuation_after_wall_model_input_point = unique_w_plus_fluctuation[np.where(unique_y_plus >= (y_plus_wall_model_input-1e-4))]
         reynolds_stress_uv_after_wall_model_input_point = unique_reynolds_stress_uv[np.where(unique_y_plus >= (y_plus_wall_model_input-1e-4))]
 
-        # vbulk_store=[9.8272033399675807e-01,1.0242263253573591e+00] # to account for imperfect bulk velocity due to source term
-        # vbulk_store=[1.0,1.0]
-        instantaneous_nondim_bulk_velocity = 1.0 #vbulk_store[i]
+        # vbulk_store=[9.8272033399675807e-01,1.0242263253573591e+00] # to account for imperfect bulk velocity due to source term -- only for investigating
+        # instantaneous_nondim_bulk_velocity = vbulk_store[i]
+        instantaneous_nondim_bulk_velocity = 1.0
         instantaneous_nondim_bulk_velocity_sqr = instantaneous_nondim_bulk_velocity*instantaneous_nondim_bulk_velocity
 
         # add to plot
@@ -394,7 +394,7 @@ def plot_boundary_layer_profile(filenames_,labels_,friction_velocity_based_reyno
         # title_label="WMLES Approach to Turbulent Channel Flow at $Re_{\\tau}\\approx5200$",
         # xlabel="$\\left\\langle y^{+}\\right\\rangle$",
         xlabel="$y^{+}$",
-        ylabel="$\\left\\langle u^{+}\\right\\rangle$",
+        ylabel="$\\left\\langle u\\right\\rangle^{+}$",
         xlimits=xlimits_,
         ylimits=ylimits_,
         which_lines_black=which_lines_black_,
@@ -421,7 +421,7 @@ def plot_boundary_layer_profile(filenames_,labels_,friction_velocity_based_reyno
         # title_label="WMLES Approach to Turbulent Channel Flow at $Re_{\\tau}\\approx5200$",
         # xlabel="$\\left\\langle y^{+}\\right\\rangle$",
         xlabel="$y^{+}$",
-        ylabel="$\\left\\langle u^{+}\\right\\rangle$",
+        ylabel="$\\left\\langle u\\right\\rangle^{+}$",
         xlimits=xlimits_zoom,
         ylimits=ylimits_zoom,
         which_lines_black=which_lines_black_,
@@ -470,7 +470,8 @@ def plot_boundary_layer_profile(filenames_,labels_,friction_velocity_based_reyno
             # title_label="Turbulent Channel Flow $Re_{\\tau}\\approx395$, $CFL\\approx0.2$, $\\alpha=0.0$",
             # title_label="WMLES Approach to Turbulent Channel Flow at $Re_{\\tau}\\approx5200$",
             xlabel=xlabel_,
-            ylabel="$-u'v'/u_{\\tau}^{2}$",
+            # ylabel="$-u'v'/u_{\\tau}^{2}$",
+            ylabel="$-\\left\\langle u'v'\\right\\rangle^{+}$",
             # xlimits=[],
             # ylimits=ylimits_,
             which_lines_black=which_lines_black_,
@@ -507,7 +508,7 @@ def plot_boundary_layer_profile(filenames_,labels_,friction_velocity_based_reyno
             # title_label="WMLES Approach to Turbulent Channel Flow at $Re_{\\tau}\\approx395$",
             # xlabel="$\\left\\langle y^{+}\\right\\rangle$",
             xlabel=xlabel_,
-            ylabel="$\\left\\langle u'^{+}\\right\\rangle _{rms}$",
+            ylabel="$\\left\\langle u'\\right\\rangle^{+}_{rms}$",
             # xlimits=xlimits_,
             # ylimits=[],
             which_lines_black=which_lines_black_,
@@ -537,7 +538,7 @@ def plot_boundary_layer_profile(filenames_,labels_,friction_velocity_based_reyno
             # title_label="Turbulent Channel Flow $Re_{\\tau}\\approx395$, $CFL\\approx0.2$, $\\alpha=0.0$",
             # title_label="WMLES Approach to Turbulent Channel Flow at $Re_{\\tau}\\approx395$",
             xlabel=xlabel_,
-            ylabel="$\\left\\langle v'^{+}\\right\\rangle _{rms}$",
+            ylabel="$\\left\\langle v'\\right\\rangle^{+}_{rms}$",
             # xlimits=xlimits_,
             # ylimits=[],
             which_lines_black=which_lines_black_,
@@ -567,7 +568,7 @@ def plot_boundary_layer_profile(filenames_,labels_,friction_velocity_based_reyno
             # title_label="Turbulent Channel Flow $Re_{\\tau}\\approx395$, $CFL\\approx0.2$, $\\alpha=0.0$",
             # title_label="WMLES Approach to Turbulent Channel Flow at $Re_{\\tau}\\approx395$",
             xlabel=xlabel_,
-            ylabel="$\\left\\langle w'^{+}\\right\\rangle _{rms}$",
+            ylabel="$\\left\\langle w'\\right\\rangle^{+}_{rms}$",
             # xlimits=xlimits_,
             # ylimits=[],
             which_lines_black=which_lines_black_,
@@ -765,8 +766,8 @@ labels=[\
 # "P$4$ NSFR-WMLES\n $n_{x}\\times n_{y}\\times n_{z} = 20\\times 10\\times 10$\n$(t^{*}=300)$",\
 # "P$4$ NSFR-WMLES 2nd el. input\n $n_{x}\\times n_{y}\\times n_{z} = 20\\times 10\\times 10$\n$(t^{*}=400)$",\
 # "P$4$ NSFR-WMLES 2nd el. input\n $n_{x}\\times n_{y}\\times n_{z} = 20\\times 10\\times 10$\n$(t^{*}=670)$",\
-"p$4$ WM-ILES-1st-element",\
-"p$4$ WM-ILES-2nd-element",\
+"C1",\
+"C4",\
 # "3",\
 ]
 which_lines_dashed=[2]
