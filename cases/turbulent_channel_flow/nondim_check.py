@@ -44,6 +44,8 @@ velocity_bulk = mu_ref*Re_bulk/(density*delta)
 
 nondim_tau_wall_from_Re_tau = tau_wall_from_Re_tau/(density*velocity_bulk*velocity_bulk)
 Cf_from_Re_tau = nondim_tau_wall_from_Re_tau*2.0
+print("Cf_from_Re_tau: ")
+print(Cf_from_Re_tau)
 Cf_from_Re_tau = 2.0*((Re_tau/Re_bulk)**2.0)
 print("Cf_from_Re_tau: ")
 print(Cf_from_Re_tau)
