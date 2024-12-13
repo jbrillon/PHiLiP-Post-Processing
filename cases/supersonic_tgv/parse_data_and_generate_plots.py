@@ -642,7 +642,7 @@ if(True):
     #-----------------------------------------------------
     subdirectories_for_plot=[\
     "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p7_procs512",\
-    # "supersonic_viscous_TGV_ILES_NSFR_cHU_IR_2PF_GLL_OI-0_dofs0128_p7_procs512",\
+    "supersonic_viscous_TGV_ILES_NSFR_cHU_Ra_2PF_GLL_OI-0_dofs0128_p7_procs512",\
     "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0128_p3_procs512",\
     "supersonic_viscous_TGV_ILES_NSFR_cPlus_Ra_2PF_GLL_OI-0_dofs0128_p3_procs512",\
     ]
@@ -654,12 +654,12 @@ if(True):
     # ]
     labels_for_plot=[\
     "p$7$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
-    # "p$7$ $c_{HU}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    "p$7$ $c_{HU}$ NSFR.CH$_{\\mathrm{RA}}$",\
     "p$3$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
     "p$3$ $c_{+}$ NSFR.CH$_{\\mathrm{RA}}$",\
     ]
     black_line_flag_for_plot=[False,False,False,False,False,False,False,False]
-    dashed_line_flag_for_plot=[False,False,False,False,False,True,True]
+    dashed_line_flag_for_plot=[False,True,False,True,False,True,True]
     which_was_ran_with_corrected_quantites=[2]
     number_of_degrees_of_freedom_input=[128]
     compare_with_ref_result_at_same_dof=False
@@ -667,7 +667,7 @@ if(True):
         which_was_ran_with_corrected_quantites=which_was_ran_with_corrected_quantites,
         number_of_degrees_of_freedom=number_of_degrees_of_freedom_input,
         compare_with_reference_result_at_same_degrees_of_freedom=compare_with_ref_result_at_same_dof,
-        lnstl_input_store_ = ['None','solid','solid','dashed','solid','dashed','solid','dashed','solid'])
+        lnstl_input_store_ = ['None','solid','dashed','solid','dashed','solid','dashed','solid','dashed','solid'])
     #-----------------------------------------------------
     # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
     reinit_inputs()

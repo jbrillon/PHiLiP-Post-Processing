@@ -361,21 +361,21 @@ if(True):
     #-----------------------------------------------------
     subdirectories_for_plot=[\
     "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p7_procs512/paraview_mach_number_vs_y_t2point5.txt",\
-    # "supersonic_viscous_TGV_ILES_NSFR_cHU_Ra_2PF_GLL_OI-0_dofs0128_p7_procs512/paraview_mach_number_vs_y_t2point5.txt",\
+    "supersonic_viscous_TGV_ILES_NSFR_cHU_Ra_2PF_GLL_OI-0_dofs0128_p7_procs512/paraview_mach_number_vs_y_t2point5.txt",\
     "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0128_p3_procs512/paraview_mach_number_vs_y_t2point5.txt",\
     "supersonic_viscous_TGV_ILES_NSFR_cPlus_Ra_2PF_GLL_OI-0_dofs0128_p3_procs512/paraview_mach_number_vs_y_t2point5.txt",\
     ]
     # labels
     labels_for_plot=[\
     "p$7$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
-    # "p$7$ $c_{HU}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    "p$7$ $c_{HU}$ NSFR.CH$_{\\mathrm{RA}}$",\
     "p$3$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
     "p$3$ $c_{+}$ NSFR.CH$_{\\mathrm{RA}}$",\
     ]
     plot_mach_number_profile(subdirectories_for_plot,labels_for_plot,128,
         compare_with_reference_at_same_DOF=False,
         plot_zoomed_section=True,
-        lnstl_input_store = ['solid','solid','solid','dashed','solid','solid','solid','dashed','solid'])
+        lnstl_input_store = ['solid','solid','dashed','solid','dashed','solid','solid','solid','dashed','solid'])
 
 #=====================================================
 # DOFs: 128^3 | All results
