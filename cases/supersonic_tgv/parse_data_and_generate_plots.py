@@ -146,6 +146,9 @@ def plot_for_presentation(
     if(plotting_subsonic_result):
         ylimits_for_plot = [0.04,0.13]
 
+    if(lnstl_input_store_!=[]):
+        lnstl_input_store = lnstl_input_store_
+
     qp.plotfxn(xdata=time_store,#[time,time],
             ydata=kinetic_energy_store,#[kinetic_energy,kolmogorov_slope],
             ylabel='Nondimensional Kinetic Energy, $K^{*}$',#=\\frac{1}{\\rho_{\\infty}V_{\\infty}^{2}|\\Omega|}\\int_{\\Omega}\\rho(u\\cdot\\u)d\\Omega$',
