@@ -307,7 +307,7 @@ if(True):
     plot_mach_number_profile(subdirectories_for_plot,labels_for_plot,64,
         compare_with_reference_at_same_DOF=False,
         plot_zoomed_section=True,
-        lnstl_input_store = ['solid','solid','dashdot','solid','dashed','solid','solid','dashed','solid'])
+        lnstl_input_store = ['solid','solid','dashed','solid','dashed','solid','solid','dashed','solid'])
 
 #=====================================================
 # DOFs: 64^3 | All results
