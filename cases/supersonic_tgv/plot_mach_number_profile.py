@@ -426,9 +426,9 @@ if(True):
     ]
     # labels
     labels_for_plot=[\
-    "p$3$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
-    "p$7$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
-    "p$15$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    "p$3$",\
+    "p$7$",\
+    "p$15$",\
     ]
     plot_mach_number_profile(subdirectories_for_plot,labels_for_plot,128,
         compare_with_reference_at_same_DOF=False,
