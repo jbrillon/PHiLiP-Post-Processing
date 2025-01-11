@@ -24,6 +24,48 @@ def get_dissipation_discrete(time,kinetic_energy,smoothing=False):
     else:
         dissipation_rate_val = -np.gradient(kinetic_energy,time)
         return dissipation_rate_val
+def smooth_data_np_cumsum_my_average(arr, span):
+    cumsum_vec = np.cumsum(arr)
+    moving_average = (cumsum_vec[2 * span:] - cumsum_vec[:-2 * span]) / (2 * span)
+
+    # The "my_average" part again. Slightly different to before, because the
+    # moving average from cumsum is shorter than the input and needs to be padded
+    front, back = [np.average(arr[:span])], []
+    for i in range(1, span):
+        front.append(np.average(arr[:i + span]))
+        back.insert(0, np.average(arr[-i - span:]))
+    back.insert(0, np.average(arr[-2 * span:]))
+    return np.concatenate((front, moving_average, back))
+#=====================================================
+def get_smoothing_parameters_from_subdirectories(subdirectories_for_plot):
+    smoothing_parameters_store=[]
+    number_of_result_curves=len(subdirectories_for_plot)
+    for i in range(0,number_of_result_curves):
+        name=subdirectories_for_plot[i]
+        if(name=="supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs512"):
+            smoothing_parameter=450
+        elif(name=="supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p3_procs512"):
+            smoothing_parameter=450 # copied
+        elif(name=="supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p7_procs512"):
+            smoothing_parameter=60
+        elif(name=="supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0128_p3_procs512"):
+            smoothing_parameter=60
+        elif(name=="supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0064_p7_procs128"):
+            smoothing_parameter=15 # copied
+        elif(name=="supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0064_p3_procs128"):
+            smoothing_parameter=15 # copied
+        elif(name=="supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p15_procs128"):
+            smoothing_parameter=500 # copied
+        elif("dofs0256" in name):
+            smoothing_parameter=450 # copied
+        elif("dofs0128" in name):
+            smoothing_parameter=60 # copied
+        elif("dofs0064" in name):
+            smoothing_parameter=15 # copied
+        else:
+            smoothing_parameter=1 #dummy
+        smoothing_parameters_store.append(smoothing_parameter)
+    return smoothing_parameters_store
 #=====================================================
 # Input variables for plotting
 #=====================================================
@@ -43,7 +85,9 @@ def plot_for_presentation(
     which_was_ran_with_corrected_quantites=[],
     number_of_degrees_of_freedom=[],
     compare_with_reference_result_at_same_degrees_of_freedom=False,
-    lnstl_input_store_=[]):
+    lnstl_input_store_=[],
+    smooth_dilatational_dissipation_rate=[],
+    smoothing_parameters_input=[]):
     
     global subdirectories, filenames, labels, black_line_flag, \
     dashed_line_flag, figure_filename_postfix, figure_title, \
@@ -120,6 +164,8 @@ def plot_for_presentation(
             # time, kinetic_energy, enstrophy, vorticity_based_dissipation, pressure_dilatation_based_dissipation, strain_rate_based_dissipation, deviatoric_strain_rate_based_dissipation, solenoidal_dissipation, dilatational_dissipation, corrected_pressure_dilatation_based_dissipation, corrected_dilatational_dissipation, uncorrected_pressure_dilatation_based_dissipation, uncorrected_dilatational_dissipation = np.loadtxt(filename,skiprows=1,dtype=np.float64,unpack=True)
             time, kinetic_energy, enstrophy, vorticity_based_dissipation, pressure_dilatation_based_dissipation, strain_rate_based_dissipation, deviatoric_strain_rate_based_dissipation, solenoidal_dissipation, dilatational_dissipation = np.loadtxt(filename,skiprows=1,usecols=(0,1,2,3,4,5,6,7,8),dtype=np.float64,unpack=True)
             pressure_dissipation_store.append(pressure_dilatation_based_dissipation)
+            if(smooth_dilatational_dissipation_rate!=[] and smooth_dilatational_dissipation_rate[i]==True):
+                dilatational_dissipation = smooth_data_np_cumsum_my_average(dilatational_dissipation,smoothing_parameters_input[i])
             dilatational_dissipation_store.append(dilatational_dissipation)
             # pressure_dissipation_store.append(corrected_pressure_dilatation_based_dissipation)
             # dilatational_dissipation_store.append(uncorrected_dilatational_dissipation)
@@ -129,6 +175,8 @@ def plot_for_presentation(
         else:
             time, kinetic_energy, enstrophy, vorticity_based_dissipation, pressure_dilatation_based_dissipation, strain_rate_based_dissipation, deviatoric_strain_rate_based_dissipation, solenoidal_dissipation, dilatational_dissipation = np.loadtxt(filename,skiprows=1,usecols=(0,1,2,3,4,5,6,7,8),dtype=np.float64,unpack=True)
             pressure_dissipation_store.append(pressure_dilatation_based_dissipation)
+            if(smooth_dilatational_dissipation_rate!=[] and smooth_dilatational_dissipation_rate[i]==True):
+                dilatational_dissipation = smooth_data_np_cumsum_my_average(dilatational_dissipation,smoothing_parameters_input[i])
             dilatational_dissipation_store.append(dilatational_dissipation)
         time_store.append(time)
         kinetic_energy_store.append(kinetic_energy)
@@ -503,11 +551,133 @@ def reinit_inputs():
     plot_PHiLiP_DNS_result_as_reference_input=True # default
 #=====================================================
 #-----------------------------------------------------
-
+smooth_dilatational_dissipation_rate_input=[True,True,True,True,True,True,True,True]
+# smooth_dilatational_dissipation_rate_input=[False,False,False,False,False,False,False,False]
 #=====================================================
-# DOFs: 256^3 | All results
+# All results
 #-----------------------------------------------------
 if(True):
+    #-----------------------------------------------------
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2024_JCP/"
+    date_for_runs="."
+    figure_subdirectory="./"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
+    figure_filename_postfix = "_128_high_poly_degree"
+    legend_inside_input=True
+    plot_reference_result=True
+    plot_PHiLiP_DNS_result_as_reference_input=False
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0128_p3_procs512",\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p7_procs512",\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p15_procs128",\
+    # "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p15_procs128",\
+    ]
+    labels_for_plot=[\
+    "p$3$",\
+    "p$7$",\
+    "p$15$",\
+    # "p$15$ smoothed",\
+    ]
+    black_line_flag_for_plot=[False,False,False,False,False,False,False,False]
+    dashed_line_flag_for_plot=[False,False,False,False,False,True,True]
+    which_was_ran_with_corrected_quantites=[0]
+    number_of_degrees_of_freedom_input=[128]
+    compare_with_ref_result_at_same_dof=False
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
+        which_was_ran_with_corrected_quantites=which_was_ran_with_corrected_quantites,
+        number_of_degrees_of_freedom=number_of_degrees_of_freedom_input,
+        compare_with_reference_result_at_same_degrees_of_freedom=compare_with_ref_result_at_same_dof,
+        smooth_dilatational_dissipation_rate=smooth_dilatational_dissipation_rate_input,
+        # smooth_dilatational_dissipation_rate=[True,True,False,True],
+        smoothing_parameters_input=get_smoothing_parameters_from_subdirectories(subdirectories_for_plot))
+    exit()
+    #-----------------------------------------------------
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2024_JCP/"
+    date_for_runs="."
+    figure_subdirectory="./"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
+    figure_filename_postfix = "_p7_convergence"
+    legend_inside_input=True
+    plot_reference_result=True
+    plot_PHiLiP_DNS_result_as_reference_input=False
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0064_p7_procs128",\
+    # "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0064_p7_procs128",\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p7_procs512",\
+    # "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p7_procs512",\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs512",\
+    # "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs512",\
+    # "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0512_p7_procs512",\
+    ]
+    # labels
+    labels_for_plot=[\
+    "$64^{3}$",\
+    # "$64^{3}$ smoothed",\
+    "$128^{3}$",\
+    # "$128^{3}$ smoothed",\
+    "$256^{3}$",\
+    # "$256^{3}$ smoothed",\
+    # "$512^{3}$",\
+    ]
+    black_line_flag_for_plot=[False,False,False,False,False,False,False,False]
+    dashed_line_flag_for_plot=[False,False,False,True,False,True,True]
+    which_was_ran_with_corrected_quantites=[1]
+    number_of_degrees_of_freedom_input=[]
+    compare_with_ref_result_at_same_dof=False
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
+        which_was_ran_with_corrected_quantites=which_was_ran_with_corrected_quantites,
+        number_of_degrees_of_freedom=number_of_degrees_of_freedom_input,
+        compare_with_reference_result_at_same_degrees_of_freedom=compare_with_ref_result_at_same_dof,
+        smooth_dilatational_dissipation_rate=smooth_dilatational_dissipation_rate_input,
+        smoothing_parameters_input=get_smoothing_parameters_from_subdirectories(subdirectories_for_plot))
+    #-----------------------------------------------------
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2024_JCP/"
+    date_for_runs="."
+    figure_subdirectory="./"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
+    figure_filename_postfix = "_p3_convergence"
+    legend_inside_input=True
+    plot_reference_result=True
+    plot_PHiLiP_DNS_result_as_reference_input=False
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0064_p3_procs128",\
+    # "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0064_p3_procs128",\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0128_p3_procs512",\
+    # "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0128_p3_procs512",\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p3_procs512",\
+    # "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p3_procs512",\
+    # "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0512_p7_procs512",\
+    ]
+    # labels
+    labels_for_plot=[\
+    "$64^{3}$",\
+    # "$64^{3}$ smoothed",\
+    "$128^{3}$",\
+    # "$128^{3}$ smoothed",\
+    "$256^{3}$",\
+    # "$256^{3}$ smoothed",\
+    # "$512^{3}$",\
+    ]
+    black_line_flag_for_plot=[False,False,False,False,False,False,False,False]
+    dashed_line_flag_for_plot=[False,False,False,False,False,True,True]
+    which_was_ran_with_corrected_quantites=[0]
+    number_of_degrees_of_freedom_input=[]
+    compare_with_ref_result_at_same_dof=False
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
+        which_was_ran_with_corrected_quantites=which_was_ran_with_corrected_quantites,
+        number_of_degrees_of_freedom=number_of_degrees_of_freedom_input,
+        compare_with_reference_result_at_same_degrees_of_freedom=compare_with_ref_result_at_same_dof,
+        smooth_dilatational_dissipation_rate=smooth_dilatational_dissipation_rate_input,
+        smoothing_parameters_input=get_smoothing_parameters_from_subdirectories(subdirectories_for_plot))
     #-----------------------------------------------------
     # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
     reinit_inputs()
@@ -547,7 +717,9 @@ if(True):
         which_was_ran_with_corrected_quantites=which_was_ran_with_corrected_quantites,
         number_of_degrees_of_freedom=number_of_degrees_of_freedom_input,
         compare_with_reference_result_at_same_degrees_of_freedom=compare_with_ref_result_at_same_dof,
-        lnstl_input_store_ = ['None','solid','dashed','solid','dashed','dashed','solid','dashed','solid'])
+        lnstl_input_store_ = ['None','solid','dashed','solid','dashed','dashed','solid','dashed','solid'],
+        smooth_dilatational_dissipation_rate=smooth_dilatational_dissipation_rate_input,
+        smoothing_parameters_input=get_smoothing_parameters_from_subdirectories(subdirectories_for_plot))
     #-----------------------------------------------------
     # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
     reinit_inputs()
@@ -587,7 +759,9 @@ if(True):
         which_was_ran_with_corrected_quantites=which_was_ran_with_corrected_quantites,
         number_of_degrees_of_freedom=number_of_degrees_of_freedom_input,
         compare_with_reference_result_at_same_degrees_of_freedom=compare_with_ref_result_at_same_dof,
-        lnstl_input_store_ = ['None','solid','dashed','solid','dashed','solid','dashed','solid','dashed','solid'])
+        lnstl_input_store_ = ['None','solid','dashed','solid','dashed','solid','dashed','solid','dashed','solid'],
+        smooth_dilatational_dissipation_rate=smooth_dilatational_dissipation_rate_input,
+        smoothing_parameters_input=get_smoothing_parameters_from_subdirectories(subdirectories_for_plot))
     #-----------------------------------------------------
     # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
     reinit_inputs()
@@ -629,7 +803,9 @@ if(True):
     plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
         which_was_ran_with_corrected_quantites=which_was_ran_with_corrected_quantites,
         number_of_degrees_of_freedom=number_of_degrees_of_freedom_input,
-        compare_with_reference_result_at_same_degrees_of_freedom=compare_with_ref_result_at_same_dof)
+        compare_with_reference_result_at_same_degrees_of_freedom=compare_with_ref_result_at_same_dof,
+        smooth_dilatational_dissipation_rate=smooth_dilatational_dissipation_rate_input,
+        smoothing_parameters_input=get_smoothing_parameters_from_subdirectories(subdirectories_for_plot))
     # exit()
     #-----------------------------------------------------
     # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
@@ -670,7 +846,9 @@ if(True):
         which_was_ran_with_corrected_quantites=which_was_ran_with_corrected_quantites,
         number_of_degrees_of_freedom=number_of_degrees_of_freedom_input,
         compare_with_reference_result_at_same_degrees_of_freedom=compare_with_ref_result_at_same_dof,
-        lnstl_input_store_ = ['None','solid','dashed','solid','dashed','solid','dashed','solid','dashed','solid'])
+        lnstl_input_store_ = ['None','solid','dashed','solid','dashed','solid','dashed','solid','dashed','solid'],
+        smooth_dilatational_dissipation_rate=smooth_dilatational_dissipation_rate_input,
+        smoothing_parameters_input=get_smoothing_parameters_from_subdirectories(subdirectories_for_plot))
     #-----------------------------------------------------
     # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
     reinit_inputs()
@@ -702,76 +880,9 @@ if(True):
     plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
         which_was_ran_with_corrected_quantites=which_was_ran_with_corrected_quantites,
         number_of_degrees_of_freedom=number_of_degrees_of_freedom_input,
-        compare_with_reference_result_at_same_degrees_of_freedom=compare_with_ref_result_at_same_dof)
-    #-----------------------------------------------------
-    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
-    reinit_inputs()
-    data_directory_base=filesystem+"NarvalFiles/2024_JCP/"
-    date_for_runs="."
-    figure_subdirectory="./"
-    # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
-    figure_filename_postfix = "_p7_convergence"
-    legend_inside_input=True
-    plot_reference_result=True
-    plot_PHiLiP_DNS_result_as_reference_input=False
-    #-----------------------------------------------------
-    subdirectories_for_plot=[\
-    "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0064_p7_procs128",\
-    "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p7_procs512",\
-    "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p7_procs512",\
-    # "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0512_p7_procs512",\
-    ]
-    # labels
-    labels_for_plot=[\
-    "$64^{3}$",\
-    "$128^{3}$",\
-    "$256^{3}$",\
-    # "$512^{3}$",\
-    ]
-    black_line_flag_for_plot=[False,False,False,False,False,False,False,False]
-    dashed_line_flag_for_plot=[False,False,False,False,False,True,True]
-    which_was_ran_with_corrected_quantites=[1]
-    number_of_degrees_of_freedom_input=[]
-    compare_with_ref_result_at_same_dof=False
-    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
-        which_was_ran_with_corrected_quantites=which_was_ran_with_corrected_quantites,
-        number_of_degrees_of_freedom=number_of_degrees_of_freedom_input,
-        compare_with_reference_result_at_same_degrees_of_freedom=compare_with_ref_result_at_same_dof)
-
-    #-----------------------------------------------------
-    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
-    reinit_inputs()
-    data_directory_base=filesystem+"NarvalFiles/2024_JCP/"
-    date_for_runs="."
-    figure_subdirectory="./"
-    # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
-    figure_filename_postfix = "_p3_convergence"
-    legend_inside_input=True
-    plot_reference_result=True
-    plot_PHiLiP_DNS_result_as_reference_input=False
-    #-----------------------------------------------------
-    subdirectories_for_plot=[\
-    "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0064_p3_procs128",\
-    "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0128_p3_procs512",\
-    "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0256_p3_procs512",\
-    # "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0512_p7_procs512",\
-    ]
-    # labels
-    labels_for_plot=[\
-    "$64^{3}$",\
-    "$128^{3}$",\
-    "$256^{3}$",\
-    # "$512^{3}$",\
-    ]
-    black_line_flag_for_plot=[False,False,False,False,False,False,False,False]
-    dashed_line_flag_for_plot=[False,False,False,False,False,True,True]
-    which_was_ran_with_corrected_quantites=[0]
-    number_of_degrees_of_freedom_input=[]
-    compare_with_ref_result_at_same_dof=False
-    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
-        which_was_ran_with_corrected_quantites=which_was_ran_with_corrected_quantites,
-        number_of_degrees_of_freedom=number_of_degrees_of_freedom_input,
-        compare_with_reference_result_at_same_degrees_of_freedom=compare_with_ref_result_at_same_dof)
+        compare_with_reference_result_at_same_degrees_of_freedom=compare_with_ref_result_at_same_dof,
+        smooth_dilatational_dissipation_rate=smooth_dilatational_dissipation_rate_input,
+        smoothing_parameters_input=get_smoothing_parameters_from_subdirectories(subdirectories_for_plot))
     #-----------------------------------------------------
     # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
     reinit_inputs()
@@ -814,39 +925,10 @@ if(True):
     plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
         which_was_ran_with_corrected_quantites=which_was_ran_with_corrected_quantites,
         number_of_degrees_of_freedom=number_of_degrees_of_freedom_input,
-        compare_with_reference_result_at_same_degrees_of_freedom=compare_with_ref_result_at_same_dof)
+        compare_with_reference_result_at_same_degrees_of_freedom=compare_with_ref_result_at_same_dof,
+        smooth_dilatational_dissipation_rate=smooth_dilatational_dissipation_rate_input,
+        smoothing_parameters_input=get_smoothing_parameters_from_subdirectories(subdirectories_for_plot))
 
-    #-----------------------------------------------------
-    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
-    reinit_inputs()
-    data_directory_base=filesystem+"NarvalFiles/2024_JCP/"
-    date_for_runs="."
-    figure_subdirectory="./"
-    # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
-    figure_filename_postfix = "_128_high_poly_degree"
-    legend_inside_input=True
-    plot_reference_result=True
-    plot_PHiLiP_DNS_result_as_reference_input=False
-    #-----------------------------------------------------
-    subdirectories_for_plot=[\
-    "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0128_p3_procs512",\
-    "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p7_procs512",\
-    "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p15_procs128",\
-    ]
-    labels_for_plot=[\
-    "p$3$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
-    "p$7$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
-    "p$15$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
-    ]
-    black_line_flag_for_plot=[False,False,False,False,False,False,False,False]
-    dashed_line_flag_for_plot=[False,False,False,False,False,True,True]
-    which_was_ran_with_corrected_quantites=[0]
-    number_of_degrees_of_freedom_input=[128]
-    compare_with_ref_result_at_same_dof=False
-    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
-        which_was_ran_with_corrected_quantites=which_was_ran_with_corrected_quantites,
-        number_of_degrees_of_freedom=number_of_degrees_of_freedom_input,
-        compare_with_reference_result_at_same_degrees_of_freedom=compare_with_ref_result_at_same_dof)
 #=====================================================
 # DOFs: 256^3 | Subsonic case
 #-----------------------------------------------------
