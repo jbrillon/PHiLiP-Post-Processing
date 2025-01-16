@@ -126,7 +126,7 @@ def plot_for_presentation(
     if(plotting_subsonic_result):
         labels.append("SPADE $512^3$ DOF\n[Chapelier et al.]")
     else:
-        labels.append("$2048^3$ DOF [Chapelier et al.]")
+        labels.append("$2048^3$ DOF\n[Chapelier et al.]")
     black_line_flag.append(True)
     dashed_line_flag.append(False)
     #-----------------------------------------------------
@@ -190,7 +190,7 @@ def plot_for_presentation(
     if(plotting_subsonic_result):
         final_time_for_plot = 10.0
 
-    ylimits_for_plot = [0.0,0.14]
+    ylimits_for_plot = [0.02,0.14]
     if(plotting_subsonic_result):
         ylimits_for_plot = [0.04,0.13]
 
@@ -252,7 +252,7 @@ def plot_for_presentation(
             legend_location="best")
 
     #-----------------------------------------------------
-    ylimits_for_plot = [0.0,0.016]
+    ylimits_for_plot = [0.0,0.012]
     if(plotting_subsonic_result):
         ylimits_for_plot = [0.0,0.012]
     time, solenoidal_dissipation = np.loadtxt("./data/chapelier2024/solenoidal_dissipation.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
@@ -264,7 +264,7 @@ def plot_for_presentation(
         time_store.insert(1,time)
         solenoidal_dissipation_store.insert(1,solenoidal_dissipation)
         # labels.append("FLEXI $256^3$\n($4^{th}$-order DGSEM with subgrid FV)\n[Chapelier et al.]")
-        labels.insert(1,"FLEXI (p$3$ DGSEM, sub-cell FV)\n[Chapelier et al.]")
+        labels.insert(1,"FLEXI\n(p$3$ DGSEM, sub-cell FV)\n[Chapelier et al.]")
         dashed_line_flag.insert(1,True)
         # clr_input_store.insert(1,"k")
         # lnstl_input_store.insert(1,"dashed")
@@ -275,7 +275,7 @@ def plot_for_presentation(
         time_store.insert(2,time)
         solenoidal_dissipation_store.insert(2,solenoidal_dissipation)
         # labels.append("FLEXI $256^3$\n($4^{th}$-order DGSEM with subgrid FV)\n[Chapelier et al.]")
-        labels.insert(2,"NS3D (FD-6, HO filter)\n[Chapelier et al.]")
+        labels.insert(2,"NS3D\n(FD-6, HO filter)\n[Chapelier et al.]")
         dashed_line_flag.insert(2,True)
         # clr_input_store.insert(2,"k")
         # lnstl_input_store.insert(2,"dotted")
@@ -286,7 +286,7 @@ def plot_for_presentation(
         time_store.insert(1,time)
         solenoidal_dissipation_store.insert(1,solenoidal_dissipation)
         # labels.append("FLEXI $128^3$\n($4^{th}$-order DGSEM with subgrid FV)\n[Chapelier et al.]")
-        labels.insert(1,"FLEXI (p$3$ DGSEM, sub-cell FV)\n[Chapelier et al.]")
+        labels.insert(1,"FLEXI\n(p$3$ DGSEM, sub-cell FV)\n[Chapelier et al.]")
         dashed_line_flag.insert(1,True)
         # clr_input_store.insert(1,"k")
         # lnstl_input_store.insert(1,"dashed")
@@ -297,7 +297,7 @@ def plot_for_presentation(
         time_store.insert(2,time)
         solenoidal_dissipation_store.insert(2,solenoidal_dissipation)
         # labels.append("FLEXI $256^3$\n($4^{th}$-order DGSEM with subgrid FV)\n[Chapelier et al.]")
-        labels.insert(2,"NS3D (FD-6, HO filter)\n[Chapelier et al.]")
+        labels.insert(2,"NS3D\n(FD-6, HO filter)\n[Chapelier et al.]")
         dashed_line_flag.insert(2,True)
         # clr_input_store.insert(2,"k")
         # lnstl_input_store.insert(2,"dotted")
@@ -308,7 +308,7 @@ def plot_for_presentation(
         time_store.insert(1,time)
         solenoidal_dissipation_store.insert(1,solenoidal_dissipation)
         # labels.append("FLEXI $128^3$\n($4^{th}$-order DGSEM with subgrid FV)\n[Chapelier et al.]")
-        labels.insert(1,"FLEXI (p$3$ DGSEM, sub-cell FV)\n[Chapelier et al.]")
+        labels.insert(1,"FLEXI\n(p$3$ DGSEM, sub-cell FV)\n[Chapelier et al.]")
         dashed_line_flag.insert(1,True)
         # clr_input_store.insert(1,"k")
         # lnstl_input_store.insert(1,"dashed")
@@ -319,7 +319,7 @@ def plot_for_presentation(
         time_store.insert(2,time)
         solenoidal_dissipation_store.insert(2,solenoidal_dissipation)
         # labels.append("FLEXI $256^3$\n($4^{th}$-order DGSEM with subgrid FV)\n[Chapelier et al.]")
-        labels.insert(2,"NS3D (FD-6, HO filter)\n[Chapelier et al.]")
+        labels.insert(2,"NS3D\n(FD-6, HO filter)\n[Chapelier et al.]")
         dashed_line_flag.insert(2,True)
         # clr_input_store.insert(2,"k")
         # lnstl_input_store.insert(2,"dotted")
@@ -327,6 +327,8 @@ def plot_for_presentation(
         lnstl_input_store.insert(2,"solid")
     if(lnstl_input_store_!=[]):
         lnstl_input_store = lnstl_input_store_
+    if(plotting_subsonic_result==False):
+        labels[0]= "$2048^3$ DOF [Chapelier et al.]"
     qp.plotfxn(xdata=time_store,
             ydata=solenoidal_dissipation_store,
             ylabel='Nondimensional Solenoidal Dissipation, $\\varepsilon_{s}^{*}$',#=\\frac{1}{\\rho_{\\infty}V_{\\infty}^{2}|\\Omega|}\\int_{\\Omega}\\rho(u\\cdot\\u)d\\Omega$',
@@ -351,9 +353,11 @@ def plot_for_presentation(
             grid_lines_on=False,
             clr_input=clr_input_store,mrkr_input=mrkr_input_store,lnstl_input=lnstl_input_store,
             legend_fontSize=12,#14
-            legend_location="upper right")
+            legend_location="upper left")
     #-----------------------------------------------------
-    ylimits_for_plot = [0.0,0.0014]
+    ylimits_for_plot = [0.0,0.0012]
+    if("supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p15_procs128" in subdirectories_for_plot):
+        ylimits_for_plot = [0.0,0.0013]
     if(plotting_subsonic_result):
         # ylimits_for_plot = []
         ylimits_for_plot = [0.0,5.0e-6]
@@ -362,6 +366,8 @@ def plot_for_presentation(
         time, dilatational_dissipation = np.loadtxt("./data/chapelier2024/subsonic/dilatational_dissipation.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")    
     time_store[0] = time # replace it -- this is a hack
 
+    if(plotting_subsonic_result==False):
+        labels[0]= "$2048^3$ DOF\n[Chapelier et al.]"
     if(256 in number_of_degrees_of_freedom and (compare_with_reference_result_at_same_degrees_of_freedom==True)):
         # FLEXI
         time, dilatational_dissipation = np.loadtxt("./data/chapelier2024/dilatational_dissipation_256_flexi.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
@@ -478,7 +484,7 @@ def plot_for_presentation(
     if(64 in number_of_degrees_of_freedom):
         time, kinetic_energy = np.loadtxt("./data/chapelier2024/kinetic_energy.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
         time_store[0] = time # replace it -- this is a hack
-        ylimits_for_plot = [0.0,0.14]
+        ylimits_for_plot = [0.02,0.14]
         if(compare_with_reference_result_at_same_degrees_of_freedom==True):
             # FLEXI
             time, kinetic_energy = np.loadtxt("./data/chapelier2024/kinetic_energy_64_flexi.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
@@ -593,7 +599,6 @@ if(True):
         smooth_dilatational_dissipation_rate=smooth_dilatational_dissipation_rate_input,
         # smooth_dilatational_dissipation_rate=[True,True,False,True],
         smoothing_parameters_input=get_smoothing_parameters_from_subdirectories(subdirectories_for_plot))
-    exit()
     #-----------------------------------------------------
     # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
     reinit_inputs()
@@ -789,9 +794,9 @@ if(True):
     # "$c_{DG}$ NSFR.CH$_{RA}$+Roe+PPL\n $8$p$15$ ($128^3$ DOF) CFL=0.01",\
     # ]
     labels_for_plot=[\
-    "p$7$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    "p$7$ $c_{DG}$ NSFR",\
     # "p$7$ $c_{HU}$ NSFR.CH$_{\\mathrm{RA}}$",\
-    "p$3$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    "p$3$ $c_{DG}$ NSFR",\
     # "p$3$ $c_{+}$ NSFR.CH$_{\\mathrm{RA}}$",\
     # "p$3$ $c_{DG}$ NSFR.KG",\
     ]
@@ -869,8 +874,8 @@ if(True):
     labels_for_plot=[\
     # "p$7$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$-GLL-Roe-PPL",\
     # "p$7$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$-Roe\n(with PPL)",\
-    "p$7$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
-    "p$3$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    "p$7$ $c_{DG}$ NSFR",\
+    "p$3$ $c_{DG}$ NSFR",\
     ]
     black_line_flag_for_plot=[False,False,False,False,False,False,False,False]
     dashed_line_flag_for_plot=[False,False,False,False,False,True,True]
@@ -913,8 +918,8 @@ if(True):
     # "p$3$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$-GLL-Roe-PPL",\
     # "p$3$ $c_{+}$ NSFR.CH$_{\\mathrm{RA}}$-GLL-Roe-PPL",\
     # "p$15$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
-    "p$7$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
-    "p$3$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    "p$7$ $c_{DG}$ NSFR",\
+    "p$3$ $c_{DG}$ NSFR",\
     # "p$3$ $c_{+}$ NSFR.CH$_{\\mathrm{RA}}$",\
     ]
     black_line_flag_for_plot=[False,False,False,False,False,False,False,False]
@@ -952,7 +957,7 @@ if(True):
     ]
     # labels
     labels_for_plot=[\
-    "PHiLiP $256^3$ DOF",\
+    "PHiLiP $256^3$ DOF\n(p$7$ $c_{DG}$ NSFR, PPL)",\
     #"$c_{DG}$ NSFR.CH$_{RA}$-GLL-Roe-PPL $32^{3}$p$7$\n ($256^3$ DOF) CFL=0.1",\
     # "$c_{DG}$ NSFR.CH$_{RA}$+Roe $32^{3}$p$7$\n ($256^3$ DOF) CFL=0.1",\
     # "with correction",\

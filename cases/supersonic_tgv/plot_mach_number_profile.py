@@ -46,7 +46,7 @@ def plot_mach_number_profile(files,labels_,DOF,
     y, scalar = np.loadtxt("./data/chapelier2024/reference_teno6_512_mach_number_profile.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
     y_store.append(y)
     mach_store.append(scalar)
-    labels.append("Ref. TENO6 $512^3$ DOF\n[Chapelier et al.]")
+    labels.append("TENO $512^3$ DOF\n[Chapelier et al.]")
     # labels.append("$512^3$ DOF\n[Chapelier et al.]")
     if(convergence_plot==False and compare_with_reference_at_same_DOF==True):
         # additional data
@@ -54,7 +54,7 @@ def plot_mach_number_profile(files,labels_,DOF,
         y, scalar = np.loadtxt(filename_additional_data,skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
         y_store.append(y)
         mach_store.append(scalar)
-        labels.append("FLEXI\n(p$3$ DGSEM, sub-cell FV)\n[Chapelier et al.]")
+        labels.append("FLEXI\n(p$3$ DGSEM,\n sub-cell FV)\n[Chapelier et al.]")
         
         # additional data
         filename_additional_data = "./data/chapelier2024/mach_profile_%i_ns3d.txt" % DOF
@@ -140,7 +140,7 @@ def plot_mach_number_profile(files,labels_,DOF,
             markers=False,
             legend_labels_tex=labels,
             black_lines=False,
-            xlimits=[0,0.5*np.pi],
+            xlimits=[0.1,0.5*np.pi],
             ylimits=[0.2,1.8],
             log_axes=log_axes_input,
             which_lines_black=black_line_flag,
@@ -192,6 +192,37 @@ def reinit_inputs():
 #=====================================================
 #-----------------------------------------------------
 #=====================================================
+# DOFs: 128^3 | High poly-degree
+#-----------------------------------------------------
+if(True):
+    #-----------------------------------------------------
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2024_JCP/"
+    date_for_runs="."
+    figure_subdirectory="./"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
+    figure_filename_postfix = "_128_high_poly_degree"
+    legend_inside_input=True
+    plot_reference_result=True
+    plot_PHiLiP_DNS_result_as_reference_input=False
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0128_p3_procs512/paraview_mach_number_vs_y_t2point5.txt",\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p7_procs512/paraview_mach_number_vs_y_t2point5.txt",\
+    "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p15_procs128/paraview_mach_number_vs_y_t2point5.txt",\
+    ]
+    # labels
+    labels_for_plot=[\
+    "p$3$",\
+    "p$7$",\
+    "p$15$",\
+    ]
+    plot_mach_number_profile(subdirectories_for_plot,labels_for_plot,128,
+        compare_with_reference_at_same_DOF=False,
+        plot_zoomed_section=True)
+
+#=====================================================
 # DOFs: 64^3 | All results
 #-----------------------------------------------------
 if(True):
@@ -213,8 +244,10 @@ if(True):
     ]
     # labels
     labels_for_plot=[\
-    "p$7$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
-    "p$3$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    # "p$7$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    # "p$3$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    "p$7$ $c_{DG}$ NSFR, PPL",\
+    "p$3$ $c_{DG}$ NSFR, PPL",\
     ]
     plot_mach_number_profile(subdirectories_for_plot,labels_for_plot,64,plot_zoomed_section=True)
 
@@ -399,40 +432,12 @@ if(True):
     ]
     # labels
     labels_for_plot=[\
-    "p$7$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
-    "p$3$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    # "p$7$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    # "p$3$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    "p$7$ $c_{DG}$ NSFR, PPL",\
+    "p$3$ $c_{DG}$ NSFR, PPL",\
     ]
     plot_mach_number_profile(subdirectories_for_plot,labels_for_plot,128,plot_zoomed_section=True)
-#=====================================================
-# DOFs: 128^3 | High poly-degree
-#-----------------------------------------------------
-if(True):
-    #-----------------------------------------------------
-    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
-    reinit_inputs()
-    data_directory_base=filesystem+"NarvalFiles/2024_JCP/"
-    date_for_runs="."
-    figure_subdirectory="./"
-    # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
-    figure_filename_postfix = "_128_high_poly_degree"
-    legend_inside_input=True
-    plot_reference_result=True
-    plot_PHiLiP_DNS_result_as_reference_input=False
-    #-----------------------------------------------------
-    subdirectories_for_plot=[\
-    "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0128_p3_procs512/paraview_mach_number_vs_y_t2point5.txt",\
-    "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p7_procs512/paraview_mach_number_vs_y_t2point5.txt",\
-    "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p15_procs128/paraview_mach_number_vs_y_t2point5.txt",\
-    ]
-    # labels
-    labels_for_plot=[\
-    "p$3$",\
-    "p$7$",\
-    "p$15$",\
-    ]
-    plot_mach_number_profile(subdirectories_for_plot,labels_for_plot,128,
-        compare_with_reference_at_same_DOF=False,
-        plot_zoomed_section=True)
 #=====================================================
 # DOFs: 256^3 | All results
 #-----------------------------------------------------
@@ -455,7 +460,9 @@ if(True):
     ]
     # labels
     labels_for_plot=[\
-    "p$7$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
-    "p$3$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    # "p$7$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    # "p$3$ $c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$",\
+    "p$7$ $c_{DG}$ NSFR, PPL",\
+    "p$3$ $c_{DG}$ NSFR, PPL",\
     ]
     plot_mach_number_profile(subdirectories_for_plot,labels_for_plot,256,plot_zoomed_section=True)
