@@ -473,28 +473,28 @@ cbc_KE_kc31 = get_total_turbulent_kinetic_energy_from_spectra(\
 # cbc_KE_kc31_coarse = get_total_turbulent_kinetic_energy_from_spectra(\
 #     get_truncated_spectra_from_cutoff_wavenumber_and_spectra(cbc_spectra_t2, 31.0))#31.2))
 # print("CBC kc31 coarse: %1.3f" % cbc_KE_kc31_coarse)
-print("CBC kc31: %1.3f" % cbc_KE_kc31)
+print("CBC kc31: %1.6f" % cbc_KE_kc31)
 FDS_KE = get_total_turbulent_kinetic_energy_from_spectra(fds_spectra)
-print("FDS: %1.3f" % FDS_KE)
+print("FDS: %1.6f" % FDS_KE)
 error_FDS = 100.0*np.abs(FDS_KE - cbc_KE_kc31)/cbc_KE_kc31
-print(" - error percentage is %3.2f" % error_FDS)
+print(" - error percentage is %3.5f" % error_FDS)
 CPR_KE = get_total_turbulent_kinetic_energy_from_spectra(vermeire_spectra_p5_78dofs)
-print("p5 CPR: %1.3f" % CPR_KE)
+print("p5 CPR: %1.6f" % CPR_KE)
 error_CPR = 100.0*np.abs(CPR_KE - cbc_KE_kc31)/cbc_KE_kc31
-print(" - error percentage is %3.2f" % error_CPR)
+print(" - error percentage is %3.5f" % error_CPR)
 CPR_KE = get_total_turbulent_kinetic_energy_from_spectra(vermeire_spectra_p1_126dofs)
-print("p1 CPR: %1.3f" % CPR_KE)
+print("p1 CPR: %1.6f" % CPR_KE)
 error_CPR = 100.0*np.abs(CPR_KE - cbc_KE_kc31)/cbc_KE_kc31
-print(" - error percentage is %3.2f" % error_CPR)
+print(" - error percentage is %3.5f" % error_CPR)
 print("48")
 cbc_KE_kc48 = get_total_turbulent_kinetic_energy_from_spectra(\
-    get_truncated_spectra_from_cutoff_wavenumber_and_spectra(cbc_spectra_t2_fine, 31.0))
-print("CBC kc48: %1.3f" % cbc_KE_kc48)
-spectra_truncated = get_truncated_spectra_from_cutoff_wavenumber_and_spectra(spectra, 31.0)
+    get_truncated_spectra_from_cutoff_wavenumber_and_spectra(cbc_spectra_t2_fine, 48.0))
+print("CBC kc48: %1.6f" % cbc_KE_kc48)
+spectra_truncated = get_truncated_spectra_from_cutoff_wavenumber_and_spectra(spectra, 48.0)
 NSFR_KE = get_total_turbulent_kinetic_energy_from_spectra(spectra_truncated)
-print("NSFR: %1.3f" % NSFR_KE)
+print("NSFR: %1.6f" % NSFR_KE)
 error_NSFR = 100.0*np.abs(NSFR_KE - cbc_KE_kc48)/cbc_KE_kc48
-print(" - error percentage is %3.2f" % error_NSFR)
+print(" - error percentage is %3.6f" % error_NSFR)
 
 clr_input_store = ['k','k','k','k','k','r']
 mrkr_input_store = ['None','o','None','None','None','None','None']
