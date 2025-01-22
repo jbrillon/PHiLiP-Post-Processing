@@ -30,7 +30,8 @@ import matplotlib;from matplotlib.lines import Line2D
 #-----------------------------------------------------
 def plotfxn(x_store,y_store,x_label,y_label,
     figure_filename,labels_store,which_lines_dashed_store,
-    log_axes=None,xlimits=[],ylimits=[],which_lines_black=[]):
+    log_axes=None,xlimits=[],ylimits=[],which_lines_black=[],
+    legend_on=True):
     qp.plotfxn(x_store,y_store,
         figure_filename=figure_filename,
         figure_size=(6,6),
@@ -45,8 +46,9 @@ def plotfxn(x_store,y_store,x_label,y_label,
         which_lines_black=which_lines_black,
         which_lines_dashed=which_lines_dashed_store,
         transparent_legend=False,
-        legend_border_on=True,
-        grid_lines_on=True,
+        legend_border_on=False,
+        grid_lines_on=False,
+        legend_on=legend_on,
         log_axes=log_axes,
         legend_location="best")
     return
@@ -97,8 +99,9 @@ def plot_transient(filenames_,labels_,which_lines_dashed_=[],
     # plot the quantities
     if(plot_skin_friction_coefficient):
         plotfxn(time_store,skin_friction_coefficient_store,\
-            "$t^{*}$","Normalized Skin Friction Coefficient, $C_{f}(t^{*})/C^{expected}_{f}$","skin_friction_coefficient",\
+            "Nondimensional Time, $t^{*}$","Normalized Skin Friction Coefficient, $C_{f}(t^{*})/C^{expected}_{f}$","skin_friction_coefficient",\
             labels_store,which_lines_dashed_,
+            legend_on=False
             # xlimits=[0,460]
             )
         # plotfxn(time_store,skin_friction_coefficient_store/expected_mean_value_for_skin_friction_coefficient,\
@@ -106,12 +109,15 @@ def plot_transient(filenames_,labels_,which_lines_dashed_=[],
         #     labels_store,which_lines_dashed_)
     if(plot_wall_shear_stress):
         plotfxn(time_store,wall_shear_stress_store,\
-            "$t^{*}$","Normalized Nondim. Wall Shear Stress, $\\tau_{w}/\\tau^{expected}_{w}$","wall_shear_stress",\
-            labels_store,which_lines_dashed_)
+            "Nondimensional Time, $t^{*}$","Normalized Nondim. Wall Shear Stress, $\\tau_{w}/\\tau^{expected}_{w}$","wall_shear_stress",\
+            labels_store,which_lines_dashed_,
+            legend_on=False)
     if(plot_bulk_mass_flow):
         plotfxn(time_store,bulk_mass_flow_store,\
-            "$t^{*}$","Normalized Bulk Mass Flow Rate, $\\rho_{b}U_{b}/(\\rho_{b}U_{b})_{0}$","bulk_mass_flow",\
-            labels_store,which_lines_dashed_,log_axes="y")
+            "Nondimensional Time, $t^{*}$","Normalized Bulk Mass Flow Rate, $\\rho_{b}U_{b}/(\\rho_{b}U_{b})_{0}$","bulk_mass_flow",\
+            labels_store,
+            which_lines_dashed_,log_axes="y",
+            legend_on=False)
     return
 #-----------------------------------------------------
 #-----------------------------------------------------
@@ -343,8 +349,8 @@ def plot_boundary_layer_profile(filenames_,labels_,friction_velocity_based_reyno
     elif(friction_velocity_based_reynolds_number==395):
         xlimits_=[]
         ylimits_=[]
-        xlimits_zoom=[5e1,5e2]
-        ylimits_zoom=[12.5,22.5]
+        xlimits_zoom=[5e1,4.5e2]
+        ylimits_zoom=[12,22]
         which_lines_black_=[0]#[0,1]
         which_lines_only_markers_=[]
         which_lines_dashed_=[]#[1]
@@ -372,7 +378,7 @@ def plot_boundary_layer_profile(filenames_,labels_,friction_velocity_based_reyno
             legend_border_on=False,
             grid_lines_on=False,
             # log_axes="x",
-            legend_location="best",
+            legend_location="lower right",
             vertical_lines=[y_plus_wall_model_input/np.float64(friction_velocity_based_reynolds_number)])
 
     if(friction_velocity_based_reynolds_number==395):
@@ -380,7 +386,7 @@ def plot_boundary_layer_profile(filenames_,labels_,friction_velocity_based_reyno
         average_y_plus_store.insert(1,y_plus_reference)
         average_u_plus_store.insert(1,average_u_plus_reference)
         # labels_store.insert(1,"p4 fine CPR\n[Vermeire et al., 2016]")
-        labels_store.insert(1,"p$4$ WR-ILES via CPR\n[Vermeire et al., 2016]")
+        labels_store.insert(1,"WR-LES, p$4$ CPR\n[Vermeire et al., 2016]")
         which_lines_black_=[0,1]
         which_lines_only_markers_=[1]
 
@@ -431,7 +437,7 @@ def plot_boundary_layer_profile(filenames_,labels_,friction_velocity_based_reyno
         legend_border_on=False,
         grid_lines_on=False,
         log_axes="x",
-        legend_location="upper left",
+        legend_location="lower right",
         vertical_lines=[y_plus_wall_model_input])
 
     if(friction_velocity_based_reynolds_number==395):
@@ -456,7 +462,7 @@ def plot_boundary_layer_profile(filenames_,labels_,friction_velocity_based_reyno
             nondim_y_store.insert(1,nondim_y)
             average_reynolds_stress_uv_store.insert(1,value)
             # labels_store.insert(1,"p$4$ WR-ILES CPR\n[Vermeire et al., 2016]")
-            labels_store.insert(1,"p$4$ WR-ILES via CPR\n[Vermeire et al., 2016]")
+            labels_store.insert(1,"WR-LES, p$4$ CPR\n[Vermeire et al., 2016]")
             which_lines_black_=[0,1]
             which_lines_only_markers_=[1]
             xdata_=nondim_y_store # as a precaution; to avoid relying on deep copy
@@ -481,7 +487,7 @@ def plot_boundary_layer_profile(filenames_,labels_,friction_velocity_based_reyno
             legend_border_on=False,
             grid_lines_on=False,
             # log_axes="x",
-            legend_location="best",
+            legend_location="upper right",
             vertical_lines=[y_plus_wall_model_input/np.float64(friction_velocity_based_reynolds_number)],
             # secondary_vertical_lines=[0.3]
             )
@@ -743,18 +749,18 @@ labels=[\
 filenames=[\
 # filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/turbulent_quantities.txt",\
 filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization/turbulent_quantities.txt",\
-filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input/turbulent_quantities.txt",\
+# filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input/turbulent_quantities.txt",\
 ]
 labels=[\
 # "p4 $c_{DG}$ NSFR.IR.GLL-WMLES\n $(\\Delta x^{+},\\Delta y^{+},\\Delta z^{+})=(400,250,400)$",\
 # "$Re_{\\tau}\\approx5200$",\
 "$Re_{\\tau}\\approx395$",\
-"$Re_{\\tau}\\approx395$ 2nd el. input",\
+# "$Re_{\\tau}\\approx395$ 2nd el. input",\
 ]
 which_lines_dashed=[1]
 # friction_velocity_based_reynolds_number=[5200,395]
 friction_velocity_based_reynolds_number=[395,395]
-# plot_transient(filenames,labels,which_lines_dashed_=which_lines_dashed,starting_data_index_for_plot=0,friction_velocity_based_reynolds_number=friction_velocity_based_reynolds_number)
+plot_transient(filenames,labels,which_lines_dashed_=which_lines_dashed,starting_data_index_for_plot=0,friction_velocity_based_reynolds_number=friction_velocity_based_reynolds_number)
 # exit()
 
 filenames=[\
@@ -766,8 +772,8 @@ labels=[\
 # "P$4$ NSFR-WMLES\n $n_{x}\\times n_{y}\\times n_{z} = 20\\times 10\\times 10$\n$(t^{*}=300)$",\
 # "P$4$ NSFR-WMLES 2nd el. input\n $n_{x}\\times n_{y}\\times n_{z} = 20\\times 10\\times 10$\n$(t^{*}=400)$",\
 # "P$4$ NSFR-WMLES 2nd el. input\n $n_{x}\\times n_{y}\\times n_{z} = 20\\times 10\\times 10$\n$(t^{*}=670)$",\
-"C1",\
-"C4",\
+"C1, WM-LES, \np$4$ $c_{+}$ NSFR.IR-GLL",\
+"C4, WM-LES, \np$4$ $c_{+}$ NSFR.IR-GLL",\
 # "3",\
 ]
 which_lines_dashed=[2]
