@@ -101,7 +101,7 @@ def plot_transient(filenames_,labels_,which_lines_dashed_=[],
         plotfxn(time_store,skin_friction_coefficient_store,\
             "Nondimensional Time, $t^{*}$","Normalized Skin Friction Coefficient, $C_{f}(t^{*})/C^{expected}_{f}$","skin_friction_coefficient",\
             labels_store,which_lines_dashed_,
-            legend_on=False
+            # legend_on=False
             # xlimits=[0,460]
             )
         # plotfxn(time_store,skin_friction_coefficient_store/expected_mean_value_for_skin_friction_coefficient,\
@@ -111,13 +111,15 @@ def plot_transient(filenames_,labels_,which_lines_dashed_=[],
         plotfxn(time_store,wall_shear_stress_store,\
             "Nondimensional Time, $t^{*}$","Normalized Nondim. Wall Shear Stress, $\\tau_{w}/\\tau^{expected}_{w}$","wall_shear_stress",\
             labels_store,which_lines_dashed_,
-            legend_on=False)
+            # legend_on=False
+            )
     if(plot_bulk_mass_flow):
         plotfxn(time_store,bulk_mass_flow_store,\
             "Nondimensional Time, $t^{*}$","Normalized Bulk Mass Flow Rate, $\\rho_{b}U_{b}/(\\rho_{b}U_{b})_{0}$","bulk_mass_flow",\
             labels_store,
             which_lines_dashed_,log_axes="y",
-            legend_on=False)
+            # legend_on=False
+            )
     return
 #-----------------------------------------------------
 #-----------------------------------------------------
@@ -435,9 +437,37 @@ def plot_boundary_layer_profile(filenames_,labels_,friction_velocity_based_reyno
         which_lines_dashed=which_lines_dashed_,
         transparent_legend=True,
         legend_border_on=False,
+        nlegendcols=2,
         grid_lines_on=False,
         log_axes="x",
         legend_location="lower right",
+        vertical_lines=[y_plus_wall_model_input])
+
+    normalized_u_plus = []
+    for i,average_u_plus in enumerate(average_u_plus_store):
+        normalized_u_plus.append(average_u_plus/average_u_plus[-1])
+
+    qp.plotfxn(average_y_plus_store,normalized_u_plus,
+        figure_filename="normalized_boundary_layer_profile_zoom_Re"+str(friction_velocity_based_reynolds_number),
+        figure_size=(7,6),
+        legend_labels_tex=labels_store,
+        figure_filetype="pdf",
+        # title_label="Turbulent Channel Flow $Re_{\\tau}\\approx395$, $CFL\\approx0.2$, $\\alpha=0.0$",
+        # title_label="WMLES Approach to Turbulent Channel Flow at $Re_{\\tau}\\approx5200$",
+        # xlabel="$\\left\\langle y^{+}\\right\\rangle$",
+        xlabel="$y^{+}$",
+        ylabel="$\\left\\langle u\\right\\rangle^{+}/\\left\\langle u\\right\\rangle^{+}_{\\mathrm{centerline}}$",
+        xlimits=xlimits_zoom,
+        ylimits=[0.7,1.1],
+        which_lines_black=which_lines_black_,
+        which_lines_only_markers=which_lines_only_markers_,
+        which_lines_dashed=which_lines_dashed_,
+        transparent_legend=True,
+        legend_border_on=False,
+        grid_lines_on=False,
+        nlegendcols=2,
+        log_axes="x",
+        legend_location="upper center",
         vertical_lines=[y_plus_wall_model_input])
 
     if(friction_velocity_based_reynolds_number==395):
@@ -749,31 +779,38 @@ labels=[\
 filenames=[\
 # filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/turbulent_quantities.txt",\
 filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization/turbulent_quantities.txt",\
-# filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input/turbulent_quantities.txt",\
+filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input/turbulent_quantities.txt",\
+filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input_from_t0/turbulent_quantities.txt",\
+filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR-Roe_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input_from_t0/turbulent_quantities.txt",\
 ]
 labels=[\
 # "p4 $c_{DG}$ NSFR.IR.GLL-WMLES\n $(\\Delta x^{+},\\Delta y^{+},\\Delta z^{+})=(400,250,400)$",\
 # "$Re_{\\tau}\\approx5200$",\
-"$Re_{\\tau}\\approx395$",\
+# "$Re_{\\tau}\\approx395$",\
 # "$Re_{\\tau}\\approx395$ 2nd el. input",\
+"C1","C4-old","C4","C4-Roe",\
 ]
 which_lines_dashed=[1]
 # friction_velocity_based_reynolds_number=[5200,395]
-friction_velocity_based_reynolds_number=[395,395]
-plot_transient(filenames,labels,which_lines_dashed_=which_lines_dashed,starting_data_index_for_plot=0,friction_velocity_based_reynolds_number=friction_velocity_based_reynolds_number)
+friction_velocity_based_reynolds_number=[395,395,395,395]
+# plot_transient(filenames,labels,which_lines_dashed_=which_lines_dashed,starting_data_index_for_plot=0,friction_velocity_based_reynolds_number=friction_velocity_based_reynolds_number)
 # exit()
 
 filenames=[\
 filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t0300.dat",\
 filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input/flow_field_files/velocity_vorticity-0_boundary_layer_profile.dat",\
 # filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t670.dat",\
+filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input_from_t0/flow_field_files/velocity_vorticity-0_boundary_layer_profile.dat",\
+filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR-Roe_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input_from_t0/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t230.dat",\
+filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR-Roe_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input_from_t0/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t300.dat",\
 ]
 labels=[\
 # "P$4$ NSFR-WMLES\n $n_{x}\\times n_{y}\\times n_{z} = 20\\times 10\\times 10$\n$(t^{*}=300)$",\
 # "P$4$ NSFR-WMLES 2nd el. input\n $n_{x}\\times n_{y}\\times n_{z} = 20\\times 10\\times 10$\n$(t^{*}=400)$",\
 # "P$4$ NSFR-WMLES 2nd el. input\n $n_{x}\\times n_{y}\\times n_{z} = 20\\times 10\\times 10$\n$(t^{*}=670)$",\
-"C1, WM-LES, \np$4$ $c_{+}$ NSFR.IR-GLL",\
-"C4, WM-LES, \np$4$ $c_{+}$ NSFR.IR-GLL",\
+# "C1, WM-LES, \np$4$ $c_{+}$ NSFR.IR-GLL",\
+# "C4, WM-LES, \np$4$ $c_{+}$ NSFR.IR-GLL",\
+"C1","C4-old $(t^{*}=650)$","C4 $(t^{*}=240)$","C4-Roe\n$(t^{*}=230)$","C4-Roe\n$(t^{*}=300)$",\
 # "3",\
 ]
 which_lines_dashed=[2]
