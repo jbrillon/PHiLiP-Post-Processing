@@ -352,7 +352,7 @@ def plot_boundary_layer_profile(filenames_,labels_,friction_velocity_based_reyno
         xlimits_=[]
         ylimits_=[]
         xlimits_zoom=[5e1,4.5e2]
-        ylimits_zoom=[12,22]
+        ylimits_zoom=[10,22]
         which_lines_black_=[0]#[0,1]
         which_lines_only_markers_=[]
         which_lines_dashed_=[]#[1]
@@ -391,6 +391,16 @@ def plot_boundary_layer_profile(filenames_,labels_,friction_velocity_based_reyno
         labels_store.insert(1,"WR-LES, p$4$ CPR\n[Vermeire et al., 2016]")
         which_lines_black_=[0,1]
         which_lines_only_markers_=[1]
+
+        # load reference data
+        # y_plus_reference, average_u_plus_reference = np.loadtxt("./data/reference/kawamura_coarse.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+        y_plus_reference, average_u_plus_reference = np.loadtxt("./data/reference/benarafa_2007_Re395_LES_SWM.txt",skiprows=1,dtype=np.float64,unpack=True,delimiter=",")
+        average_y_plus_store.insert(2,y_plus_reference)
+        average_u_plus_store.insert(2,average_u_plus_reference)
+        labels_store.insert(2,"WM-LES, FVM\n [Benarafa et al., 2007]")
+        # labels_store.insert(2,"DNS\n [Kawamura]")
+        which_lines_black_=[0,1,2]
+        which_lines_only_markers_=[1,2]
 
 
     qp.plotfxn(average_y_plus_store,average_u_plus_store,
@@ -437,7 +447,7 @@ def plot_boundary_layer_profile(filenames_,labels_,friction_velocity_based_reyno
         which_lines_dashed=which_lines_dashed_,
         transparent_legend=True,
         legend_border_on=False,
-        nlegendcols=2,
+        nlegendcols=1,
         grid_lines_on=False,
         log_axes="x",
         legend_location="lower right",
@@ -471,12 +481,16 @@ def plot_boundary_layer_profile(filenames_,labels_,friction_velocity_based_reyno
         vertical_lines=[y_plus_wall_model_input])
 
     if(friction_velocity_based_reynolds_number==395):
-        # remove vermeire data
+        # remove Vermeire data
         average_y_plus_store.pop(1)
         average_u_plus_store.pop(1)
         labels_store.pop(1)
         which_lines_black_=[0]
         which_lines_only_markers_=[]
+        # remove Benarafa data
+        average_y_plus_store.pop(2)
+        average_u_plus_store.pop(2)
+        labels_store.pop(2)
 
     if(True):
         plot_vs_nondim_y=True # FLAG
@@ -816,28 +830,28 @@ labels=[\
 which_lines_dashed=[1]
 # friction_velocity_based_reynolds_number=[5200,395]
 friction_velocity_based_reynolds_number=[5200,395,395,395,395,395,395]
-plot_transient(filenames,labels,which_lines_dashed_=which_lines_dashed,starting_data_index_for_plot=0,friction_velocity_based_reynolds_number=friction_velocity_based_reynolds_number)
-exit()
+# plot_transient(filenames,labels,which_lines_dashed_=which_lines_dashed,starting_data_index_for_plot=0,friction_velocity_based_reynolds_number=friction_velocity_based_reynolds_number)
+# exit()
 
 
 filenames=[\
 filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t0300.dat",\
 filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input/flow_field_files/velocity_vorticity-0_boundary_layer_profile.dat",\
 # filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t670.dat",\
-filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input_from_t0/flow_field_files/velocity_vorticity-0_boundary_layer_profile.dat",\
-filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR-Roe_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input_from_t0/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t230.dat",\
-filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR-Roe_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input_from_t0/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t300.dat",\
+# filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input_from_t0/flow_field_files/velocity_vorticity-0_boundary_layer_profile.dat",\
+# filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR-Roe_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input_from_t0/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t230.dat",\
+# filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR-Roe_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input_from_t0/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t300.dat",\
 ]
 labels=[\
 # "P$4$ NSFR-WMLES\n $n_{x}\\times n_{y}\\times n_{z} = 20\\times 10\\times 10$\n$(t^{*}=300)$",\
 # "P$4$ NSFR-WMLES 2nd el. input\n $n_{x}\\times n_{y}\\times n_{z} = 20\\times 10\\times 10$\n$(t^{*}=400)$",\
 # "P$4$ NSFR-WMLES 2nd el. input\n $n_{x}\\times n_{y}\\times n_{z} = 20\\times 10\\times 10$\n$(t^{*}=670)$",\
-# "C1, WM-LES, \np$4$ $c_{+}$ NSFR.IR-GLL",\
-# "C4, WM-LES, \np$4$ $c_{+}$ NSFR.IR-GLL",\
-"C1","C4-old $(t^{*}=650)$","C4 $(t^{*}=240)$","C4-Roe\n$(t^{*}=230)$","C4-Roe\n$(t^{*}=300)$",\
+"C1, WM-LES, \np$4$ $c_{+}$ NSFR.IR-GLL",\
+"C4, WM-LES, \np$4$ $c_{+}$ NSFR.IR-GLL",\
+# "C1","C4-old $(t^{*}=650)$","C4 $(t^{*}=240)$","C4-Roe\n$(t^{*}=230)$","C4-Roe\n$(t^{*}=300)$",\
 # "3",\
 ]
-which_lines_dashed=[2]
+which_lines_dashed=[]
 plot_boundary_layer_profile(filenames,labels,395,which_lines_dashed_=which_lines_dashed)
 exit()
 # plot boundary layer profile
