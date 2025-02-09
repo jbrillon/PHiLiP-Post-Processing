@@ -272,7 +272,7 @@ nElements_x_direction=[20]
 nElements_y_direction=[10]
 nElements_z_direction=[10]
 nValues_per_row=[7]
-num_procs=[8]
+num_procs=[16]
 file_extension="dat"
 # Call function
 batch_assemble_mpi_flow_field_files_generate_boundary_layer_profile(
