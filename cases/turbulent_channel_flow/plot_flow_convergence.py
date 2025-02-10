@@ -89,6 +89,8 @@ def plot_transient(filenames_,labels_,which_lines_dashed_=[],
             expected_mean_value_for_wall_shear_stress = 0.003380747 # for Re=395
             expected_mean_value_for_skin_friction_coefficient = 2.0*expected_mean_value_for_wall_shear_stress
 
+        if(filename=="/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input/turbulent_quantities_to_fix.txt"):
+            time[430341:] -= 194.0
         # store the data
         time_store.append(time[starting_data_index_for_plot:])
         labels_store.append(labels_[i])
@@ -327,6 +329,8 @@ def plot_boundary_layer_profile(filenames_,labels_,friction_velocity_based_reyno
 
         # add to plot
         average_y_plus_store.append(y_plus_after_wall_model_input_point)
+        print(labels_)
+        print(i)
         labels_store.append(labels_[i])
         average_u_plus_store.append(u_plus_after_wall_model_input_point/instantaneous_nondim_bulk_velocity)
 
@@ -367,7 +371,7 @@ def plot_boundary_layer_profile(filenames_,labels_,friction_velocity_based_reyno
         xlimits_=[]
         ylimits_=[]
         xlimits_zoom=[5e1,4.5e2]
-        ylimits_zoom=[10,22]
+        ylimits_zoom=[8,22]
         which_lines_black_=[0]#[0,1]
         which_lines_only_markers_=[]
         which_lines_dashed_=[]#[1]
@@ -769,7 +773,7 @@ def plot_boundary_layer_profile(filenames_,labels_,friction_velocity_based_reyno
 
     qp.plotfxn(xdata_for_plot,ydata_for_plot,
         figure_filename="reynolds_stress_profiles_Re"+str(friction_velocity_based_reynolds_number),
-        figure_size=(7,6),
+        figure_size=(8,6),
         # legend_labels_tex=labels_store,
         figure_filetype="pdf",
         # title_label="Turbulent Channel Flow $Re_{\\tau}\\approx395$, $CFL\\approx0.2$, $\\alpha=0.0$",
@@ -857,18 +861,20 @@ labels=[\
 filenames=[\
 # filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/turbulent_quantities.txt",\
 filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization/turbulent_quantities.txt",\
-filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input/turbulent_quantities.txt",\
-filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input_from_t0/turbulent_quantities.txt",\
-filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR-Roe_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input_from_t0/turbulent_quantities.txt",\
+# filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input/turbulent_quantities.txt",\
+# "/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input/turbulent_quantities_to_fix.txt",\
+# filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input_from_t0/turbulent_quantities.txt",\
+# filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR-Roe_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input_from_t0/turbulent_quantities.txt",\
 ]
 labels=[\
 # "p4 $c_{DG}$ NSFR.IR.GLL-WMLES\n $(\\Delta x^{+},\\Delta y^{+},\\Delta z^{+})=(400,250,400)$",\
 # "$Re_{\\tau}\\approx5200$",\
 # "$Re_{\\tau}\\approx395$",\
 # "$Re_{\\tau}\\approx395$ 2nd el. input",\
-"C1","C4-old","C4","C4-Roe",\
+"C1, WM-LES, p$4$ $c_{+}$ NSFR.IR-GLL",\
+#"C1","C4","C4-Roe",\
 ]
-which_lines_dashed=[1]
+which_lines_dashed=[]
 # friction_velocity_based_reynolds_number=[5200,395]
 friction_velocity_based_reynolds_number=[395,395,395,395]
 # plot_transient(filenames,labels,which_lines_dashed_=which_lines_dashed,starting_data_index_for_plot=0,friction_velocity_based_reynolds_number=friction_velocity_based_reynolds_number)
@@ -925,6 +931,27 @@ filenames=[\
 # "/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR-Roe_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input_from_t0/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t0490_OS-1.dat",\
 # ---------------------------------------------
 # ---------------------------------------------
+# "/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t0420_OS-2.dat",\
+# "/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t0430_OS-2.dat",\
+# "/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t0440_OS-2.dat",\
+# "/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t0450_OS-2.dat",\
+# "/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t0460_OS-2.dat",\
+# "/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t0470_OS-2.dat",\
+# "/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t0480_OS-2.dat",\
+# "/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t0490_OS-2.dat",\
+# "/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t0500_OS-2.dat",\
+# "/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t0510_OS-2.dat",\
+# "/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t0520_OS-2.dat",\
+# "/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t0530_OS-2.dat",\
+# "/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t0540_OS-2.dat",\
+# "/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t0550_OS-2.dat",\
+# "/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t0560_OS-2.dat",\
+# "/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t0570_OS-2.dat",\
+# "/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t0580_OS-2.dat",\
+# "/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t0590_OS-2.dat",\
+# "/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t0600_OS-2.dat",\
+# "/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t0610_OS-2.dat",\
+# ---------------------------------------------
 # "/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t0480_OS-2.dat",\
 # "/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t0490_OS-2.dat",\
 # "/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input/flow_field_files/velocity_vorticity-0_boundary_layer_profile_t0500_OS-2.dat",\
@@ -951,10 +978,14 @@ filenames=[\
 # "/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile_time_averaged_t300_to_t490_OS-1.dat",\
 # "/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input/flow_field_files/velocity_vorticity-0_boundary_layer_profile_time_averaged_t480_to_t670_OS-1.dat",\
 # "/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR-Roe_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input_from_t0/flow_field_files/velocity_vorticity-0_boundary_layer_profile_time_averaged_t300_to_t490_OS-1.dat",\
-"/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile_time_averaged_t300_to_t490_OS-2.dat",\
-"/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input/flow_field_files/velocity_vorticity-0_boundary_layer_profile_time_averaged_t480_to_t670_OS-2.dat",\
-"/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR-Roe_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input_from_t0/flow_field_files/velocity_vorticity-0_boundary_layer_profile_time_averaged_t300_to_t490_OS-2.dat",\
+# ---------- OS-2 --------------------
+# "/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile_time_averaged_t300_to_t490_OS-2.dat",\
+# "/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input/flow_field_files/velocity_vorticity-0_boundary_layer_profile_time_averaged_t480_to_t670_OS-2.dat",\
+# "/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR-Roe_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input_from_t0/flow_field_files/velocity_vorticity-0_boundary_layer_profile_time_averaged_t300_to_t490_OS-2.dat",\
 # "/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input/flow_field_files/velocity_vorticity-0_boundary_layer_profile_time_averaged_t480_to_t670_OS-1.dat",\
+# ---------------------------------------------
+# ---------- Re_tau = 5200 --------------------
+"/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/flow_field_files/velocity_vorticity-0_boundary_layer_profile_time_averaged_t420_to_t610_OS-2.dat",\
 # ---------------------------------------------
 # "time_averaged_boundary_layer_profile.dat",\
 # filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input/flow_field_files/velocity_vorticity-0_boundary_layer_profile.dat",\
@@ -974,8 +1005,8 @@ labels=[\
 # "C4, WM-LES, \np$4$ $c_{+}$ NSFR.IR-GLL",\
 # "C4-Roe, WM-LES, \np$4$ $c_{+}$ NSFR.IR-GLL",\
 "C1, WM-LES, p$4$ $c_{+}$ NSFR.IR-GLL",\
-"C4, WM-LES, p$4$ $c_{+}$ NSFR.IR-GLL",\
-"C4-Roe, WM-LES, p$4$ $c_{+}$ NSFR.IR-GLL",\
+# "C4, WM-LES, \np$4$ $c_{+}$ NSFR.IR-GLL",\
+# "C4-Roe, WM-LES, \np$4$ $c_{+}$ NSFR.IR-GLL",\
 # "$c_{+}$ C4-Roe OS-1 $\\overline{t}^{*}\\in[300,490]$",\
 # "$c_{+}$ C4 OS-2 $\\overline{t}^{*}\\in[480,670]$",\
 # "$c_{+}$ C4-Roe OS-2 $\\overline{t}^{*}\\in[300,490]$",\
@@ -993,7 +1024,7 @@ labels=[\
 ]
 which_lines_dashed=[]
 # generate_time_averaged_boundary_layer_profile(filenames)
-plot_boundary_layer_profile(filenames,labels,395,which_lines_dashed_=which_lines_dashed)
+plot_boundary_layer_profile(filenames,labels,5200,which_lines_dashed_=which_lines_dashed)
 exit()
 # plot boundary layer profile
 filenames=[\
