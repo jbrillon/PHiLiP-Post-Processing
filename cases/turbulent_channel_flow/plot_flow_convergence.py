@@ -58,7 +58,8 @@ def plot_transient(filenames_,labels_,which_lines_dashed_=[],
     plot_wall_shear_stress=True,
     plot_bulk_mass_flow=True,
     starting_data_index_for_plot=0,
-    friction_velocity_based_reynolds_number=[]
+    friction_velocity_based_reynolds_number=[],
+    legend_on_input=True
     ):
     # expected_mean_value_for_skin_friction_coefficient = 6.25e-3 # from Lodato's source term paper
     # expected_mean_value_for_skin_friction_coefficient = 0.00347754 # for Re=5200
@@ -79,6 +80,8 @@ def plot_transient(filenames_,labels_,which_lines_dashed_=[],
         # compute the bulk mass flow
         bulk_mass_flow = bulk_density*bulk_velocity
 
+        expected_bulk_mass_flow = bulk_mass_flow[0]#1.0
+
         expected_mean_value_for_wall_shear_stress = 0.00161876 # for Re=5200
         expected_mean_value_for_skin_friction_coefficient = 0.00347754 # for Re=5200
         if(friction_velocity_based_reynolds_number[i]==5200):
@@ -87,7 +90,7 @@ def plot_transient(filenames_,labels_,which_lines_dashed_=[],
             expected_mean_value_for_skin_friction_coefficient = 2.0*expected_mean_value_for_wall_shear_stress
         elif(friction_velocity_based_reynolds_number[i]==395):
             expected_mean_value_for_wall_shear_stress = 0.003380747 # for Re=395
-            expected_mean_value_for_skin_friction_coefficient = 2.0*expected_mean_value_for_wall_shear_stress
+            expected_mean_value_for_skin_friction_coefficient = 2.0*expected_mean_value_for_wall_shear_stress/expected_bulk_mass_flow
 
         if(filename=="/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input/turbulent_quantities_to_fix.txt"):
             time[430341:] -= 194.0
@@ -96,31 +99,39 @@ def plot_transient(filenames_,labels_,which_lines_dashed_=[],
         labels_store.append(labels_[i])
         wall_shear_stress_store.append(wall_shear_stress[starting_data_index_for_plot:]/expected_mean_value_for_wall_shear_stress)
         skin_friction_coefficient_store.append(skin_friction_coefficient[starting_data_index_for_plot:]/expected_mean_value_for_skin_friction_coefficient)
-        bulk_mass_flow_store.append(bulk_mass_flow[starting_data_index_for_plot:]/bulk_mass_flow[0])
-
+        bulk_mass_flow_store.append(bulk_mass_flow[starting_data_index_for_plot:]/expected_bulk_mass_flow)#bulk_mass_flow[0])
+        print(labels_[i])
+        print(" - Initial MFR: %1.8f" % bulk_mass_flow[0])
+        print(" - Final MFR: %1.8f" % bulk_mass_flow[-1])
+    print("---------------------------------------------")
     # plot the quantities
     if(plot_skin_friction_coefficient):
         plotfxn(time_store,skin_friction_coefficient_store,\
-            "Nondimensional Time, $t^{*}$","Normalized Skin Friction Coefficient, $C_{f}(t^{*})/C^{expected}_{f}$","skin_friction_coefficient",\
+            "Nondimensional Time, $t^{*}$","Normalized Skin Friction Coefficient, $C_{f}(t^{*})/C^{\\mathrm{expected}}_{f}$","skin_friction_coefficient",\
             labels_store,which_lines_dashed_,
-            # legend_on=False
-            # xlimits=[0,460]
+            legend_on=legend_on_input,
+            xlimits=[0,500],
+            ylimits=[1.0,1.18]
             )
         # plotfxn(time_store,skin_friction_coefficient_store/expected_mean_value_for_skin_friction_coefficient,\
         #     "$t$","$C_{f}(t)$/$C_{f}^{expected}$","skin_friction_coefficient",\
         #     labels_store,which_lines_dashed_)
     if(plot_wall_shear_stress):
         plotfxn(time_store,wall_shear_stress_store,\
-            "Nondimensional Time, $t^{*}$","Normalized Nondim. Wall Shear Stress, $\\tau_{w}/\\tau^{expected}_{w}$","wall_shear_stress",\
+            "Nondimensional Time, $t^{*}$","Normalized Wall Shear Stress, $\\tau_{w}/\\tau^{\\mathrm{expected}}_{w}$","wall_shear_stress",\
             labels_store,which_lines_dashed_,
-            # legend_on=False
+            legend_on=legend_on_input,
+            xlimits=[0,500],
+            ylimits=[0.975,1.155]
             )
     if(plot_bulk_mass_flow):
         plotfxn(time_store,bulk_mass_flow_store,\
-            "Nondimensional Time, $t^{*}$","Normalized Bulk Mass Flow Rate, $\\rho_{b}U_{b}/(\\rho_{b}U_{b})_{0}$","bulk_mass_flow",\
+            "Nondimensional Time, $t^{*}$","Normalized Bulk Mass Flow Rate, $\\rho_{b}U_{b}/(\\rho_{b}U_{b})^{\\mathrm{expected}}$","bulk_mass_flow",\
             labels_store,
             which_lines_dashed_,log_axes="y",
-            # legend_on=False
+            legend_on=legend_on_input,
+            xlimits=[0,500],
+            ylimits=[0.986,1.0]
             )
     return
 #-----------------------------------------------------
@@ -858,6 +869,35 @@ labels=[\
 # uncomment for the old results
 # plot_transient(filenames,labels,which_lines_dashed=[2,3])
 
+#==================================================================
+# cPlus RUNS
+#==================================================================
+filenames=[\
+# filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/turbulent_quantities.txt",\
+filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization/turbulent_quantities.txt",\
+# filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input/turbulent_quantities.txt",\
+"/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input/turbulent_quantities_to_fix.txt",\
+# filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input_from_t0/turbulent_quantities.txt",\
+filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR-Roe_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input_from_t0/turbulent_quantities.txt",\
+]
+labels=[\
+# "p4 $c_{DG}$ NSFR.IR.GLL-WMLES\n $(\\Delta x^{+},\\Delta y^{+},\\Delta z^{+})=(400,250,400)$",\
+# "$Re_{\\tau}\\approx5200$",\
+# "$Re_{\\tau}\\approx395$",\
+# "$Re_{\\tau}\\approx395$ 2nd el. input",\
+# "C1, WM-LES, p$4$ $c_{+}$ NSFR.IR-GLL",\
+"C1","C4","C4-Roe",\
+]
+which_lines_dashed=[]
+# friction_velocity_based_reynolds_number=[5200,395]
+friction_velocity_based_reynolds_number=[395,395,395,395]
+# plot_transient(filenames,labels,which_lines_dashed_=which_lines_dashed,starting_data_index_for_plot=0,friction_velocity_based_reynolds_number=friction_velocity_based_reynolds_number)
+# exit()
+#==================================================================
+
+#==================================================================
+#               SOLO cPlus C1 RUN
+#==================================================================
 filenames=[\
 # filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re5200_p4_20x10x10_turbulent_initialization/turbulent_quantities.txt",\
 filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization/turbulent_quantities.txt",\
@@ -873,6 +913,32 @@ labels=[\
 # "$Re_{\\tau}\\approx395$ 2nd el. input",\
 "C1, WM-LES, p$4$ $c_{+}$ NSFR.IR-GLL",\
 #"C1","C4","C4-Roe",\
+]
+which_lines_dashed=[]
+# friction_velocity_based_reynolds_number=[5200,395]
+friction_velocity_based_reynolds_number=[395,395,395,395]
+plot_transient(filenames,labels,
+    which_lines_dashed_=which_lines_dashed,
+    starting_data_index_for_plot=0,friction_velocity_based_reynolds_number=friction_velocity_based_reynolds_number,
+    legend_on_input=False)
+exit()
+#==================================================================
+
+#==================================================================
+# cDG RUNS
+#==================================================================
+filenames=[\
+"/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_not_cPlus/turbulent_quantities.txt",\
+"/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_not_cPlus_second_element_input/turbulent_quantities.txt",\
+"/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR-Roe_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_not_cPlus_second_element_input/turbulent_quantities.txt",\
+]
+labels=[\
+# "p4 $c_{DG}$ NSFR.IR.GLL-WMLES\n $(\\Delta x^{+},\\Delta y^{+},\\Delta z^{+})=(400,250,400)$",\
+# "$Re_{\\tau}\\approx5200$",\
+# "$Re_{\\tau}\\approx395$",\
+# "$Re_{\\tau}\\approx395$ 2nd el. input",\
+# "C1, WM-LES, p$4$ $c_{+}$ NSFR.IR-GLL",\
+"C1","C4","C4-Roe",\
 ]
 which_lines_dashed=[]
 # friction_velocity_based_reynolds_number=[5200,395]
