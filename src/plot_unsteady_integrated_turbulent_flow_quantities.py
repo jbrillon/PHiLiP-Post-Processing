@@ -255,7 +255,7 @@ def plot_periodic_turbulence(
         strain_rate_based_dissipation_store.append(strain_rate_based_dissipation)
         deviatoric_strain_rate_based_dissipation_store.append(deviatoric_strain_rate_based_dissipation)
         eps_K_minus_eps_S_plus_eps_p_store.append(dissipation - strain_rate_based_dissipation + pressure_dilatation_based_dissipation)
-        eps_K_minus_eps_Sd_plus_eps_p_store.append(np.abs(dissipation - deviatoric_strain_rate_based_dissipation - pressure_dilatation_based_dissipation))
+        eps_K_minus_eps_Sd_plus_eps_p_store.append(dissipation - deviatoric_strain_rate_based_dissipation - pressure_dilatation_based_dissipation)
         eps_K_minus_eps_Sd_store.append(dissipation - deviatoric_strain_rate_based_dissipation)
         eps_K_minus_eps_S_store.append(dissipation - strain_rate_based_dissipation)
         eps_S_minus_eps_Sd_store.append(strain_rate_based_dissipation - deviatoric_strain_rate_based_dissipation)
@@ -763,7 +763,8 @@ def plot_periodic_turbulence(
 
         qp.plotfxn(xdata=time_store,
                 ydata=eps_K_minus_eps_Sd_plus_eps_p_store,
-                ylabel='Absolute Error in KE Budget, $\\left|\\varepsilon^{*}+\\varepsilon^{*}_{P}-\\varepsilon_{v}\\right|$',
+                # ylabel='Truncation Error in KE Budget, $\\left|\\varepsilon^{*}+\\varepsilon^{*}_{P}-\\varepsilon_{v}\\right|$',
+                ylabel='Numerical Error in KE Budget, $\\epsilon=\\varepsilon^{*}+\\varepsilon^{*}_{P}-\\varepsilon_{v}$',
                 xlabel='$t^{*}$',
                 figure_filename=figure_subdirectory+'error_in_KE_budget_vs_time'+figure_filename_postfix,
                 title_label=figure_title,
@@ -772,7 +773,7 @@ def plot_periodic_turbulence(
                 black_lines=False,
                 xlimits=[0,tmax],
                 # ylimits=[-1e-1,1e-1],
-                log_axes="y",
+                # log_axes="y",
                 which_lines_black=which_lines_black_input,
                 which_lines_dashed=which_lines_dashed_input,
                 legend_on=legend_on_input,
