@@ -364,6 +364,7 @@ def plot_periodic_turbulence(
                 legend_location="upper left",
                 plot_zoomed_section=plot_zoomed_section_dissipation_rate,
                 x_limits_zoom=[8.0, 10.5],y_limits_zoom=[0.010, 0.0135],
+                # x_limits_zoom=[4.5, 6.5],y_limits_zoom=[0.003, 0.007],
                 zoom_box_origin_and_extent=zoom_box_origin_and_extent_input)
 
     # numerical dissipation plot - can do a max of 4 different results (3 curves per result) -- need a custom legend for this -- can hack the indexing
@@ -564,6 +565,10 @@ def plot_periodic_turbulence(
         if(lnstl_input!=[]):
             lnstl_input_store.pop(0)
 
+    y_limits_num_viscosity=[]
+    if(dofs_for_zoomed_section==96):
+        y_limits_num_viscosity=[0.9, 1.6]
+
     if(plot_numerical_viscosity):
         qp.plotfxn(xdata=time_store,
                 ydata=numerical_viscosity_store,
@@ -576,7 +581,7 @@ def plot_periodic_turbulence(
                 legend_labels_tex=labels_store,
                 black_lines=False,
                 xlimits=[0,tmax],
-                # ylimits=[0.0,0.018],
+                ylimits=y_limits_num_viscosity,
                 log_axes=log_axes_input,
                 which_lines_black=which_lines_black_input,
                 which_lines_dashed=which_lines_dashed_input,
