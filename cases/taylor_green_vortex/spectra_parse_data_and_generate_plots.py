@@ -5,6 +5,9 @@ import numpy as np # NumPy: contains basic numerical routines
 import os;CURRENT_PATH = os.path.split(os.path.realpath(__file__))[0]+"/";
 import sys
 # load tools
+sys.path.append(CURRENT_PATH+"../../src");
+from plot_unsteady_integrated_turbulent_flow_quantities import get_dissipation_discrete
+# load tools
 sys.path.append(CURRENT_PATH+"../../src/tools");
 from assemble_mpi_flow_field_files_and_reorder import assemble_mpi_flow_field_files_and_reorder
 from generate_spectra_files import generate_spectra_file_from_flow_field_file
@@ -380,6 +383,13 @@ def get_total_turbulent_kinetic_energy_from_spectra(spectra):
     total_turbulent_kinetic_energy = integrate.trapezoid(turbulent_kinetic_energy,x=wavenumbers)
     return total_turbulent_kinetic_energy
 #-----------------------------------------------------
+def get_total_dissipation_rate_from_spectra(spectra,reynolds_number):
+    wavenumbers = spectra[:,0]
+    turbulent_kinetic_energy = spectra[:,1]
+    dissipation_rate_components = wavenumbers*wavenumbers*turbulent_kinetic_energy
+    total_dissipation_rate = 2.0*np.sum(dissipation_rate_components)/reynolds_number # non-dimensional form
+    return total_dissipation_rate
+#-----------------------------------------------------
 def batch_compute_resolved_turbulent_kinetic_energy(
     paths_,
     labels_,
@@ -399,7 +409,7 @@ def batch_compute_resolved_turbulent_kinetic_energy(
     unsteady_filename="turbulent_quantities.txt"
     spectra_time = 9.0
     
-    print("Label \t\t\t\t| P, Nel, Total DOFs, Effective-DOFs\t | Total KE from Spectra\t| Inst. Total KE\t| Rel. Percentage")
+    print("Label \t\t\t| P, Nel, Total DOFs, Eff.-DOFs\t | Total KE from Spectra\t| Inst. Total KE\t| Rel. Percentage")
     print("---------------------------------------------------------------------------------")
     # Loop through all the paths
     for i,path in enumerate(paths_):
@@ -428,7 +438,62 @@ def batch_compute_resolved_turbulent_kinetic_energy(
         percentage_of_tke_captured = 100.0*np.abs(total_tke-reference_total_tke)/reference_total_tke
         total_nDOFs_per_dim = (poly_degree+1)*number_of_elements_per_direction
         effective_nDOFs_per_dim = (poly_degree)*number_of_elements_per_direction
-        print("%s \t| %i, %i, %i^3, %i^3 \t\t| %.6e\t| %.6e\t\t| %3.6f %%" % (labels_[i], poly_degree, number_of_elements_per_direction, total_nDOFs_per_dim, effective_nDOFs_per_dim, total_tke, reference_total_tke, percentage_of_tke_captured))
+        print("%s \t| %i, %i, %i^3, %i^3 \t\t| %.6e\t\t\t| %.6e\t\t| %3.6f %%" % (labels_[i], poly_degree, number_of_elements_per_direction, total_nDOFs_per_dim, effective_nDOFs_per_dim, total_tke, reference_total_tke, percentage_of_tke_captured))
+        # labels_[i]
+    print("---------------------------------------------------------------------------------")
+    return
+#-----------------------------------------------------
+def batch_compute_resolved_dissipation_rate(
+    paths_,
+    labels_,
+    list_of_poly_degree_,
+    list_of_number_of_elements_per_direction_,
+    reynolds_number_=1600.0):
+    
+    #----------------------------------------------------------------
+    # Reference result
+    #----------------------------------------------------------------
+    # "DNS ($256^{3}$p$7$)"
+    filepath_to_reference_result=CURRENT_PATH+"data/brillon/flow_field_files/velocity_vorticity_p7_dofs256-1_reordered_spectra_oversampled_nquad16.dat"
+    reference_spectra = np.loadtxt(filepath_to_reference_result)
+    
+    # Parameters:
+    truncate_spectra_at_effective_DOFs=True
+    filename="flow_field_files/velocity_vorticity-1_reordered_spectra_no_smoothing.dat"
+    unsteady_filename="turbulent_quantities.txt"
+    spectra_time = 9.0
+    
+    print("Label \t\t\t| P, Nel, Total DOFs, Eff.-DOFs\t | Total DR from Spectra\t| Inst. Total DR\t| Rel. Percentage")
+    print("---------------------------------------------------------------------------------")
+    # Loop through all the paths
+    for i,path in enumerate(paths_):
+        spectra_ = np.loadtxt(filesystem+path+filename)
+        poly_degree = list_of_poly_degree_[i]
+        number_of_elements_per_direction = list_of_number_of_elements_per_direction_[i]
+        cutoff_wavenumber = get_cutoff_wavenumber(poly_degree,number_of_elements_per_direction,truncate_spectra_at_effective_DOFs) # True for effective DOFs
+        spectra = get_truncated_spectra_from_cutoff_wavenumber_and_spectra(spectra_, cutoff_wavenumber)
+        total_DR = get_total_dissipation_rate_from_spectra(spectra,reynolds_number_)
+        # load the KE from the unsteady quantity
+        if("spectra_fix/" in path):
+            path = path.replace("spectra_fix/","")
+        elif(path=="NarvalFiles/2023_JCP/verification_tke_fix/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024_2refinements/"):
+            print("here")
+            path="NarvalFiles/2023_JCP/filtered_dns_viscous_tgv/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024/"
+
+        time, kinetic_energy = np.loadtxt(filesystem+path+unsteady_filename,usecols=(0,1),skiprows=1,dtype=np.float64,unpack=True) # 8.5737827439557435e-02
+        dissipation_rate = get_dissipation_discrete(time, kinetic_energy)
+        # get instantaneous physical dissipation_rate (DR)
+        idx_of_DR_at_spectra_time = (np.abs(time - spectra_time)).argmin()
+        inst_total_DR = dissipation_rate[idx_of_DR_at_spectra_time]
+        # spectra = 1.0*spectra_ # uncomment for no truncation
+        truncated_reference_spectra = get_truncated_spectra_from_cutoff_wavenumber_and_spectra(reference_spectra, cutoff_wavenumber)
+        # reference_total_DR = get_total_dissipation_rate_from_spectra(truncated_reference_spectra,reynolds_number_)
+        reference_total_DR = 1.0*inst_total_DR
+        # percentage_of_tke_captured = 100.0*total_tke/reference_total_tke
+        percentage_of_DR_captured = 100.0*np.abs(total_DR-reference_total_DR)/reference_total_DR
+        total_nDOFs_per_dim = (poly_degree+1)*number_of_elements_per_direction
+        effective_nDOFs_per_dim = (poly_degree)*number_of_elements_per_direction
+        print("%s \t| %i, %i, %i^3, %i^3 \t\t| %.6e\t\t\t| %.6e\t\t| %3.6f %%" % (labels_[i], poly_degree, number_of_elements_per_direction, total_nDOFs_per_dim, effective_nDOFs_per_dim, total_DR, reference_total_DR, percentage_of_DR_captured))
         # labels_[i]
     print("---------------------------------------------------------------------------------")
     return
@@ -455,7 +520,8 @@ if(True or regenerate_all_plots):
     "NarvalFiles/2023_JCP/spectra_fix/high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs064_p7_procs512/",\
     "NarvalFiles/2023_JCP/spectra_fix/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs048_p5_procs64/",\
     "NarvalFiles/2023_JCP/spectra_fix/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs024_p5_procs16/",\
-    # "NarvalFiles/2023_JCP/verification_tke_fix/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024_2refinements/",\
+    "NarvalFiles/2023_JCP/verification_tke_fix/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024_2refinements/",\
+    "NarvalFiles/2023_JCP/spectra_fix/verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p3_procs1024/",\
     ]
     batch_labels = [ \
     "$96^{3}$ DOF, p$5$", \
@@ -466,10 +532,11 @@ if(True or regenerate_all_plots):
     # "$64^{3}$", \
     # "$48^{3}$",\
     # "$24^{3}$",\
-    # "$32^{3}$p$7$",\
+    "$32^{3}$p$7$",\
+    "$64^{3}$p$3$",\
     ]
-    list_of_poly_degree=[5,7,5,5,7]
-    list_of_number_of_elements_per_direction=[16,8,8,4,32]
+    list_of_poly_degree=[5,7,5,5,7,3]
+    list_of_number_of_elements_per_direction=[16,8,8,4,32,64]
     
     batch_plot_spectra("all","cDG_NSFR_convergence",batch_paths,batch_labels,
         solid_and_dashed_lines=False,
@@ -482,6 +549,45 @@ if(True or regenerate_all_plots):
         plot_unresolved_wavenumber_range_as_dashed=True,
         extend_y_max_limit=True)
     batch_compute_resolved_turbulent_kinetic_energy(batch_paths,batch_labels,list_of_poly_degree,list_of_number_of_elements_per_direction)
+    batch_compute_resolved_dissipation_rate(batch_paths,batch_labels,list_of_poly_degree,list_of_number_of_elements_per_direction)
+# =====================================================
+if(True or regenerate_all_plots):
+    batch_paths = [ \
+    "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
+    "NarvalFiles/2023_JCP/high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs064_p7_procs512/",\
+    "NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs048_p5_procs64/",\
+    "NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs024_p5_procs16/",\
+    "NarvalFiles/2023_JCP/filtered_dns_viscous_tgv/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024/",\
+    "NarvalFiles/2023_JCP/verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p3_procs1024/",\
+    ]
+    batch_labels = [ \
+    "$96^{3}$ DOF, p$5$", \
+    "$64^{3}$ DOF, p$7$", \
+    "$48^{3}$ DOF, p$5$",\
+    "$24^{3}$ DOF, p$5$",\
+    # "$96^{3}$", \
+    # "$64^{3}$", \
+    # "$48^{3}$",\
+    # "$24^{3}$",\
+    "$32^{3}$p$7$",\
+    "$64^{3}$p$3$",\
+    ]
+    list_of_poly_degree=[5,7,5,5,7,3]
+    list_of_number_of_elements_per_direction=[16,8,8,4,32,64]
+    
+    batch_plot_spectra("all","cDG_NSFR_convergence_without_oversampling",batch_paths,batch_labels,
+        solid_and_dashed_lines=False,
+        title_off=title_off_input,figure_directory=fig_dir_input,
+        plot_cutoff_wavenumber_asymptote=True,
+        plot_PHiLiP_DNS_result_as_reference=True,
+        plot_filtered_dns=True,
+        list_of_poly_degree_input=list_of_poly_degree,
+        list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction,
+        plot_unresolved_wavenumber_range_as_dashed=True,
+        extend_y_max_limit=True)
+    batch_compute_resolved_turbulent_kinetic_energy(batch_paths,batch_labels,list_of_poly_degree,list_of_number_of_elements_per_direction)
+    batch_compute_resolved_dissipation_rate(batch_paths,batch_labels,list_of_poly_degree,list_of_number_of_elements_per_direction)
+exit()
 # =====================================================
 if(True or regenerate_all_plots):
     batch_paths = [ \
@@ -511,41 +617,6 @@ if(True or regenerate_all_plots):
         which_lines_dashed=[4],
         list_of_poly_degree_input=list_of_poly_degree,
         list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
-
-# =====================================================
-if(True or regenerate_all_plots):
-    batch_paths = [ \
-    "NarvalFiles/2023_JCP/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
-    "NarvalFiles/2023_JCP/high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs064_p7_procs512/",\
-    "NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs048_p5_procs64/",\
-    "NarvalFiles/2023_JCP/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs024_p5_procs16/",\
-    # "NarvalFiles/2023_JCP/filtered_dns_viscous_tgv/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024/",\
-    ]
-    batch_labels = [ \
-    "$96^{3}$ DOF, p$5$", \
-    "$64^{3}$ DOF, p$7$", \
-    "$48^{3}$ DOF, p$5$",\
-    "$24^{3}$ DOF, p$5$",\
-    # "$96^{3}$", \
-    # "$64^{3}$", \
-    # "$48^{3}$",\
-    # "$24^{3}$",\
-    # "$32^{3}$p$7$",\
-    ]
-    list_of_poly_degree=[5,7,5,5,7]
-    list_of_number_of_elements_per_direction=[16,8,8,4,32]
-    
-    batch_plot_spectra("all","cDG_NSFR_convergence_without_oversampling",batch_paths,batch_labels,
-        solid_and_dashed_lines=False,
-        title_off=title_off_input,figure_directory=fig_dir_input,
-        plot_cutoff_wavenumber_asymptote=True,
-        plot_PHiLiP_DNS_result_as_reference=True,
-        plot_filtered_dns=True,
-        list_of_poly_degree_input=list_of_poly_degree,
-        list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction,
-        plot_unresolved_wavenumber_range_as_dashed=True,
-        extend_y_max_limit=True)
-    batch_compute_resolved_turbulent_kinetic_energy(batch_paths,batch_labels,list_of_poly_degree,list_of_number_of_elements_per_direction)
 
 #=====================================================
 # DOFs: ALL | NSFR CONVERGENCE VERSION FOR WCCM
