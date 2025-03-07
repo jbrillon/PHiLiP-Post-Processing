@@ -138,6 +138,45 @@ def reinit_inputs():
 #=====================================================
 #-----------------------------------------------------
 #=====================================================
+# DOF: 96^3 | NSFR Two-Point-Flux
+#-----------------------------------------------------
+if(True):
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
+    date_for_runs="."
+    figure_subdirectory="2023_JCP"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOF, CFL$=0.10$" # comment to turn off
+    figure_filename_postfix = "96_p5_two_point_flux"
+    legend_inside_input=True
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "two_point_flux/viscous_TGV_ILES_NSFR_cDG_KG_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "two_point_flux/viscous_TGV_ILES_NSFR_cDG_CH_2PF_GL_OI-0_dofs096_p5_procs512",\
+    "two_point_flux/viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GL_OI-0_dofs096_p5_procs512",\
+    ]
+    # labels
+    labels_for_plot=[\
+    "$c_{DG}$ NSFR.IR-GL", \
+    "$c_{DG}$ NSFR.KG-GL", \
+    "$c_{DG}$ NSFR.CH-GL", \
+    "$c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$-GL", \
+    ]
+    black_line_flag_for_plot=[False,False,False,False]
+    dashed_line_flag_for_plot=[False,True,True,True]
+    smoothing_input = [False,False,False,False]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
+        final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12,
+        plot_PHiLiP_DNS_result_as_reference_input=True,
+        plot_zoomed_section_pressure_dilatation=True,
+        plot_zoomed_section_enstrophy=True,
+        dofs_for_zoomed_section=96,
+        clr_input=['tab:blue','tab:red','tab:green','tab:orange','tab:red','tab:green','tab:green'],
+        mrkr_input=['None','None','None','None','None','None','None','None','None'],
+        lnstl_input=['solid','dashdot','dashed','dotted','dashdot','solid','dashed'],
+        )
+exit()
+#=====================================================
 # DOF: 96^3 | Advanced SGS Models on GL flux nodes (no filter width modifications)
 #-----------------------------------------------------
 if(True):
@@ -179,7 +218,6 @@ if(True):
         plot_zoomed_section_enstrophy=False,
         dofs_for_zoomed_section=96,
         plot_zoomed_section_pressure_dilatation=False)
-exit()
 #=====================================================
 # DOF: 96^3 | LRNC Advanced SGS Models on GL flux nodes (no filter width modifications)
 #-----------------------------------------------------
@@ -310,40 +348,6 @@ if(True):
         plot_zoomed_section_dissipation_rate=True,
         plot_zoomed_section_numerical_dissipation_components=True,
         plot_zoomed_section_enstrophy=True)
-#=====================================================
-# DOF: 96^3 | NSFR Two-Point-Flux
-#-----------------------------------------------------
-if(True):
-    reinit_inputs()
-    data_directory_base=filesystem+"NarvalFiles/2023_JCP/"
-    date_for_runs="."
-    figure_subdirectory="2023_JCP"
-    # figure_title = "TGV at Re$_{\\infty}=1600$, P$5$, $96^{3}$ DOF, CFL$=0.10$" # comment to turn off
-    figure_filename_postfix = "96_p5_two_point_flux"
-    legend_inside_input=True
-    #-----------------------------------------------------
-    subdirectories_for_plot=[\
-    "flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512",\
-    "two_point_flux/viscous_TGV_ILES_NSFR_cDG_KG_2PF_GL_OI-0_dofs096_p5_procs512",\
-    "two_point_flux/viscous_TGV_ILES_NSFR_cDG_CH_2PF_GL_OI-0_dofs096_p5_procs512",\
-    "two_point_flux/viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GL_OI-0_dofs096_p5_procs512",\
-    ]
-    # labels
-    labels_for_plot=[\
-    "$c_{DG}$ NSFR.IR-GL", \
-    "$c_{DG}$ NSFR.KG-GL", \
-    "$c_{DG}$ NSFR.CH-GL", \
-    "$c_{DG}$ NSFR.CH$_{\\mathrm{RA}}$-GL", \
-    ]
-    black_line_flag_for_plot=[False,False,False,False]
-    dashed_line_flag_for_plot=[False,True,True,True]
-    smoothing_input = [False,False,False,False]
-    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
-        final_time_for_plot=20.0,plot_filtered_dns_input=True,legend_fontSize_input=12,
-        plot_PHiLiP_DNS_result_as_reference_input=True,
-        plot_zoomed_section_pressure_dilatation=True,
-        dofs_for_zoomed_section=96
-        )
 #=====================================================
 # DOF: 96^3 | Correction Parameter Accuracy
 #-----------------------------------------------------
