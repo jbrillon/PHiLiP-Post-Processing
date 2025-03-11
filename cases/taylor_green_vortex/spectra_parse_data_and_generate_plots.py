@@ -35,11 +35,37 @@ elif platform == "darwin":
 # Helper functions
 #=====================================================
 #-----------------------------------------------------
+def filter_function(wavenumber,grid_size):
+    # Citation: Phys. Fluids 19, 055110 (2007); doi: 10.1063/1.2728935
+    # -- See equation 6
+    filter_function_value = 1.0 - (np.sin(wavenumber*grid_size/2.0))**2.0
+    return filter_function_value
+#-----------------------------------------------------
+def compute_filtered_DNS_spectra(poly_degree,number_of_elements_per_direction):
+    # Citation: Phys. Fluids 19, 055110 (2007); doi: 10.1063/1.2728935
+    # -- See equation 6
+    # Compute LES parameters
+    cutoff_wavenumber = get_cutoff_wavenumber(poly_degree,number_of_elements_per_direction,True)
+    grid_size = np.pi/cutoff_wavenumber
+    # Load DNS spectra
+    filepath_to_reference_result=CURRENT_PATH+"data/brillon/flow_field_files/velocity_vorticity_p7_dofs256-1_reordered_spectra_oversampled_nquad16.dat"
+    spectra = np.loadtxt(filepath_to_reference_result)
+    # Input is DNS spectra, other parameters are for the LES resolution
+    num_data_points = np.shape(spectra)[0]
+    filtered_spectra = np.zeros((num_data_points,2))
+    for i in range(0,num_data_points):
+        wavenumber = spectra[i,0]
+        filtered_spectra[i,0] = spectra[i,0]
+        filtered_spectra[i,1] = filter_function(wavenumber,grid_size)*spectra[i,1]
+    truncated_filtered_spectra = get_truncated_spectra_from_cutoff_wavenumber_and_spectra(filtered_spectra, cutoff_wavenumber)
+    np.savetxt("filtered_dns_96p5_G1.txt",truncated_filtered_spectra)
+    return 
+#-----------------------------------------------------
 def get_grid_cutoff_wavenumber(number_of_elements_per_direction):
     grid_cutoff_wavenumber = 0.5*number_of_elements_per_direction
     return grid_cutoff_wavenumber
 #-----------------------------------------------------
-def get_cutoff_wavenumber(poly_degree,number_of_elements_per_direction,truncate_spectra_at_effective_DOFs):
+def get_cutoff_wavenumber(poly_degree,number_of_elements_per_direction,truncate_spectra_at_effective_DOFs=True):
     nDOF = (poly_degree+1)*number_of_elements_per_direction
     effective_nDOF = (poly_degree)*number_of_elements_per_direction
     cutoff_wavenumber = 0.5*effective_nDOF
@@ -275,16 +301,43 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
         i_curve += 1
     if(plot_filtered_dns):
         filepath_to_reference_result=CURRENT_PATH+"data/brillon/flow_field_files/velocity_vorticity_p7_dofs256_projected_to_p2_dofs096-1_reordered_spectra_oversampled_nquad12.dat"
+        # filepath_to_reference_result=CURRENT_PATH+"filtered_dns_96p5_G1.txt" # TESTING
         spectra_ = np.loadtxt(filepath_to_reference_result)
         # spectra = get_truncated_spectra_from_DOFs_information(spectra_, 2, 32)
-        spectra = get_truncated_spectra_from_DOFs_information(spectra_, 5, 16, truncate_spectra_at_effective_DOFs) # to match cut-off for 96P5
-        append_to_plot(spectra[:,0],spectra[:,1],"Projected DNS\n ($96^{3}$ DOF, p$2$)")
+        # spectra = get_truncated_spectra_from_DOFs_information(spectra_, 5, 16, truncate_spectra_at_effective_DOFs) # to match cut-off for 96P5
+        append_to_plot(spectra[:,0],spectra[:,1],"Projected DNS\n ($96^{3}$ DOF, p$2$)") # if using original
+        # append_to_plot(spectra[:,0],spectra[:,1],"Filtered DNS $\\overline{\\mathcal{G}}^{(1)}$")#\n ($96^{3}$ DOF, p$5$)")
         # clr_input_store.insert(i_curve,"k")
         # which_lines_black.append(i_curve)
         # mrkr_input_store.insert(i_curve,'None')
         # lnstl_input_store.insert(i_curve,'dashed') # for dashed filtered DNS result
         # which_lines_dashed.append() 
         i_curve += 1
+        # -----------------------------------
+        if(False):
+            # Show other transfer functions
+            clr_input_store.insert(i_curve,"tab:green")
+            # which_lines_black.append(i_curve)
+            if(solid_and_dashed_lines or dashed_and_solid_lines or markers_on):
+                mrkr_input_store.insert(i_curve,'None')
+            lnstl_input_store.insert(i_curve,'dashed') # for dashed filtered DNS result
+            filepath_to_reference_result=CURRENT_PATH+"filtered_dns_96p5_G2.txt" # TESTING
+            spectra_ = np.loadtxt(filepath_to_reference_result)
+            spectra = get_truncated_spectra_from_DOFs_information(spectra_, 5, 16, truncate_spectra_at_effective_DOFs) # to match cut-off for 96P5
+            append_to_plot(spectra[:,0],spectra[:,1],"Filtered DNS $\\overline{\\mathcal{G}}^{(2)}$")#\n ($96^{3}$ DOF, p$5$)")
+            i_curve += 1
+            # Show other transfer functions
+            clr_input_store.insert(i_curve,"tab:orange")
+            # which_lines_black.append(i_curve)
+            if(solid_and_dashed_lines or dashed_and_solid_lines or markers_on):
+                mrkr_input_store.insert(i_curve,'None')
+            lnstl_input_store.insert(i_curve,'dashed') # for dashed filtered DNS result
+            filepath_to_reference_result=CURRENT_PATH+"filtered_dns_96p5_G3.txt" # TESTING
+            spectra_ = np.loadtxt(filepath_to_reference_result)
+            spectra = get_truncated_spectra_from_DOFs_information(spectra_, 5, 16, truncate_spectra_at_effective_DOFs) # to match cut-off for 96P5
+            append_to_plot(spectra[:,0],spectra[:,1],"Filtered DNS $\\overline{\\mathcal{G}}^{(3)}$")#\n ($96^{3}$ DOF, p$5$)")
+            i_curve += 1
+
         # TO DO MAKE THIS DASHED
     # - results
     # same as above
@@ -512,7 +565,42 @@ fig_dir_input="./figures/2023_JCP/oversampled_spectra"
 # =====================================================
 # =====================================================
 # =====================================================
+# Compute the filtered DNS spectra
+# compute_filtered_DNS_spectra(5,16)
+# =====================================================
+if(True or regenerate_all_plots):
+    batch_paths = [ \
+    "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
+    # "NarvalFiles/2023_JCP/spectra_fix/sgs_model_GL_flux_nodes/viscous_TGV_LES_SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512/",\
+    # "NarvalFiles/2023_JCP/spectra_fix/sgs_model_GL_flux_nodes/viscous_TGV_LES_SI.SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16/",\
+    # "NarvalFiles/2023_JCP/spectra_fix/sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16/",\
+    # "NarvalFiles/2023_JCP/spectra_fix/sgs_model_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SI.SMAG.LRNC_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16/",\
+    # "NarvalFiles/2023_JCP/spectra_fix/sgs_model_GL_flux_nodes/viscous_TGV_LES_DYNAMIC.SMAG.LRNC_CLIPMC-0.01-pL3_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16_corrected/",\
+    ]
+    batch_labels = [ \
+    "$c_{DG}$ NSFR.IR-GL", \
+    # "SM", \
+    # "SI.SM", \
+    # "HPF.SM", \
+    # "HPF.SI.SM", \
+    # "DSM", \
+    ]
+    list_of_poly_degree=[5,5,5,5,5,5]
+    list_of_number_of_elements_per_direction=[16,16,16,16,16,16]
+    # "p5_selected_sgs_models_gl"
+    batch_plot_spectra(96,"p5_filtered_dns",batch_paths,batch_labels,
+        solid_and_dashed_lines=False,
+        title_off=title_off_input,figure_directory=fig_dir_input,
+        plot_cutoff_wavenumber_asymptote=True,
+        plot_PHiLiP_DNS_result_as_reference=True,
+        plot_filtered_dns=True,
+        plot_zoomed_section=True,
+        y_limits_zoom_input=[2.7e-5, 5.0e-4],
+        which_lines_dashed=[],
+        list_of_poly_degree_input=list_of_poly_degree,
+        list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
 
+exit()
 # =====================================================
 if(True or regenerate_all_plots):
     batch_paths = [ \
