@@ -304,17 +304,29 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
         # filepath_to_reference_result=CURRENT_PATH+"filtered_dns_96p5_G1.txt" # TESTING
         spectra_ = np.loadtxt(filepath_to_reference_result)
         # spectra = get_truncated_spectra_from_DOFs_information(spectra_, 2, 32)
-        # spectra = get_truncated_spectra_from_DOFs_information(spectra_, 5, 16, truncate_spectra_at_effective_DOFs) # to match cut-off for 96P5
+        spectra = get_truncated_spectra_from_DOFs_information(spectra_, 5, 16, truncate_spectra_at_effective_DOFs) # to match cut-off for 96P5
         append_to_plot(spectra[:,0],spectra[:,1],"Projected DNS\n ($96^{3}$ DOF, p$2$)") # if using original
         # append_to_plot(spectra[:,0],spectra[:,1],"Filtered DNS $\\overline{\\mathcal{G}}^{(1)}$")#\n ($96^{3}$ DOF, p$5$)")
         # clr_input_store.insert(i_curve,"k")
+        clr_input_store.insert(i_curve,"tab:red")
         # which_lines_black.append(i_curve)
-        # mrkr_input_store.insert(i_curve,'None')
-        # lnstl_input_store.insert(i_curve,'dashed') # for dashed filtered DNS result
+        mrkr_input_store.insert(i_curve,'None')
+        lnstl_input_store.insert(i_curve,'dashed') # for dashed filtered DNS result
         # which_lines_dashed.append() 
         i_curve += 1
         # -----------------------------------
-        if(False):
+        if(True):
+            # Show other transfer functions
+            clr_input_store.insert(i_curve,"tab:purple")
+            # which_lines_black.append(i_curve)
+            if(solid_and_dashed_lines or dashed_and_solid_lines or markers_on):
+                mrkr_input_store.insert(i_curve,'None')
+            lnstl_input_store.insert(i_curve,'dashed') # for dashed filtered DNS result
+            filepath_to_reference_result=CURRENT_PATH+"filtered_dns_96p5_G1.txt" # TESTING
+            spectra_ = np.loadtxt(filepath_to_reference_result)
+            spectra = get_truncated_spectra_from_DOFs_information(spectra_, 5, 16, truncate_spectra_at_effective_DOFs) # to match cut-off for 96P5
+            append_to_plot(spectra[:,0],spectra[:,1],"Filtered DNS $\\overline{\\mathcal{G}}^{(1)}$")#\n ($96^{3}$ DOF, p$5$)")
+            i_curve += 1
             # Show other transfer functions
             clr_input_store.insert(i_curve,"tab:green")
             # which_lines_black.append(i_curve)
@@ -337,6 +349,17 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
             spectra = get_truncated_spectra_from_DOFs_information(spectra_, 5, 16, truncate_spectra_at_effective_DOFs) # to match cut-off for 96P5
             append_to_plot(spectra[:,0],spectra[:,1],"Filtered DNS $\\overline{\\mathcal{G}}^{(3)}$")#\n ($96^{3}$ DOF, p$5$)")
             i_curve += 1
+
+            # hacky fix
+            clr_input_store.insert(i_curve,"tab:blue")
+            # which_lines_black.append(i_curve)
+            mrkr_input_store.insert(i_curve,'None')
+            lnstl_input_store.insert(i_curve,'solid') # for dashed filtered DNS result
+            i_curve += 1
+            clr_input_store.insert(i_curve,"k")
+            # which_lines_black.append(i_curve)
+            mrkr_input_store.insert(i_curve,'None')
+            lnstl_input_store.insert(i_curve,'dotted') # for dashed filtered DNS result
 
         # TO DO MAKE THIS DASHED
     # - results
@@ -578,7 +601,7 @@ if(True or regenerate_all_plots):
     # "NarvalFiles/2023_JCP/spectra_fix/sgs_model_GL_flux_nodes/viscous_TGV_LES_DYNAMIC.SMAG.LRNC_CLIPMC-0.01-pL3_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs16_corrected/",\
     ]
     batch_labels = [ \
-    "$c_{DG}$ NSFR.IR-GL", \
+    "$c_{DG}$ NSFR.IR-GL\n ($96^{3}$ DOF, p$5$)", \
     # "SM", \
     # "SI.SM", \
     # "HPF.SM", \
