@@ -602,6 +602,42 @@ fig_dir_input="./figures/2023_JCP/oversampled_spectra"
 if(True or regenerate_all_plots):
     batch_paths = [ \
     "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
+    "NarvalFiles/2023_JCP/spectra_fix/high_poly_degree_GL_flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs064_p7_procs512/",\
+    "NarvalFiles/2023_JCP/spectra_fix/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs048_p5_procs64/",\
+    "NarvalFiles/2023_JCP/spectra_fix/robustness/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs024_p5_procs16/",\
+    # "NarvalFiles/2023_JCP/verification_tke_fix/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024_2refinements/",\
+    # "NarvalFiles/2023_JCP/spectra_fix/verification/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p3_procs1024/",\
+    ]
+    batch_labels = [ \
+    "$96^{3}$ DOF, p$5$", \
+    "$64^{3}$ DOF, p$7$", \
+    "$48^{3}$ DOF, p$5$",\
+    "$24^{3}$ DOF, p$5$",\
+    # "$96^{3}$", \
+    # "$64^{3}$", \
+    # "$48^{3}$",\
+    # "$24^{3}$",\
+    # "$32^{3}$p$7$",\
+    # "$64^{3}$p$3$",\
+    ]
+    list_of_poly_degree=[5,7,5,5,7,3]
+    list_of_number_of_elements_per_direction=[16,8,8,4,32,64]
+    
+    batch_plot_spectra("all","cDG_NSFR_convergence_overview",batch_paths,batch_labels,
+        solid_and_dashed_lines=False,
+        title_off=title_off_input,figure_directory=fig_dir_input,
+        plot_cutoff_wavenumber_asymptote=True,
+        plot_PHiLiP_DNS_result_as_reference=True,
+        plot_filtered_dns=True,
+        list_of_poly_degree_input=list_of_poly_degree,
+        list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction,
+        plot_unresolved_wavenumber_range_as_dashed=False,
+        extend_y_max_limit=False)
+exit()
+# =====================================================
+if(True or regenerate_all_plots):
+    batch_paths = [ \
+    "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
     "/Volumes/KAUST/NarvalFiles/2023_JCP/spectra_fix/sgs_models_GL_flux_nodes/viscous_TGV_LES_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
     "/Volumes/KAUST/NarvalFiles/2023_JCP/spectra_fix/sgs_models_GL_flux_nodes/viscous_TGV_LES_SI.SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512/",\
     "/Volumes/KAUST/NarvalFiles/2023_JCP/spectra_fix/sgs_models_GL_flux_nodes/viscous_TGV_LES_filtered_pL3_SMAG_MC-0.10_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_CFL-0.1_procs512/",\
@@ -630,7 +666,6 @@ if(True or regenerate_all_plots):
         which_lines_dashed=[],
         list_of_poly_degree_input=list_of_poly_degree,
         list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
-exit()
 # =====================================================
 if(False or regenerate_all_plots):
     batch_paths = [ \
