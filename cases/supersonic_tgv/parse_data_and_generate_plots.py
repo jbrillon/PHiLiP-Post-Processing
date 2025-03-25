@@ -159,7 +159,10 @@ def plot_for_presentation(
         filenames.append("turbulent_quantities.txt")
         #-----------------------------------------------------
         # load file
-        filename = data_directory_base+"/"+subdirectories[i]+"/"+filenames[i]
+        if("/Volumes/KAUST/" in subdirectories[i]):
+            filename = subdirectories[i]+"/"+filenames[i]
+        else:
+            filename = data_directory_base+"/"+subdirectories[i]+"/"+filenames[i]
         if(which_was_ran_with_corrected_quantites!=[] and i in which_was_ran_with_corrected_quantites):
             # time, kinetic_energy, enstrophy, vorticity_based_dissipation, pressure_dilatation_based_dissipation, strain_rate_based_dissipation, deviatoric_strain_rate_based_dissipation, solenoidal_dissipation, dilatational_dissipation, corrected_pressure_dilatation_based_dissipation, corrected_dilatational_dissipation, uncorrected_pressure_dilatation_based_dissipation, uncorrected_dilatational_dissipation = np.loadtxt(filename,skiprows=1,dtype=np.float64,unpack=True)
             time, kinetic_energy, enstrophy, vorticity_based_dissipation, pressure_dilatation_based_dissipation, strain_rate_based_dissipation, deviatoric_strain_rate_based_dissipation, solenoidal_dissipation, dilatational_dissipation = np.loadtxt(filename,skiprows=1,usecols=(0,1,2,3,4,5,6,7,8),dtype=np.float64,unpack=True)
@@ -562,6 +565,44 @@ smooth_dilatational_dissipation_rate_input=[True,True,True,True,True,True,True,T
 #=====================================================
 # All results
 #-----------------------------------------------------
+#-----------------------------------------------------
+# clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+reinit_inputs()
+data_directory_base=filesystem+"NarvalFiles/2024_JCP/"
+date_for_runs="."
+figure_subdirectory="./"
+# figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
+figure_filename_postfix = "_128_p7_time_step_advantage"
+legend_inside_input=True
+plot_reference_result=True
+plot_PHiLiP_DNS_result_as_reference_input=False
+#-----------------------------------------------------
+subdirectories_for_plot=[\
+"supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p7_procs512",\
+"supersonic_viscous_TGV_ILES_NSFR_cHU_Ra_2PF_GLL_OI-0_dofs0128_p7_procs512",\
+"/Volumes/KAUST/NarvalFiles/2024_JCP/time_step_advantage/supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0128_p7_procs512_CFL-0point25",\
+"/Volumes/KAUST/NarvalFiles/2024_JCP/time_step_advantage/supersonic_viscous_TGV_ILES_NSFR_cHU_Ra_2PF_GLL_OI-0_dofs0128_p7_procs512_CFL-0point3",\
+]
+# labels
+labels_for_plot=[\
+"$128^{3}$, $c_{DG}$, CFL$=0.1$",\
+"$128^{3}$, $c_{HU}$, CFL$=0.1$",\
+"$128^{3}$, $c_{DG}$, CFL$=0.25$",\
+"$128^{3}$, $c_{HU}$, CFL$=0.3$",\
+]
+black_line_flag_for_plot=[False,False,False,False,False,False,False,False]
+dashed_line_flag_for_plot=[False,False,False,True,False,True,True]
+which_was_ran_with_corrected_quantites=[1]
+number_of_degrees_of_freedom_input=[]
+compare_with_ref_result_at_same_dof=False
+plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
+    which_was_ran_with_corrected_quantites=which_was_ran_with_corrected_quantites,
+    number_of_degrees_of_freedom=number_of_degrees_of_freedom_input,
+    compare_with_reference_result_at_same_degrees_of_freedom=compare_with_ref_result_at_same_dof,
+    smooth_dilatational_dissipation_rate=smooth_dilatational_dissipation_rate_input,
+    smoothing_parameters_input=get_smoothing_parameters_from_subdirectories(subdirectories_for_plot))
+
+exit()
 if(True):
     #-----------------------------------------------------
     # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
