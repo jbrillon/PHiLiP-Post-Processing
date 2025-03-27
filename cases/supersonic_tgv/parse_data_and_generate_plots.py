@@ -580,15 +580,15 @@ plot_PHiLiP_DNS_result_as_reference_input=False
 subdirectories_for_plot=[\
 "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p7_procs512",\
 "supersonic_viscous_TGV_ILES_NSFR_cHU_Ra_2PF_GLL_OI-0_dofs0128_p7_procs512",\
-"/Volumes/KAUST/NarvalFiles/2024_JCP/time_step_advantage/supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0128_p7_procs512_CFL-0point25",\
-"/Volumes/KAUST/NarvalFiles/2024_JCP/time_step_advantage/supersonic_viscous_TGV_ILES_NSFR_cHU_Ra_2PF_GLL_OI-0_dofs0128_p7_procs512_CFL-0point3",\
+"/Volumes/KAUST/NarvalFiles/2024_JCP/time_step_advantage/supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0128_p7_procs512_CFL-0point2",\
+"/Volumes/KAUST/NarvalFiles/2024_JCP/time_step_advantage/supersonic_viscous_TGV_ILES_NSFR_cHU_Ra_2PF_GLL_OI-0_dofs0128_p7_procs512_CFL-0point25",\
 ]
 # labels
 labels_for_plot=[\
 "$128^{3}$, $c_{DG}$, CFL$=0.1$",\
 "$128^{3}$, $c_{HU}$, CFL$=0.1$",\
-"$128^{3}$, $c_{DG}$, CFL$=0.25$",\
-"$128^{3}$, $c_{HU}$, CFL$=0.3$",\
+"$128^{3}$, $c_{DG}$, CFL$=0.2$",\
+"$128^{3}$, $c_{HU}$, CFL$=0.25$",\
 ]
 black_line_flag_for_plot=[False,False,False,False,False,False,False,False]
 dashed_line_flag_for_plot=[False,False,False,True,False,True,True]

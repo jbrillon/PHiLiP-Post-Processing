@@ -41,6 +41,10 @@ def get_smoothing_parameters_from_subdirectories(subdirectories_for_plot):
             smoothing_parameter=1500
         elif(name=="viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0192_p2_stretched_mesh"):
             smoothing_parameter=1500
+        elif("dofs0384_p5" in name):
+            smoothing_parameter=500
+        elif("dofs0512_p7" in name):
+            smoothing_parameter=700
         else:
             print("ERROR: Invalid subdirectories_for_plot entry for smoothing parameter. Aborting...")
             exit()
@@ -194,6 +198,152 @@ def reinit_inputs():
     plot_PHiLiP_DNS_result_as_reference_input=True # default
 #=====================================================
 #-----------------------------------------------------
+#=====================================================
+# DOFs: 256^3 | All results
+#-----------------------------------------------------
+if(True):
+    #-----------------------------------------------------
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2024_CSME/dipole_wall_collision/"
+    date_for_runs="."
+    figure_subdirectory="2024_CSME"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
+    figure_filename_postfix = "384p5_correction_parameter_time_step_advantage"
+    legend_inside_input=True
+    plot_reference_result=True
+    plot_PHiLiP_DNS_result_as_reference_input=False
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0384_p5",\
+    "/Volumes/KAUST/NarvalFiles/2024_CSME/dipole_wall_collision/time_step_advantage/viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0384_p5_time_step",\
+    # "/Volumes/KAUST/NarvalFiles/2024_CSME/dipole_wall_collision/viscous_DWC_ILES_NSFR_cHU_IR_2PF_GL_OI-0_dofs0384_p5",\
+    "/Volumes/KAUST/NarvalFiles/2024_CSME/dipole_wall_collision/time_step_advantage/viscous_DWC_ILES_NSFR_cHU_IR_2PF_GL_OI-0_dofs0384_p5_time_step",\
+    # "/Volumes/KAUST/NarvalFiles/2024_CSME/dipole_wall_collision/viscous_DWC_ILES_NSFR_cSD_IR_2PF_GL_OI-0_dofs0384_p5",\
+    # "/Volumes/KAUST/NarvalFiles/2024_CSME/dipole_wall_collision/time_step_advantage/viscous_DWC_ILES_NSFR_cSD_IR_2PF_GL_OI-0_dofs0384_p5_time_step",\
+    ]
+    # labels
+    labels_for_plot=[\
+    "$384^2$ DOF, p$5$, $c_{DG}$, CFL$=0.1$",\
+    "$384^2$ DOF, p$5$, $c_{DG}$, CFL$=0.15$",\
+    # "$384^2$ DOF, p$5$, $c_{HU}$, CFL$=0.1$",\
+    "$384^2$ DOF, p$5$, $c_{HU}$, CFL$=0.2$",\
+    # "$384^2$ DOF, p$5$, $c_{SD}$, CFL$=0.1$",\
+    # "$384^2$ DOF, p$5$, $c_{SD}$, CFL$=0.2$",\
+    ]
+    black_line_flag_for_plot=[False,False,False,False,False,False,False,False]
+    dashed_line_flag_for_plot=[False,False,False,False,False,True,True]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
+        final_time_for_plot=1.0,legend_fontSize_input=12,
+        smoothing_parameters_input=get_smoothing_parameters_from_subdirectories(subdirectories_for_plot),
+        zoom_for_only_wall_collision_zone=True,
+        plot_zoomed_section_enstrophy=True,
+        plot_zoomed_section_palinstrophy=True)#smoothing_parameters_input=[400,750,1000]
+exit()
+#=====================================================
+# DOFs: 256^3 | All results
+#-----------------------------------------------------
+if(True):
+    #-----------------------------------------------------
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2024_CSME/dipole_wall_collision/"
+    date_for_runs="."
+    figure_subdirectory="2024_CSME"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
+    figure_filename_postfix = "384p5_correction_parameter"
+    legend_inside_input=True
+    plot_reference_result=True
+    plot_PHiLiP_DNS_result_as_reference_input=False
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    # "viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0192_p2",\
+    "viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0384_p5",\
+    "/Volumes/KAUST/NarvalFiles/2024_CSME/dipole_wall_collision/viscous_DWC_ILES_NSFR_cHU_IR_2PF_GL_OI-0_dofs0384_p5",\
+    "/Volumes/KAUST/NarvalFiles/2024_CSME/dipole_wall_collision/viscous_DWC_ILES_NSFR_cSD_IR_2PF_GL_OI-0_dofs0384_p5",\
+    # "/Volumes/KAUST/NarvalFiles/2024_CSME/dipole_wall_collision/time_step_advantage_study/viscous_DWC_ILES_NSFR_cSD_IR_2PF_GL_OI-0_dofs0512_p7",\ # plot this
+    # "/Volumes/KAUST/NarvalFiles/2024_CSME/dipole_wall_collision/time_step_advantage_study/viscous_DWC_ILES_NSFR_cHU_IR_2PF_GL_OI-0_dofs0512_p7",\ # plot this
+    # "viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0512_p7",\
+    # "viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0192_p2_stretched_mesh",\
+    # "viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs1024_p7",\
+    ]
+    # # labels
+    # labels_for_plot=[\
+    # "$c_{DG}$ NSFR 64p$2$ ($192^2$ DOF)",\
+    # "$c_{DG}$ NSFR 64p$5$ ($384^2$ DOF)",\
+    # "$c_{DG}$ NSFR 64p$7$ ($512^2$ DOF)",\
+    # "$c_{DG}$ NSFR 64p$2$ ($192^2$ DOF),\n Stretched mesh",\
+    # "$c_{DG}$ NSFR 128p$7$ ($1024^2$ DOF)",\
+    # ]
+    # labels
+    labels_for_plot=[\
+    # "$192^2$ DOF, p$2$, uniform mesh",\
+    "$384^2$ DOF, p$5$, $c_{DG}$",\
+    "$384^2$ DOF, p$5$, $c_{HU}$",\
+    "$384^2$ DOF, p$5$, $c_{SD}$",\
+    # "$512^2$ DOF, p$7$, uniform mesh",\
+    # "$192^2$ DOF, p$2$, stretched mesh",\
+    # "$1024^2$ DOF, p$7$, uniform mesh",\
+    ]
+    black_line_flag_for_plot=[False,False,False,False,False,False,False,False]
+    dashed_line_flag_for_plot=[False,False,False,False,False,True,True]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
+        final_time_for_plot=1.0,legend_fontSize_input=12,
+        smoothing_parameters_input=get_smoothing_parameters_from_subdirectories(subdirectories_for_plot),
+        zoom_for_only_wall_collision_zone=True,
+        plot_zoomed_section_enstrophy=True,
+        plot_zoomed_section_palinstrophy=True)#smoothing_parameters_input=[400,750,1000]
+
+#=====================================================
+# DOFs: 256^3 | All results
+#-----------------------------------------------------
+if(True):
+    #-----------------------------------------------------
+    # clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+    reinit_inputs()
+    data_directory_base=filesystem+"NarvalFiles/2024_CSME/dipole_wall_collision/"
+    date_for_runs="."
+    figure_subdirectory="2024_CSME"
+    # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
+    figure_filename_postfix = "512p7_correction_parameter"
+    legend_inside_input=True
+    plot_reference_result=True
+    plot_PHiLiP_DNS_result_as_reference_input=False
+    #-----------------------------------------------------
+    subdirectories_for_plot=[\
+    "viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0512_p7",\
+    "/Volumes/KAUST/NarvalFiles/2024_CSME/dipole_wall_collision/viscous_DWC_ILES_NSFR_cSD_IR_2PF_GL_OI-0_dofs0512_p7",\
+    "/Volumes/KAUST/NarvalFiles/2024_CSME/dipole_wall_collision/viscous_DWC_ILES_NSFR_cHU_IR_2PF_GL_OI-0_dofs0512_p7",\
+    # "viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0192_p2_stretched_mesh",\
+    # "viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs1024_p7",\
+    ]
+    # # labels
+    # labels_for_plot=[\
+    # "$c_{DG}$ NSFR 64p$2$ ($192^2$ DOF)",\
+    # "$c_{DG}$ NSFR 64p$5$ ($384^2$ DOF)",\
+    # "$c_{DG}$ NSFR 64p$7$ ($512^2$ DOF)",\
+    # "$c_{DG}$ NSFR 64p$2$ ($192^2$ DOF),\n Stretched mesh",\
+    # "$c_{DG}$ NSFR 128p$7$ ($1024^2$ DOF)",\
+    # ]
+    # labels
+    labels_for_plot=[\
+    "$512^2$ DOF, p$7$, $c_{DG}$",\
+    "$512^2$ DOF, p$7$, $c_{HU}$",\
+    "$512^2$ DOF, p$7$, $c_{SD}$",\
+    # "$512^2$ DOF, p$7$, uniform mesh",\
+    # "$192^2$ DOF, p$2$, stretched mesh",\
+    # "$1024^2$ DOF, p$7$, uniform mesh",\
+    ]
+    black_line_flag_for_plot=[False,False,False,False,False,False,False,False]
+    dashed_line_flag_for_plot=[False,False,False,False,False,True,True]
+    plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
+        final_time_for_plot=1.0,legend_fontSize_input=12,
+        smoothing_parameters_input=get_smoothing_parameters_from_subdirectories(subdirectories_for_plot),
+        zoom_for_only_wall_collision_zone=True,
+        plot_zoomed_section_enstrophy=True,
+        plot_zoomed_section_palinstrophy=True)#smoothing_parameters_input=[400,750,1000]
+
+exit()
 
 #=====================================================
 # DOFs: 256^3 | All results
