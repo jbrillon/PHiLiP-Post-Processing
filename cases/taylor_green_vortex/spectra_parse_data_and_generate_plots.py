@@ -297,9 +297,13 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
     # reference result
     i_curve=0
     if(plot_PHiLiP_DNS_result_as_reference):
-        filepath_to_reference_result=CURRENT_PATH+"data/brillon/flow_field_files/velocity_vorticity_p7_dofs256-1_reordered_spectra_oversampled_nquad16.dat"
-        spectra = np.loadtxt(filepath_to_reference_result)
-        append_to_plot(spectra[:,0],spectra[:,1],"DNS ($256^{3}$ DOF, p$7$)")
+        # filepath_to_reference_result=CURRENT_PATH+"data/brillon/flow_field_files/velocity_vorticity_p7_dofs256-1_reordered_spectra_oversampled_nquad16.dat"
+        # spectra = np.loadtxt(filepath_to_reference_result)
+        # append_to_plot(spectra[:,0],spectra[:,1],"DNS ($256^{3}$ DOF, p$7$)")
+        # i_curve += 1
+        filepath_to_reference_result="/Users/Julien/Downloads/chapelier2016DNS.csv"
+        spectra = np.loadtxt(filepath_to_reference_result,skiprows=1,delimiter=',')
+        append_to_plot(spectra[:,0],spectra[:,1],"DNS ($384^{3}$ DOF)")
         i_curve += 1
     elif(plot_reference_result):
         # Note: This is the 512^3 spectral reference result in their paper
@@ -309,10 +313,16 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
     if(plot_filtered_dns):
         filepath_to_reference_result=CURRENT_PATH+"data/brillon/flow_field_files/velocity_vorticity_p7_dofs256_projected_to_p2_dofs096-1_reordered_spectra_oversampled_nquad12.dat"
         # filepath_to_reference_result=CURRENT_PATH+"filtered_dns_96p5_G3_LES_filter_width.txt" # TESTING
-        spectra_ = np.loadtxt(filepath_to_reference_result)
+        # spectra_ = np.loadtxt(filepath_to_reference_result)
         # spectra = get_truncated_spectra_from_DOFs_information(spectra_, 2, 32)
-        spectra = get_truncated_spectra_from_DOFs_information(spectra_, 5, 16, truncate_spectra_at_effective_DOFs) # to match cut-off for 96P5
-        append_to_plot(spectra[:,0],spectra[:,1],"Projected DNS\n ($96^{3}$ DOF, p$2$)") # if using original
+        # spectra = get_truncated_spectra_from_DOFs_information(spectra_, 5, 16, truncate_spectra_at_effective_DOFs) # to match cut-off for 96P5
+        # append_to_plot(spectra[:,0],spectra[:,1],"Projected DNS\n ($96^{3}$ DOF, p$2$)") # if using original
+
+        filepath_to_reference_result="/Users/Julien/Downloads/chapelier2016filteredDNS.csv"
+        spectra_ = np.loadtxt(filepath_to_reference_result,skiprows=1,delimiter=',')
+        append_to_plot(spectra_[:,0],spectra_[:,1],"Filtered DNS ($72^{3}$ DOF)")
+        i_curve += 1
+
         # append_to_plot(spectra[:,0],spectra[:,1],"Filtered DNS $\\overline{\\mathcal{G}}^{(3)}_{\\mathrm{LES}}$\n ($96^{3}$ DOF, p$5$)")
         # clr_input_store.insert(i_curve,"k")
         # clr_input_store.insert(i_curve,"tab:red")
@@ -598,6 +608,25 @@ fig_dir_input="./figures/2023_JCP/oversampled_spectra"
 # Compute the filtered DNS spectra
 # compute_filtered_DNS_spectra(5,16,use_LES_filter_width=True)
 # exit()
+# =====================================================
+if(True or regenerate_all_plots):
+    batch_paths = [ ]
+    batch_labels = [ ]
+    list_of_poly_degree=[5,5,5,5,5,5]
+    list_of_number_of_elements_per_direction=[16,16,16,16,16,16]
+    # "p5_selected_sgs_models_gl"
+    batch_plot_spectra(96,"chapelier_check",batch_paths,batch_labels,
+        solid_and_dashed_lines=False,
+        title_off=title_off_input,figure_directory=fig_dir_input,
+        plot_cutoff_wavenumber_asymptote=True,
+        plot_PHiLiP_DNS_result_as_reference=True,
+        plot_filtered_dns=True,
+        # plot_zoomed_section=True,
+        # y_limits_zoom_input=[1.9e-5, 4.5e-4],
+        which_lines_dashed=[],
+        list_of_poly_degree_input=list_of_poly_degree,
+        list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction)
+exit()
 # =====================================================
 if(True or regenerate_all_plots):
     batch_paths = [ \
