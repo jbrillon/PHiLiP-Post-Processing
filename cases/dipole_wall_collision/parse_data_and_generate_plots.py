@@ -215,19 +215,19 @@ if(True):
     plot_PHiLiP_DNS_result_as_reference_input=False
     #-----------------------------------------------------
     subdirectories_for_plot=[\
-    "viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0384_p5",\
+    # "viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0384_p5",\
     "/Volumes/KAUST/NarvalFiles/2024_CSME/dipole_wall_collision/time_step_advantage/viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0384_p5_time_step",\
-    # "/Volumes/KAUST/NarvalFiles/2024_CSME/dipole_wall_collision/viscous_DWC_ILES_NSFR_cHU_IR_2PF_GL_OI-0_dofs0384_p5",\
+    "/Volumes/KAUST/NarvalFiles/2024_CSME/dipole_wall_collision/viscous_DWC_ILES_NSFR_cHU_IR_2PF_GL_OI-0_dofs0384_p5",\
     "/Volumes/KAUST/NarvalFiles/2024_CSME/dipole_wall_collision/time_step_advantage/viscous_DWC_ILES_NSFR_cHU_IR_2PF_GL_OI-0_dofs0384_p5_time_step",\
     # "/Volumes/KAUST/NarvalFiles/2024_CSME/dipole_wall_collision/viscous_DWC_ILES_NSFR_cSD_IR_2PF_GL_OI-0_dofs0384_p5",\
     # "/Volumes/KAUST/NarvalFiles/2024_CSME/dipole_wall_collision/time_step_advantage/viscous_DWC_ILES_NSFR_cSD_IR_2PF_GL_OI-0_dofs0384_p5_time_step",\
     ]
     # labels
     labels_for_plot=[\
-    "$384^2$ DOF, p$5$, $c_{DG}$, CFL$=0.1$",\
-    "$384^2$ DOF, p$5$, $c_{DG}$, CFL$=0.15$",\
-    # "$384^2$ DOF, p$5$, $c_{HU}$, CFL$=0.1$",\
-    "$384^2$ DOF, p$5$, $c_{HU}$, CFL$=0.2$",\
+    # "$384^2$ DOF, p$5$, $c_{DG}$, $\\Delta t=10\times10^{-6}$",\
+    "$384^2$ DOF, p$5$, $c_{DG}$, $\\Delta t=13\\times10^{-6}$",\
+    "$384^2$ DOF, p$5$, $c_{HU}$, CFL$=0.1$",\
+    "$384^2$ DOF, p$5$, $c_{HU}$, $\\Delta t=17\\times10^{-6}$",\
     # "$384^2$ DOF, p$5$, $c_{SD}$, CFL$=0.1$",\
     # "$384^2$ DOF, p$5$, $c_{SD}$, CFL$=0.2$",\
     ]
@@ -239,7 +239,7 @@ if(True):
         zoom_for_only_wall_collision_zone=True,
         plot_zoomed_section_enstrophy=True,
         plot_zoomed_section_palinstrophy=True)#smoothing_parameters_input=[400,750,1000]
-exit()
+    exit()
 #=====================================================
 # DOFs: 256^3 | All results
 #-----------------------------------------------------

@@ -572,6 +572,38 @@ data_directory_base=filesystem+"NarvalFiles/2024_JCP/"
 date_for_runs="."
 figure_subdirectory="./"
 # figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
+figure_filename_postfix = "_p3_64dofs_LAD"
+legend_inside_input=True
+plot_reference_result=True
+plot_PHiLiP_DNS_result_as_reference_input=False
+#-----------------------------------------------------
+subdirectories_for_plot=[\
+"supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0064_p3_procs128",\
+"/Volumes/KAUST/NarvalFiles/2024_JCP/supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_LAD_GLL_OI-0_dofs064_p3_procs128",\
+]
+# labels
+labels_for_plot=[\
+"$64^{3}$",\
+"$64^{3}$ LAD",\
+]
+black_line_flag_for_plot=[False,False,False,False,False,False,False,False]
+dashed_line_flag_for_plot=[False,False,False,False,False,True,True]
+which_was_ran_with_corrected_quantites=[0,1]
+number_of_degrees_of_freedom_input=[]
+compare_with_ref_result_at_same_dof=False
+plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
+    which_was_ran_with_corrected_quantites=which_was_ran_with_corrected_quantites,
+    number_of_degrees_of_freedom=number_of_degrees_of_freedom_input,
+    compare_with_reference_result_at_same_degrees_of_freedom=compare_with_ref_result_at_same_dof,
+    smooth_dilatational_dissipation_rate=smooth_dilatational_dissipation_rate_input,
+    smoothing_parameters_input=get_smoothing_parameters_from_subdirectories(subdirectories_for_plot))
+#-----------------------------------------------------
+# clr_input = ['tab:red','tab:blue','tab:green','tab:orange','tab:purple','tab:brown','tab:pink','tab:gray','tab:olive','tab:cyan']
+reinit_inputs()
+data_directory_base=filesystem+"NarvalFiles/2024_JCP/"
+date_for_runs="."
+figure_subdirectory="./"
+# figure_title = "TGV at Re$_{\\infty}=1600$, $256^{3}$ DOFs, CFL=$0.10$" # comment to turn off
 figure_filename_postfix = "_128_p7_time_step_advantage"
 legend_inside_input=True
 plot_reference_result=True
@@ -580,15 +612,15 @@ plot_PHiLiP_DNS_result_as_reference_input=False
 subdirectories_for_plot=[\
 "supersonic_viscous_TGV_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_dofs0128_p7_procs512",\
 "supersonic_viscous_TGV_ILES_NSFR_cHU_Ra_2PF_GLL_OI-0_dofs0128_p7_procs512",\
-"/Volumes/KAUST/NarvalFiles/2024_JCP/time_step_advantage/supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0128_p7_procs512_CFL-0point2",\
-"/Volumes/KAUST/NarvalFiles/2024_JCP/time_step_advantage/supersonic_viscous_TGV_ILES_NSFR_cHU_Ra_2PF_GLL_OI-0_dofs0128_p7_procs512_CFL-0point25",\
+"/Volumes/KAUST/NarvalFiles/2024_JCP/time_step_advantage/supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0128_p7_procs512_CFL-0point15",\
+"/Volumes/KAUST/NarvalFiles/2024_JCP/time_step_advantage/supersonic_viscous_TGV_ILES_NSFR_cHU_Ra_2PF_GLL_OI-0_dofs0128_p7_procs512_CFL-0point2",\
 ]
 # labels
 labels_for_plot=[\
 "$128^{3}$, $c_{DG}$, CFL$=0.1$",\
 "$128^{3}$, $c_{HU}$, CFL$=0.1$",\
-"$128^{3}$, $c_{DG}$, CFL$=0.2$",\
-"$128^{3}$, $c_{HU}$, CFL$=0.25$",\
+"$128^{3}$, $c_{DG}$, CFL$=0.15$",\
+"$128^{3}$, $c_{HU}$, CFL$=0.2$",\
 ]
 black_line_flag_for_plot=[False,False,False,False,False,False,False,False]
 dashed_line_flag_for_plot=[False,False,False,True,False,True,True]

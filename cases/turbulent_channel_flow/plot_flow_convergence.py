@@ -933,6 +933,35 @@ friction_velocity_based_reynolds_number=[395,395,395,395]
 #==================================================================
 
 #==================================================================
+#              CONVERGENCE RUNS
+#==================================================================
+filenames=[\
+# filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization/turbulent_quantities.txt",\
+# "/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input/turbulent_quantities_to_fix.txt",\
+# filesystem+"NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR-Roe_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_second_element_input_from_t0/turbulent_quantities.txt",\
+"/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_not_cPlus/turbulent_quantities.txt",\
+"/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_not_cPlus_second_element_input/turbulent_quantities.txt",\
+"/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR-Roe_2PF_GLL_OI-0_Re395_p4_20x10x10_turbulent_initialization_not_cPlus_second_element_input/turbulent_quantities.txt",\
+"/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR-Roe_2PF_GLL_OI-0_Re395_p4_10x5x5_turbulent_initialization_not_cPlus_second_element_input/turbulent_quantities.txt",\
+"/Volumes/KAUST/NarvalFiles/2024_AIAA/turbulent_channel_flow/viscous_TCF_ILES_NSFR_cDG_IR-Roe_2PF_GLL_OI-0_Re395_p7_10x5x5_turbulent_initialization_not_cPlus_second_element_input/turbulent_quantities.txt",\
+]
+labels=[\
+# "$c_{+}$ C1","$c_{+}$ C4","$c_{+}$ C4-Roe",\
+"$c_{DG}$ C1","$c_{DG}$ C4","$c_{DG}$ C4-Roe",\
+"$c_{DG}$ C4-Roe p4 10x5x5",\
+"$c_{DG}$ C4-Roe p7 10x5x5",\
+]
+which_lines_dashed=[]
+# friction_velocity_based_reynolds_number=[5200,395]
+friction_velocity_based_reynolds_number=[395,395,395,395,395,395,395,395,395,395,395,395,395]
+plot_transient(filenames,labels,
+    which_lines_dashed_=which_lines_dashed,
+    starting_data_index_for_plot=0,friction_velocity_based_reynolds_number=friction_velocity_based_reynolds_number,
+    legend_on_input=True)
+exit()
+#==================================================================
+
+#==================================================================
 # cDG RUNS
 #==================================================================
 filenames=[\
