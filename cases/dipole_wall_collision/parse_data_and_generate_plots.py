@@ -225,8 +225,8 @@ if(True):
     # labels
     labels_for_plot=[\
     # "$384^2$ DOF, p$5$, $c_{DG}$, $\\Delta t=10\times10^{-6}$",\
-    "$384^2$ DOF, p$5$, $c_{DG}$, $\\Delta t=13\\times10^{-6}$",\
-    "$384^2$ DOF, p$5$, $c_{HU}$, CFL$=0.1$",\
+    "$384^2$ DOF, p$5$, $c_{DG}$, $\\Delta t=14\\times10^{-6}$",\
+    "$384^2$ DOF, p$5$, $c_{HU}$, $\\Delta t=10\\times10^{-6}$",\
     "$384^2$ DOF, p$5$, $c_{HU}$, $\\Delta t=17\\times10^{-6}$",\
     # "$384^2$ DOF, p$5$, $c_{SD}$, CFL$=0.1$",\
     # "$384^2$ DOF, p$5$, $c_{SD}$, CFL$=0.2$",\
