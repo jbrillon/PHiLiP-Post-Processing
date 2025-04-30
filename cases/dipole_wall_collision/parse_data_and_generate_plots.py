@@ -215,19 +215,21 @@ if(True):
     plot_PHiLiP_DNS_result_as_reference_input=False
     #-----------------------------------------------------
     subdirectories_for_plot=[\
-    # "viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0384_p5",\
+    "viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0384_p5",\
     "/Volumes/KAUST/NarvalFiles/2024_CSME/dipole_wall_collision/time_step_advantage/viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0384_p5_time_step",\
     "/Volumes/KAUST/NarvalFiles/2024_CSME/dipole_wall_collision/viscous_DWC_ILES_NSFR_cHU_IR_2PF_GL_OI-0_dofs0384_p5",\
     "/Volumes/KAUST/NarvalFiles/2024_CSME/dipole_wall_collision/time_step_advantage/viscous_DWC_ILES_NSFR_cHU_IR_2PF_GL_OI-0_dofs0384_p5_time_step",\
+    # "/Volumes/KAUST/NarvalFiles/2024_CSME/dipole_wall_collision/time_step_advantage/viscous_DWC_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0384_p5_time_step_check",\
     # "/Volumes/KAUST/NarvalFiles/2024_CSME/dipole_wall_collision/viscous_DWC_ILES_NSFR_cSD_IR_2PF_GL_OI-0_dofs0384_p5",\
     # "/Volumes/KAUST/NarvalFiles/2024_CSME/dipole_wall_collision/time_step_advantage/viscous_DWC_ILES_NSFR_cSD_IR_2PF_GL_OI-0_dofs0384_p5_time_step",\
     ]
     # labels
     labels_for_plot=[\
-    # "$384^2$ DOF, p$5$, $c_{DG}$, $\\Delta t=10\times10^{-6}$",\
+    "$384^2$ DOF, p$5$, $c_{DG}$, $\\Delta t=10\\times10^{-6}$",\
     "$384^2$ DOF, p$5$, $c_{DG}$, $\\Delta t=14\\times10^{-6}$",\
     "$384^2$ DOF, p$5$, $c_{HU}$, $\\Delta t=10\\times10^{-6}$",\
-    "$384^2$ DOF, p$5$, $c_{HU}$, $\\Delta t=17\\times10^{-6}$",\
+    "$384^2$ DOF, p$5$, $c_{HU}$, $\\Delta t=18\\times10^{-6}$",\
+    # "$384^2$ DOF, p$5$, $c_{DG}$, $\\Delta t=15\\times10^{-6}$",\
     # "$384^2$ DOF, p$5$, $c_{SD}$, CFL$=0.1$",\
     # "$384^2$ DOF, p$5$, $c_{SD}$, CFL$=0.2$",\
     ]
