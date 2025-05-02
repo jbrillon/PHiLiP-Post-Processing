@@ -228,7 +228,7 @@ if(True):
     "$384^2$ DOF, p$5$, $c_{DG}$, $\\Delta t=10\\times10^{-6}$",\
     "$384^2$ DOF, p$5$, $c_{DG}$, $\\Delta t=14\\times10^{-6}$",\
     "$384^2$ DOF, p$5$, $c_{HU}$, $\\Delta t=10\\times10^{-6}$",\
-    "$384^2$ DOF, p$5$, $c_{HU}$, $\\Delta t=18\\times10^{-6}$",\
+    "$384^2$ DOF, p$5$, $c_{HU}$, $\\Delta t=19\\times10^{-6}$",\
     # "$384^2$ DOF, p$5$, $c_{DG}$, $\\Delta t=15\\times10^{-6}$",\
     # "$384^2$ DOF, p$5$, $c_{SD}$, CFL$=0.1$",\
     # "$384^2$ DOF, p$5$, $c_{SD}$, CFL$=0.2$",\
