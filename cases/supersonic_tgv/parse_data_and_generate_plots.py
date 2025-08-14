@@ -578,23 +578,25 @@ plot_reference_result=True
 plot_PHiLiP_DNS_result_as_reference_input=False
 #-----------------------------------------------------
 subdirectories_for_plot=[\
-# "supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0064_p3_procs128",\
+"supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_GLL_OI-0_dofs0064_p3_procs128",\
 "/Volumes/KAUST/NarvalFiles/2024_JCP/supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_LAD_GLL_OI-0_dofs064_p3_procs128",\
 "/Volumes/KAUST/NarvalFiles/2024_JCP/supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_LAD_GLL_OI-0_dofs064_p3_procs128_run03",\
 "/Volumes/KAUST/NarvalFiles/2024_JCP/supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_LAD_GLL_OI-0_dofs064_p3_procs128_run04",\
 "/Volumes/KAUST/NarvalFiles/2024_JCP/supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_LAD_GLL_OI-0_dofs064_p3_procs128_run05",\
+"/Volumes/KAUST/NarvalFiles/2024_JCP/supersonic_viscous_TGV_ILES_NSFR_cDG_Ra_2PF_LAD_GLL_OI-0_dofs064_p3_procs128_run06",\
 ]
 # labels
 labels_for_plot=[\
-# "$64^{3}$",\
+"$64^{3}$",\
 "$64^{3}$ LAD ($\\mu=0.5,~\\kappa=0.5$)",\
 "$64^{3}$ LAD ($\\mu=0.5,~\\kappa=0.1$)",\
 "$64^{3}$ LAD ($\\mu=0.1,~\\kappa=0.1$)",\
 "$64^{3}$ LAD ($\\mu=0.1,~\\kappa=0.025$)",\
+"$64^{3}$ LAD ($\\mu=0.1,~\\kappa=0.001$)",\
 ]
 black_line_flag_for_plot=[False,False,False,False,False,False,False,False]
 dashed_line_flag_for_plot=[False,False,False,False,False,True,True]
-which_was_ran_with_corrected_quantites=[0,1,2,3,4]
+which_was_ran_with_corrected_quantites=[0,1,2,3,4,5]
 number_of_degrees_of_freedom_input=[]
 compare_with_ref_result_at_same_dof=False
 plot_for_presentation(subdirectories_for_plot,labels_for_plot,black_line_flag_for_plot,dashed_line_flag_for_plot,
