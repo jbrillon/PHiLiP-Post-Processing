@@ -230,7 +230,10 @@ def plot_periodic_turbulence(
         i_curve += 1
         labels_store.append(labels[i])
         # load file
-        filename = data_directory_base+"/"+subdirectories[i]+"/"+filenames[i]
+        if("/Volumes/KAUST/" in subdirectories[i]):
+            filename = subdirectories[i]+"/"+filenames[i]
+        else:
+            filename = data_directory_base+"/"+subdirectories[i]+"/"+filenames[i]
         time, kinetic_energy, enstrophy, vorticity_based_dissipation, pressure_dilatation_based_dissipation, strain_rate_based_dissipation, deviatoric_strain_rate_based_dissipation = np.loadtxt(filename,skiprows=1,dtype=np.float64,unpack=True)
         # store data
         time_store.append(time)

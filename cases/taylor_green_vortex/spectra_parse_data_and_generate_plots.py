@@ -137,7 +137,8 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
     plot_unresolved_wavenumber_range_as_dashed=False,
     plot_full_wavenumber_range_of_reference_DNS=False,
     extend_y_max_limit=False,
-    zoom_box_on_left=False):
+    zoom_box_on_left=False,
+    plot_p5_projected_DNS=False):
     # TO DO: Move this function to its own file
     global x,y,labels
     x=[];y=[];labels=[];
@@ -216,6 +217,13 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
             mrkr_input_store.insert(i_curve,'None')
         lnstl_input_store.insert(i_curve,'dashed') # for dashed filtered DNS result
         # which_lines_dashed.append() 
+        i_curve += 1
+    if(plot_p5_projected_DNS):
+        clr_input_store.insert(i_curve,"tab:gray")
+        # which_lines_black.append(i_curve)
+        if(solid_and_dashed_lines or dashed_and_solid_lines or markers_on):
+            mrkr_input_store.insert(i_curve,'None')
+        lnstl_input_store.insert(i_curve,'dashed') # for dashed filtered DNS result
         i_curve += 1
 
     # compute reference curve 1
@@ -367,6 +375,12 @@ def batch_plot_spectra(nDOF_,figure_filename_post_fix,batch_paths,batch_labels,
             # which_lines_black.append(i_curve)
             mrkr_input_store.insert(i_curve,'None')
             lnstl_input_store.insert(i_curve,'dotted') # for dashed filtered DNS result
+
+    if(plot_p5_projected_DNS):
+        filepath_to_reference_result=CURRENT_PATH+"data/brillon/flow_field_files/velocity_vorticity_p7_dofs256_projected_to_p5_dofs096-1_reordered_spectra_oversampled.dat"
+        spectra_ = np.loadtxt(filepath_to_reference_result)
+        spectra = get_truncated_spectra_from_DOFs_information(spectra_, 5, 16, truncate_spectra_at_effective_DOFs) # to match cut-off for 96P5
+        append_to_plot(spectra[:,0],spectra[:,1],"Projected DNS\n ($96^{3}$ DOF, p$5$)") # if using original        i_curve += 1
 
         # TO DO MAKE THIS DASHED
     # - results
@@ -599,6 +613,31 @@ fig_dir_input="./figures/2023_JCP/oversampled_spectra"
 # compute_filtered_DNS_spectra(5,16,use_LES_filter_width=True)
 # exit()
 # =====================================================
+if(False or regenerate_all_plots):
+    batch_paths = [ \
+    # "/Volumes/KAUST/NarvalFiles/2023_JCP/dns_projection_p5/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024_2refinements_p7/",\
+    "/Volumes/KAUST/NarvalFiles/2023_JCP/dns_projection_p5/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024_2refinements_p5/",\
+    # "NarvalFiles/2023_JCP/verification_tke_fix/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs0256_p7_procs1024_3refinements/",\
+    ]
+    batch_labels = [ \
+    # "$256^{3}$p$7$, $c_{DG}$", \
+    "Projected $96^{3}$p$5$, $c_{DG}$", \
+    ]
+    list_of_poly_degree=[5,5]
+    list_of_number_of_elements_per_direction=[16,16]
+    
+    batch_plot_spectra("all","dns_projection_p5",batch_paths,batch_labels,
+        solid_and_dashed_lines=False,
+        title_off=title_off_input,figure_directory=fig_dir_input,
+        plot_cutoff_wavenumber_asymptote=True,
+        plot_PHiLiP_DNS_result_as_reference=True,
+        plot_filtered_dns=True,
+        plot_zoomed_section=False,
+        list_of_poly_degree_input=list_of_poly_degree,
+        list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction,
+        plot_p5_projected_DNS=True)
+    exit()
+# =====================================================
 if(True or regenerate_all_plots):
     batch_paths = [ \
     "NarvalFiles/2023_JCP/spectra_fix/flux_nodes/viscous_TGV_ILES_NSFR_cDG_IR_2PF_GL_OI-0_dofs096_p5_procs512/",\
@@ -632,7 +671,8 @@ if(True or regenerate_all_plots):
         list_of_poly_degree_input=list_of_poly_degree,
         list_of_number_of_elements_per_direction_input=list_of_number_of_elements_per_direction,
         plot_unresolved_wavenumber_range_as_dashed=False,
-        extend_y_max_limit=False)
+        extend_y_max_limit=False,
+        plot_p5_projected_DNS=True)
 exit()
 # =====================================================
 if(True or regenerate_all_plots):
